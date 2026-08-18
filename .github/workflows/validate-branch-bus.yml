@@ -1,0 +1,27 @@
+name: Validate Project Supernova Branch Bus
+
+on:
+  push:
+    branches:
+      - 'ps/work/**'
+      - 'ps/verify/**'
+      - 'ps/integrate/**'
+      - 'ps/consolidate/**'
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-branch-bus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned validation dependency
+        run: pip install -r requirements-validation.txt
+      - name: Validate branch-isolated bus invariants
+        run: python scripts/validate_branch_bus.py --branch "$GITHUB_REF_NAME"
