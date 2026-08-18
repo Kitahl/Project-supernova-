@@ -1,0 +1,21 @@
+{
+  "cohort_id": "CAL-001",
+  "status": "SUPERSEDED_MIGRATION_DIAGNOSTIC",
+  "old_task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "superseded_by_task_network_plan_id": "90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682",
+  "reason": "CAL-001 proved useful GitHub read/write/reread behavior but worker receipts bound different control-plane revisions. It is retained as transport/migration evidence and is ineligible to increment the two-cohort calibration streak or support scientific/runtime promotion.",
+  "calibration_countable": false,
+  "scientific_promotion_eligible": false,
+  "fresh_or_protected_evidence_consumed": false,
+  "known_report_refs": [
+    {"path":"reports/CAL-001/MM02.json","blob_sha":"4306b210d06068ebbac34cfa23a79e6ff915faf9"},
+    {"path":"reports/CAL-001/MM03.json","blob_sha":"9e123123ae7afb51e1e9f1a3b0d90fed468efb82"},
+    {"path":"reports/CAL-001/MM04.json","blob_sha":"fdda0625b8c52117824fe80a302c52f276d999da"},
+    {"path":"reports/CAL-001/MM05.json","blob_sha":"672bf7e4b69b94d10aa03fe817b8afbe917b3b5a"}
+  ],
+  "preserve_findings": [
+    "Scheduled tasks can write and reread the canonical GitHub bus.",
+    "MM02/MM03/MM04/MM05 remained replay-safe with zero fresh/protected benchmark consumption.",
+    "Research questions from superseded reports may be reconsidered only after a later MM06/MF06-safe re-ingestion under the current plan; they are not direct deep-research inputs."
+  ]
+}
