@@ -1,0 +1,84 @@
+{
+  "task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "cohort_id": "CAL-003-810da70a",
+  "worker_id": "MM01",
+  "report_id": "MM01-CAL-003-810da70a",
+  "assignment_id": "PS-GHBUS-CAL-003-810da70a",
+  "assignment_git_identity": "4db032c468fb1ee2edf87267fe5884d42d99b1d9",
+  "generation_seq": 3,
+  "parent_state_git_identity": "810da70aa50f854ccd27786f8d1edfa421974604",
+  "control_manifest_id": "CTRL-CAL-003-810da70a-V22",
+  "control_manifest_git_identity": "9c0d21898b3bb6f1e41d9f7e5445da74438fdf2a",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "4f33fcfc06130ae5b17c13213e63eb54",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6",
+  "worker_auth_proof": "2edd67c016bb461bdafbb7f3eb56f78a8dc7013ca4af78c487d5a8dfc0c68938",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_REACT_SEMANTIC_DRIFT_AUDIT",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "PROTOCOL.md@46fbe337605e7a44904179109279a51ffc45ae5e",
+    "WORKER_PROTOCOL.md@85601caa3468b58abeaf6d39c56f0994a65c75c3",
+    "plan/PLAN.json@b1da6b552b2627414202a34d6a3f9fa2a21cb964",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+    "schemas/report.schema.json@f5317f12f341ef1d686574f2c7f97bddcdb4ad89",
+    "control/CAL-003-810da70a.json@9c0d21898b3bb6f1e41d9f7e5445da74438fdf2a",
+    "assignments/CAL-003-810da70a.json@4db032c468fb1ee2edf87267fe5884d42d99b1d9",
+    "react.dev/reference/react/useRef audited 2026-08-18",
+    "react.dev/learn/referencing-values-with-refs audited 2026-08-18",
+    "react.dev/learn/state-as-a-snapshot audited 2026-08-18"
+  ],
+  "claim_scope": "Replay-safe React mechanism semantic-drift audit under the first countable v2.2 authenticated frozen-control calibration cohort. No fresh or protected benchmark evidence, benchmark execution, score, runtime change, or promotion claim.",
+  "runtime_implementation_implication": "NONE. Preserve the existing observer/notification distinction as a bounded external mechanism requirement: a value whose change must become user-visible cannot rely solely on non-reactive ref mutation; the required render/observer path must be explicit and preservation-scoped.",
+  "next_action": "MM06 should independently verify this immutable authenticated CAL-003 receipt, including HMAC proof, frozen-control lineage, public-safety invariants, and report-commit CI status. MM01 should not repeat this cohort.",
+  "negative_zero_outcomes": [
+    {"type":"FRESH_EVIDENCE_NOT_CONSUMED","detail":"State and assignment are GITHUB_BUS_CALIBRATION with MM01 fresh_allowed=false; fresh_evidence_ids is empty."},
+    {"type":"PROTECTED_MANIFEST_NOT_READ","detail":"No private manifest was assigned or fetched."},
+    {"type":"BENCHMARK_EXECUTION_NONE","detail":"No React benchmark task or evaluator was opened or executed."},
+    {"type":"MECHANISM_PROMOTION_NONE","detail":"Current official React documentation did not contradict the existing ref-versus-state observer semantics; no new mechanism promotion is justified."},
+    {"type":"PROSPECTIVE_CAPABILITY_NOT_MEASURED","detail":"Calibration is replay-safe only, so no prospective React capability result was measured."}
+  ],
+  "research_questions": [
+    {
+      "question": "What sound and practical static or hybrid analysis can certify observer closure for React-visible values across state, refs, derived values, external stores, subscriptions, effects, and callback boundaries, while distinguishing intentionally non-reactive storage from values that must trigger user-visible updates?",
+      "parent_blocker_or_claim": "MM01 bounded observer/notification closure for React mechanisms",
+      "why_it_matters": "The semantic distinction between refs and state is clear, but a transferable mechanism needs a machine-checkable way to prove that every value intended to affect visible behavior has an adequate render or observer path without over-flagging legitimate non-reactive refs.",
+      "closure_criterion": "Identify primary-source analyses or type/effect systems with explicit soundness or coverage conditions, map their assumptions to modern React state/ref/external-store patterns, and state residual unsupported patterns as UNKNOWN rather than PASS.",
+      "preferred_source_families": ["PLDI/POPL/OOPSLA/ICSE/FSE primary papers","React/compiler and eslint-plugin-react-hooks primary documentation","effect systems and reactive dependency analysis","whole-program dataflow and event-flow analysis"],
+      "urgency": "MEDIUM_HIGH"
+    }
+  ],
+  "role_payload": {
+    "standard_session_name": "MM01 | SUPERNOVA | ITER-003 | CAL-003-810da70a | React Mechanism Replay Calibration",
+    "session_target_program": "Mastermind / React mechanism evidence",
+    "iteration_number": 3,
+    "goal": "Validate v2.2 authenticated frozen-control transport while replay-checking the smallest domain-general React observer/notification mechanism without fresh evidence.",
+    "assignment_identity_check": "PASS",
+    "frozen_control_check": "PASS_ALL_15_CONTROL_BLOBS",
+    "worker_auth_commitment_check": "PASS",
+    "network_mode_observed": "GITHUB_BUS_CALIBRATION",
+    "fresh_authorization": "DISALLOWED_BY_STATE_AND_ASSIGNMENT",
+    "react_semantic_drift_audit": {
+      "finding": "NO_CONTRADICTION",
+      "bounded_mechanism": "If a value change must affect rendered or otherwise observed behavior, storage alone is insufficient; the implementation must include an explicit reactive/observer path. Ref mutation is appropriate for retained values not needed for rendering, while state changes request rendering.",
+      "preservation_rule": "Do not replace refs with state indiscriminately. Preserve non-reactive refs whose values are intentionally outside rendering, and require state/subscription/observer paths only where the contract requires visible or reactive consequences.",
+      "prospective_status": "NOT_MEASURED"
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-safe control verification plus a narrow official React documentation drift check only."
+  },
+  "public_safety_status": "PASS",
+  "git_reread_verified": true,
+  "ci_status": "CI_NOT_OBSERVED"
+}
