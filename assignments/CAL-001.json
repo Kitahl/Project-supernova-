@@ -1,0 +1,24 @@
+{
+  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id":"CAL-001",
+  "assignment_id":"PS-GHBUS-CAL-001",
+  "network_checkpoint_id":"fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id":"9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "network_mode":"GITHUB_BUS_CALIBRATION",
+  "purpose":"First end-to-end replay-only calibration in canonical Project-supernova- bus. No fresh/protected evidence.",
+  "workers":{
+    "MF01":{"fresh_allowed":false,"role":"Representation/blocker replay-safe E1 support","visibility_token":"e083da576dbd18dc2e23a1a1641b3efb","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only","no deep research","emit research_questions only"]},
+    "MF02":{"fresh_allowed":false,"role":"E1 route/schedule contract replay-safe audit","visibility_token":"526d935499b701558106f8d9e1cce4eb","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only","no unseen benchmark"]},
+    "MF03":{"fresh_allowed":false,"role":"Lemma/operator candidate replay-safe analysis","visibility_token":"d9b1a903106baf02293ece4a12a93cef","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only"]},
+    "MF04":{"fresh_allowed":false,"role":"Adversarial falsifier replay-safe analysis","visibility_token":"0005959adeb7f8ec6c9475736c11c872","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only"]},
+    "MF05":{"fresh_allowed":false,"role":"C1 product-closure prerequisite replay-safe audit","visibility_token":"b5cd9d77b056e0d719810e3adc07a261","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only","no fabricated C1 score"]},
+    "MM01":{"fresh_allowed":false,"role":"React mechanism replay-safe generalization","visibility_token":"def8b476a9154d05dbb2b3c9f5eacef4","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only"]},
+    "MM02":{"fresh_allowed":false,"role":"DeepSWE mechanism replay-safe generalization","visibility_token":"a6c8f8eea2065adafb3109a24511a5a1","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only"]},
+    "MM03":{"fresh_allowed":false,"role":"SlopCode contract/mechanism replay-safe generalization","visibility_token":"54a59732f7bb19116bee84bf6f01c324","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only"]},
+    "MM04":{"fresh_allowed":false,"role":"Senior SWE architecture replay-safe generalization","visibility_token":"c48c95c2e31aed656f5116e4fe840066","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only"]},
+    "MM05":{"fresh_allowed":false,"role":"E3 control-design replay-safe audit","visibility_token":"3cc7a168295f87d4de74154bd878ebd5","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only","L/R/N NOT_MEASURED without executable artifacts"]},
+    "MM07":{"fresh_allowed":false,"role":"Before/after replay-safe diagnostic design","visibility_token":"b94b39344aa62e7ab61b1d27f0adcd40","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only","no prospective self-promotion"]},
+    "EXT01":{"fresh_allowed":false,"role":"Runtime/build and GitHub bus independent audit","visibility_token":"b8330449fdd154f7fab9a7b2ebceca96","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["replay-safe only","audit actual runtime artifacts and transport"]}
+  },
+  "sealed_slots":["SEALED_ORACLE_SLOT_A","SEALED_ORACLE_SLOT_B"]
+}
