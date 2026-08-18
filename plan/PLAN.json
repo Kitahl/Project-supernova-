@@ -1,15 +1,68 @@
 {
-  "protocol_version":"2.0",
-  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
-  "authority_model":"External scheduled experiment/referee/research network only; Foundry owns truth; Mastermind PRE_REVIEW_ONLY.",
-  "runtime_priority":["E1 route/schedule truth including same-total-budget oracle schedule","objectively selected G1 prospective capability gap","C1 verified-product closure","E3 executable learned-vs-random-vs-no-change mechanism control","later reaction/selector/ignition only after executable runtime support"],
-  "mastermind_phase_order":["DISCOVERY","ADVERSARIAL_DESTRUCTION","CLOSURE"],
-  "workers":["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],
-  "verifier":"MM06",
-  "integrator":"MF06",
-  "director":"BIL00",
-  "deep_research":{"owner":"BIL00","times_vancouver":["00:58","12:58"],"frequency_hours":12,"other_tasks_prohibited":true},
-  "transport":{"public_bus_repo":"Kitahl/Project-supernova-","private_vault_repo":"Kitahl/thoma","two_clean_calibration_cohorts_required":true,"immutable_receipts":true,"state_pointer_mutable_with_optimistic_sha":true},
-  "public_safety":{"hidden_benchmark_content_forbidden":true,"protected_item_names_ids_forbidden":true,"protected_manifests_private_only":true,"public_assignments_use_opaque_manifest_ids":true},
-  "runtime_update_rule":"No runtime-state change without independently validated RUNTIME_UPDATE_RECEIPT containing artifact hashes, validators, lineage/accounting, diagnostics and required prospective evidence."
+  "protocol_version": "2.1",
+  "task_network_plan_id": "90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682",
+  "authority_model": "External scheduled experiment/referee/research network only; Math Foundry owns mathematical/runtime truth; Mastermind is PRE_REVIEW_ONLY.",
+  "current_stage": "CANONICAL_GITHUB_TRANSPORT_CALIBRATION",
+  "runtime_priority": [
+    "T0 canonical GitHub transport/control-plane calibration with two consecutive clean replay-only cohorts",
+    "E1 route/schedule truth including BASE, SBS, single-route VBS, AUTO, and best admissible same-total-budget ORACLE_SCHEDULE/portfolio",
+    "G1 one-generation fresh prospective capability gain on an objectively selected gap, before amplification",
+    "C1 generic verified-product closure/reuse when E1/early-E2 evidence justifies it",
+    "E3 executable bounded mechanism control: LEARNED_PROPOSAL vs RANDOM_ADMISSIBLE vs NO_CHANGE_EQUAL_COMPUTE",
+    "C2 bounded operator invention and unrelated-transfer CrossingEvent tests",
+    "canonical ReactionRecord/VerifiedProduct reaction-affordance graph only after actual executable runtime support",
+    "selector/ignition controller only after causal transition evidence and equal-compute controls",
+    "E5 multi-generation verified improvement",
+    "E5B improver-of-improver with solver F_t, memory M_t, improver I_t separated and 2x2 carryover controls",
+    "E6 independent capability admission and broader typed-contract generalization"
+  ],
+  "mastermind_phase_order": ["DISCOVERY", "ADVERSARIAL_DESTRUCTION", "CLOSURE"],
+  "workers": ["MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"],
+  "verifier": "MM06",
+  "integrator": "MF06",
+  "director": "BIL00",
+  "deep_research": {
+    "owner": "BIL00",
+    "times_vancouver": ["00:58", "12:58"],
+    "frequency_hours": 12,
+    "other_tasks_prohibited": true,
+    "input_rule": "Only MM06-safe and MF06-integrated research questions plus unresolved previously accepted research; never raw unverified worker questions.",
+    "idempotent_path": "research/results/DR-<Vancouver YYYYMMDD-HH>.json",
+    "promotion_authority": false
+  },
+  "transport": {
+    "public_bus_repo": "Kitahl/Project-supernova-",
+    "private_vault_repo": "Kitahl/thoma",
+    "two_clean_calibration_cohorts_required": true,
+    "immutable_receipts": true,
+    "state_pointer_mutable_with_optimistic_sha": true,
+    "cohort_control_manifest_required": true,
+    "control_manifest_freezes": ["PROTOCOL.md", "WORKER_PROTOCOL.md", "plan/PLAN.json", "config/roles.json", "schemas/assignment.schema.json", "schemas/report.schema.json", "schemas/verification.schema.json", "schemas/integration.schema.json", "schemas/director.schema.json", "schemas/research.schema.json", "scripts/validate_bus.py"],
+    "mixed_control_revision_cohort_ineligible": true,
+    "superseded_cohort_never_increments_calibration": true
+  },
+  "public_safety": {
+    "hidden_benchmark_content_forbidden": true,
+    "protected_item_names_ids_forbidden": true,
+    "protected_manifests_private_only": true,
+    "public_assignments_use_opaque_manifest_ids": true,
+    "public_reports_never_include_private_manifest_payloads": true
+  },
+  "fresh_evidence_rule": {
+    "requires_transport_fresh_enabled": true,
+    "requires_private_frozen_pre_outcome_manifest": true,
+    "requires_exact_evaluator_model_tools_budget_randomization_cache_retention_accounting_contamination_contract": true,
+    "requires_disjoint_ownership": true,
+    "single_route_vbs_not_universal_schedule_ceiling": true,
+    "sealed_holdouts_remain_opaque": true
+  },
+  "scientific_controls": {
+    "negative_zero_unknown_outcomes_preserved": true,
+    "no_originating_task_promotion": true,
+    "reconcile_by_evidence_tier_not_vote": true,
+    "all_proposal_feature_selection_execution_verification_costs_inside_matched_budget": true,
+    "runtime_state_separate_from_network_checkpoint": true,
+    "same_suite_before_after_is_diagnostic_only": true
+  },
+  "runtime_update_rule": "No runtime-state change without independently validated RUNTIME_UPDATE_RECEIPT containing artifact hashes, validator results, lineage/accounting identity, before/after diagnostics, required fresh prospective evidence, and preservation/regression checks."
 }
