@@ -1,0 +1,15 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "transition_id": "TRANSITION-CAL-005-7fff4d30-V24-BOOTSTRAP",
+  "parent_state_blob": "7fff4d309e587667703d78f2e9635f8cba4f062a",
+  "expected_base_head": "82e0dc50b49c37355477bf299542c43311b09efb",
+  "new_generation": 5,
+  "new_cohort_id": "CAL-005-7fff4d30",
+  "control_blob": "458e15e888f2395a8975b7b9213edb47ee8f9f91",
+  "assignment_blob": "095c1904e923a759c8ffda15e87ebbd236499765",
+  "state_blob": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "required_ci_contexts": ["supernova/static-control","supernova/report-admission","supernova/transition-admission"],
+  "repo_policy_observed_protected": false,
+  "created_by": "BIL00 migration preparation / user-authorized GitHub setup",
+  "next_action": "Merge only after v2.4 admission checks pass. The bootstrap remains non-countable and replay-only until GitHub reports the default branch protected with the required source-bound checks."
+}

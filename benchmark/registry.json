@@ -2,40 +2,32 @@
   "schema_version": "1.1",
   "authority": "EXTERNAL_BENCHMARK_ORCHESTRATION_ONLY",
   "programs": {
-    "MASTERMIND": {
-      "active_suite_id": "MM-ORACLE-PHASE1-REACT",
-      "active_suite_state": "EXTERNAL_SEALED_EXECUTION",
-      "suites": [
-        {"suite_id":"MM-ORACLE-PHASE1-REACT","kind":"CLEAN_PROSPECTIVE_ORACLE_MATRIX","status":"ACTIVE_EXTERNAL","public_name":"ReactBench Phase-1 Oracle Matrix","protected_payload":"PRIVATE_OR_EXTERNAL_SESSION_ONLY","completion_requires":["all frozen tasks terminal","all planned repeats terminal","evaluator/oracle identities frozen","no unresolved contamination","independent completion receipt"],"successor":"MM-DESIGN2CODE-HARD-STATEFUL"},
-        {"suite_id":"MM-DESIGN2CODE-HARD-STATEFUL","kind":"UI_CODE_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"Design2Code-HARD + stateful UI","successor":"MM-DESIGNBENCH-WEBPAI"},
-        {"suite_id":"MM-DESIGNBENCH-WEBPAI","kind":"UI_DESIGN_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"DesignBench / WebPAI","successor":"MM-DEEPSWE"},
-        {"suite_id":"MM-DEEPSWE","kind":"SOFTWARE_AGENT_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"DeepSWE lane","successor":"MM-SLOPCODE"},
-        {"suite_id":"MM-SLOPCODE","kind":"SOFTWARE_QUALITY_CONTRACTS","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"SlopCodeBench","successor":"MM-SENIOR-SWE"},
-        {"suite_id":"MM-SENIOR-SWE","kind":"ARCHITECTURE_AND_REPO_SCALE","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"Senior SWE-Bench","successor":"MM-WEBCOMPASS-HARD"},
-        {"suite_id":"MM-WEBCOMPASS-HARD","kind":"WEB_AGENT_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"WebCompass Hard","successor":"MM-LIVEEVAL-L3"},
-        {"suite_id":"MM-LIVEEVAL-L3","kind":"LIVE_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"LiveEvalBench L3","successor":"MM-MINEBENCH"},
-        {"suite_id":"MM-MINEBENCH","kind":"LONG_HORIZON_AGENT","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"MineBench.ai","successor":"MM-SWE-REVIEW"},
-        {"suite_id":"MM-SWE-REVIEW","kind":"REVIEW_AND_CRITIQUE","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"SWE-Review","successor":null}
-      ]
-    },
-    "MATH_FOUNDRY": {
-      "active_suite_id": "MF-E1-CLEAN-ROUTE-TRUTH",
-      "active_suite_state": "NEXT_REQUIRES_PRIVATE_FREEZE_AFTER_TRANSPORT_CALIBRATION",
-      "suites": [
-        {"suite_id":"MF-DEV-QUALIFICATION","kind":"REGRESSION_AND_EXECUTION_CLOSURE","status":"TERMINAL_DEVELOPMENT_ONLY","public_name":"v3.0.1 internal qualification / known development regressions","promotion_evidence":false,"successor":"MF-E1-CLEAN-ROUTE-TRUTH"},
-        {"suite_id":"MF-E1-CLEAN-ROUTE-TRUTH","kind":"CLEAN_MULTI_DOMAIN_ROUTE_SCHEDULE_MATRIX","status":"ACTIVE_NEXT_AFTER_TRANSPORT","public_name":"E1 clean route/schedule truth","completion_requires":["frozen hidden multi-domain task matrix","BASE/SBS/single-route-VBS/AUTO measured","same-total-budget ORACLE_SCHEDULE measured when admissible","all route work/cost/availability recorded","independent exact verification"],"successor":"MF-G1-CLEAN-PROSPECTIVE"},
-        {"suite_id":"MF-G1-CLEAN-PROSPECTIVE","kind":"ONE_GENERATION_PROSPECTIVE_CAPABILITY","status":"BLOCKED_BY_E1","public_name":"G1 fresh prospective capability gain","successor":"MF-C1-PRODUCT-CLOSURE"},
-        {"suite_id":"MF-C1-PRODUCT-CLOSURE","kind":"VERIFIED_PRODUCT_REUSE_CONTROL","status":"BLOCKED_UNTIL_JUSTIFIED","public_name":"C1 generic verified-product closure","successor":"MF-E3-MECHANISM-CONTROL"},
-        {"suite_id":"MF-E3-MECHANISM-CONTROL","kind":"LEARNED_RANDOM_NOCHANGE_CONTROL","status":"BLOCKED_UNTIL_EXECUTABLE_CANDIDATE","public_name":"E3 learned/random/no-change","successor":"MF-C2-TRANSFER"},
-        {"suite_id":"MF-C2-TRANSFER","kind":"BOUNDED_OPERATOR_TRANSFER","status":"BLOCKED_BY_E3","public_name":"C2 unrelated transfer / CrossingEvent","successor":"MF-E5-MULTIGEN"},
-        {"suite_id":"MF-E5-MULTIGEN","kind":"MULTI_GENERATION_VERIFIED_IMPROVEMENT","status":"FUTURE","public_name":"E5 multi-generation","successor":"MF-E5B-IMPROVER"},
-        {"suite_id":"MF-E5B-IMPROVER","kind":"IMPROVER_OF_IMPROVER","status":"FUTURE","public_name":"E5B improver-of-improver","successor":"MF-E6-INDEPENDENT"},
-        {"suite_id":"MF-E6-INDEPENDENT","kind":"INDEPENDENT_CAPABILITY_ADMISSION","status":"FUTURE","public_name":"E6 independent capability admission","successor":null}
-      ]
-    }
+    "MASTERMIND": {"active_suite_id": "MM-ORACLE-PHASE1-REACT", "active_suite_state": "EXTERNAL_SEALED_EXECUTION", "suites": [
+      {"suite_id":"MM-ORACLE-PHASE1-REACT","kind":"CLEAN_PROSPECTIVE_ORACLE_MATRIX","status":"ACTIVE_EXTERNAL","public_name":"ReactBench Phase-1 Oracle Matrix","protected_payload":"PRIVATE_OR_EXTERNAL_SESSION_ONLY","completion_requires":["all frozen tasks terminal","all planned repeats terminal","evaluator/oracle identities frozen","no unresolved contamination","independent completion receipt"],"successor":"MM-DESIGN2CODE-HARD-STATEFUL"},
+      {"suite_id":"MM-DESIGN2CODE-HARD-STATEFUL","kind":"UI_CODE_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"Design2Code-HARD + stateful UI","successor":"MM-DESIGNBENCH-WEBPAI"},
+      {"suite_id":"MM-DESIGNBENCH-WEBPAI","kind":"UI_DESIGN_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"DesignBench / WebPAI","successor":"MM-DEEPSWE"},
+      {"suite_id":"MM-DEEPSWE","kind":"SOFTWARE_AGENT_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"DeepSWE lane","successor":"MM-SLOPCODE"},
+      {"suite_id":"MM-SLOPCODE","kind":"SOFTWARE_QUALITY_CONTRACTS","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"SlopCodeBench","successor":"MM-SENIOR-SWE"},
+      {"suite_id":"MM-SENIOR-SWE","kind":"ARCHITECTURE_AND_REPO_SCALE","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"Senior SWE-Bench","successor":"MM-WEBCOMPASS-HARD"},
+      {"suite_id":"MM-WEBCOMPASS-HARD","kind":"WEB_AGENT_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"WebCompass Hard","successor":"MM-LIVEEVAL-L3"},
+      {"suite_id":"MM-LIVEEVAL-L3","kind":"LIVE_GENERALIZATION","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"LiveEvalBench L3","successor":"MM-MINEBENCH"},
+      {"suite_id":"MM-MINEBENCH","kind":"LONG_HORIZON_AGENT","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"MineBench.ai","successor":"MM-SWE-REVIEW"},
+      {"suite_id":"MM-SWE-REVIEW","kind":"REVIEW_AND_CRITIQUE","status":"PLANNED_PREFLIGHT_REQUIRED","public_name":"SWE-Review","successor":null}
+    ]},
+    "MATH_FOUNDRY": {"active_suite_id": "MF-E1-CLEAN-ROUTE-TRUTH", "active_suite_state": "NEXT_REQUIRES_PRIVATE_FREEZE_AFTER_TRANSPORT_CALIBRATION", "suites": [
+      {"suite_id":"MF-DEV-QUALIFICATION","kind":"REGRESSION_AND_EXECUTION_CLOSURE","status":"TERMINAL_DEVELOPMENT_ONLY","public_name":"v3.0.1 internal qualification / known development regressions","promotion_evidence":false,"successor":"MF-E1-CLEAN-ROUTE-TRUTH"},
+      {"suite_id":"MF-E1-CLEAN-ROUTE-TRUTH","kind":"CLEAN_MULTI_DOMAIN_ROUTE_SCHEDULE_MATRIX","status":"ACTIVE_NEXT_AFTER_TRANSPORT","public_name":"E1 clean route/schedule truth","completion_requires":["frozen hidden multi-domain task matrix","BASE/SBS/single-route-VBS/AUTO measured","same-total-budget ORACLE_SCHEDULE measured when admissible","all route work/cost/availability recorded","independent exact verification"],"successor":"MF-G1-CLEAN-PROSPECTIVE"},
+      {"suite_id":"MF-G1-CLEAN-PROSPECTIVE","kind":"ONE_GENERATION_PROSPECTIVE_CAPABILITY","status":"BLOCKED_BY_E1","public_name":"G1 fresh prospective capability gain","successor":"MF-C1-PRODUCT-CLOSURE"},
+      {"suite_id":"MF-C1-PRODUCT-CLOSURE","kind":"VERIFIED_PRODUCT_REUSE_CONTROL","status":"BLOCKED_UNTIL_JUSTIFIED","public_name":"C1 generic verified-product closure","successor":"MF-E3-MECHANISM-CONTROL"},
+      {"suite_id":"MF-E3-MECHANISM-CONTROL","kind":"LEARNED_RANDOM_NOCHANGE_CONTROL","status":"BLOCKED_UNTIL_EXECUTABLE_CANDIDATE","public_name":"E3 learned/random/no-change","successor":"MF-C2-TRANSFER"},
+      {"suite_id":"MF-C2-TRANSFER","kind":"BOUNDED_OPERATOR_TRANSFER","status":"BLOCKED_BY_E3","public_name":"C2 unrelated transfer / CrossingEvent","successor":"MF-E5-MULTIGEN"},
+      {"suite_id":"MF-E5-MULTIGEN","kind":"MULTI_GENERATION_VERIFIED_IMPROVEMENT","status":"FUTURE_AFTER_FINITE_CASCADE","public_name":"E5 multi-generation","successor":"MF-E5B-IMPROVER"},
+      {"suite_id":"MF-E5B-IMPROVER","kind":"IMPROVER_OF_IMPROVER","status":"FUTURE_AFTER_GOAL1","public_name":"E5B improver-of-improver","successor":"MF-E6-INDEPENDENT"},
+      {"suite_id":"MF-E6-INDEPENDENT","kind":"INDEPENDENT_CAPABILITY_ADMISSION","status":"FUTURE","public_name":"E6 independent capability admission","successor":null}
+    ]}
   },
   "terminal_task_statuses": ["PASS","FAIL","NOT_MEASURED_WITH_REASON","QUARANTINED","INVALID","ABSTAINED"],
   "suite_completion_rule": "A suite is terminal only when every frozen task/arm/repeat has exactly one terminal status, all evaluator/checker receipts are present, all costs are closed, and contamination/adjudication holds are resolved. Terminal does not mean successful.",
   "advancement_rule": "Program lanes advance independently. BIL00 may advance a program only after a verified immutable benchmark completion receipt and successor eligibility/preflight. It must never infer completion from elapsed time or task count.",
-  "registry_exhaustion_rule": "If successor=null or successor is ineligible/unavailable, enter BENCHMARK_DISCOVERY_WAIT. No fresh evidence is consumed. The next BIL00 12-hour research pass may propose candidate suites; a new suite enters the registry only after source/version/license/access/contamination/evaluator and private pre-outcome freeze checks."
+  "registry_exhaustion_rule": "If successor=null or successor is ineligible/unavailable, enter BENCHMARK_DISCOVERY_WAIT. No fresh evidence is consumed. BIL00 research may propose candidates, but registry admission requires preflight and private pre-outcome freeze."
 }

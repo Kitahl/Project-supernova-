@@ -1,58 +1,64 @@
-# Project Supernova Scheduled Task Bus Protocol v2.3
+# Project Supernova Scheduled Experiment Bus Protocol v2.4
 
 ## 1. Authority
-This GitHub network is external experiment/referee/research infrastructure only. Math Foundry owns mathematical/runtime truth. Mastermind is PRE_REVIEW_ONLY. No task receipt, vote, research result, GitHub commit, CI result, benchmark score, or director decision creates runtime truth by itself.
+This GitHub network is external experiment/referee/research infrastructure. Math Foundry owns mathematical/runtime truth. Mastermind is PRE_REVIEW_ONLY. GitHub, CI, scheduled tasks, research results, scores, votes, or director decisions never establish mathematical truth by themselves.
 
-## 2. Canonical plan
-`TASK_NETWORK_PLAN_ID=61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0`.
-Runtime identity and network checkpoint are separate. Runtime changes require a separately and independently validated `RUNTIME_UPDATE_RECEIPT`.
+## 2. Canonical plan and dual goals
+`TASK_NETWORK_PLAN_ID=0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa`.
 
-## 3. Persistent sessions and naming
-The 15 existing scheduled tasks are persistent lanes. Do not recreate them to start a new iteration. Their stable names and every-run header/report format are defined in `SESSION_STANDARD.md`. Dynamic iteration, number, goal, model target, phase and execution mode belong in the session header, not in new chat creation.
+Goal 1 is the finite fresh provenance-certified reaction/cascade engine: a pre-registered within-problem cascade must beat ordinary/static/random controls at equal complete resource cost under independent verification.
 
-## 4. Model target
-All lanes target `GPT-5.6 Sol` with `EXTRA_HIGH` reasoning. The available Scheduled Tasks automation surface does not expose a model/reasoning-effort selector, so tasks must not fabricate enforcement. Every run reports `MODEL_BINDING_STATUS`. Model-sensitive fresh benchmark evidence is non-promotable unless the frozen private execution manifest and observed runtime identity satisfy the predeclared model-binding rule.
+Goal 2 is improvement of the improver. It is separate and opens only after Goal 1 passes. Solver `F_t`, retained memory/products `M_t`, and improver `I_t` must be separated. A Level-2 claim requires `I_(t+1)` to outperform `I_t` from the same untouched start, matched complete R&D budget, controlled memory carryover, identical allowed model/tools/environment, and fresh independent evaluation. Better descendants or more memory alone are not improver improvement.
+
+## 3. Persistent sessions and standardized naming
+The 15 scheduled lanes are persistent. Do not create a new lane/chat for each generation. Stable names and the mandatory first-output header are defined by `SESSION_STANDARD.md`. Dynamic phase, target program, iteration, number and exact assigned goal belong in the header and immutable receipt.
+
+## 4. Model binding
+All lanes request `GPT-5.6 Sol` with `EXTRA_HIGH` reasoning. A prompt request is not proof of runtime binding. Every run reports `MODEL_BINDING_STATUS`. Model-sensitive fresh evidence is inadmissible unless the frozen private execution manifest and runtime receipt satisfy the declared binding rule.
 
 ## 5. Public/private split
-`Kitahl/Project-supernova-` is public-safe orchestration/evidence storage. Protected/fresh manifest payloads live only in private `Kitahl/thoma`. Never publish protected benchmark names/item IDs/content, hidden prompts, private manifest payloads, secrets, credentials, raw worker-auth secrets, or confidential artifacts. Public protected references are opaque IDs/hashes only.
+`Kitahl/Project-supernova-` is the public-safe canonical orchestration/evidence bus. `Kitahl/thoma/vault/` contains protected `FROZEN_PRE_OUTCOME` manifests and protected payloads only. Public files may carry opaque IDs/hashes, never protected item names/IDs/content, hidden prompts, private manifest payloads, raw worker secrets or credentials.
 
-## 6. Frozen cohort control
-Every countable cohort has one immutable `control/<cohort>.json` containing plan ID, cohort ID, generation sequence, parent-state Git blob and exact Git blob identities of every control file listed by the plan. Every worker, MM-06, MF-06 and BIL-00 must verify the exact frozen control set. Mixed control revisions make a cohort ineligible.
+## 6. Frozen control
+Every countable cohort has immutable `control/<cohort>.json` bound to the exact historical parent state blob and exact Git blob IDs of all frozen control files. Mixed revisions are ineligible. The control manifest freezes schema, validators, guards, adversarial tests, workflow, dependency lock, task registry and tool-authority policy.
 
-## 7. Worker identity under shared GitHub credentials
-Because workers share one GitHub app identity, each worker has a prompt-private 256-bit secret whose SHA-256 commitment is public in `config/worker_auth.json`. A report carries a cohort-bound HMAC proof:
-`HMAC-SHA256(secret, task_network_plan_id|cohort_id|assignment_git_identity|control_manifest_git_identity|worker_id)`.
-MM-06 independently verifies commitment and HMAC using verifier-side copies. Raw secrets never enter GitHub or research.
+## 7. Worker identity
+Workers share a GitHub app identity, so each worker has a prompt-private 256-bit secret committed only by SHA-256 in `config/worker_auth.json`. Report proof is `HMAC-SHA256(secret, plan|cohort|assignment_blob|control_blob|worker_id)`. MM06 verifies with verifier-side copies. Secrets never enter GitHub.
 
-## 8. Retry-safe state lineage
-BIL-00 fetches the current state blob SHA `S`, creates the next immutable control+assignment bound to `S`, rereads them, then optimistically updates `state/CURRENT.json` with expected SHA `S`. A retry may adopt existing artifacts only when their parent-state SHA is exactly the still-current `S` and all bytes validate; otherwise a new parent-derived cohort ID is required. Orphans are never overwritten.
+## 8. GitHub write classes
+Append-only evidence uses one create-once path per role. Mutable control transitions use one `transition/<generation>-<parent8>-<purpose>` pull request containing the full state transition. Permanent worker forks are forbidden by default; use forks only for genuinely separate security principals.
 
-## 9. Fail closed
-Missing/mismatched plan, control, parent state, assignment, checkpoint, runtime, token, HMAC, private manifest, evidence ownership, evaluator/checker, model-binding requirement, benchmark manifest, schema, or explicit failing CI => WAITING/BLOCKED/SAFE_REPLAY_ONLY and no protected evidence. `CI_NOT_OBSERVED` is not PASS.
+## 9. Repository protection gate
+A clean v2.4 calibration cohort is countable only when the default branch is observed protected and the required admission contexts are configured. Until that is independently observed, all runs remain replay-only and `calibration_countable=false`. No task may infer repository protection from a policy file alone.
 
-## 10. Real schema validation and closed-world envelopes
-GitHub CI and MM-06 must execute the frozen Draft 2020-12 schemas using the pinned validator in `requirements-validation.txt`; custom field checks are additional controls, not substitutes. Countable top-level receipts use `additionalProperties:false`. Deliberately extensible role payloads are isolated in explicit fields and remain subject to recursive public-safety scanning.
+Required contexts are `supernova/static-control`, `supernova/report-admission`, and `supernova/transition-admission`. Missing/empty/queued/pending/neutral/skipped/cancelled/stale/error/failure is not PASS. A receipt cannot self-attest future CI.
 
-## 11. Post-write reread authority
-A worker may attempt a reread, but it cannot independently certify its own later Git event. The worker report does not provide authoritative reread proof. MM-06 must fetch each report after creation and record path/blob/commit plus `verifier_reread_verified=true`; only that later verifier observation counts toward calibration/promotion.
+## 10. Retry-safe state lineage / CAS
+BIL00 binds every next control+assignment to the exact current state blob `S` and expected base head. The transition guard proves `S` is a real historical `state/CURRENT.json`, generation is exactly parent+1, supersession is monotone, runtime-bound identities do not drift without a runtime-update receipt, and active control/assignment bind the same parent. Stale candidates are rejected rather than silently rebased.
 
-## 12. Standard report framework
-All scheduled outputs begin with the `SESSION_STANDARD.md` header. Countable receipts carry standardized session header, executive status, task ledger, issue ledger, test ledger, plan alignment, provenance, cost ledger, research queue/findings, and next action. Negative/zero/unknown results remain first-class.
+## 11. Schema and environment
+Draft 2020-12 schemas are executed by the hash-locked Python validation environment. Top-level countable envelopes are closed-world. Role-specific extension data exists only in explicit `role_payload`. Public-safety scanning is additional to schema validation.
 
-## 13. Two-cohort short transport calibration
-No fresh/protected benchmark work until two consecutive non-superseded replay-only cohorts complete: frozen control+assignment read → exact token/HMAC match → 12 immutable worker reports → MM-06 schema/auth/reread verification → MF-06 integration → BIL-00 decision → retry-safe next state publication. The calibration workload should be short/minimal and is not scientific benchmark evidence. Failure resets the streak.
+## 12. Independent reread and report admission
+A worker may operationally reread its own write, but that is never independent evidence. MM06 must later fetch every report and bind expected path, current blob, unique creation commit, blob-at-creation, unchanged history, schema, HMAC/auth, public safety, assignment/control/runtime/lineage, costs and model-binding honesty. Safe/quarantined/missing partitions are unique and exhaustive.
 
-## 14. Fresh/protected evidence
-`FRESH_ENABLED` is transport eligibility only. Fresh work additionally requires explicit assignment ownership and a private `FROZEN_PRE_OUTCOME` manifest binding plan/control/cohort/checkpoint/runtime, task/evaluator/checker, actual model/tools/environment, total budget, randomization/repeats, cache/context/retention, accounting, contamination exclusions and disjoint ownership. Single-route VBS is not a universal ceiling when multi-route schedules are admissible.
+## 13. Two-cohort calibration
+The clean-counting v2.4 streak begins only after repository-protection admission is independently observed. A countable cohort requires 12 replay-only zero-protected-cost reports -> MM06 verification -> exact-commit external CI -> MF06 integration -> BIL00 decision/state transition. Any required failure resets the streak. Two consecutive clean non-superseded cohorts are required before transport may become `FRESH_ENABLED`.
+
+## 14. Fresh/protected work
+`FRESH_ENABLED` is transport eligibility, not scientific authorization. Fresh work additionally requires explicit ownership and a private `FROZEN_PRE_OUTCOME` manifest binding plan/control/cohort/checkpoint/runtime, task/evaluator/checker, observed model/tools/environment, complete budget, repeats/randomization, cache/context/retention, accounting, contamination exclusions and disjoint ownership.
 
 ## 15. Benchmark succession
-Canonical benchmark state is in `benchmark/registry.json`. Mastermind and Math Foundry advance independently. A suite is terminal only when every frozen task/arm/repeat has a terminal status, costs and evaluator/checker receipts are closed, and contamination/adjudication holds are resolved. Terminal does not mean success. BIL-00 advances only after an immutable verified benchmark-completion receipt and successor preflight/private freeze. If no eligible successor exists, enter `BENCHMARK_DISCOVERY_WAIT`; BIL-00's next 12-hour research pass may propose candidates, but no fresh evidence is consumed until a new suite is frozen.
+`benchmark/registry.json` is canonical benchmark orchestration state. Mastermind and Math Foundry advance independently. A suite is terminal only after every frozen unit has exactly one terminal disposition, evaluator/checker/cost receipts are closed, and contamination/adjudication holds are resolved. Terminal does not mean success. BIL00 advances only from a verified immutable completion receipt plus successor preflight and private pre-outcome freeze. If no eligible successor exists, enter `BENCHMARK_DISCOVERY_WAIT` without consuming fresh evidence.
 
-## 16. Verification/integration/director
-MM-06 verifies control/assignment lineage, worker HMACs, Draft-2020-12 schema conformance, public safety, independent Git rereads, evidence ownership, model-binding status, costs/confounds and authority boundaries. MF-06 consumes only MM-06 safe refs and reconciles by evidence tier, not vote. BIL-00 alone advances network state and benchmark cursors. Runtime handoffs remain `READY_FOR_EXTERNAL_IMPLEMENTATION` until actual validated code artifacts exist.
+## 16. Verification / integration / director
+MM06 verifies. MF06 consumes only MM06 safe refs plus successful external report-admission status and reconciles by evidence tier, not vote. BIL00 alone stages mutable network transitions and benchmark cursor updates, and cannot bypass CI/lineage/ruleset gates. Runtime changes require independently validated `RUNTIME_UPDATE_RECEIPT`.
 
-## 17. Deep research
-BIL-00 is the only scheduled deep-research executor, exactly at 00:58 and 12:58 America/Vancouver. Inputs are only questions surviving MM-06 and MF-06 plus unresolved previously accepted research. Raw worker questions are never direct research inputs. Research is create-once/idempotent, public-safe, cannot promote runtime state and cannot consume sealed holdouts.
+## 17. Research
+BIL00 is the only scheduled deep-research executor, exactly at 00:58 and 12:58 America/Vancouver. Inputs are MM06-safe + MF06-integrated questions and unresolved accepted research only. Worker research is prohibited. Research is create-once, public-safe and non-promotional.
 
-## 18. Scientific roadmap
-T0 transport → E1 route/schedule truth → one-generation fresh G1 before amplification → C1 → E3 → C2/transfer → executable reaction-affordance/selector/ignition after causal evidence → E5 → E5B → E6. Correctness and clean evidence dominate score.
+## 18. Scientific sequence
+T0 trustworthy v2.4 transport -> E1 stable problem/arm/action/schedule/cost truth -> G1 fresh one-generation gain -> C1 VerifiedProduct/ProductUseCertificate -> runtime ReactionRecord -> DR03 causal reaction semantics -> E3 executable learned/random/no-change proposals -> collision selector -> ignition/value-of-computation -> finite Goal-1 Supernova benchmark -> only then Goal-2 improver-of-improver programme.
+
+## 19. Fail closed
+Unknown, partial, unobserved, timed-out, unexplained or contradictory evidence is not PASS for an admission gate. Correctness and clean evidence dominate score.

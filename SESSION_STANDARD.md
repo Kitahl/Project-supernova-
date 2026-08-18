@@ -1,12 +1,12 @@
-# Project Supernova Session / Report Standard v1
+# Project Supernova Session / Report Standard v2
 
-Every scheduled-task response must begin with the following header before any prose:
+Every scheduled-task response begins with this header before any prose:
 
 ```text
 === PROJECT SUPERNOVA SESSION ===
 SESSION_NAME: <stable standardized task title>
 TARGET_PROGRAM: MATH_FOUNDRY | MASTERMIND | JOINT
-PHASE: <T0|E1|G1|C1|E3|C2|E5|E5B|E6|RESEARCH>
+PHASE: <T0|E1|G1|C1|REACTION|DR03|E3|SELECT|IGNITION|CASCADE|E5B|E6|RESEARCH>
 ITERATION_ID: <active cohort/suite/research id>
 ITERATION_NUMBER: <generation_seq or research sequence>
 ROLE_ID: <MF01...BIL00>
@@ -20,9 +20,7 @@ EXECUTION_MODE: SAFE_REPLAY_ONLY | FRESH_EXECUTION | WAITING | RESEARCH
 === END SESSION HEADER ===
 ```
 
-The associated task/chat is persistent. Do not create a new scheduled task/chat for a new generation. The stable task title identifies the persistent lane; dynamic iteration information belongs in the session header and GitHub receipt.
-
-## Stable task/chat names
+The associated task/chat is persistent. Stable session titles are:
 
 - `PS-MF-W01 | Representation Lab`
 - `PS-MF-W02 | E1 Solver Routing`
@@ -40,35 +38,8 @@ The associated task/chat is persistent. Do not create a new scheduled task/chat 
 - `PS-JOINT-I01 | Evidence Integrator`
 - `PS-JOINT-D01 | Director + 12h Research`
 
-## Standard report sections
+Every countable receipt uses the same logical framework: `session_header`, `executive_status`, `task_ledger`, `issue_ledger`, `test_ledger`, `plan_alignment`, `evidence_and_provenance`, `cost_ledger`, `research_questions` or `research_findings`, and `next_action`. Negative/zero/unknown evidence is preserved.
 
-Every countable worker/verifier/integrator/director/research receipt has these logical sections:
+Model target is requested, not presumed. `VERIFIED` is legal only when both model and reasoning identity are runtime-observed. Model-sensitive fresh evidence is non-promotable without the frozen binding receipt.
 
-1. `session_header`
-2. `executive_status`
-3. `task_ledger`
-4. `issue_ledger`
-5. `test_ledger`
-6. `plan_alignment`
-7. `evidence_and_provenance`
-8. `cost_ledger`
-9. `research_questions` or `research_findings`
-10. `next_action`
-
-### Task ledger
-Each item has `task_id`, `status`, `description`, `evidence_refs`, and `next_action`.
-
-### Issue ledger
-Each item has `issue_id`, severity `CRITICAL|HIGH|MEDIUM|LOW`, status `OPEN|BLOCKED|FIXED|NOT_MEASURED|QUARANTINED`, summary, evidence refs, owner, and fix/next action.
-
-### Test ledger
-Each item has `test_id`, kind, status `PASS|FAIL|BLOCKED|NOT_MEASURED`, description, evidence refs, and result.
-
-### Plan alignment
-Each item binds an exact plan obligation/stage to `ALIGNED|PARTIAL|BLOCKED|NOT_APPLICABLE` plus evidence and notes.
-
-## Model binding
-Scientific target is `GPT-5.6 Sol` with `EXTRA_HIGH` reasoning. The Scheduled Tasks API used by this orchestration does not expose a model/reasoning-effort selector or reliable runtime effort receipt. Therefore tasks must request that target but must not fabricate verification. `MODEL_BINDING_STATUS` is `VERIFIED` only when the runtime exposes both model and effort identity. `PARTIAL_UNVERIFIED` means model identity is known but effort is not. Model-sensitive fresh benchmark evidence is non-promotable unless the frozen private execution manifest and runtime receipt satisfy the predeclared model-binding rule.
-
-## Reread authority
-A worker may say it attempted a reread, but a worker cannot independently certify its own post-write event. Only MM-06's later independent Git fetch/blob observation counts as `verifier_reread_verified=true` for calibration/promotion.
+A worker self-reread is never independent. MM06 later owns authoritative report-path/blob/creation-commit/history reread evidence.

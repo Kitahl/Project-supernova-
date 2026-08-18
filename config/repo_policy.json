@@ -1,0 +1,14 @@
+{
+  "schema_version": "PS-REPO-POLICY-1",
+  "default_branch": "main",
+  "required_protected": true,
+  "required_pull_request_for_mutable_control": true,
+  "forbid_force_push": true,
+  "forbid_branch_deletion": true,
+  "required_status_contexts": ["supernova/static-control", "supernova/report-admission", "supernova/transition-admission"],
+  "status_source_rule": "Required checks must be bound to the repository GitHub Actions App/source by branch ruleset. Textual context alone is insufficient.",
+  "transition_concurrency_group": "supernova-transition-main",
+  "worker_forks_default": "FORBIDDEN_UNLESS_DISTINCT_SECURITY_PRINCIPAL",
+  "machine_observation_status": "UNVERIFIED_UNTIL_GITHUB_BRANCH_METADATA_REPORTS_PROTECTED_TRUE",
+  "fresh_gate": "BLOCK"
+}
