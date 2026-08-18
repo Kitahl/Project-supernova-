@@ -1,5 +1,5 @@
 {
-  "overlay_version": "2.4.1",
+  "overlay_version": "2.4.2",
   "overlay_id": "78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
   "base_task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
   "mastermind_audit_envelope_id": "04fb7609f0384be488fd49278c23ec8b4cf5829b85300dbe1e5e5500d1badfe2",
@@ -9,14 +9,7 @@
   "private_vault_repo": "Kitahl/thoma",
   "trunk_branch": "main",
   "control_release_branch": "ps/v2.4-control-release",
-  "branch_patterns": {
-    "generation": "ps/gen/{cohort}",
-    "worker": "ps/work/{cohort}/{worker}",
-    "verifier": "ps/verify/{cohort}",
-    "integrator": "ps/integrate/{cohort}",
-    "consolidation": "ps/consolidate/{cohort}",
-    "research": "ps/research/{research_id}"
-  },
+  "branch_patterns": {"generation":"ps/gen/{cohort}","worker":"ps/work/{cohort}/{worker}","verifier":"ps/verify/{cohort}","integrator":"ps/integrate/{cohort}","consolidation":"ps/consolidate/{cohort}","research":"ps/research/{research_id}"},
   "workers": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],
   "verifier": "MM06",
   "integrator": "MF06",
@@ -24,6 +17,9 @@
   "generation_immutable_after_freeze": true,
   "workers_write_only_own_branch": true,
   "worker_reports_authoritative_only_after_mm06_reread": true,
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_payload": "Canonical UTF-8 JSON of complete report with worker_auth_proof key omitted; sorted keys; separators comma/colon; ensure_ascii=false.",
+  "strict_session_equality": true,
   "consolidation_strategy": "COPY_SAFE_REFS_TO_ONE_CONSOLIDATION_BRANCH_THEN_SINGLE_PR",
   "merge_guard": "EXPECTED_HEAD_SHA_PLUS_STATE_LINEAGE",
   "two_clean_replay_cohorts_before_fresh": true,
@@ -34,20 +30,10 @@
   "deep_research_times_vancouver": ["00:58","12:58"],
   "benchmark_registry": "benchmark/registry.json",
   "benchmark_succession_requires_verified_completion": true,
-  "validation_layers": {
-    "trunk": "scripts/validate_bus.py",
-    "branch_overlay": "scripts/validate_branch_bus.py"
-  },
-  "overlay_control_files": [
-    "BRANCH_PROTOCOL.md",
-    "branch/CONFIG.json",
-    "schemas/branch_generation.schema.json",
-    "schemas/branch_consolidation.schema.json",
-    "scripts/validate_branch_bus.py",
-    ".github/workflows/validate-branch-bus.yml"
-  ],
+  "validation_layers": {"trunk":"scripts/validate_bus.py","branch_overlay":"scripts/validate_branch_bus.py"},
+  "overlay_control_files": ["BRANCH_PROTOCOL.md","branch/CONFIG.json","schemas/branch_generation.schema.json","schemas/branch_consolidation.schema.json","scripts/validate_branch_bus.py",".github/workflows/validate-branch-bus.yml"],
   "base_control_file_count": 21,
   "overlay_control_file_count": 6,
   "branch_control_file_count": 27,
-  "validator_scope_rule": "Trunk validator validates trunk; branch validator validates immutable generation/worker/verifier/integrator/consolidation refs. A branch control manifest is the exact union of the 21-file base set and 6-file overlay set."
+  "validator_scope_rule": "Trunk validator validates trunk. Branch validator validates the exact 21+6 frozen union, strict session equality and negative mutations on generation/worker/verifier/integrator/consolidation refs."
 }
