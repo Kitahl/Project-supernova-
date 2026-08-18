@@ -1,0 +1,195 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-007-2672995c",
+    "iteration_number": 7,
+    "role_id": "MF04",
+    "goal": "Attack the clean closed control schema, exact 21+6 union, immutable generation, HMAC, session identity and branch lineage.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-007-2672995c",
+  "worker_id": "MF04",
+  "report_id": "RPT-CAL-BR-007-2672995c-MF04",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-2672995c",
+  "assignment_git_identity": "1c373303e360bc8f47c774619cef5f2de6fa01eb",
+  "generation_seq": 7,
+  "parent_state_git_identity": "2672995c4ee9209bae72dbaedc72799d1ff78528",
+  "control_manifest_id": "CTRL-CAL-BR-007-2672995c-V23-BR241",
+  "control_manifest_git_identity": "27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "9551b9994503083ba4ebd7315702a214",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "5f0152860ff7459416f6e1c379e5d28d9b40edf631f1d3e547cf43597012c8ba",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_REPLAY_CONTROL_PLANE",
+  "executive_status": "Pre-write branch state was stable on ps/v2.4-control-release: generation 7 cohort CAL-BR-007-2672995c, exact immutable generation head ef23332548400d1b798d53c39ff7f8c3ebf14076, exact control and assignment blobs, and the MF04 worker branch still rooted at the generation head. All 27 files in the exact 21-base + 6-overlay control union matched their frozen Git blob identities. The MF04 public commitment matched the prompt-private capability and the cohort-bound HMAC was computed without publishing or persisting the secret. One deterministic negative mutation found a strict-session validation gap: changing only session_header.phase to a wrong string preserves report-schema validity, does not change the HMAC message, and is not compared against assignment.phase by the frozen branch validator. The actual report uses the exact assigned phase. This is a transport-validator defect, not a mathematical, benchmark, runtime, or promotion result.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF04-T0-PREFLIGHT",
+      "status": "COMPLETE",
+      "description": "Verify branch-control state, cohort, immutable generation ref, exact control/assignment blobs, MF04 branch origin, all frozen control blobs, parent-state lineage object, and worker-auth prerequisites.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@df60b078f0a14058d94696ea1b3e24c985f8d8e6",
+        "generation:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "control/CAL-BR-007-2672995c.json@27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+        "assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "parent_state:2672995c4ee9209bae72dbaedc72799d1ff78528"
+      ],
+      "next_action": "Proceed only on the assigned MF04 worker branch with zero fresh/protected/benchmark/deep-research work."
+    },
+    {
+      "task_id": "MF04-T0-FALSIFIER",
+      "status": "COMPLETE",
+      "description": "Run one deterministic strict-session negative mutation against report schema, HMAC binding, and frozen branch-validator assignment equality logic.",
+      "evidence_refs": [
+        "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+        "scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3",
+        "assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "next_action": "Require MM06 to enforce exact session_header.phase equality and retain a negative phase-mutation probe before counting the cohort clean."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MF04-CALBR007-PHASE-BINDING-GAP",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The frozen report schema accepts any string for session_header.phase, the worker HMAC message does not include report phase, and validate_branch_bus.py never compares report session_header.phase with assignment.phase. A wrong-phase otherwise-valid worker report can therefore satisfy the frozen branch-validator phase-related checks and remain auth-valid.",
+      "evidence_refs": [
+        "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+        "scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3",
+        "assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "state/BRANCH_STATE.json@df60b078f0a14058d94696ea1b3e24c985f8d8e6"
+      ],
+      "owner": "BIL00/MM06",
+      "fix_or_next": "Add an explicit branch-validator equality check session_header.phase == assignment.phase and keep a schema-valid wrong-phase negative mutation in MM06 verification. Do not rely on the HMAC as content authentication because its frozen message binds plan/cohort/control/assignment/worker, not report fields."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MF04-T0-GEN-HEAD",
+      "kind": "immutable-generation-preflight",
+      "status": "PASS",
+      "description": "Compare the generation and MF04 worker refs with the recorded generation SHA immediately before report creation.",
+      "evidence_refs": [
+        "generation:ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "The generation ref and MF04 worker ref were both identical to the recorded generation SHA before the write."
+    },
+    {
+      "test_id": "MF04-T0-FROZEN-BLOBS",
+      "kind": "frozen-control-blob-verification",
+      "status": "PASS",
+      "description": "Verify every path in the exact base-21 plus overlay-6 control manifest at the immutable generation SHA.",
+      "evidence_refs": [
+        "control/CAL-BR-007-2672995c.json@27facdd14dfe7f1b41d9e8bafdec3f669aa484d4"
+      ],
+      "result": "27 of 27 manifest-listed frozen file blob identities matched the exact generation."
+    },
+    {
+      "test_id": "MF04-T0-AUTH",
+      "kind": "worker-auth-construction",
+      "status": "PASS",
+      "description": "Check the prompt-private MF04 capability against the public SHA-256 commitment and compute the frozen cohort HMAC without publishing or persisting the raw secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Public commitment matched; the required HMAC proof was computed. Independent verification remains MM06 authority."
+    },
+    {
+      "test_id": "MF04-T0-FALSIFIER-01",
+      "kind": "deterministic-session-phase-negative-mutation",
+      "status": "FAIL",
+      "description": "Change only session_header.phase from the assigned phase to a different string and test whether frozen schema/HMAC/branch-validator logic necessarily rejects it.",
+      "evidence_refs": [
+        "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+        "scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Counterexample found: report.schema.json constrains phase only as a string; the HMAC message omits phase, so the proof is unchanged; validate_branch_bus.py checks session name/iteration ID/role plus target/goal but omits assignment.phase equality. A wrong-phase mutation is therefore not fail-closed at this validator layer."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+      "status": "PARTIAL",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@df60b078f0a14058d94696ea1b3e24c985f8d8e6",
+        "generation:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3"
+      ],
+      "notes": "Branch isolation, immutable generation, exact 27-file freeze, lineage-object existence, and worker authentication preflight passed; strict phase equality is not enforced by the frozen branch validator and requires MM06/BIL00 correction."
+    },
+    {
+      "obligation_id": "NO_FRESH_PROTECTED_BENCHMARK_OR_DEEP_RESEARCH",
+      "status": "ALIGNED",
+      "evidence_refs": [],
+      "notes": "Fresh evidence, protected-manifest reads, benchmark executions, and deep-research runs remained zero."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "BRANCH_STATE:df60b078f0a14058d94696ea1b3e24c985f8d8e6",
+      "GENERATION:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+      "CONTROL:27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+      "ASSIGNMENT:1c373303e360bc8f47c774619cef5f2de6fa01eb",
+      "PARENT_STATE:2672995c4ee9209bae72dbaedc72799d1ff78528",
+      "REPORT_SCHEMA:8f20f43e862201477c401db3334d2afc06cbeae6",
+      "BRANCH_VALIDATOR:de6a4b37b5c54c1fed2b36741cb22ea265d3bde3",
+      "AUTH_CONFIG:e8db1782ebf8e18112864d9c710502a18a35721b"
+    ],
+    "artifact_refs": [
+      "ps/v2.4-control-release:state/BRANCH_STATE.json",
+      "ps/gen/CAL-BR-007-2672995c",
+      "ps/work/CAL-BR-007-2672995c/MF04",
+      "control/CAL-BR-007-2672995c.json",
+      "assignments/CAL-BR-007-2672995c.json",
+      "schemas/report.schema.json",
+      "scripts/validate_branch_bus.py",
+      "config/worker_auth.json"
+    ],
+    "notes": "Public-safe replay-only control-plane evidence. The parent-state blob resolved to the prior generation-6 branch-state object. No mutable-main judgment was used for in-flight control."
+  },
+  "claim_scope": "Transport/control-plane calibration only. No mathematical capability, benchmark performance, scientific evidence, runtime change, or promotion claim.",
+  "runtime_implementation_implication": "None for Math Foundry runtime. The branch-validator strict-phase equality gap must be corrected or independently rejected by MM06 before this cohort can be treated as clean calibration evidence.",
+  "negative_zero_outcomes": [
+    {
+      "type": "ZERO_FRESH_COST",
+      "detail": "Fresh evidence, protected-manifest reads, benchmark executions, and deep-research runs were all zero."
+    },
+    {
+      "type": "NO_RUNTIME_PROMOTION",
+      "detail": "This report does not alter or certify Math Foundry runtime truth."
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "One cheap deterministic control-plane negative mutation only; no broad research."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently fetch this exact worker branch/report, verify branch head/report blob/HMAC/Draft-2020-12 schema/public safety, run a wrong-phase negative mutation, and quarantine the report or cohort if strict session equality is not enforced."
+}
