@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Project Supernova Director Receipt",
+  "type":"object",
+  "required":["task_network_plan_id","cohort_id","director_id","integration_git_identity","network_checkpoint_before","network_checkpoint_after","runtime_state_id","network_mode_before","network_mode_after","calibration_streak_before","calibration_streak_after","current_runtime_blocker","decision","next_assignment_path","research_pointer"],
+  "properties":{
+    "task_network_plan_id":{"type":"string"},"cohort_id":{"type":"string"},"director_id":{"type":"string"},"integration_git_identity":{"type":"string"},
+    "network_checkpoint_before":{"type":"string"},"network_checkpoint_after":{"type":"string"},"runtime_state_id":{"type":"string"},
+    "network_mode_before":{"type":"string"},"network_mode_after":{"type":"string"},"calibration_streak_before":{"type":"integer"},"calibration_streak_after":{"type":"integer"},
+    "current_runtime_blocker":{"type":"string"},"decision":{"type":"string"},"next_assignment_path":{"type":"string"},"research_pointer":{"type":["string","null"]},"runtime_handoff_status":{"type":"string"},"negative_findings":{"type":"array"}
+  }
+}
