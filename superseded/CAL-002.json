@@ -1,0 +1,11 @@
+{
+  "cohort_id": "CAL-002",
+  "status": "SUPERSEDED_BEFORE_EXECUTION",
+  "old_task_network_plan_id": "90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682",
+  "superseded_by_task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "reason": "Mastermind/Foundry design audit exposed shared-GitHub-identity receipt spoofing and state retry/orphan risks. CAL-002 had no worker receipt yet, so it was superseded before execution and replaced by a worker-authenticated, parent-state-lineage cohort.",
+  "calibration_countable": false,
+  "scientific_promotion_eligible": false,
+  "known_report_refs": [],
+  "fresh_or_protected_evidence_consumed": false
+}
