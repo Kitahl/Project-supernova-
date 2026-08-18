@@ -1,17 +1,17 @@
 {
-  "protocol_version": "2.2",
-  "task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "protocol_version": "2.3",
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
   "authority_model": "External scheduled experiment/referee/research network only; Math Foundry owns mathematical/runtime truth; Mastermind is PRE_REVIEW_ONLY.",
-  "current_stage": "CANONICAL_GITHUB_TRANSPORT_CALIBRATION",
+  "current_stage": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
   "runtime_priority": [
-    "T0 canonical GitHub transport/control-plane calibration with two consecutive clean replay-only cohorts",
-    "E1 route/schedule truth including BASE, SBS, single-route VBS, AUTO, and best admissible same-total-budget ORACLE_SCHEDULE/portfolio",
+    "T0 two consecutive clean short authenticated GitHub control/fan-in cohorts",
+    "E1 executable route/schedule truth: BASE, SBS, single-route VBS, AUTO, and best admissible same-total-budget ORACLE_SCHEDULE/portfolio",
     "G1 one-generation fresh prospective capability gain on an objectively selected gap, before amplification",
     "C1 generic verified-product closure/reuse when E1/early-E2 evidence justifies it",
-    "E3 executable bounded mechanism control: LEARNED_PROPOSAL vs RANDOM_ADMISSIBLE vs NO_CHANGE_EQUAL_COMPUTE",
+    "E3 executable LEARNED_PROPOSAL vs RANDOM_ADMISSIBLE vs NO_CHANGE_EQUAL_COMPUTE",
     "C2 bounded operator invention and unrelated-transfer CrossingEvent tests",
-    "canonical ReactionRecord/VerifiedProduct reaction-affordance graph only after actual executable runtime support",
-    "selector/ignition controller only after causal transition evidence and equal-compute controls",
+    "actual executable ReactionRecord/VerifiedProduct reaction-affordance graph after causal evidence",
+    "selector/ignition controller only after equal-compute causal transition evidence",
     "E5 multi-generation verified improvement",
     "E5B improver-of-improver with solver F_t, memory M_t, improver I_t separated and 2x2 carryover controls",
     "E6 independent capability admission and broader typed-contract generalization"
@@ -21,6 +21,14 @@
   "verifier": "MM06",
   "integrator": "MF06",
   "director": "BIL00",
+  "persistent_task_sessions": true,
+  "standardized_session_naming": "SESSION_STANDARD.md",
+  "model_execution_target": {
+    "model": "GPT-5.6 Sol",
+    "reasoning_effort": "EXTRA_HIGH",
+    "automation_api_can_enforce": false,
+    "rule": "Every task requests this target and reports VERIFIED|PARTIAL_UNVERIFIED|UNVERIFIED|MISMATCH. Model-sensitive fresh promotion evidence is inadmissible unless the predeclared execution manifest and runtime receipt meet the binding rule."
+  },
   "deep_research": {
     "owner": "BIL00",
     "times_vancouver": ["00:58", "12:58"],
@@ -36,13 +44,53 @@
     "two_clean_calibration_cohorts_required": true,
     "immutable_receipts": true,
     "state_pointer_mutable_with_optimistic_sha": true,
-    "cohort_control_manifest_required": true,
     "parent_state_lineage_required": true,
-    "retry_orphan_rule": "next cohort ID is derived from generation sequence plus parent-state SHA prefix; retry may adopt existing artifacts only if their parent_state_git_identity exactly equals the still-current state SHA and all contents reread/validate; otherwise use the new parent-derived ID and never overwrite the orphan",
-    "worker_auth": "PS-HMAC-SHA256-WORKER-PROOF-1 using per-worker 256-bit prompt-private secrets and public SHA256 commitments; MM06 independently verifies HMAC proof. This mitigates sibling-worker spoofing but does not create independent GitHub credentials or protect against a compromised verifier.",
-    "control_manifest_freezes": ["PROTOCOL.md", "WORKER_PROTOCOL.md", "plan/PLAN.json", "config/roles.json", "config/worker_auth.json", "schemas/control.schema.json", "schemas/state.schema.json", "schemas/assignment.schema.json", "schemas/report.schema.json", "schemas/verification.schema.json", "schemas/integration.schema.json", "schemas/director.schema.json", "schemas/research.schema.json", "scripts/validate_bus.py", ".github/workflows/validate-bus.yml"],
+    "worker_auth": "PS-HMAC-SHA256-WORKER-PROOF-1",
+    "verifier_owned_postwrite_reread_attestation": true,
+    "draft202012_schema_execution_required": true,
+    "top_level_closed_world_json_required": true,
+    "retry_orphan_rule": "next cohort ID derives from generation sequence plus parent-state SHA prefix; retries adopt only exact same-parent artifacts, otherwise stale orphans are never overwritten/adopted",
+    "control_manifest_freezes": [
+      "PROTOCOL.md",
+      "WORKER_PROTOCOL.md",
+      "SESSION_STANDARD.md",
+      "plan/PLAN.json",
+      "config/roles.json",
+      "config/worker_auth.json",
+      "benchmark/registry.json",
+      "requirements-validation.txt",
+      "schemas/control.schema.json",
+      "schemas/state.schema.json",
+      "schemas/assignment.schema.json",
+      "schemas/report.schema.json",
+      "schemas/verification.schema.json",
+      "schemas/integration.schema.json",
+      "schemas/director.schema.json",
+      "schemas/research.schema.json",
+      "schemas/benchmark_registry.schema.json",
+      "schemas/benchmark_completion.schema.json",
+      "scripts/validate_bus.py",
+      ".github/workflows/validate-bus.yml"
+    ],
     "mixed_control_revision_cohort_ineligible": true,
     "superseded_cohort_never_increments_calibration": true
+  },
+  "standard_report_framework": {
+    "required_sections": ["session_header", "executive_status", "task_ledger", "issue_ledger", "test_ledger", "plan_alignment", "evidence_and_provenance", "cost_ledger", "research_questions_or_findings", "next_action"],
+    "worker_origin_reread_is_non_authoritative": true,
+    "MM06_reread_is_authoritative_for_transport": true
+  },
+  "benchmark_succession": {
+    "registry": "benchmark/registry.json",
+    "completion_schema": "schemas/benchmark_completion.schema.json",
+    "program_lanes_advance_independently": true,
+    "completion_requires_all_frozen_units_terminal": true,
+    "terminal_is_not_success": true,
+    "successor_requires_preflight_and_private_preoutcome_freeze": true,
+    "registry_exhaustion_enters": "BENCHMARK_DISCOVERY_WAIT",
+    "discovery_owner": "BIL00_12H_RESEARCH",
+    "first_foundry_successor": "MF-E1-CLEAN-ROUTE-TRUTH",
+    "mastermind_current_suite": "MM-ORACLE-PHASE1-REACT"
   },
   "public_safety": {
     "hidden_benchmark_content_forbidden": true,
@@ -55,7 +103,7 @@
   "fresh_evidence_rule": {
     "requires_transport_fresh_enabled": true,
     "requires_private_frozen_pre_outcome_manifest": true,
-    "requires_exact_evaluator_model_tools_budget_randomization_cache_retention_accounting_contamination_contract": true,
+    "requires_exact_evaluator_checker_model_tools_environment_budget_randomization_cache_context_retention_accounting_contamination_contract": true,
     "requires_disjoint_ownership": true,
     "single_route_vbs_not_universal_schedule_ceiling": true,
     "sealed_holdouts_remain_opaque": true
@@ -67,7 +115,14 @@
     "all_proposal_feature_selection_execution_verification_costs_inside_matched_budget": true,
     "runtime_state_separate_from_network_checkpoint": true,
     "same_suite_before_after_is_diagnostic_only": true,
-    "worker_identity_proof_required": true
+    "worker_identity_proof_required": true,
+    "benchmark_completion_receipt_required_before_successor": true
+  },
+  "short_full_test": {
+    "type": "REPLAY_ONLY_END_TO_END",
+    "goal": "Prove worker GitHub read/auth/write -> MM06 schema/auth/reread verification -> MF06 integration -> BIL00 decision/state advance using existing task sessions, no benchmark/protected evidence.",
+    "worker_payload_rule": "minimal deterministic transport/report test; no broad public-source research required",
+    "countable_if_clean": true
   },
   "runtime_update_rule": "No runtime-state change without independently validated RUNTIME_UPDATE_RECEIPT containing artifact hashes, validator results, lineage/accounting identity, before/after diagnostics, required fresh prospective evidence, and preservation/regression checks."
 }
