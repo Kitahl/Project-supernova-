@@ -1,0 +1,41 @@
+name: Supernova Actions Heartbeat
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish non-authoritative Actions heartbeat
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          repo = os.environ['GITHUB_REPOSITORY']
+          sha = os.environ['TARGET_SHA']
+          req = urllib.request.Request(
+              f'https://api.github.com/repos/{repo}/statuses/{sha}',
+              data=json.dumps({
+                  'state': 'success',
+                  'context': 'supernova/actions-heartbeat',
+                  'description': 'Diagnostic only; never promotion authority',
+              }).encode(),
+              method='POST',
+          )
+          req.add_header('Authorization', f"Bearer {os.environ['GITHUB_TOKEN']}")
+          req.add_header('Accept', 'application/vnd.github+json')
+          req.add_header('X-GitHub-Api-Version', '2022-11-28')
+          with urllib.request.urlopen(req) as response:
+              print(response.status)
+          PY
