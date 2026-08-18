@@ -7,6 +7,12 @@ on:
     paths:
       - releases/v2.4/.staging-bundle.tar.gz
       - .github/workflows/supernova-v2.4-expand.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - releases/v2.4/.staging-bundle.tar.gz
+      - .github/workflows/supernova-v2.4-expand.yml
 
 permissions:
   contents: write
@@ -23,7 +29,7 @@ jobs:
       - name: Checkout exact staging commit
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Verify and expand staged source bundle
