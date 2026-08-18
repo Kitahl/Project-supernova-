@@ -1,0 +1,187 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-005-51f9a310",
+    "iteration_number": 5,
+    "role_id": "MF04",
+    "goal": "Attack branch/control/HMAC/lineage logic with one cheap deterministic falsifier.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-005-51f9a310",
+  "worker_id": "MF04",
+  "report_id": "RPT-CAL-BR-005-51f9a310-MF04",
+  "assignment_id": "PS-BRANCH-CAL-BR-005-51f9a310",
+  "assignment_git_identity": "62bbc215254da0803cfaf8a8f842c90105750a3b",
+  "generation_seq": 5,
+  "parent_state_git_identity": "7fff4d309e587667703d78f2e9635f8cba4f062a",
+  "control_manifest_id": "CTRL-CAL-BR-005-51f9a310-V23-BR24",
+  "control_manifest_git_identity": "a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "50a3ce6dc09ab13c365933b48690c1fc",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "ea1b4b9d8e605fafd20a69507fd0c2f790ff58faef6aa57ca04ebb18e382ff37",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_REPLAY_CONTROL_PLANE",
+  "executive_status": "Pre-write branch state remained stable: generation 5 cohort CAL-BR-005-51f9a310, exact generation head 5b2550a33d46cab59643ea1169f766ac5b96dcb9, exact control and assignment blobs, and MF04 worker branch starting at the same generation head. All 25 files named by the current control manifest matched their frozen Git blob identities. The MF04 auth commitment matched and the cohort-bound HMAC was computed. One deterministic immutable-control falsifier found a validator/control-set skew: the frozen scripts/validate_bus.py hardcodes a 21-file CONTROL set while the current v2.4 control manifest freezes 25 files, adding BRANCH_PROTOCOL.md, branch/CONFIG.json, schemas/branch_generation.schema.json, and schemas/branch_consolidation.schema.json. Therefore the frozen v2.3 validator cannot by itself validate the v2.4 frozen control envelope; this is a transport/control-plane defect, not a scientific or runtime result.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF04-T0-PREFLIGHT",
+      "status": "COMPLETE",
+      "description": "Verify v2.4 branch state, cohort, generation ref, control/assignment bindings, MF04 branch origin, frozen control blobs, and worker authentication prerequisites.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+        "generation:5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "next_action": "Proceed only on the assigned MF04 worker branch; no fresh/protected/benchmark work."
+    },
+    {
+      "task_id": "MF04-T0-FALSIFIER",
+      "status": "COMPLETE",
+      "description": "Run one deterministic set-equality falsifier against the immutable control envelope: compare the current control manifest file-key set with the frozen validator CONTROL set.",
+      "evidence_refs": [
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262"
+      ],
+      "next_action": "Require independent MM06 adjudication; do not count this cohort clean until the validator/control-set skew is resolved or a frozen v2.4-equivalent validator is bound."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MF04-CALBR005-IMMUTABLE-CONTROL-SKEW",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The current v2.4 control manifest freezes 25 files, but the frozen validate_bus.py accepts only its hardcoded 21-file CONTROL set; the four v2.4 overlay files are absent from that validator constant.",
+      "evidence_refs": [
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+        "BRANCH_PROTOCOL.md@1efa5352d0156351e1eaef97cdbc8079d1b90213",
+        "branch/CONFIG.json@6d64a09cf35078168f1a636d2254827dd261dff7",
+        "schemas/branch_generation.schema.json@36cac41c199eee816c2116a9161ba453173ce0d7",
+        "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb"
+      ],
+      "owner": "BIL00/MM06",
+      "fix_or_next": "Freeze and bind a v2.4 validator/control definition whose expected file set exactly matches the v2.4 manifest, or explicitly define a separate monotone overlay validation layer that MM06 can verify at the exact generation SHA without relying on the v2.3 CONTROL constant."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MF04-T0-GEN-HEAD",
+      "kind": "immutable-generation-preflight",
+      "status": "PASS",
+      "description": "Compare ps/gen/CAL-BR-005-51f9a310 and the MF04 worker branch against the recorded generation SHA immediately before report creation.",
+      "evidence_refs": [
+        "generation:5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "result": "Generation branch and MF04 worker branch were both identical to the recorded generation SHA before the write."
+    },
+    {
+      "test_id": "MF04-T0-FROZEN-BLOBS",
+      "kind": "frozen-control-blob-verification",
+      "status": "PASS",
+      "description": "Verify every file named in control/CAL-BR-005-51f9a310.json at the exact generation SHA.",
+      "evidence_refs": [
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9"
+      ],
+      "result": "25 of 25 manifest-listed frozen file blob identities matched."
+    },
+    {
+      "test_id": "MF04-T0-AUTH",
+      "kind": "worker-auth-construction",
+      "status": "PASS",
+      "description": "Check the prompt-private MF04 secret against the public SHA-256 commitment and compute the required cohort-bound HMAC without persisting the secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Public commitment matched; required HMAC proof was computed. Independent verification remains MM06 authority."
+    },
+    {
+      "test_id": "MF04-T0-FALSIFIER-01",
+      "kind": "deterministic-immutable-control-set-falsifier",
+      "status": "FAIL",
+      "description": "Test whether the exact current control-manifest file-key set equals the frozen validate_bus.py CONTROL constant.",
+      "evidence_refs": [
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262"
+      ],
+      "result": "Counterexample found: manifest set size 25 versus validator set size 21; missing in validator are BRANCH_PROTOCOL.md, branch/CONFIG.json, schemas/branch_generation.schema.json, schemas/branch_consolidation.schema.json."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+      "status": "PARTIAL",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+        "generation:5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "notes": "MF04 branch-isolated write prerequisites are satisfied, but the validator/control-set skew is an open transport defect requiring MM06/BIL00 adjudication."
+    },
+    {
+      "obligation_id": "NO_FRESH_PROTECTED_BENCHMARK_OR_DEEP_RESEARCH",
+      "status": "ALIGNED",
+      "evidence_refs": [],
+      "notes": "All protected/fresh/benchmark/deep-research counters remain zero."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "BRANCH_STATE:57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+      "GENERATION:5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+      "CONTROL:a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+      "ASSIGNMENT:62bbc215254da0803cfaf8a8f842c90105750a3b",
+      "PARENT_STATE:7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "VALIDATOR:c35e450fdf132832d2f77f4362609f025a54f262"
+    ],
+    "artifact_refs": [
+      "ps/v2.4-control-release:state/BRANCH_STATE.json",
+      "ps/gen/CAL-BR-005-51f9a310",
+      "ps/work/CAL-BR-005-51f9a310/MF04",
+      "control/CAL-BR-005-51f9a310.json",
+      "assignments/CAL-BR-005-51f9a310.json",
+      "scripts/validate_bus.py"
+    ],
+    "notes": "All checks were public-safe and replay-only. Parent state blob resolved to generation 4 state content. No mutable-main judgment was used for in-flight control."
+  },
+  "claim_scope": "Transport/control-plane calibration only. No mathematical capability, benchmark performance, scientific evidence, runtime change, or promotion claim.",
+  "runtime_implementation_implication": "None. The found validator/control-set skew must be handled in orchestration/verification before treating this v2.4 cohort as a clean calibration result.",
+  "negative_zero_outcomes": [
+    {
+      "type": "ZERO_FRESH_COST",
+      "detail": "Fresh evidence, protected-manifest reads, benchmark executions, and deep-research runs were all zero."
+    },
+    {
+      "type": "NO_RUNTIME_PROMOTION",
+      "detail": "This report does not alter or certify Math Foundry runtime truth."
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "One cheap deterministic control-plane falsifier only; no broad research."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently fetch this worker branch/report, verify schema/HMAC/public safety and branch history, and adjudicate the open v2.4 validator/control-set skew before any clean-cohort counting."
+}
