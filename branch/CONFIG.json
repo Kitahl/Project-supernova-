@@ -1,5 +1,5 @@
 {
-  "overlay_version": "2.4.2",
+  "overlay_version": "2.4.3",
   "overlay_id": "78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
   "base_task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
   "mastermind_audit_envelope_id": "04fb7609f0384be488fd49278c23ec8b4cf5829b85300dbe1e5e5500d1badfe2",
@@ -9,6 +9,8 @@
   "private_vault_repo": "Kitahl/thoma",
   "trunk_branch": "main",
   "control_release_branch": "ps/v2.4-control-release",
+  "branch_worker_protocol": "BRANCH_WORKER_PROTOCOL.md",
+  "branch_worker_protocol_precedence": "AUTHORITATIVE_FOR_BRANCH_STATE_DESTINATION_AUTH_REREAD_VALIDATION",
   "branch_patterns": {"generation":"ps/gen/{cohort}","worker":"ps/work/{cohort}/{worker}","verifier":"ps/verify/{cohort}","integrator":"ps/integrate/{cohort}","consolidation":"ps/consolidate/{cohort}","research":"ps/research/{research_id}"},
   "workers": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],
   "verifier": "MM06",
@@ -31,9 +33,9 @@
   "benchmark_registry": "benchmark/registry.json",
   "benchmark_succession_requires_verified_completion": true,
   "validation_layers": {"trunk":"scripts/validate_bus.py","branch_overlay":"scripts/validate_branch_bus.py"},
-  "overlay_control_files": ["BRANCH_PROTOCOL.md","branch/CONFIG.json","schemas/branch_generation.schema.json","schemas/branch_consolidation.schema.json","scripts/validate_branch_bus.py",".github/workflows/validate-branch-bus.yml"],
+  "overlay_control_files": ["BRANCH_PROTOCOL.md","BRANCH_WORKER_PROTOCOL.md","branch/CONFIG.json","schemas/branch_generation.schema.json","schemas/branch_consolidation.schema.json","scripts/validate_branch_bus.py",".github/workflows/validate-branch-bus.yml"],
   "base_control_file_count": 21,
-  "overlay_control_file_count": 6,
-  "branch_control_file_count": 27,
-  "validator_scope_rule": "Trunk validator validates trunk. Branch validator validates the exact 21+6 frozen union, strict session equality and negative mutations on generation/worker/verifier/integrator/consolidation refs."
+  "overlay_control_file_count": 7,
+  "branch_control_file_count": 28,
+  "validator_scope_rule": "Trunk validator validates trunk scientific/base controls. Branch validator validates exact 21+7 frozen union, branch-worker protocol precedence, strict session equality, canonical whole-report HMAC metadata, and negative mutations."
 }
