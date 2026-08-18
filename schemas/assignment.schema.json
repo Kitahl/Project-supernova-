@@ -1,16 +1,1 @@
-{
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"Project Supernova Scheduled Assignment",
-  "type":"object",
-  "required":["task_network_plan_id","cohort_id","assignment_id","network_checkpoint_id","runtime_state_id","network_mode","workers","sealed_slots"],
-  "properties":{
-    "task_network_plan_id":{"type":"string"},
-    "cohort_id":{"type":"string"},
-    "assignment_id":{"type":"string"},
-    "network_checkpoint_id":{"type":"string"},
-    "runtime_state_id":{"type":"string"},
-    "network_mode":{"enum":["GITHUB_BUS_CALIBRATION","DEGRADED_SAFE_REPLAY","FRESH_ENABLED"]},
-    "workers":{"type":"object","additionalProperties":{"type":"object","required":["fresh_allowed","role","visibility_token"],"properties":{"fresh_allowed":{"type":"boolean"},"role":{"type":"string"},"visibility_token":{"type":"string"},"opaque_evidence_ids":{"type":"array","items":{"type":"string"}},"private_manifest_id":{"type":["string","null"]},"private_manifest_git_identity":{"type":["string","null"]},"constraints":{"type":"array","items":{"type":"string"}}}}},
-    "sealed_slots":{"type":"array","items":{"type":"string"}}
-  }
-}
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Project Supernova Scheduled Assignment v2.1","type":"object","required":["task_network_plan_id","cohort_id","assignment_id","control_manifest_id","control_manifest_path","control_manifest_git_identity","network_checkpoint_id","runtime_state_id","network_mode","workers","sealed_slots"],"properties":{"task_network_plan_id":{"type":"string","const":"90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682"},"cohort_id":{"type":"string"},"assignment_id":{"type":"string"},"control_manifest_id":{"type":"string"},"control_manifest_path":{"type":"string"},"control_manifest_git_identity":{"type":"string"},"network_checkpoint_id":{"type":"string"},"runtime_state_id":{"type":"string"},"network_mode":{"enum":["GITHUB_BUS_CALIBRATION","DEGRADED_SAFE_REPLAY","FRESH_ENABLED"]},"purpose":{"type":"string"},"workers":{"type":"object","additionalProperties":{"type":"object","required":["fresh_allowed","role","visibility_token","opaque_evidence_ids","private_manifest_id","private_manifest_git_identity","constraints"],"properties":{"fresh_allowed":{"type":"boolean"},"role":{"type":"string"},"visibility_token":{"type":"string"},"opaque_evidence_ids":{"type":"array","items":{"type":"string"}},"private_manifest_id":{"type":["string","null"]},"private_manifest_git_identity":{"type":["string","null"]},"constraints":{"type":"array","items":{"type":"string"}}}}},"sealed_slots":{"type":"array","items":{"type":"string"}}}}
