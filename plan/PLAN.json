@@ -1,0 +1,15 @@
+{
+  "protocol_version":"2.0",
+  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "authority_model":"External scheduled experiment/referee/research network only; Foundry owns truth; Mastermind PRE_REVIEW_ONLY.",
+  "runtime_priority":["E1 route/schedule truth including same-total-budget oracle schedule","objectively selected G1 prospective capability gap","C1 verified-product closure","E3 executable learned-vs-random-vs-no-change mechanism control","later reaction/selector/ignition only after executable runtime support"],
+  "mastermind_phase_order":["DISCOVERY","ADVERSARIAL_DESTRUCTION","CLOSURE"],
+  "workers":["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],
+  "verifier":"MM06",
+  "integrator":"MF06",
+  "director":"BIL00",
+  "deep_research":{"owner":"BIL00","times_vancouver":["00:58","12:58"],"frequency_hours":12,"other_tasks_prohibited":true},
+  "transport":{"public_bus_repo":"Kitahl/Project-supernova-","private_vault_repo":"Kitahl/thoma","two_clean_calibration_cohorts_required":true,"immutable_receipts":true,"state_pointer_mutable_with_optimistic_sha":true},
+  "public_safety":{"hidden_benchmark_content_forbidden":true,"protected_item_names_ids_forbidden":true,"protected_manifests_private_only":true,"public_assignments_use_opaque_manifest_ids":true},
+  "runtime_update_rule":"No runtime-state change without independently validated RUNTIME_UPDATE_RECEIPT containing artifact hashes, validators, lineage/accounting, diagnostics and required prospective evidence."
+}
