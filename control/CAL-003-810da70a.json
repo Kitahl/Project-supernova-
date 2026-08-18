@@ -1,0 +1,31 @@
+{
+  "control_manifest_id": "CTRL-CAL-003-810da70a-V22",
+  "task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "cohort_id": "CAL-003-810da70a",
+  "protocol_version": "2.2",
+  "generation_seq": 3,
+  "parent_state_git_identity": "810da70aa50f854ccd27786f8d1edfa421974604",
+  "purpose": "First countable v2.2 calibration cohort: frozen control plane + worker-auth proofs + retry-safe parent-state lineage. Replay-safe only.",
+  "files": {
+    "PROTOCOL.md": "46fbe337605e7a44904179109279a51ffc45ae5e",
+    "WORKER_PROTOCOL.md": "85601caa3468b58abeaf6d39c56f0994a65c75c3",
+    "plan/PLAN.json": "b1da6b552b2627414202a34d6a3f9fa2a21cb964",
+    "config/roles.json": "ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "config/worker_auth.json": "e8db1782ebf8e18112864d9c710502a18a35721b",
+    "schemas/control.schema.json": "9602c91a0c18f143b212fe6436ceb0839904bb5d",
+    "schemas/state.schema.json": "b265ef615b6207c94996fe4eaef61bcca51674aa",
+    "schemas/assignment.schema.json": "d0e1a9fc4c82f68c98961a89bf77da4908edc6bb",
+    "schemas/report.schema.json": "f5317f12f341ef1d686574f2c7f97bddcdb4ad89",
+    "schemas/verification.schema.json": "e51f6f9fe7249f21431df8f0c3164d60aed5a20a",
+    "schemas/integration.schema.json": "20dbff6221339bd1a4395f9e727898703ee0c792",
+    "schemas/director.schema.json": "ce6477254e866b0cf954797938e05632f6a21aa5",
+    "schemas/research.schema.json": "1f041cb60c0117f3fc4134ada8ab2e99d9d68756",
+    "scripts/validate_bus.py": "97cbfb4537688827ca3619dd3c265bb76cdd7168",
+    ".github/workflows/validate-bus.yml": "6a0c30c584dfca01c06f39be5fbfbb7076cc0b09"
+  },
+  "calibration_countable": true,
+  "fresh_allowed": false,
+  "mixed_control_revisions_allowed": false,
+  "deep_research_owner": "BIL00",
+  "deep_research_inputs": "MM06-safe and MF06-integrated only"
+}
