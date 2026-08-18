@@ -1,0 +1,27 @@
+{
+  "task_network_plan_id": "90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682",
+  "cohort_id": "CAL-002",
+  "assignment_id": "PS-GHBUS-CAL-002",
+  "control_manifest_id": "CTRL-CAL-002-V21",
+  "control_manifest_path": "control/CAL-002.json",
+  "control_manifest_git_identity": "5b8ddd9e361af6d8acea29a7741993cf7d4520cb",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "network_mode": "GITHUB_BUS_CALIBRATION",
+  "purpose": "Countable calibration cohort 1 of 2 under one frozen v2.1 control plane. Replay-safe transport and evidence-contract validation only.",
+  "workers": {
+    "MF01": {"fresh_allowed":false,"role":"Representation/blocker replay-safe E1 support","visibility_token":"182920312b3f9495903588790efaa881","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no deep research","standard v2.1 report"]},
+    "MF02": {"fresh_allowed":false,"role":"E1 route/schedule contract replay-safe audit","visibility_token":"012fefdb9b868998ce2fd31de126c7ed","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no unseen benchmark","no deep research","standard v2.1 report"]},
+    "MF03": {"fresh_allowed":false,"role":"Lemma/operator candidate replay-safe analysis","visibility_token":"dd25cd00da1654bb837938e13b7659a7","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no deep research","standard v2.1 report"]},
+    "MF04": {"fresh_allowed":false,"role":"Adversarial falsifier replay-safe analysis","visibility_token":"c6417de28a9f1c4522b228389ec6096f","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no deep research","standard v2.1 report"]},
+    "MF05": {"fresh_allowed":false,"role":"C1 product-closure prerequisite replay-safe audit","visibility_token":"ebc01f4710db4a5a862c14ffacf2d16b","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no fabricated C1 score","no deep research","standard v2.1 report"]},
+    "MM01": {"fresh_allowed":false,"role":"React mechanism replay-safe generalization","visibility_token":"d1c7a141d4fd05547b9dfca0075e7c38","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no deep research","standard v2.1 report"]},
+    "MM02": {"fresh_allowed":false,"role":"DeepSWE mechanism replay-safe generalization","visibility_token":"ddebaa011ff33cdb8655228ba746e08c","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no deep research","standard v2.1 report"]},
+    "MM03": {"fresh_allowed":false,"role":"SlopCode contract/mechanism replay-safe generalization","visibility_token":"a75ac2dd07acd14e3deab204c5b5aefb","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no deep research","standard v2.1 report"]},
+    "MM04": {"fresh_allowed":false,"role":"Senior SWE architecture replay-safe generalization","visibility_token":"6a0b11a99e09d7ba6cbc7a6881c728cb","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no deep research","standard v2.1 report"]},
+    "MM05": {"fresh_allowed":false,"role":"E3 control-design replay-safe audit","visibility_token":"460f8b2ca7353d3fe7faf7b3b179446b","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","L/R/N NOT_MEASURED without executable artifacts","no deep research","standard v2.1 report"]},
+    "MM07": {"fresh_allowed":false,"role":"Before/after replay-safe diagnostic design","visibility_token":"9a4f5949c508273006f41749b1b70ef6","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","no prospective self-promotion","no deep research","standard v2.1 report"]},
+    "EXT01": {"fresh_allowed":false,"role":"Runtime/build and GitHub bus independent audit","visibility_token":"6e516ce2236f08699be1ac2ea2fd72a5","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["bind CTRL-CAL-002-V21","replay-safe only","audit transport/control freeze","no deep research","standard v2.1 report"]}
+  },
+  "sealed_slots": ["SEALED_ORACLE_SLOT_A", "SEALED_ORACLE_SLOT_B"]
+}
