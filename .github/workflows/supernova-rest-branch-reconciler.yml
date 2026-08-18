@@ -1,0 +1,35 @@
+name: Supernova REST Branch Reconciler
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: supernova-rest-branch-reconciler
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run no-dependency REST reconciler
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SCRIPT_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts/reconcile_branch_rest.py
+        run: |
+          python3 - <<'PY'
+          import os, urllib.request
+          req=urllib.request.Request(os.environ['SCRIPT_URL'])
+          req.add_header('Authorization',f"Bearer {os.environ['GITHUB_TOKEN']}")
+          with urllib.request.urlopen(req,timeout=30) as r:
+              open('/tmp/reconcile_branch_rest.py','wb').write(r.read())
+          PY
+          python3 /tmp/reconcile_branch_rest.py
