@@ -1,0 +1,97 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-001",
+  "worker_id": "MM03",
+  "report_id": "MM03-CAL-001",
+  "assignment_id": "PS-GHBUS-CAL-001",
+  "assignment_git_identity": "8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "54a59732f7bb19116bee84bf6f01c324",
+  "status": "VALID_REPLAY_CALIBRATION",
+  "mode": "GITHUB_BUS_CALIBRATION_SAFE_REPLAY",
+  "evidence_tier": "PUBLIC_SOURCE_REPLAY_AUDIT",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "Kitahl/Project-supernova-@20aa379e8541b2b700acdb5d1c4699b6d933e61b",
+    "assignment-blob:8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+    "SprocketLab/slop-code-bench@06b5c0687d4c05ee502e9696a4d0c22fc1eec5e0",
+    "driver.py@289d8b6d0066463fc7ac4cd3bf3258247c9d7407",
+    "stats.py@f68b543caeec6d6c1b05665821850676d8faf9c8",
+    "interpreting-results.md@6ebf09c1bd2bed9620e1aa5966caaba133908cf3",
+    "SprocketLab/slop-code-bench#20"
+  ],
+  "claim_scope": "Replay-safe public-source contract hardening only. No fresh or protected benchmark unit was opened. No prospective capability or runtime-upgrade claim.",
+  "runtime_implementation_implication": "If CSRC/UACK or any preservation mechanism consumes SlopCodeBench quality evidence, its authority receipt should bind metric applicability/observability and aggregation coverage, not only the metric version. Missing static metrics caused by no snapshot or checker failure must remain typed UNKNOWN/NOT_MEASURED through aggregation; comparative preservation PASS should require an explicit coverage-equivalence or missingness-handling contract.",
+  "next_action": "MM06 should verify this calibration receipt and the full 12-worker fan-in. Scientifically, retain the Metric Observability Closure candidate for later falsification; do not run a fresh SlopCode comparison until transport calibration and an explicit frozen private manifest authorize it.",
+  "negative_zero_outcomes": [
+    {
+      "item": "fresh_evidence",
+      "result": "NONE",
+      "reason": "Calibration assignment sets fresh_allowed=false and no private manifest."
+    },
+    {
+      "item": "canonical_ci_status",
+      "result": "CI_NOT_OBSERVED",
+      "reason": "Combined-status surface returned no status entries for canonical bus HEAD; independent schema/public-safety checks were used instead."
+    },
+    {
+      "item": "prospective_slopcode_retest",
+      "result": "NOT_MEASURED",
+      "reason": "Calibration is replay-safe only."
+    }
+  ],
+  "research_questions": [
+    {
+      "question": "What statistically principled comparison rule should a preservation benchmark use when static quality metrics are missing because checkpoint state is incomplete or the checker cannot run, so missingness is plausibly not at random?",
+      "parent_blocker_or_claim": "Metric Observability Closure for CSRC/UACK preservation evidence",
+      "why_it_matters": "Current source intentionally omits unavailable static metrics from the mean, which avoids arbitrary imputation but can leave cross-run quality means based on different effective checkpoint populations.",
+      "closure_criterion": "A documented estimator or decision rule with explicit assumptions that preserves typed missingness, reports coverage, and states when two runs are or are not comparable; ideally supported by established missing-data or benchmark-evaluation literature.",
+      "preferred_source_families": [
+        "primary statistical literature",
+        "benchmark methodology papers",
+        "official SlopCodeBench documentation/issues"
+      ],
+      "urgency": "MEDIUM"
+    }
+  ],
+  "role_payload": {
+    "role": "SlopCode contract/mechanism evidence",
+    "audit_target": "Preservation/quality evidence boundary under replay-safe public source",
+    "observed_contract_surface": {
+      "producer_behavior": "At runner commit 06b5c068..., scb-check quality extraction returns an empty metric object when the checkpoint snapshot is absent or when scb-check execution/report loading fails.",
+      "aggregation_behavior": "Summary extraction includes only checkpoints that contain the requested metric key, so unavailable quality observations are excluded from the metric sample.",
+      "authority_position": "Maintainer response on issue #20 states that omitting unavailable static metrics is intentional and that documentation/warnings should be improved.",
+      "documentation_gap": "The current pinned interpreting-results document explains verbosity/erosion and checker versioning but does not state the coverage/missingness semantics identified in issue #20."
+    },
+    "bounded_mechanism_candidate": {
+      "name": "Metric Observability Closure",
+      "status": "PROVISIONAL_EXTERNAL_CANDIDATE",
+      "contract": [
+        "Bind expected checkpoint universe and exact source/evaluator/metric versions.",
+        "Emit per-checkpoint quality status such as MEASURED, NO_SNAPSHOT, TOOL_FAILED, or NOT_APPLICABLE.",
+        "Carry measured_count and expected_count with every aggregated preservation statistic.",
+        "Do not map unavailable static quality to zero or to a clean score.",
+        "Block or qualify cross-run preservation PASS unless the effective measurement populations are comparable under an explicit rule."
+      ],
+      "falsifier": "Construct two runs with the same reported quality mean but materially different state-dependent quality coverage; if the current preservation receipt still treats them as equivalent evidence without a coverage/missingness condition, the closure contract is incomplete."
+    },
+    "boundary_assumptions": [
+      "Public source inspection is replay-safe and does not expose protected task contents.",
+      "Issue #20 maintainer comment is authoritative for intended omission semantics, but it does not establish a statistically sufficient cross-run comparison rule.",
+      "No claim is made that omitted static metrics are themselves benchmark defects; the unresolved question is comparability and observability."
+    ],
+    "public_safety_check": "PASS: receipt contains no protected task names, hidden contents, secrets, credentials, or private manifest payloads."
+  },
+  "cost_ledger": {
+    "fresh_benchmark_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "public_source_files_inspected": 3,
+    "public_issue_threads_inspected": 1,
+    "deep_research_performed": false
+  },
+  "git_reread_verified": true,
+  "ci_status": "CI_NOT_OBSERVED"
+}
