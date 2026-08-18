@@ -1,17 +1,17 @@
-# Common Scheduled Worker Protocol v2.3
+# Common Scheduled Worker Protocol v2.4
 
-1. Begin every visible response with the exact standardized session header from `SESSION_STANDARD.md` before any prose.
-2. Fetch `state/CURRENT.json`; read generation, active cohort, assignment/control paths+Git identities, checkpoint, runtime, network mode, plan ID, superseded cohorts and benchmark state pointers when present.
-3. Fetch the exact active control manifest and every frozen control file. Verify every Git blob identity. Any control drift => no countable report and no fresh evidence.
-4. Fetch the active assignment. Verify plan/cohort/generation/parent-state/control/checkpoint/runtime, your worker entry, token, fresh flag, opaque private refs, constraints and evidence ownership.
-5. Fetch `config/worker_auth.json`. Verify the SHA-256 commitment of your prompt-private `WORKER_AUTH_SECRET_HEX`, then compute the frozen cohort HMAC proof. Never print or persist the raw secret.
-6. If state/plan/control/assignment/auth is missing, stale, mismatched, superseded or unreadable, output a standardized WAITING/BLOCKED report in chat only; consume no fresh evidence and create no countable GitHub worker receipt.
-7. If your immutable `reports/<cohort>/<WORKER_ID>.json` already exists, return standardized `ALREADY_DONE_WAIT` and do not repeat or overwrite.
-8. During `GITHUB_BUS_CALIBRATION`, use `SAFE_REPLAY_ONLY`, zero fresh/private/benchmark counters and minimal deterministic role work. Do not broaden into public-source research merely to fill time.
-9. Outside calibration, fresh work requires `FRESH_ENABLED`, explicit `fresh_allowed=true` and a valid private `FROZEN_PRE_OUTCOME` manifest from `Kitahl/thoma` binding plan/control/cohort/checkpoint/runtime, task/evaluator/checker, observed model/tools/environment, total budget, repeats/randomization, cache/context/retention, accounting, contamination exclusions and exact ownership.
-10. Scientific model target is `GPT-5.6 Sol` / `EXTRA_HIGH`. Report actual binding honestly as `VERIFIED|PARTIAL_UNVERIFIED|UNVERIFIED|MISMATCH`; do not fabricate reasoning-effort verification. If the frozen scientific contract requires verified model/effort and it is unavailable, scientific promotion is `NOT_MEASURED`/blocked.
-11. Perform only the frozen role from `config/roles.json`. Preserve zero/negative outcomes, unavailable routes, failures, regressions, full costs and `NOT_MEASURED`.
+1. Begin every visible response with the exact `SESSION_STANDARD.md` header before prose.
+2. Fetch `state/CURRENT.json` from `Kitahl/Project-supernova-`; resolve active control/assignment by their exact Git blob identities. Never use chat history or project files as canonical state.
+3. Require plan `0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa` and protocol >=2.4. Verify the exact frozen control file set. Any drift => standardized WAITING/BLOCKED in chat only, no countable write and zero protected work.
+4. Verify assignment plan/cohort/generation/parent/control/checkpoint/runtime, own role entry/token/fresh flag/constraints/ownership.
+5. Verify SHA-256 commitment of the prompt-private worker secret and compute the cohort HMAC proof. Never print/store/quote/summarize the secret.
+6. If the active cohort is superseded, required repo-policy/CI status is missing or failing, or any identity/auth/schema condition is unresolved, fail closed.
+7. If `reports/<cohort>/<WORKER_ID>.json` already exists, return standardized `ALREADY_DONE_WAIT`; never overwrite or rerun the receipt-producing action.
+8. During calibration/bootstrap use `SAFE_REPLAY_ONLY`; fresh evidence units, protected manifest reads, benchmark executions and deep-research runs are all zero.
+9. Fresh execution requires `FRESH_ENABLED`, `fresh_allowed=true`, exact role ownership and a private `FROZEN_PRE_OUTCOME` manifest from `Kitahl/thoma/vault/` satisfying the frozen public contract.
+10. Request `GPT-5.6 Sol` / `EXTRA_HIGH`, but report observed binding honestly. Do not fabricate `VERIFIED`.
+11. Perform only the frozen role. Preserve failures, negative/zero/unknown outcomes, unavailable routes, regressions and complete cost.
 12. No worker deep research. Emit structured research questions only.
-13. Build the worker receipt against the frozen `schemas/report.schema.json`. The receipt must contain standardized session header, executive status, task/issue/test ledgers, plan alignment, provenance, HMAC proof, costs, research questions and next action. Top-level undeclared fields are forbidden.
-14. Create exactly one immutable GitHub report. A worker may fetch its own report after creation for operational confidence and may say so in chat, but worker self-reread is **not** independent calibration evidence and is not an authoritative report field.
-15. MM-06 later performs the authoritative post-write Git reread and schema/HMAC verification. No originating worker may advance network/benchmark/runtime state or promote itself.
+13. Build exactly one closed-world report against the frozen report schema. `role_payload` is the only extensible role field.
+14. Create exactly one immutable public-safe GitHub report when write authority is available. Self-reread is operational only; MM06 owns independent reread.
+15. No worker may advance mutable network/benchmark/runtime state or self-promote a mechanism.

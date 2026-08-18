@@ -1,0 +1,14 @@
+# Project Supernova control plane
+/PROTOCOL.md @Kitahl
+/WORKER_PROTOCOL.md @Kitahl
+/SESSION_STANDARD.md @Kitahl
+/plan/ @Kitahl
+/config/ @Kitahl
+/schemas/ @Kitahl
+/scripts/ @Kitahl
+/tests/ @Kitahl
+/.github/workflows/ @Kitahl
+/state/ @Kitahl
+/control/ @Kitahl
+/assignments/ @Kitahl
+/benchmark/ @Kitahl

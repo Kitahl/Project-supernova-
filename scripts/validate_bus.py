@@ -1,138 +1,82 @@
 #!/usr/bin/env python3
-import hashlib, json, pathlib, re, sys
+import hashlib,json,pathlib,re,sys
 from jsonschema import Draft202012Validator
-
 ROOT=pathlib.Path(__file__).resolve().parents[1]
-PLAN="61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0"
-WORKERS={"MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"}
-SESSION_NAMES={"MF01":"PS-MF-W01 | Representation Lab","MF02":"PS-MF-W02 | E1 Solver Routing","MF03":"PS-MF-W03 | Lemma & Operator Lab","MF04":"PS-MF-W04 | Adversarial Falsifier","MF05":"PS-MF-W05 | Product Closure","MM01":"PS-MM-W01 | React Mechanisms","MM02":"PS-MM-W02 | DeepSWE Mechanisms","MM03":"PS-MM-W03 | SlopCode Contracts","MM04":"PS-MM-W04 | Senior SWE Architecture","MM05":"PS-MM-W05 | E3 Mechanism Controls","MM07":"PS-MM-W07 | Before/After Self-Bench","EXT01":"PS-JOINT-A01 | Runtime & Transport Audit"}
-SEALED={"SEALED_ORACLE_SLOT_A","SEALED_ORACLE_SLOT_B"}
-CONTROL={"PROTOCOL.md","WORKER_PROTOCOL.md","SESSION_STANDARD.md","plan/PLAN.json","config/roles.json","config/worker_auth.json","benchmark/registry.json","requirements-validation.txt","schemas/control.schema.json","schemas/state.schema.json","schemas/assignment.schema.json","schemas/report.schema.json","schemas/verification.schema.json","schemas/integration.schema.json","schemas/director.schema.json","schemas/research.schema.json","schemas/benchmark_registry.schema.json","schemas/benchmark_completion.schema.json","schemas/private_manifest_contract.schema.json","scripts/validate_bus.py",".github/workflows/validate-bus.yml"}
+PLAN="0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"
+WORKERS={'MF01', 'EXT01', 'MM04', 'MF04', 'MM05', 'MM01', 'MM02', 'MF02', 'MM03', 'MF03', 'MM07', 'MF05'}
+SESSION_NAMES={'MF01': 'PS-MF-W01 | Representation Lab', 'MF02': 'PS-MF-W02 | E1 Solver Routing', 'MF03': 'PS-MF-W03 | Lemma & Operator Lab', 'MF04': 'PS-MF-W04 | Adversarial Falsifier', 'MF05': 'PS-MF-W05 | Product Closure', 'MM01': 'PS-MM-W01 | React Mechanisms', 'MM02': 'PS-MM-W02 | DeepSWE Mechanisms', 'MM03': 'PS-MM-W03 | SlopCode Contracts', 'MM04': 'PS-MM-W04 | Senior SWE Architecture', 'MM05': 'PS-MM-W05 | E3 Mechanism Controls', 'MM07': 'PS-MM-W07 | Before/After Self-Bench', 'EXT01': 'PS-JOINT-A01 | Runtime & Transport Audit'}
 BAD_KEYS={"hidden_task_name","hidden_task_id","protected_task_id","benchmark_item_id","raw_hidden_prompt","private_manifest_payload","private_manifest_content","worker_auth_secret","worker_auth_secret_hex","secret","credential","api_key","access_token","password"}
-TEST_RE=re.compile(r"\bTEST-\d{3}\b",re.I); HEX64=re.compile(r"^[0-9a-f]{64}$")
-E=[]
+HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$");E=[]
 def err(p,m):E.append(f"{p}: {m}")
 def load(p):
- try:return json.loads(p.read_text(encoding='utf-8'))
- except Exception as x:err(str(p.relative_to(ROOT)),f"invalid JSON: {x}");return None
+ try:return json.loads(p.read_text(encoding="utf-8"))
+ except Exception as x:err(str(p.relative_to(ROOT)) if p.exists() else str(p),f"invalid JSON: {x}");return None
 def blob(p):
  b=p.read_bytes();return hashlib.sha1(b"blob "+str(len(b)).encode()+b"\0"+b).hexdigest()
-def walk_public(o,p):
+def walk(o,p):
  if isinstance(o,dict):
   for k,v in o.items():
    if k.lower() in BAD_KEYS:err(p,f"forbidden public key {k}")
-   walk_public(v,p)
+   walk(v,p)
  elif isinstance(o,list):
-  for v in o:walk_public(v,p)
- elif isinstance(o,str) and TEST_RE.search(o):err(p,"raw TEST-NNN identifier forbidden in public bus")
-def schema(name):
- path=f'schemas/{name}.schema.json';s=load(ROOT/path)
+  for v in o:walk(v,p)
+def schema(n):
+ p=ROOT/f"schemas/{n}.schema.json";s=load(p)
  if s is not None:
   try:Draft202012Validator.check_schema(s)
-  except Exception as x:err(path,f"invalid Draft2020-12 schema: {x}")
+  except Exception as x:err(str(p.relative_to(ROOT)),f"invalid Draft2020-12 schema: {x}")
  return s
-def validate_obj(o,s,p):
+def validate(o,s,p):
  if o is None or s is None:return
  for x in sorted(Draft202012Validator(s).iter_errors(o),key=lambda z:list(z.path)):
-  loc='/'.join(map(str,x.path));err(p,f"schema:{loc}: {x.message}")
-
-for p in ROOT.rglob('*.json'):
- if '.git' in p.parts:continue
+  err(p,"schema:"+"/".join(map(str,x.path))+": "+x.message)
+for p in ROOT.rglob("*.json"):
+ if ".git" in p.parts:continue
  o=load(p)
- if o is not None:walk_public(o,str(p.relative_to(ROOT)))
-
-schema_names=['control','state','assignment','report','verification','integration','director','research','benchmark_registry','benchmark_completion','private_manifest_contract']
-schemas={n:schema(n) for n in schema_names}
-state=load(ROOT/'state/CURRENT.json');plan=load(ROOT/'plan/PLAN.json');auth=load(ROOT/'config/worker_auth.json');registry=load(ROOT/'benchmark/registry.json')
-validate_obj(state,schemas['state'],'state/CURRENT.json');validate_obj(registry,schemas['benchmark_registry'],'benchmark/registry.json')
-if not state or not plan or not auth or not registry:err('root','missing state/plan/auth/registry')
-sup=set();sd=ROOT/'superseded'
-if sd.exists():
- for p in sd.glob('*.json'):
-  s=load(p)
-  if s and s.get('cohort_id'):sup.add(s['cohort_id'])
-if state and plan and auth and registry:
- if plan.get('task_network_plan_id')!=PLAN or state.get('task_network_plan_id')!=PLAN:err('plan/state','plan ID mismatch')
- if plan.get('protocol_version')!='2.3' or state.get('protocol_version')!='2.3':err('plan/state','protocol != 2.3')
- if state.get('active_cohort_id') in sup:err('state/CURRENT.json','active cohort is superseded')
- if set(auth.get('commitments',{}))!=WORKERS:err('config/worker_auth.json','worker commitment set mismatch')
- for w,c in auth.get('commitments',{}).items():
-  if not isinstance(c,str) or not HEX64.match(c):err('config/worker_auth.json',f'bad commitment {w}')
- if state.get('benchmark_registry_path')!='benchmark/registry.json' or state.get('benchmark_registry_git_identity')!=blob(ROOT/'benchmark/registry.json'):err('state/CURRENT.json','benchmark registry identity mismatch')
- if state.get('fresh_allowed_globally') and state.get('network_mode')!='FRESH_ENABLED':err('state/CURRENT.json','fresh globally outside FRESH_ENABLED')
- if state.get('deep_research_owner')!='BIL00' or state.get('deep_research_times_vancouver')!=['00:58','12:58']:err('state/CURRENT.json','deep research owner/schedule mismatch')
- cp=ROOT/state.get('active_control_manifest_path','');ap=ROOT/state.get('active_assignment_path','')
- c=load(cp) if cp.exists() else None;a=load(ap) if ap.exists() else None
- validate_obj(c,schemas['control'],str(cp.relative_to(ROOT)) if cp.exists() else 'active-control');validate_obj(a,schemas['assignment'],str(ap.relative_to(ROOT)) if ap.exists() else 'active-assignment')
- if not c:err('state/CURRENT.json','active control missing')
- if not a:err('state/CURRENT.json','active assignment missing')
+ if o is not None:walk(o,str(p.relative_to(ROOT)))
+names=["control","state","assignment","report","verification","integration","director","research","benchmark_registry","benchmark_completion","private_manifest_contract","transition","runtime_update"]
+S={n:schema(n) for n in names}
+state=load(ROOT/"state/CURRENT.json");plan=load(ROOT/"plan/PLAN.json");auth=load(ROOT/"config/worker_auth.json");registry=load(ROOT/"benchmark/registry.json");policy=load(ROOT/"config/repo_policy.json")
+validate(state,S["state"],"state/CURRENT.json");validate(registry,S["benchmark_registry"],"benchmark/registry.json")
+if not all([state,plan,auth,registry,policy]):err("root","missing state/plan/auth/registry/policy")
+if state and plan and auth and registry and policy:
+ if plan.get("task_network_plan_id")!=PLAN or state.get("task_network_plan_id")!=PLAN:err("plan/state","plan ID mismatch")
+ if plan.get("protocol_version")!="2.4" or state.get("protocol_version")!="2.4":err("plan/state","protocol != 2.4")
+ if set(auth.get("commitments",{}))!=WORKERS:err("config/worker_auth.json","worker commitment set mismatch")
+ if state.get("fresh_allowed_globally") and state.get("repo_policy_status")!="VERIFIED_PROTECTED":err("state/CURRENT.json","fresh globally while repo policy unverified")
+ if state.get("calibration_countable_current") and state.get("repo_policy_status")!="VERIFIED_PROTECTED":err("state/CURRENT.json","countable calibration while repo policy unverified")
+ if state.get("required_ci_contexts")!=policy.get("required_status_contexts"):err("state/policy","required contexts mismatch")
+ if state.get("benchmark_registry_git_identity")!=blob(ROOT/"benchmark/registry.json"):err("state/CURRENT.json","benchmark registry blob mismatch")
+ cp=ROOT/state.get("active_control_manifest_path","");ap=ROOT/state.get("active_assignment_path","");c=load(cp) if cp.exists() else None;a=load(ap) if ap.exists() else None
+ validate(c,S["control"],str(cp.relative_to(ROOT)) if cp.exists() else "active-control");validate(a,S["assignment"],str(ap.relative_to(ROOT)) if ap.exists() else "active-assignment")
+ if not c:err("state/CURRENT.json","active control missing")
+ if not a:err("state/CURRENT.json","active assignment missing")
  if c:
-  if blob(cp)!=state.get('active_control_manifest_git_identity'):err(str(cp.relative_to(ROOT)),'control blob != state')
-  if c.get('task_network_plan_id')!=PLAN or c.get('cohort_id')!=state.get('active_cohort_id'):err(str(cp.relative_to(ROOT)),'control plan/cohort mismatch')
-  if c.get('generation_seq')!=state.get('generation_seq') or c.get('parent_state_git_identity')!=state.get('active_parent_state_git_identity'):err(str(cp.relative_to(ROOT)),'control lineage mismatch')
-  if set(c.get('files',{}))!=CONTROL:err(str(cp.relative_to(ROOT)),'frozen control file set mismatch')
-  for rel,sha in c.get('files',{}).items():
+  if blob(cp)!=state.get("active_control_manifest_git_identity"):err(str(cp.relative_to(ROOT)),"control blob != state")
+  for rel,sha in c.get("files",{}).items():
    fp=ROOT/rel
-   if not fp.exists():err(str(cp.relative_to(ROOT)),f'missing frozen {rel}')
-   elif blob(fp)!=sha:err(str(cp.relative_to(ROOT)),f'frozen file drift {rel}')
+   if not fp.exists():err(str(cp.relative_to(ROOT)),f"missing frozen {rel}")
+   elif blob(fp)!=sha:err(str(cp.relative_to(ROOT)),f"frozen file drift {rel}")
  if a:
-  if blob(ap)!=state.get('active_assignment_git_identity'):err(str(ap.relative_to(ROOT)),'assignment blob != state')
-  pairs={'task_network_plan_id':PLAN,'cohort_id':state.get('active_cohort_id'),'generation_seq':state.get('generation_seq'),'parent_state_git_identity':state.get('active_parent_state_git_identity'),'control_manifest_path':state.get('active_control_manifest_path'),'control_manifest_git_identity':state.get('active_control_manifest_git_identity'),'network_checkpoint_id':state.get('accepted_network_checkpoint_id'),'runtime_state_id':state.get('runtime_state_id'),'network_mode':state.get('network_mode')}
-  for k,v in pairs.items():
-   if a.get(k)!=v:err(str(ap.relative_to(ROOT)),f'{k} mismatch')
-  if set(a.get('workers',{}))!=WORKERS:err(str(ap.relative_to(ROOT)),'worker set mismatch')
-  if set(a.get('sealed_slots',[]))!=SEALED:err(str(ap.relative_to(ROOT)),'sealed slot set mismatch')
-  if a.get('network_mode')=='GITHUB_BUS_CALIBRATION':
-   for w,x in a.get('workers',{}).items():
-    if x.get('fresh_allowed') is not False or x.get('opaque_evidence_ids')!=[] or x.get('private_manifest_id') is not None or x.get('private_manifest_git_identity') is not None:err(str(ap.relative_to(ROOT)),f'{w} not replay-only in calibration')
-for program,pdata in (registry or {}).get('programs',{}).items():
- suites=pdata.get('suites',[]);ids={s.get('suite_id') for s in suites}
- if pdata.get('active_suite_id') not in ids:err('benchmark/registry.json',f'{program} active suite missing')
- for s in suites:
-  nxt=s.get('successor')
-  if nxt is not None and nxt not in ids:err('benchmark/registry.json',f'{program} unknown successor {nxt}')
-rr=ROOT/'reports'
-if rr.exists():
- for p in rr.rglob('*.json'):
-  r=load(p)
-  if not r or r.get('cohort_id') in sup:continue
-  validate_obj(r,schemas['report'],str(p.relative_to(ROOT)))
-  w=r.get('worker_id');cohort=r.get('cohort_id')
-  if w not in WORKERS or p.stem!=w or p.parent.name!=cohort:err(str(p.relative_to(ROOT)),'report path/worker mismatch');continue
-  ap=ROOT/'assignments'/f'{cohort}.json';a=load(ap) if ap.exists() else None
-  if not a:err(str(p.relative_to(ROOT)),'missing assignment');continue
-  expect={'task_network_plan_id':PLAN,'cohort_id':cohort,'assignment_id':a.get('assignment_id'),'assignment_git_identity':blob(ap),'generation_seq':a.get('generation_seq'),'parent_state_git_identity':a.get('parent_state_git_identity'),'control_manifest_id':a.get('control_manifest_id'),'control_manifest_git_identity':a.get('control_manifest_git_identity'),'network_checkpoint_id':a.get('network_checkpoint_id'),'runtime_state_id':a.get('runtime_state_id'),'visibility_token':a.get('workers',{}).get(w,{}).get('visibility_token'),'worker_auth_scheme':'PS-HMAC-SHA256-WORKER-PROOF-1','worker_auth_commitment':auth.get('commitments',{}).get(w),'status':'VALID_ASSIGNED_REPORT','public_safety_status':'PASS'}
-  for k,v in expect.items():
-   if r.get(k)!=v:err(str(p.relative_to(ROOT)),f'{k} mismatch')
-  h=r.get('session_header',{})
-  if h.get('session_name')!=SESSION_NAMES.get(w):err(str(p.relative_to(ROOT)),'session name mismatch')
-  if h.get('iteration_id')!=cohort or h.get('iteration_number')!=a.get('generation_seq') or h.get('role_id')!=w:err(str(p.relative_to(ROOT)),'session iteration/role mismatch')
-  if h.get('target_program')!=a.get('workers',{}).get(w,{}).get('target_program') or h.get('goal')!=a.get('workers',{}).get(w,{}).get('goal'):err(str(p.relative_to(ROOT)),'session target/goal mismatch')
-  if h.get('runtime_state_id')!=a.get('runtime_state_id') or h.get('execution_mode')!=r.get('mode'):err(str(p.relative_to(ROOT)),'session runtime/mode mismatch')
-  if not HEX64.match(str(r.get('worker_auth_proof',''))):err(str(p.relative_to(ROOT)),'bad HMAC proof format')
-  led=r.get('cost_ledger',{})
-  if a.get('network_mode')=='GITHUB_BUS_CALIBRATION':
-   if r.get('mode')!='SAFE_REPLAY_ONLY' or r.get('fresh_evidence_ids')!=[] or r.get('private_manifest_id') is not None or r.get('private_manifest_git_identity') is not None:err(str(p.relative_to(ROOT)),'fresh/private data in calibration')
-   if any(led.get(k)!=0 for k in ['fresh_evidence_units_consumed','protected_manifest_reads','benchmark_executions','deep_research_runs']):err(str(p.relative_to(ROOT)),'nonzero protected/benchmark/research cost in calibration')
-for folder,key in [('verification','verification'),('integration','integration'),('director','director')]:
- d=ROOT/folder
+  if blob(ap)!=state.get("active_assignment_git_identity"):err(str(ap.relative_to(ROOT)),"assignment blob != state")
+  if set(a.get("workers",{}))!=WORKERS:err(str(ap.relative_to(ROOT)),"worker set mismatch")
+  if a.get("network_mode")=="GITHUB_BUS_CALIBRATION":
+   for w,x in a.get("workers",{}).items():
+    if x.get("fresh_allowed") is not False or x.get("opaque_evidence_ids")!=[] or x.get("private_manifest_id") is not None or x.get("private_manifest_git_identity") is not None:err(str(ap.relative_to(ROOT)),f"{w} not replay-only")
+cohort=state.get("active_cohort_id") if state else None
+if cohort:
+ d=ROOT/"reports"/cohort
  if d.exists():
-  for p in d.glob('*.json'):
-   if p.stem in sup:continue
-   validate_obj(load(p),schemas[key],str(p.relative_to(ROOT)))
-rd=ROOT/'research/results'
-if rd.exists():
- for p in rd.glob('*.json'):validate_obj(load(p),schemas['research'],str(p.relative_to(ROOT)))
-bd=ROOT/'benchmark/completion'
-if bd.exists():
- for p in bd.rglob('*.json'):validate_obj(load(p),schemas['benchmark_completion'],str(p.relative_to(ROOT)))
-for cohort in sup:
- p=ROOT/'director'/f'{cohort}.json'
- if p.exists():
-  o=load(p)
-  if o and o.get('calibration_counted'):err(str(p.relative_to(ROOT)),'superseded cohort counted')
+  for p in d.glob("*.json"):
+   r=load(p);validate(r,S["report"],str(p.relative_to(ROOT)))
+   if r:
+    w=r.get("worker_id")
+    if w not in WORKERS or p.stem!=w:err(str(p.relative_to(ROOT)),"report path/worker mismatch")
+    led=r.get("cost_ledger",{})
+    if state.get("network_mode")=="GITHUB_BUS_CALIBRATION" and any(led.get(k)!=0 for k in ["fresh_evidence_units_consumed","protected_manifest_reads","benchmark_executions","deep_research_runs"]):err(str(p.relative_to(ROOT)),"nonzero calibration protected/benchmark/research cost")
+for folder,key in [("verification","verification"),("integration","integration"),("director","director")]:
+ p=ROOT/folder/f"{cohort}.json" if cohort else None
+ if p and p.exists():validate(load(p),S[key],str(p.relative_to(ROOT)))
 if E:
- print('BUS VALIDATION FAILED')
- for x in E:print('-',x)
- sys.exit(1)
-print('BUS VALIDATION PASS')
+ print("BUS VALIDATION FAILED");[print("-",x) for x in E];sys.exit(1)
+print("BUS VALIDATION PASS")

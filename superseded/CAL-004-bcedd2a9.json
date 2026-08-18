@@ -1,0 +1,10 @@
+{
+  "cohort_id": "CAL-004-bcedd2a9",
+  "superseded_by": "CAL-005-7fff4d30",
+  "superseded_for": "CALIBRATION_AND_CONTROL_AUTHORITY",
+  "reason": "Master Spec V3 audit found the frozen v2.3 control plane did not prove historical parent-state lineage; later semantic and lineage guards were external monotone hardening only and could not retroactively repair the frozen candidate.",
+  "evidence_preserved": true,
+  "calibration_credit": false,
+  "scientific_evidence_status": "UNCHANGED_BY_SUPERSESSION",
+  "fresh_evidence_consumed_by_supersession": 0
+}
