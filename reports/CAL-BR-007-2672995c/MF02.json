@@ -1,0 +1,169 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W02 | E1 Solver Routing",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-007-2672995c",
+    "iteration_number": 7,
+    "role_id": "MF02",
+    "goal": "Prove MF02 branch-isolated write and confirm E1 successor contract without executing it.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-007-2672995c",
+  "worker_id": "MF02",
+  "report_id": "RPT-CAL-BR-007-2672995c-MF02",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-2672995c",
+  "assignment_git_identity": "1c373303e360bc8f47c774619cef5f2de6fa01eb",
+  "generation_seq": 7,
+  "parent_state_git_identity": "2672995c4ee9209bae72dbaedc72799d1ff78528",
+  "control_manifest_id": "CTRL-CAL-BR-007-2672995c-V23-BR241",
+  "control_manifest_git_identity": "27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "c52cdf216d527fd589047e5314004268",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "6bb082c9eca80a34c622079e099aa9fee90350220c60b6e336172d7c92c053bc",
+  "worker_auth_proof": "ac26952dfc312922f7ed1ac854723499cd8118abe76cdbb00be41aef8831d018",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "TRANSPORT_REPLAY_ONLY",
+  "executive_status": "PASS: MF02 verified the frozen branch transport/report contract and confirmed E1 remains the next clean Math Foundry target without executing benchmark work.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF02-T0-TRANSPORT",
+      "status": "PASS",
+      "description": "Verified branch-isolated MF02 transport/report preconditions against the frozen generation.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@ps/v2.4-control-release",
+        "control/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "assignments/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "next_action": "MM06 independently rereads and verifies this immutable worker receipt."
+    },
+    {
+      "task_id": "MF02-E1-SUCCESSOR-CONTRACT",
+      "status": "PASS",
+      "description": "Confirmed MF-E1-CLEAN-ROUTE-TRUTH is the next clean Foundry target and preserved its route/schedule measurement contract without execution.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "next_action": "Do not execute E1 until transport fresh eligibility and a valid private FROZEN_PRE_OUTCOME manifest exist."
+    }
+  ],
+  "issue_ledger": [],
+  "test_ledger": [
+    {
+      "test_id": "MF02-CONTROL-27",
+      "kind": "FROZEN_CONTROL_IDENTITY",
+      "status": "PASS",
+      "description": "Fetched all 27 frozen control files from the exact generation head and matched each Git blob identity to the control manifest.",
+      "evidence_refs": [
+        "control_manifest_blob=27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+        "generation_head=ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "27/27 matched."
+    },
+    {
+      "test_id": "MF02-AUTH",
+      "kind": "WORKER_AUTH",
+      "status": "PASS",
+      "description": "Verified the private capability SHA-256 commitment and computed the cohort-bound HMAC proof without exposing the raw capability.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment matched; HMAC proof generated."
+    },
+    {
+      "test_id": "MF02-E1-CONTRACT",
+      "kind": "SUCCESSOR_CONTRACT_REPLAY",
+      "status": "PASS",
+      "description": "Verified E1 requires BASE, SBS, single-route VBS, AUTO, and best admissible same-total-budget ORACLE_SCHEDULE/portfolio when multi-route schedules are allowed.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "result": "Contract confirmed; E1 not executed."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "notes": "Replay-only authenticated branch transport/report check completed for MF02."
+    },
+    {
+      "obligation_id": "MF-E1-CLEAN-ROUTE-TRUTH",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "notes": "Successor contract confirmed only; no scientific execution or score produced."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "generation_head:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+      "control_manifest_blob:27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+      "assignment_blob:1c373303e360bc8f47c774619cef5f2de6fa01eb",
+      "benchmark_registry_blob:195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "worker_auth_blob:e8db1782ebf8e18112864d9c710502a18a35721b"
+    ],
+    "artifact_refs": [
+      "ps/gen/CAL-BR-007-2672995c",
+      "ps/work/CAL-BR-007-2672995c/MF02"
+    ],
+    "notes": "All control reads used the frozen generation head. The worker branch matched the generation before report creation. Originating-worker reread is non-authoritative."
+  },
+  "claim_scope": "Transport/report contract replay and E1 successor-contract confirmation only. No fresh, protected, benchmark, or runtime-effect claim.",
+  "runtime_implementation_implication": "NONE. This worker receipt does not modify or promote Math Foundry runtime truth.",
+  "negative_zero_outcomes": [
+    {
+      "type": "BENCHMARK_NOT_EXECUTED",
+      "detail": "E1 was intentionally not run."
+    },
+    {
+      "type": "ZERO_PROTECTED_CONSUMPTION",
+      "detail": "No private manifest or protected benchmark evidence was read."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "next_foundry_suite_id": "MF-E1-CLEAN-ROUTE-TRUTH",
+    "required_measurements": [
+      "BASE",
+      "SBS",
+      "single-route VBS",
+      "AUTO",
+      "best admissible same-total-budget ORACLE_SCHEDULE/portfolio when multi-route schedules are allowed"
+    ],
+    "single_route_vbs_universal_schedule_ceiling": false,
+    "benchmark_executed": false
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only transport/report contract check; zero scientific benchmark consumption."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the MF02 worker branch receipt and verifies branch head, report blob, HMAC, Draft-2020-12 schema, exact session identity including assignment phase, public safety, and zero-cost replay semantics."
+}
