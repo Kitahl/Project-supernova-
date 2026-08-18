@@ -1,0 +1,250 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W04 | Senior SWE Architecture",
+    "target_program": "MASTERMIND",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MM04",
+    "goal": "Prove MM04 can complete the standardized v2.3 transport/report contract and retain evaluator-execution validity as a gate, without benchmark execution.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MM04",
+  "report_id": "MM04-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "995551dfa71e555389f6871659b78b4a",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "836768b1672cc8639cfeb3fe06ebd8ce1667cdb0dc5ce1c7a6cd6c263f1521d0",
+  "worker_auth_proof": "66a78c08987e7d6e0261c304ef1d8318da13aa460bc701b9f7144a5f644367a7",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_AUTHENTICATED_FROZEN_CONTROL_SHORT_TEST",
+  "executive_status": "WORKER_PASS_PENDING_MM06_INDEPENDENT_REREAD_AND_FULL_COHORT_FANIN",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM04-T0-TRANSPORT",
+      "status": "PASS",
+      "description": "Validated the active v2.3 state, frozen control manifest, assignment, MM04 token, worker-auth commitment, HMAC binding, standardized session/report contract, and replay-only constraints.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "next_action": "MM06 independently fetches and validates this immutable receipt."
+    },
+    {
+      "task_id": "MM04-T0-EVALUATOR-EXECUTION-GATE",
+      "status": "PASS",
+      "description": "Applied the Senior SWE evaluator-execution-validity gate without running a benchmark: with no assigned benchmark execution and no evaluator execution receipt, no architecture failure or success is inferable and the scientific outcome remains NOT_MEASURED.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "next_action": "Retain this gate for the later fresh MM-SENIOR-SWE suite; evaluator execution must be proven before attributing architecture outcomes."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "ISSUE-T0-FANIN-PENDING",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "This worker can pass its lane, but CAL-004 cannot count until all 12 worker receipts are independently reread/schema/auth verified by MM06, integrated by MF06, and decided by BIL00.",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a"
+      ],
+      "owner": "MM06/MF06/BIL00",
+      "fix_or_next": "Complete the remaining authenticated v2.3 fan-in chain; this worker must not advance state."
+    },
+    {
+      "issue_id": "ISSUE-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "BLOCKED",
+      "summary": "The runtime identifies the GPT-5.6 Sol model family, but the scheduled-task surface does not independently expose or attest EXTRA_HIGH reasoning effort.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "owner": "Execution runtime / future private execution manifest",
+      "fix_or_next": "Keep MODEL_BINDING_STATUS=PARTIAL_UNVERIFIED; block model-sensitive fresh promotion unless the frozen execution contract supplies the required binding."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-MM04-CONTROL-FREEZE",
+      "kind": "CONTROL_PLANE",
+      "status": "PASS",
+      "description": "Fetched all 21 files frozen by the active control manifest and matched each observed Git blob SHA to the manifest.",
+      "evidence_refs": [
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "result": "21/21 frozen control-file identities matched; mixed-control revision not observed."
+    },
+    {
+      "test_id": "T0-MM04-LINEAGE",
+      "kind": "STATE_ASSIGNMENT_LINEAGE",
+      "status": "PASS",
+      "description": "Checked plan, cohort, generation, parent state, control, checkpoint, runtime, assignment and token bindings against current state.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "result": "All MM04 lineage and assignment identities matched; cohort is not superseded."
+    },
+    {
+      "test_id": "T0-MM04-AUTH",
+      "kind": "WORKER_AUTH",
+      "status": "PASS",
+      "description": "Verified the prompt-private capability secret against the public MM04 SHA-256 commitment and computed the cohort-bound HMAC proof without persisting the secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment matched and a correctly formatted cohort-bound HMAC proof was produced."
+    },
+    {
+      "test_id": "T0-MM04-EVALUATOR-GATE",
+      "kind": "ROLE_SPECIFIC_SCIENTIFIC_GATE",
+      "status": "PASS",
+      "description": "Tested the decision rule for absent evaluator execution during this short calibration assignment.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "result": "No Senior SWE benchmark outcome was inferred. Evaluator-execution evidence absent => architecture result NOT_MEASURED."
+    },
+    {
+      "test_id": "T0-MM04-ZERO-COST-GATE",
+      "kind": "CALIBRATION_COST",
+      "status": "PASS",
+      "description": "Confirmed replay-only calibration counters remain zero.",
+      "evidence_refs": [
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"
+      ],
+      "result": "Fresh evidence=0; private manifest reads=0; benchmark executions=0; deep research runs=0."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "notes": "MM04 completed its short authenticated worker-side transport/report obligations; full cohort calibration remains pending downstream fan-in."
+    },
+    {
+      "obligation_id": "MODEL_BINDING_HONESTY",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "notes": "Reported PARTIAL_UNVERIFIED rather than fabricating EXTRA_HIGH reasoning-effort verification."
+    },
+    {
+      "obligation_id": "NO_WORKER_DEEP_RESEARCH",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "notes": "No web/prior-art sweep was performed; no research question was needed for this deterministic gate test."
+    },
+    {
+      "obligation_id": "BENCHMARK_SUCCESSION",
+      "status": "NOT_APPLICABLE",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "notes": "This T0 calibration worker does not advance benchmark cursors. Registry confirms Mastermind and Math Foundry have explicit independent successor chains handled only after verified completion receipts."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121",
+      "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+      "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+      "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "schemas/verification.schema.json@d2e38cfae93663f109cbfc7dd12fd1370806be9c",
+      "schemas/integration.schema.json@b2fd1c003c1496e1731e190cf4e7785799489084",
+      "schemas/director.schema.json@e770a72f3e5394868dbea10a87335879b9d90f18",
+      "schemas/research.schema.json@3b0f2544decb7c8189caf8714632ef8267aa107a",
+      "schemas/benchmark_registry.schema.json@67954d036c03466950d56a386f5ce50c2d85ebde",
+      "schemas/benchmark_completion.schema.json@a0d5179cab908d348a2ac486fa3c5121b2c2dbce",
+      "schemas/private_manifest_contract.schema.json@05ef541391432327d1686f69d3b1646d8a6cbc35",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+    ],
+    "artifact_refs": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "reports/CAL-004-bcedd2a9/MM04.json"
+    ],
+    "notes": "Short deterministic calibration only. All 21 frozen control-file blob identities were fetched and matched. No public-source sweep, protected content, benchmark execution, runtime modification or promotion claim."
+  },
+  "claim_scope": "Worker-side T0 v2.3 authenticated transport/report calibration plus the deterministic MM04 rule that absent evaluator-execution evidence makes Senior SWE architecture outcomes NOT_MEASURED. No benchmark capability claim.",
+  "runtime_implementation_implication": "NONE. This receipt is external transport/control evidence only and cannot modify Mastermind or Math Foundry runtime truth.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "Calibration assignment sets MM04 fresh_allowed=false and no private manifest or evidence IDs are assigned."
+    },
+    {
+      "type": "BENCHMARK_NOT_EXECUTED",
+      "detail": "No Senior SWE or other benchmark execution occurred; architecture capability remains NOT_MEASURED."
+    },
+    {
+      "type": "DEEP_RESEARCH_NOT_RUN",
+      "detail": "Worker deep research is prohibited and the short test required no prior-art sweep."
+    },
+    {
+      "type": "RUNTIME_CHANGE_NONE",
+      "detail": "No runtime state, benchmark cursor, mechanism, or candidate was promoted or modified."
+    },
+    {
+      "type": "AUTHORITATIVE_REREAD_PENDING",
+      "detail": "origin_reread_claim is false by design; only MM06's later independent Git observation can satisfy calibration reread authority."
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Only public-safe control-plane reads, local cryptographic computation, and one immutable report write are in scope; calibration scientific/protected costs are zero."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the immutable MM04 receipt, executes frozen Draft-2020-12 schema/public-safety/auth verification and records authoritative reread evidence; MM04 then waits for the next active assignment. Do not run Senior SWE until transport is FRESH_ENABLED and a valid private FROZEN_PRE_OUTCOME manifest explicitly assigns it."
+}
