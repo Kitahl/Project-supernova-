@@ -1,0 +1,33 @@
+{
+  "task_network_plan_id":"61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id":"CAL-BR-006-6c6e91e2",
+  "assignment_id":"PS-BRANCH-CAL-BR-006-6c6e91e2",
+  "generation_seq":6,
+  "parent_state_git_identity":"57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+  "control_manifest_id":"CTRL-CAL-BR-006-6c6e91e2-V23-BR241",
+  "control_manifest_path":"control/CAL-BR-006-6c6e91e2.json",
+  "control_manifest_git_identity":"946e6992675ee7c7ceed75062bf2b215aa6dc415",
+  "network_checkpoint_id":"fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id":"9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "network_mode":"GITHUB_BUS_CALIBRATION",
+  "phase":"T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+  "short_test":true,
+  "benchmark_program":null,
+  "benchmark_suite_id":null,
+  "purpose":"Countable repaired replay-only branch GitOps full-loop test. Validate base-21 plus overlay-6 control closure, one immutable generation, 12 isolated worker branches, independent MM06 reread, MF06 integration, and one BIL00 consolidation PR. No fresh/protected benchmark evidence.",
+  "workers":{
+    "MF01":{"fresh_allowed":false,"role":"Representation/blocker evidence","goal":"Prove MF01 branch-isolated write and standardized report contract under repaired two-layer validation.","target_program":"MATH_FOUNDRY","visibility_token":"996090362def546ceb813c75412ffb08","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]},
+    "MF02":{"fresh_allowed":false,"role":"E1 route/schedule truth owner","goal":"Prove MF02 branch-isolated write and confirm E1 successor contract without executing it.","target_program":"MATH_FOUNDRY","visibility_token":"6ea369adce315e870c7e3db79adedcd7","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]},
+    "MF03":{"fresh_allowed":false,"role":"Lemma/operator/intermediate-object invention","goal":"Prove MF03 branch-isolated write and external/not-promoted candidate semantics under repaired validation.","target_program":"MATH_FOUNDRY","visibility_token":"d142170cb3aae2b0e24a8cb69c4bd429","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no new math required","no deep research"]},
+    "MF04":{"fresh_allowed":false,"role":"Adversarial destruction/falsifier","goal":"Attack the repaired base-plus-overlay validator, immutable generation, HMAC and branch-lineage logic.","target_program":"MATH_FOUNDRY","visibility_token":"6fb28bf5c30631d3d81744b3714d39a2","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]},
+    "MF05":{"fresh_allowed":false,"role":"C1 verified-product closure evidence/spec","goal":"Prove MF05 branch-isolated write and confirm C1 remains scientifically gated.","target_program":"MATH_FOUNDRY","visibility_token":"9c5043be2443be053962e809400bb8ef","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no C1 score","no deep research"]},
+    "MM01":{"fresh_allowed":false,"role":"React mechanism evidence","goal":"Prove MM01 branch-isolated write without protected React evidence.","target_program":"MASTERMIND","visibility_token":"5830df80bbd9d938b3140dc6137f8f9b","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]},
+    "MM02":{"fresh_allowed":false,"role":"DeepSWE mechanism evidence","goal":"Prove MM02 branch-isolated write and authority separation under repaired validation.","target_program":"MASTERMIND","visibility_token":"e96ab73a7a601efaad79c505041dacb7","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]},
+    "MM03":{"fresh_allowed":false,"role":"SlopCode contract/mechanism evidence","goal":"Prove MM03 branch-isolated write and typed NOT_MEASURED semantics under repaired validation.","target_program":"MASTERMIND","visibility_token":"dafc32a72e5b8839422f98efae3ec248","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]},
+    "MM04":{"fresh_allowed":false,"role":"Senior SWE architecture/mechanism evidence","goal":"Prove MM04 branch-isolated write and evaluator-validity gate under repaired validation.","target_program":"MASTERMIND","visibility_token":"cc397cc2dbaf455a936b2749ef6069af","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]},
+    "MM05":{"fresh_allowed":false,"role":"E3 executable mechanism control","goal":"Prove MM05 branch-isolated write and L/R/N NOT_MEASURED without executable artifacts.","target_program":"MASTERMIND","visibility_token":"c15f12e12c927ec0d2d6390aeee32b16","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","L/R/N NOT_MEASURED","no deep research"]},
+    "MM07":{"fresh_allowed":false,"role":"Before/after diagnostic and bounded self-proposal","goal":"Prove MM07 branch-isolated write without numeric before/after or self-promotion.","target_program":"MASTERMIND","visibility_token":"34966c24767227a1c0300206f5b56530","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no numeric before/after","no deep research"]},
+    "EXT01":{"fresh_allowed":false,"role":"Independent runtime/build + transport audit","goal":"Audit repaired two-layer validation, immutable generation, worker isolation, public/private split, model-binding honesty, benchmark succession and single-PR consolidation.","target_program":"JOINT","visibility_token":"27807d68a78bdf1c4807b8c7ab523207","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["worker branch only","SAFE_REPLAY_ONLY","no benchmark execution","no deep research"]}
+  },
+  "sealed_slots":["SEALED_ORACLE_SLOT_A","SEALED_ORACLE_SLOT_B"]
+}
