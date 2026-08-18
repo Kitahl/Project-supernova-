@@ -1,0 +1,108 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-001",
+  "worker_id": "MM07",
+  "report_id": "MM07-CAL-001",
+  "assignment_id": "PS-GHBUS-CAL-001",
+  "assignment_git_identity": "8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "b94b39344aa62e7ab61b1d27f0adcd40",
+  "status": "VALID_CALIBRATION_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_DIAGNOSTIC_DESIGN_ONLY",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "PROTOCOL.md@bf0290e2df191ad3fa86e3a5f3729a9562dbc5b4",
+    "WORKER_PROTOCOL.md@38a8617ba7235133034ade1f04c407abb24886dd",
+    "state/CURRENT.json@b23ab10b7e2fa8f381ef7a860f0115fc044c311c",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "schemas/report.schema.json@a48996ad63c6e5e76c69652e52720ce249cc8425",
+    "assignments/CAL-001.json@8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+    "canonical-main-prewrite@1ed7f32bdac63c19ea942acb007aa7788c1f0a25"
+  ],
+  "claim_scope": "Replay-safe MM07 calibration receipt and prospective diagnostic-design gate only. The active assignment names no baseline artifact, upgraded artifact, benchmark suite, or scoring rubric, so no numeric before/after diagnostic was eligible. No fresh/protected evidence, prospective capability claim, self-promotion, or runtime change.",
+  "runtime_implementation_implication": "NONE",
+  "next_action": "MM06 should verify this immutable receipt as part of CAL-001 fan-in. A future MM07 numeric diagnostic requires an explicit assignment binding baseline and upgraded artifact identities plus an already-consumed diagnostic suite and scoring rubric under the same evaluator, model/tools, total budget, and cache/retention policy.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "State and assignment are GITHUB_BUS_CALIBRATION with MM07 fresh_allowed=false, no opaque evidence IDs, and no private manifest."
+    },
+    {
+      "type": "NUMERIC_BEFORE_AFTER_NOT_MEASURED",
+      "detail": "The assignment does not name baseline/upgraded artifacts, an already-consumed diagnostic suite, or a frozen scoring rubric; the before/after gate therefore remained closed."
+    },
+    {
+      "type": "SELF_PROPOSAL_NOT_GENERATED",
+      "detail": "No numeric scores were frozen, so MM07 did not generate a NEXT_SELF_CANDIDATE. This avoids proposal drift from an unmeasured diagnostic."
+    },
+    {
+      "type": "CI_NOT_OBSERVED_PREWRITE",
+      "detail": "The canonical pre-write main commit exposed no combined status entries. Per protocol this is CI_NOT_OBSERVED, not PASS; assignment/schema/public-safety invariants were independently checked."
+    }
+  ],
+  "research_questions": [
+    {
+      "question": "What pre-registered paired or repeated-measures statistical design should govern stochastic before/after diagnostic comparisons on an already-consumed fixed suite so that uncertainty, order/cache effects, and repeated-attempt effects are controlled and the same-suite delta cannot be mistaken for prospective evidence?",
+      "parent_blocker_or_claim": "MM07 before/after diagnostic comparability and interpretation",
+      "why_it_matters": "MM07 is intended to measure bounded diagnostic change under identical evaluation conditions, but stochastic runs, retained state, order effects, and reuse of the same suite can create misleading deltas unless the comparison and uncertainty contract is frozen in advance.",
+      "closure_criterion": "Identify a practical design with explicit pairing/blocking/randomization, equal total-resource accounting, cache/context reset rules, repeated-run uncertainty, regression gates, and a clear statement that consumed-suite gains are diagnostic only; map it to MM07 report fields and promotion boundaries.",
+      "preferred_source_families": [
+        "empirical software engineering experimental design",
+        "paired/repeated-measures statistics",
+        "benchmark methodology",
+        "randomized algorithm evaluation"
+      ],
+      "urgency": "MEDIUM_HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "Before/after diagnostic and bounded self-proposal",
+    "assignment_role": "Before/after replay-safe diagnostic design",
+    "network_mode_observed": "GITHUB_BUS_CALIBRATION",
+    "assignment_identity_check": "PASS",
+    "public_private_safety": "PASS_NO_PROTECTED_CONTENT_OR_RAW_PROTECTED_IDENTIFIERS",
+    "fresh_authorization": "DISALLOWED_BY_CALIBRATION_AND_ASSIGNMENT",
+    "diagnostic_gate": {
+      "eligibility": "NOT_ELIGIBLE_NO_NAMED_ARTIFACTS_OR_SUITE",
+      "baseline_artifact": "NOT_ASSIGNED",
+      "upgraded_artifact": "NOT_ASSIGNED",
+      "benchmark_suite_id": "NOT_ASSIGNED",
+      "scoring_rubric_id": "NOT_ASSIGNED",
+      "required_same_conditions": [
+        "source/task/evaluator",
+        "model/tools",
+        "total budget",
+        "cache/retention policy"
+      ],
+      "before_score": "NOT_MEASURED",
+      "after_score": "NOT_MEASURED",
+      "delta_score": "NOT_MEASURED",
+      "case_pass_rate": "NOT_MEASURED",
+      "obligation_coverage": "NOT_MEASURED",
+      "preservation_rate": "NOT_MEASURED",
+      "false_positive_rate": "NOT_MEASURED",
+      "resource_normalized_score": "NOT_MEASURED",
+      "wins_losses_ties": "NOT_MEASURED",
+      "regressions": "NOT_MEASURED",
+      "same_suite_interpretation": "DIAGNOSTIC_ONLY_WHEN_EVENTUALLY_RUN"
+    },
+    "self_proposal": {
+      "status": "NOT_AVAILABLE_NO_FROZEN_SCORES",
+      "candidate_id": null,
+      "reason": "MM07 proposes at most one bounded candidate only after the assigned before/after scores are frozen. That prerequisite was not met."
+    }
+  },
+  "cost_ledger": {
+    "fresh_benchmark_tasks_opened": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "numeric_diagnostic_executions": 0,
+    "deep_research_runs": 0
+  },
+  "git_reread_verified": true,
+  "ci_status": "PREWRITE_CI_NOT_OBSERVED; INDEPENDENT_ASSIGNMENT_SCHEMA_PUBLIC_SAFETY_INVARIANT_CHECK_PASS"
+}
