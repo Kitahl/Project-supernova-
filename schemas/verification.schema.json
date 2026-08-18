@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Project Supernova Verification Manifest",
+  "type":"object",
+  "required":["task_network_plan_id","cohort_id","verification_id","assignment_id","network_checkpoint_id","runtime_state_id","safe_report_refs","quarantined_report_refs","missing_workers","calibration_pass","research_questions","verdict"],
+  "properties":{
+    "task_network_plan_id":{"type":"string"},"cohort_id":{"type":"string"},"verification_id":{"type":"string"},"assignment_id":{"type":"string"},"network_checkpoint_id":{"type":"string"},"runtime_state_id":{"type":"string"},
+    "safe_report_refs":{"type":"array","items":{"type":"object"}},"quarantined_report_refs":{"type":"array","items":{"type":"object"}},"missing_workers":{"type":"array","items":{"type":"string"}},
+    "calibration_pass":{"type":"boolean"},"research_questions":{"type":"array"},"verdict":{"type":"string"},"ci_checks":{"type":"object"},"negative_findings":{"type":"array"}
+  }
+}
