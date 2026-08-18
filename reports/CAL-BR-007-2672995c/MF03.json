@@ -1,0 +1,233 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W03 | Lemma & Operator Lab",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-007-2672995c",
+    "iteration_number": 7,
+    "role_id": "MF03",
+    "goal": "Prove MF03 branch-isolated write and external/not-promoted candidate semantics under the clean frozen generation.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-007-2672995c",
+  "worker_id": "MF03",
+  "report_id": "RPT-CAL-BR-007-2672995c-MF03",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-2672995c",
+  "assignment_git_identity": "1c373303e360bc8f47c774619cef5f2de6fa01eb",
+  "generation_seq": 7,
+  "parent_state_git_identity": "2672995c4ee9209bae72dbaedc72799d1ff78528",
+  "control_manifest_id": "CTRL-CAL-BR-007-2672995c-V23-BR241",
+  "control_manifest_git_identity": "27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "e152436ad64495511f426ec655facb46",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "060c3457b8ad4895f1f980a51bdea1a3d9ceca7eec2908c9a270b076bb4b8fb0",
+  "worker_auth_proof": "77ac62367ff3811e263e7d2bf24fdf4ea684587971b230ed4c25d21dbc5a5edc",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_REPLAY_TRANSPORT_ONLY",
+  "executive_status": "PASS: MF03 satisfied clean frozen-generation branch-isolated T0 transport/report obligations; candidate semantics were demonstrated as external and not promoted. No scientific, ProductStore, benchmark, capability, or runtime promotion is claimed.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF03-T0-CONTROL-CLOSURE",
+      "status": "PASS",
+      "description": "Verified BRANCH_STATE control, overlay identity, cohort bindings, exact frozen generation, assignment/control identities, assigned MF03 worker branch, and all 27 frozen base-plus-overlay control paths at the exact generation SHA.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@ps/v2.4-control-release",
+        "generation:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "control/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "assignments/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "next_action": "MM06 independently rereads the worker branch and validates frozen bindings."
+    },
+    {
+      "task_id": "MF03-T0-AUTH",
+      "status": "PASS",
+      "description": "Verified the prompt-private MF03 capability commitment and computed the cohort-bound HMAC proof without persisting or exposing the raw secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "next_action": "MM06 independently recomputes and verifies the HMAC."
+    },
+    {
+      "task_id": "MF03-T0-ROLE-SEMANTICS",
+      "status": "PASS",
+      "description": "Demonstrated an external candidate record whose disposition is explicitly not promoted; no new mathematical claim was created or required.",
+      "evidence_refs": [
+        "config/roles.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "MF03-T0-EXTERNAL-BOUNDARY-CANDIDATE-v2.4.1-CAL-BR-007"
+      ],
+      "next_action": "No promotion by MF03; any later candidate evaluation requires an independently eligible assignment and verification path."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MF03-MODEL-EFFORT-ATTESTATION",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "Model identity is available as GPT-5.6 Sol, but this execution surface does not independently attest the requested EXTRA_HIGH reasoning-effort setting.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "branch/CONFIG.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Require a runtime binding receipt before any model-sensitive fresh scientific promotion."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MF03-GENERATION-IMMUTABILITY",
+      "kind": "GIT_COMPARE",
+      "status": "PASS",
+      "description": "Compared the designated generation branch to the frozen generation_head_sha before report creation.",
+      "evidence_refs": [
+        "ps/gen/CAL-BR-007-2672995c",
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "IDENTICAL; ahead_by=0; behind_by=0."
+    },
+    {
+      "test_id": "MF03-WORKER-BASE",
+      "kind": "GIT_COMPARE",
+      "status": "PASS",
+      "description": "Confirmed the assigned MF03 worker branch was exactly at the frozen generation before this create-once write.",
+      "evidence_refs": [
+        "ps/work/CAL-BR-007-2672995c/MF03",
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "IDENTICAL; ahead_by=0; behind_by=0 before report creation."
+    },
+    {
+      "test_id": "MF03-FROZEN-CONTROL-BLOBS",
+      "kind": "GIT_BLOB_IDENTITY",
+      "status": "PASS",
+      "description": "Checked every file declared by the active control manifest against GitHub contents at the exact frozen generation SHA.",
+      "evidence_refs": [
+        "control/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "frozen-control-union@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "27/27 declared frozen paths matched their recorded Git blob SHA."
+    },
+    {
+      "test_id": "MF03-HMAC",
+      "kind": "HMAC_SHA256",
+      "status": "PASS",
+      "description": "Verified MF03 secret commitment then computed the frozen cohort proof over plan|cohort|assignment_git_identity|control_manifest_git_identity|worker_id.",
+      "evidence_refs": [
+        "config/worker_auth.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Commitment matched; proof populated in worker_auth_proof. Raw secret absent from receipt."
+    },
+    {
+      "test_id": "MF03-EXTERNAL-NOTPROMOTED",
+      "kind": "ROLE_SEMANTICS",
+      "status": "PASS",
+      "description": "Checked that the short role-test candidate is represented outside runtime/ProductStore truth and cannot self-promote.",
+      "evidence_refs": [
+        "MF03-T0-EXTERNAL-BOUNDARY-CANDIDATE-v2.4.1-CAL-BR-007",
+        "BRANCH_PROTOCOL.md@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Candidate disposition EXTERNAL_NOT_PROMOTED; NO_NEW_MATHEMATICAL_CLAIM; runtime effect NONE."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0 two consecutive clean short authenticated GitHub control/fan-in cohorts",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "CAL-BR-007-2672995c"
+      ],
+      "notes": "This receipt covers only the MF03 worker stage of the clean replay-only cohort; full cohort success still requires MM06, MF06 and BIL00 downstream stages."
+    },
+    {
+      "obligation_id": "No originating task promotion",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "MF03-T0-EXTERNAL-BOUNDARY-CANDIDATE-v2.4.1-CAL-BR-007"
+      ],
+      "notes": "The candidate remains external/not-promoted and changes no mathematical, scientific, ProductStore, benchmark, capability, or runtime truth."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "generation:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+      "control:27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+      "assignment:1c373303e360bc8f47c774619cef5f2de6fa01eb",
+      "parent_state:2672995c4ee9209bae72dbaedc72799d1ff78528",
+      "overlay:78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96"
+    ],
+    "artifact_refs": [
+      "ps/gen/CAL-BR-007-2672995c",
+      "ps/work/CAL-BR-007-2672995c/MF03",
+      "reports/CAL-BR-007-2672995c/MF03.json"
+    ],
+    "notes": "Replay-only transport evidence. All public references are control-plane artifacts; no fresh/protected benchmark payload, private manifest payload, or raw worker capability is included."
+  },
+  "claim_scope": "Transport/report-contract calibration plus a semantic demonstration that an MF03 candidate can remain external and unpromoted. No new theorem, lemma, operator result, solver result, benchmark result, VerifiedProduct, ProductStore object, capability gain, or runtime update is claimed.",
+  "runtime_implementation_implication": "NONE. This worker receipt cannot modify Math Foundry runtime truth, Mastermind state, ProductStore contents, benchmark cursors, or network/runtime state.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE",
+      "detail": "0 fresh evidence units consumed."
+    },
+    {
+      "type": "PROTECTED_MANIFEST",
+      "detail": "0 protected manifest reads."
+    },
+    {
+      "type": "BENCHMARK_EXECUTION",
+      "detail": "0 benchmark executions."
+    },
+    {
+      "type": "DEEP_RESEARCH",
+      "detail": "0 deep-research runs."
+    },
+    {
+      "type": "MATHEMATICAL_CLAIM",
+      "detail": "No new mathematical claim produced or required."
+    },
+    {
+      "type": "PROMOTION",
+      "detail": "No candidate, product, benchmark, capability, or runtime promotion attempted."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "candidate": {
+      "candidate_id": "MF03-T0-EXTERNAL-BOUNDARY-CANDIDATE-v2.4.1-CAL-BR-007",
+      "candidate_class": "EXTERNAL_VERIFIED_PRODUCT_CANDIDATE_SEMANTICS_DEMO",
+      "disposition": "EXTERNAL_NOT_PROMOTED",
+      "claim_type": "NO_NEW_MATHEMATICAL_CLAIM",
+      "dependencies": [],
+      "checker": "NOT_APPLICABLE_T0_TRANSPORT_SEMANTICS_ONLY",
+      "downstream_work_reduction": "NOT_MEASURED",
+      "runtime_effect": "NONE",
+      "productstore_effect": "NONE",
+      "verified_product_status": "NOT_PROMOTED",
+      "promotion_authority": "NONE_MF03_ORIGIN"
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "SAFE_REPLAY_ONLY short role test; no fresh/protected evidence, benchmark execution, deep research, or scientific promotion."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the exact MF03 worker branch/report blob, validates Draft-2020-12 schema, HMAC, public safety, branch lineage and validator results; MF03 performs no further write for this cohort."
+}
