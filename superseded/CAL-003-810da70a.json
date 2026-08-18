@@ -1,0 +1,21 @@
+{
+  "cohort_id": "CAL-003-810da70a",
+  "status": "SUPERSEDED_AFTER_FALSIFIER",
+  "old_task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "superseded_by_task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "reason": "Live MF04 adversarial calibration found three control defects: custom CI did not execute frozen Draft-2020-12 schemas, top-level public report schema permitted undeclared fields, and originating-worker git_reread_verified self-attested an event occurring only after create-once write. User also required standardized session naming/reporting, model-binding status, and automatic benchmark succession. The cohort remains useful diagnostic evidence but cannot count toward calibration or scientific promotion.",
+  "calibration_countable": false,
+  "scientific_promotion_eligible": false,
+  "fresh_or_protected_evidence_consumed": false,
+  "known_report_refs": [
+    {"path":"reports/CAL-003-810da70a/MF04.json","blob_sha":"7bea3aa49a47d3be5677aa5751501b56f84c2b0a"},
+    {"path":"reports/CAL-003-810da70a/MF05.json","blob_sha":"08133305dd6ef537feca62e6815b42ed108e77f2"},
+    {"path":"reports/CAL-003-810da70a/MM01.json","blob_sha":"8c07f7b67474b05043d7b14b0cbd034c8c1c97e3"}
+  ],
+  "preserve_findings": [
+    "GitHub scheduled read/auth/write behavior continued to work.",
+    "MF04 HMAC proof and frozen-control verification worked.",
+    "MF04 falsifier exposed schema/reread design gaps before fresh evidence.",
+    "No benchmark or protected evidence was consumed."
+  ]
+}
