@@ -1,0 +1,229 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W07 | Before/After Self-Bench",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-005-51f9a310",
+    "iteration_number": 5,
+    "role_id": "MM07",
+    "goal": "Prove MM07 branch-isolated write without numeric before/after or self-promotion.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-005-51f9a310",
+  "worker_id": "MM07",
+  "report_id": "PS-MM07-CAL-BR-005-51f9a310-R1",
+  "assignment_id": "PS-BRANCH-CAL-BR-005-51f9a310",
+  "assignment_git_identity": "62bbc215254da0803cfaf8a8f842c90105750a3b",
+  "generation_seq": 5,
+  "parent_state_git_identity": "7fff4d309e587667703d78f2e9635f8cba4f062a",
+  "control_manifest_id": "CTRL-CAL-BR-005-51f9a310-V23-BR24",
+  "control_manifest_git_identity": "a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "949330f32f39b4f2c29f55268eb1a56f",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "8381570a96782767ac210b67645196c3b7018059f9e0aae5aa104e10d70098d2",
+  "worker_auth_proof": "d48a244b4f6db0b8553f93ba963a828ea0fb9cad0c194e67d2c933b5471f6798",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_BRANCH_CALIBRATION_REPLAY",
+  "executive_status": "Branch-isolated MM07 transport/report calibration completed against the frozen generation. BEFORE/AFTER is NOT_MEASURED; no NEXT_SELF_CANDIDATE was proposed and no promotion was attempted.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM07-T0-TRANSPORT",
+      "status": "COMPLETE",
+      "description": "Verified v2.4 overlay branch state, immutable generation head, control/assignment identities, MM07 worker branch base, and all frozen control-file Git blob identities.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+        "ps/gen/CAL-BR-005-51f9a310@5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b",
+        "ps/work/CAL-BR-005-51f9a310/MM07@5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "next_action": "Write exactly one immutable MM07 report on the assigned worker branch; MM06 performs authoritative reread."
+    },
+    {
+      "task_id": "MM07-SHORT-DIAGNOSTIC",
+      "status": "NOT_MEASURED",
+      "description": "Numeric BEFORE/AFTER diagnostic intentionally not executed because short_test=true, fresh_allowed=false, and no benchmark program/suite is assigned.",
+      "evidence_refs": [
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "next_action": "Remain NOT_MEASURED; do not consume benchmark evidence."
+    },
+    {
+      "task_id": "MM07-SELF-PROPOSAL",
+      "status": "NOT_APPLICABLE",
+      "description": "No NEXT_SELF_CANDIDATE proposed and no self-promotion attempted.",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "next_action": "No action by MM07; originating workers cannot promote."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM07-MODEL-BINDING",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "Model identity is known as GPT-5.6 Sol, but the automation surface does not independently attest the requested EXTRA_HIGH reasoning effort.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "branch/CONFIG.json@6d64a09cf35078168f1a636d2254827dd261dff7"
+      ],
+      "owner": "MM06",
+      "fix_or_next": "Treat binding as PARTIAL_UNVERIFIED; no fresh/model-sensitive promotion evidence is produced in this calibration."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM07-GENERATION-HEAD",
+      "kind": "GIT_BRANCH_IDENTITY",
+      "status": "PASS",
+      "description": "Generation branch head equals the frozen generation_head_sha.",
+      "evidence_refs": [
+        "ps/gen/CAL-BR-005-51f9a310@5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "result": "identical; ahead_by=0; behind_by=0"
+    },
+    {
+      "test_id": "MM07-FROZEN-FILES",
+      "kind": "GIT_BLOB_IDENTITY",
+      "status": "PASS",
+      "description": "All frozen control files declared by the cohort control manifest were fetched at the exact generation SHA and matched their declared Git blob identities.",
+      "evidence_refs": [
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+        "ps/gen/CAL-BR-005-51f9a310@5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "result": "25/25 frozen file blob identities matched."
+    },
+    {
+      "test_id": "MM07-WORKER-BRANCH-BASE",
+      "kind": "GIT_BRANCH_ISOLATION",
+      "status": "PASS",
+      "description": "MM07 worker branch existed and was identical to the frozen generation SHA before report creation.",
+      "evidence_refs": [
+        "ps/work/CAL-BR-005-51f9a310/MM07@5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "result": "identical; ahead_by=0; behind_by=0 before write"
+    },
+    {
+      "test_id": "MM07-AUTH",
+      "kind": "HMAC_AUTHENTICATION",
+      "status": "PASS",
+      "description": "Prompt-private capability SHA-256 commitment matched the frozen public MM07 commitment; cohort-bound HMAC proof computed without persisting or publishing the raw capability.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "commitment PASS; HMAC proof generated"
+    },
+    {
+      "test_id": "MM07-BEFORE-AFTER",
+      "kind": "ROLE_DIAGNOSTIC",
+      "status": "NOT_MEASURED",
+      "description": "No numeric before/after benchmark was run.",
+      "evidence_refs": [
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b"
+      ],
+      "result": "NOT_MEASURED"
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0 two consecutive clean short authenticated GitHub control/fan-in cohorts",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "ps/gen/CAL-BR-005-51f9a310@5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+        "ps/work/CAL-BR-005-51f9a310/MM07"
+      ],
+      "notes": "MM07 contributes one branch-isolated authenticated replay-only worker receipt; cohort counting remains MM06/MF06/BIL00 authority."
+    },
+    {
+      "obligation_id": "scientific_controls.same_suite_before_after_is_diagnostic_only",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b"
+      ],
+      "notes": "No same-suite numeric result was produced in the short calibration."
+    },
+    {
+      "obligation_id": "scientific_controls.no_originating_task_promotion",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "notes": "No self-promotion or state transition attempted."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "generation:5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+      "control:a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+      "assignment:62bbc215254da0803cfaf8a8f842c90105750a3b",
+      "report-schema:8f20f43e862201477c401db3334d2afc06cbeae6",
+      "worker-auth:e8db1782ebf8e18112864d9c710502a18a35721b",
+      "roles:ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+    ],
+    "artifact_refs": [
+      "ps/gen/CAL-BR-005-51f9a310",
+      "ps/work/CAL-BR-005-51f9a310/MM07",
+      "control/CAL-BR-005-51f9a310.json",
+      "assignments/CAL-BR-005-51f9a310.json",
+      "schemas/report.schema.json",
+      "config/worker_auth.json"
+    ],
+    "notes": "Control-plane and transport evidence only. Exact generation head verified immutable; current cohort is not superseded; control and assignment blobs matched branch state; all 25 frozen files matched at the generation SHA."
+  },
+  "claim_scope": "Transport/control-plane calibration only. No numeric before/after result, benchmark outcome, protected evidence, fresh scientific evidence, prospective self-improvement result, runtime-state claim, or promotion claim.",
+  "runtime_implementation_implication": "None. This receipt does not change or certify Mastermind runtime implementation; it only records MM07 branch-isolated transport/auth/report compliance subject to MM06 independent reread.",
+  "negative_zero_outcomes": [
+    {
+      "type": "BEFORE_AFTER",
+      "detail": "NOT_MEASURED; no benchmark execution was authorized or performed."
+    },
+    {
+      "type": "NEXT_SELF_CANDIDATE",
+      "detail": "NONE; no self-candidate was proposed."
+    },
+    {
+      "type": "PROMOTION",
+      "detail": "NONE; MM07 did not promote or modify runtime/network/benchmark state."
+    },
+    {
+      "type": "FRESH_PROTECTED_RESEARCH",
+      "detail": "ZERO; no fresh evidence, protected manifest reads, benchmark executions, or deep-research runs."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "before_after_status": "NOT_MEASURED",
+    "next_self_candidate": null,
+    "promotion_status": "NONE",
+    "short_test": true
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only transport/report calibration; no scientific benchmark or research consumption."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "WAIT_FOR_MM06_INDEPENDENT_REREAD_AND_SCHEMA_AUTH_VERIFICATION; MM07 performs no further write, benchmark, promotion, or state transition."
+}
