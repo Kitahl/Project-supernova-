@@ -1,0 +1,19 @@
+{
+  "control_manifest_id":"CTRL-CAL-BR-006-433ad83a-V25",
+  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id":"CAL-BR-006-433ad83a",
+  "protocol_version":"2.5",
+  "generation_seq":6,
+  "parent_state_git_identity":"433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "control_release_commit_sha":"9ffdbd79532746b3003a4e5dbdc8f44f42c41a44",
+  "control_release_tree_sha":"b044f0a7a3de4ca566cd40c400a7670d24ac28f1",
+  "required_control_paths":[
+    "PROTOCOL.md","WORKER_PROTOCOL.md","BRANCH_PROTOCOL.md","BRANCH_WORKER_PROTOCOL.md","SESSION_STANDARD.md","plan/PLAN.json","branch/CONFIG.json","config/roles.json","config/worker_auth.json","config/task_registry_v25.json","config/tool_authority.json","config/repo_policy.json","benchmark/registry.json","requirements-validation.lock","schemas/state.schema.json","schemas/control.schema.json","schemas/assignment.schema.json","schemas/branch_report.schema.json","schemas/branch_verification.schema.json","schemas/branch_integration.schema.json","schemas/branch_director.schema.json","schemas/branch_consolidation.schema.json","schemas/benchmark_registry.schema.json","schemas/benchmark_completion.schema.json","schemas/private_manifest_contract.schema.json","schemas/runtime_update.schema.json","scripts/validate_bus.py","scripts/validate_branch_bus.py","scripts/reconcile_branch_statuses.py",".github/workflows/supernova-branch-reconciler.yml"
+  ],
+  "purpose":"First branch-isolated new-plan bootstrap. Prove immutable generation plus isolated workers, MM06, MF06 and one consolidation path. No calibration credit or fresh/protected benchmark evidence until GitHub independently reports main protected with the required consolidation policy.",
+  "calibration_countable":false,
+  "fresh_allowed":false,
+  "repo_policy_required":true,
+  "worker_auth_scheme":"PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "deep_research_owner":"BIL00"
+}
