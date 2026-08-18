@@ -1,0 +1,211 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W02 | DeepSWE Mechanisms",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-007-2672995c",
+    "iteration_number": 7,
+    "role_id": "MM02",
+    "goal": "Prove MM02 branch-isolated write and authority separation under the exact assignment phase.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-007-2672995c",
+  "worker_id": "MM02",
+  "report_id": "MM02-CAL-BR-007-2672995c",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-2672995c",
+  "assignment_git_identity": "1c373303e360bc8f47c774619cef5f2de6fa01eb",
+  "generation_seq": 7,
+  "parent_state_git_identity": "2672995c4ee9209bae72dbaedc72799d1ff78528",
+  "control_manifest_id": "CTRL-CAL-BR-007-2672995c-V23-BR241",
+  "control_manifest_git_identity": "27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "ac2be4d40d025b184dacfecd31763fbb",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "7b9b613a2030974f31a9f33e258c8fc47ffb70def450fc498e144f30d72c4f3a",
+  "worker_auth_proof": "929c6e6ce45b77bcf8083ea413533ea00201161a0027678afa137697f30f2433",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "AUTHENTICATED_BRANCH_TRANSPORT_REPLAY_ONLY",
+  "executive_status": "PASS — MM02 clean branch-isolated replay worker leg; control/auth/lineage and authority-separation checks passed with zero scientific evidence consumption.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM02-T0-CONTROL",
+      "status": "PASS",
+      "description": "Verified active branch overlay/cohort, exact immutable generation head, assignment/control identities, MM02 worker branch precondition, and exact frozen 21+6 control union.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@ps/v2.4-control-release",
+        "ps/gen/CAL-BR-007-2672995c@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "control/CAL-BR-007-2672995c.json@27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+        "assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb"
+      ],
+      "next_action": "MM06 independently rechecks all frozen identities and the post-write worker branch."
+    },
+    {
+      "task_id": "MM02-T0-AUTH",
+      "status": "PASS",
+      "description": "Verified MM02 prompt-private capability against the frozen public SHA-256 commitment and computed the frozen cohort HMAC proof without persisting the raw secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "next_action": "MM06 independently recomputes commitment and HMAC."
+    },
+    {
+      "task_id": "MM02-T0-AUTHORITY-SEPARATION",
+      "status": "PASS",
+      "description": "Preserved TASK_CONTRACT != PRIMARY_AUTHORITY != EVALUATOR as distinct authority classes; opened no benchmark item, evaluator payload, protected manifest, or public semantic source.",
+      "evidence_refs": [
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb"
+      ],
+      "next_action": "No scientific interpretation or mechanism promotion from this replay-only leg."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM02-I-MODEL-BINDING",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "Model identity is known as GPT-5.6 Sol, but the automation surface does not independently attest EXTRA_HIGH reasoning effort.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "owner": "BIL00/MM06",
+      "fix_or_next": "Keep PARTIAL_UNVERIFIED; do not use this replay leg as model-sensitive scientific promotion evidence."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM02-T-BRANCH-IMMUTABILITY",
+      "kind": "branch_lineage",
+      "status": "PASS",
+      "description": "Compared recorded generation head with ps/gen branch and MM02 worker branch before write.",
+      "evidence_refs": [
+        "generation_head:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "worker_branch:ps/work/CAL-BR-007-2672995c/MM02"
+      ],
+      "result": "Generation branch identical to recorded SHA; worker branch identical to generation before receipt creation."
+    },
+    {
+      "test_id": "MM02-T-CONTROL-27",
+      "kind": "control_freeze",
+      "status": "PASS",
+      "description": "Verified all 27 frozen control paths against the manifest at the exact immutable generation SHA.",
+      "evidence_refs": [
+        "control/CAL-BR-007-2672995c.json@27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+        "generation:ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "27/27 Git blob identities matched; no mixed-control revision detected."
+    },
+    {
+      "test_id": "MM02-T-HMAC",
+      "kind": "worker_authentication",
+      "status": "PASS",
+      "description": "Verified the public commitment and computed the frozen HMAC-SHA256 worker proof.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment match and cohort-bound HMAC computation succeeded."
+    },
+    {
+      "test_id": "MM02-T-AUTHORITY",
+      "kind": "semantic_authority_separation",
+      "status": "PASS",
+      "description": "Checked that replay work keeps task contract, primary authority, and evaluator as non-collapsed authority classes.",
+      "evidence_refs": [
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "result": "No semantic/evaluator evidence opened; no cross-authority generalization occurred."
+    },
+    {
+      "test_id": "MM02-T-ZERO-CONSUMPTION",
+      "kind": "cost_and_contamination",
+      "status": "PASS",
+      "description": "Confirmed the short test consumed no fresh/protected/benchmark/deep-research evidence.",
+      "evidence_refs": [
+        "assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb"
+      ],
+      "result": "fresh=0; protected_manifest_reads=0; benchmark_executions=0; deep_research_runs=0."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "control/CAL-BR-007-2672995c.json@27facdd14dfe7f1b41d9e8bafdec3f669aa484d4"
+      ],
+      "notes": "Worker leg satisfies its branch-isolated authenticated replay obligation; cohort completion still depends on MM06/MF06/BIL00."
+    },
+    {
+      "obligation_id": "SHORT_FULL_TEST_REPLAY_ONLY_END_TO_END",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb"
+      ],
+      "notes": "MM02 performed only minimal deterministic transport/report work and no broad public-source research."
+    },
+    {
+      "obligation_id": "NO_ORIGINATING_TASK_PROMOTION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "notes": "No mechanism, benchmark, runtime, or model promotion is claimed."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "BRANCH_STATE:df60b078f0a14058d94696ea1b3e24c985f8d8e6",
+      "GENERATION:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+      "CONTROL:27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+      "ASSIGNMENT:1c373303e360bc8f47c774619cef5f2de6fa01eb",
+      "PLAN:cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "ROLES:ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "WORKER_AUTH:e8db1782ebf8e18112864d9c710502a18a35721b",
+      "REPORT_SCHEMA:8f20f43e862201477c401db3334d2afc06cbeae6",
+      "BRANCH_CONFIG:6451943a34cd8d5d29e910cc154a72d5af9f7ec1"
+    ],
+    "artifact_refs": [
+      "ps/gen/CAL-BR-007-2672995c@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+      "ps/work/CAL-BR-007-2672995c/MM02",
+      "reports/CAL-BR-007-2672995c/MM02.json"
+    ],
+    "notes": "All control/provenance reads were from the control-release pointer or immutable generation SHA; mutable main was not used for in-flight control. Worker self-reread, if attempted, is non-authoritative."
+  },
+  "claim_scope": "Branch-GitOps transport/authentication and authority-separation replay only. No benchmark, protected, evaluator, primary-semantic-source, or fresh scientific evidence was consumed.",
+  "runtime_implementation_implication": "NONE",
+  "negative_zero_outcomes": [
+    {
+      "type": "SCIENTIFIC_DELTA",
+      "detail": "No DeepSWE mechanism update or scientific uplift measured."
+    },
+    {
+      "type": "EVIDENCE_CONSUMPTION",
+      "detail": "Fresh/protected/benchmark/deep-research consumption remained zero."
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Only GitHub control-plane reads, local commitment/HMAC computation, and one worker-branch receipt write are in scope."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the MM02 worker branch/report, verifies exact branch diff/head, Draft-2020-12 schema, HMAC, public safety, lineage, and zero-consumption ledger. MM02 performs no further work for this cohort."
+}
