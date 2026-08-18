@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Protected Fresh Manifest Contract (payload must remain private)",
+  "description":"Schema contract only. Actual protected manifest payloads must live in the approved private vault, never this public repository.",
+  "type":"object",
+  "required":["private_manifest_id","status","task_network_plan_id","cohort_id","network_checkpoint_id","runtime_state_id","evaluator_contract","execution_contract","budget_accounting","randomization_contract","cache_context_retention_contract","contamination_guard","ownership","sealed_exclusions"],
+  "properties":{
+    "private_manifest_id":{"type":"string"},"status":{"const":"FROZEN_PRE_OUTCOME"},"task_network_plan_id":{"type":"string"},"cohort_id":{"type":"string"},"network_checkpoint_id":{"type":"string"},"runtime_state_id":{"type":"string"},
+    "evaluator_contract":{"type":"object"},"execution_contract":{"type":"object"},"budget_accounting":{"type":"object"},"randomization_contract":{"type":"object"},"cache_context_retention_contract":{"type":"object"},"contamination_guard":{"type":"object"},"ownership":{"type":"object"},"sealed_exclusions":{"type":"array"}
+  }
+}
