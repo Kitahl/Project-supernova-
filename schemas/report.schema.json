@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Project Supernova Worker Report",
+  "type":"object",
+  "required":["task_network_plan_id","cohort_id","worker_id","report_id","assignment_id","assignment_git_identity","network_checkpoint_id","runtime_state_id","visibility_token","status","mode","evidence_tier","fresh_evidence_ids","source_version_ids","claim_scope","runtime_implementation_implication","next_action","negative_zero_outcomes","research_questions"],
+  "properties":{
+    "task_network_plan_id":{"type":"string"},"cohort_id":{"type":"string"},"worker_id":{"type":"string"},"report_id":{"type":"string"},"assignment_id":{"type":"string"},"assignment_git_identity":{"type":"string"},"network_checkpoint_id":{"type":"string"},"runtime_state_id":{"type":"string"},"visibility_token":{"type":"string"},
+    "status":{"type":"string"},"mode":{"type":"string"},"evidence_tier":{"type":"string"},
+    "fresh_evidence_ids":{"type":"array","items":{"type":"string"}},
+    "private_manifest_id":{"type":["string","null"]},"private_manifest_git_identity":{"type":["string","null"]},
+    "source_version_ids":{"type":"array","items":{"type":"string"}},
+    "claim_scope":{"type":"string"},"runtime_implementation_implication":{"type":"string"},"next_action":{"type":"string"},
+    "negative_zero_outcomes":{"type":"array"},
+    "research_questions":{"type":"array","items":{"type":"object","required":["question","parent_blocker_or_claim","why_it_matters","closure_criterion","preferred_source_families","urgency"],"properties":{"question":{"type":"string"},"parent_blocker_or_claim":{"type":"string"},"why_it_matters":{"type":"string"},"closure_criterion":{"type":"string"},"preferred_source_families":{"type":"array","items":{"type":"string"}},"urgency":{"type":"string"}}}},
+    "role_payload":{"type":"object"},"cost_ledger":{"type":"object"},"git_reread_verified":{"type":"boolean"},"ci_status":{"type":"string"}
+  }
+}
