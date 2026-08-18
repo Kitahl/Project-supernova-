@@ -1,0 +1,297 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W01 | React Mechanisms",
+    "target_program": "MASTERMIND",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MM01",
+    "goal": "Prove MM01 can complete the standardized v2.3 transport/report contract with no protected React task consumption.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MM01",
+  "report_id": "MM01-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "7a2981a0ac920cd13908f0a09c896fae",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6",
+  "worker_auth_proof": "3e3ad125c9c9a998ecad2453f4458c73cc17ea9ffbc51e2a11209bdfaafb371e",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "V2.3_SHORT_DETERMINISTIC_TRANSPORT_CONTROL_REPLAY",
+  "executive_status": "PASS: MM01 verified the active v2.3 frozen-control calibration assignment, lineage, worker authentication, public-safe replay constraints, and the React-specific fresh-evidence gate. No protected React task, scientific benchmark, private manifest, deep research, or runtime/state modification was consumed or performed.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM01-T0-FROZEN-CONTROL",
+      "status": "PASS",
+      "description": "Fetched the active control manifest and verified the 21 frozen control-plane entries against their declared Git blob identities; the active control identity matched state.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "next_action": "MM06 independently repeat frozen-control and Draft 2020-12 schema checks."
+    },
+    {
+      "task_id": "MM01-T0-ASSIGNMENT-AUTH",
+      "status": "PASS",
+      "description": "Verified plan, cohort, generation, parent-state lineage, control identity, checkpoint, runtime, MM01 assignment entry/token, fresh=false, empty protected evidence ownership, and worker-auth commitment; computed the cohort-bound HMAC proof without exposing the raw secret.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+      ],
+      "next_action": "MM06 independently verify MM01 commitment and report HMAC."
+    },
+    {
+      "task_id": "MM01-T0-REACT-GATE",
+      "status": "PASS",
+      "description": "Confirmed the role-specific plan gate only: the registry identifies MM-ORACLE-PHASE1-REACT as the active Mastermind suite, but CAL-004 is GITHUB_BUS_CALIBRATION with global fresh=false; MM01 fresh_allowed=false, has no opaque evidence IDs and no private manifest. Therefore no protected React task may be opened or consumed in this run.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "next_action": "Remain replay-only; defer any React mechanism evidence to a separately fresh-authorized assignment with a valid private frozen pre-outcome manifest."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "O-T0-CALIBRATION_AND_SCHEMA_RUNTIME",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The active external runtime blocker is transport/schema calibration. State requires two consecutive clean v2.3 authenticated short cohorts; calibration streak is 0/2 and fresh_allowed_globally=false.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Complete full clean CAL-004 fan-in and independent verification/integration/decision, then obtain a second consecutive clean v2.3 cohort before transport may become fresh-enabled."
+    },
+    {
+      "issue_id": "O-MM01-REACT-FRESH-GATE",
+      "severity": "MEDIUM",
+      "status": "BLOCKED",
+      "summary": "React mechanism evidence is scientifically NOT_MEASURED in this calibration run because MM01 has fresh_allowed=false, no assigned evidence IDs, and no private frozen manifest.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "owner": "MM01",
+      "fix_or_next": "Do not consume protected React evidence until a future fresh-enabled cohort explicitly assigns disjoint evidence and a valid private FROZEN_PRE_OUTCOME manifest."
+    },
+    {
+      "issue_id": "O-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "The runtime identifies the model as GPT-5.6 Sol, but no reliable reasoning-effort receipt is exposed; binding is therefore PARTIAL_UNVERIFIED.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "owner": "EXT01",
+      "fix_or_next": "Keep model-sensitive fresh promotion blocked unless a future frozen execution manifest and runtime receipt satisfy the binding rule."
+    },
+    {
+      "issue_id": "O-CI-OBSERVABILITY",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "The GitHub combined-status surface exposed no status entries for the observed prewrite main HEAD; this is CI_NOT_OBSERVED, not PASS.",
+      "evidence_refs": [
+        "main-prewrite@78a544d8a537ff8a2326f03ded01d6c7900fc73c",
+        ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+      ],
+      "owner": "MM06",
+      "fix_or_next": "MM06 should independently execute/fetch deterministic schema/auth validation evidence and record actual CI observation without treating absence as success."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-CONTROL-FREEZE",
+      "kind": "transport/control",
+      "status": "PASS",
+      "description": "Active control manifest identity and complete frozen file set were checked; no mixed-control revision was observed.",
+      "evidence_refs": ["control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"],
+      "result": "21/21 frozen control entries matched their declared Git blob identities."
+    },
+    {
+      "test_id": "T0-LINEAGE-ASSIGNMENT",
+      "kind": "lineage",
+      "status": "PASS",
+      "description": "Current state, control, assignment and parent-state blob agree on the active cohort lineage, generation transition, checkpoint and runtime; CAL-004 is not superseded.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "T0-WORKER-AUTH",
+      "kind": "authentication",
+      "status": "PASS",
+      "description": "MM01 prompt-private secret SHA-256 commitment matches the frozen public commitment and the cohort-bound HMAC proof was computed using the frozen formula.",
+      "evidence_refs": ["config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"],
+      "result": "Commitment and HMAC verified/computed without printing or persisting the raw secret."
+    },
+    {
+      "test_id": "T0-REPLAY-SAFETY",
+      "kind": "safety",
+      "status": "PASS",
+      "description": "Calibration constraints were honored: no fresh evidence, protected manifest read, React task consumption, benchmark execution, broad public-source sweep, or deep research.",
+      "evidence_refs": ["assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"],
+      "result": "All protected/scientific counters remain zero."
+    },
+    {
+      "test_id": "T0-MM01-REACT-PLAN-GATE",
+      "kind": "plan-gating",
+      "status": "PASS",
+      "description": "Confirmed that the active Mastermind registry suite is MM-ORACLE-PHASE1-REACT while this worker assignment is replay-only and lacks fresh authorization/private evidence ownership.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "result": "Protected React task consumption = 0; mechanism outcome remains NOT_MEASURED."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0-two-consecutive-clean-short-authenticated-cohorts",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "notes": "This MM01 receipt is one worker contribution to the active v2.3 short cohort; only complete end-to-end fan-in and downstream MM06/MF06/BIL00 processing can make the cohort countable."
+    },
+    {
+      "obligation_id": "MM01-react-mechanism-evidence",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a"
+      ],
+      "notes": "Fresh React mechanism evidence is intentionally not measured in T0 calibration. No task content, evaluator outcome, or protected artifact was opened."
+    },
+    {
+      "obligation_id": "worker-no-deep-research",
+      "status": "ALIGNED",
+      "evidence_refs": ["WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"],
+      "notes": "No public prior-art sweep or deep research was performed."
+    },
+    {
+      "obligation_id": "persistent-session-standardized-naming",
+      "status": "ALIGNED",
+      "evidence_refs": ["SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"],
+      "notes": "The report uses the stable lane name and standardized dynamic session-header fields."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121",
+      "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+      "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+      "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "schemas/verification.schema.json@d2e38cfae93663f109cbfc7dd12fd1370806be9c",
+      "schemas/integration.schema.json@b2fd1c003c1496e1731e190cf4e7785799489084",
+      "schemas/director.schema.json@e770a72f3e5394868dbea10a87335879b9d90f18",
+      "schemas/research.schema.json@3b0f2544decb7c8189caf8714632ef8267aa107a",
+      "schemas/benchmark_registry.schema.json@67954d036c03466950d56a386f5ce50c2d85ebde",
+      "schemas/benchmark_completion.schema.json@a0d5179cab908d348a2ac486fa3c5121b2c2dbce",
+      "schemas/private_manifest_contract.schema.json@05ef541391432327d1686f69d3b1646d8a6cbc35",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c",
+      "main-prewrite@78a544d8a537ff8a2326f03ded01d6c7900fc73c"
+    ],
+    "artifact_refs": [
+      "reports/CAL-004-bcedd2a9/MM01.json"
+    ],
+    "notes": "All 21 frozen control-plane entries declared by the active control manifest were verified at their exact blob identities. No private vault or protected payload was read."
+  },
+  "claim_scope": "Short deterministic v2.3 T0 transport/control calibration only. This receipt establishes MM01 control/assignment/auth/session/report participation and the React-specific fresh-evidence gate; it is not scientific React benchmark evidence and makes no capability or runtime claim.",
+  "runtime_implementation_implication": "NONE. No Mastermind runtime change, React mechanism promotion, benchmark cursor change, network-state change, or product admission is authorized or implied.",
+  "negative_zero_outcomes": [
+    {
+      "type": "PROTECTED_REACT_TASKS_CONSUMED",
+      "detail": "0. No protected React task, prompt, item, evaluator outcome, or hidden artifact was opened."
+    },
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "fresh_allowed_globally=false and MM01 fresh_allowed=false; fresh_evidence_ids is empty."
+    },
+    {
+      "type": "PROTECTED_MANIFEST_NOT_READ",
+      "detail": "No private manifest was assigned or accessed; protected_manifest_reads=0."
+    },
+    {
+      "type": "BENCHMARK_NOT_EXECUTED",
+      "detail": "Short-test constraints prohibit benchmark execution; the active React suite was used only as public registry metadata for the gate."
+    },
+    {
+      "type": "MECHANISM_RESULT_NOT_MEASURED",
+      "detail": "No React mechanism inference, mutation, implementation, before/after score, or promotion was attempted."
+    },
+    {
+      "type": "DEEP_RESEARCH_NOT_RUN",
+      "detail": "MM01 is not the deep-research owner and performed no broad public-source sweep."
+    },
+    {
+      "type": "RUNTIME_OR_STATE_CHANGE_NONE",
+      "detail": "No runtime artifact, network state, benchmark cursor, scientific claim, or promotion state was changed."
+    },
+    {
+      "type": "CI_NOT_OBSERVED",
+      "detail": "The observed prewrite main commit exposed no combined status entries; absence was not treated as PASS."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "protected_react_task_consumption": 0,
+    "react_mechanism_evidence_status": "NOT_MEASURED",
+    "role_specific_gate": "MM-ORACLE-PHASE1-REACT is active registry metadata, but MM01 is not authorized to consume it in CAL-004 because transport is GITHUB_BUS_CALIBRATION, global and worker fresh flags are false, assigned opaque evidence IDs are empty, and no private manifest is assigned.",
+    "origin_promotion": "FORBIDDEN"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Only public GitHub control-plane/lineage reads, local auth computation, prewrite CI-status observation, and one immutable report creation were used."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently fetch this immutable report, execute the frozen Draft 2020-12 report schema, verify MM01 commitment/HMAC/public safety and record authoritative post-write reread evidence. After all 12 worker reports are safe, MF06 integrates and BIL00 decides whether CAL-004 counts. MM01 must not consume protected React evidence or advance any state in this calibration run."
+}
