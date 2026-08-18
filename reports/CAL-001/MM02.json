@@ -1,0 +1,109 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-001",
+  "worker_id": "MM02",
+  "report_id": "MM02-CAL-001",
+  "assignment_id": "PS-GHBUS-CAL-001",
+  "assignment_git_identity": "8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "a6c8f8eea2065adafb3109a24511a5a1",
+  "status": "VALID_CALIBRATION_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_PROTOCOL+PRIMARY_AUTHORITY_DRIFT_CHECK",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "PROTOCOL.md@13ddb680924151e3e4fe68fda9040ebbc97c6641",
+    "WORKER_PROTOCOL.md@38a8617ba7235133034ade1f04c407abb24886dd",
+    "state/CURRENT.json@b23ab10b7e2fa8f381ef7a860f0115fc044c311c",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "schemas/report.schema.json@a48996ad63c6e5e76c69652e52720ce249cc8425",
+    "assignments/CAL-001.json@8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+    "scripts/validate_bus.py@eb9aa0674e71ad0599079e593729920f678338f2",
+    ".github/workflows/validate-bus.yml@6a0c30c584dfca01c06f39be5fbfbb7076cc0b09",
+    "OPAQUE_PRIOR_REPLAY_RECEIPT@a2abfb6b8981e7baf02311628d7a1bfcef76c3be",
+    "Go Doc Comments:https://go.dev/doc/comment audited 2026-08-18",
+    "RFC9745:March-2025 audited 2026-08-18",
+    "RFC8594:May-2019 audited 2026-08-18"
+  ],
+  "claim_scope": "Replay-safe DeepSWE mechanism analysis for canonical-bus calibration plus narrow primary-authority drift checks. No fresh or protected benchmark evidence, prospective benchmark result, runtime change, or promotion claim.",
+  "runtime_implementation_implication": "NONE",
+  "next_action": "MM06 should verify this immutable canonical-bus receipt and its CI/public-safety status as part of CAL-001 fan-in. MM02 should not repeat CAL-001 and should wait for the next active assignment after director advancement.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "Calibration mode and assignment both prohibit fresh work; no protected manifest was fetched and fresh_evidence_ids is empty."
+    },
+    {
+      "type": "MECHANISM_PROMOTION_NONE",
+      "detail": "Replay-safe analysis found no evidence sufficient to promote a new DeepSWE mechanism."
+    },
+    {
+      "type": "RUNTIME_CHANGE_NONE",
+      "detail": "No executable candidate, code change, or runtime update was authorized or measured."
+    },
+    {
+      "type": "CI_NOT_YET_AVAILABLE_AT_REPORT_CREATION",
+      "detail": "The canonical repo defines a validation workflow, but no combined status was exposed for the pre-write main-head commit; downstream verifier must check the report commit status independently."
+    }
+  ],
+  "research_questions": [
+    {
+      "question": "Which established static or dynamic analysis methods can soundly certify that an interface-contract change has propagated through every relevant producer, consumer, call site, asynchronous cancellation or error path, CLI or web boundary, and temporal checkpoint without relying on a manually maintained checklist?",
+      "parent_blocker_or_claim": "MM02 complete call-site propagation and temporal/state contract closure",
+      "why_it_matters": "Authority separation prevents semantic overlearning, but DeepSWE still needs a transferable machine-checkable closure certificate showing that a correct contract change reached all dependent surfaces rather than only the edited implementation locus.",
+      "closure_criterion": "Identify primary-source methods with explicit soundness or coverage guarantees and practical artifacts, then map their assumptions to multi-layer software changes including asynchronous cancellation and boundary translation; otherwise record the exact residual gap.",
+      "preferred_source_families": [
+        "PLDI/POPL/ICSE/FSE primary papers",
+        "program slicing and change-impact analysis",
+        "typestate and effect systems",
+        "API evolution and semantic-diff research",
+        "official compiler and static-analysis documentation"
+      ],
+      "urgency": "MEDIUM_HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "DeepSWE mechanism evidence",
+    "assignment_role": "DeepSWE mechanism replay-safe generalization",
+    "network_mode_observed": "GITHUB_BUS_CALIBRATION",
+    "fresh_authorization": "DISALLOWED_BY_CALIBRATION_AND_ASSIGNMENT",
+    "public_private_safety": "PASS_NO_PROTECTED_CONTENT_OR_RAW_PROTECTED_IDENTIFIERS",
+    "ci_prewrite_status": "NO_COMBINED_STATUS_EXPOSED_ON_PREWRITE_HEAD",
+    "replay_analysis": {
+      "bounded_mechanism": "TASK_CONTRACT != PRIMARY_TECHNICAL_AUTHORITY != EVALUATOR",
+      "decision": "NO_UPDATE_SUBSUMED_BY_EXISTING_AUTHORITY_SEPARATION",
+      "primary_authority_checks": [
+        {
+          "source": "Go Doc Comments",
+          "finding": "Current Go documentation still permits cross-package documentation links using either a full import path or the assumed package name, and a renamed import identifier is an assumed package name."
+        },
+        {
+          "source": "RFC 9745",
+          "finding": "RFC 9745 remains the Deprecation HTTP response-header specification and explicitly uses RFC 8594 for Sunset."
+        },
+        {
+          "source": "RFC 8594",
+          "finding": "RFC 8594 remains the Sunset HTTP response-header specification."
+        }
+      ],
+      "contract_propagation_hardening": {
+        "status": "REPLAY_SAFE_RESEARCH_QUESTION_ONLY",
+        "candidate_statement": "Do not certify an interface-contract change as propagated merely because each requirement is mentioned; require mechanically evidenced authority-to-implementation-to-consumer-to-boundary-or-temporal-checkpoint validation paths for every relevant dependency surface.",
+        "promotion_status": "NOT_ELIGIBLE"
+      },
+      "prospective_status": "NOT_MEASURED",
+      "regression_status": "NOT_MEASURED"
+    }
+  },
+  "cost_ledger": {
+    "fresh_benchmark_tasks_opened": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "narrow_primary_source_checks": 3,
+    "deep_research_runs": 0
+  },
+  "ci_status": "PREWRITE_HEAD_NO_COMBINED_STATUS; REPORT_COMMIT_REQUIRES_DOWNSTREAM_CHECK"
+}
