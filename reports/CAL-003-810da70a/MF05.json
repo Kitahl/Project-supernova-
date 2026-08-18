@@ -1,0 +1,186 @@
+{
+  "task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "cohort_id": "CAL-003-810da70a",
+  "worker_id": "MF05",
+  "report_id": "MF05-CAL-003-810da70a",
+  "assignment_id": "PS-GHBUS-CAL-003-810da70a",
+  "assignment_git_identity": "4db032c468fb1ee2edf87267fe5884d42d99b1d9",
+  "generation_seq": 3,
+  "parent_state_git_identity": "810da70aa50f854ccd27786f8d1edfa421974604",
+  "control_manifest_id": "CTRL-CAL-003-810da70a-V22",
+  "control_manifest_git_identity": "9c0d21898b3bb6f1e41d9f7e5445da74438fdf2a",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "e543302a368f629aee6b9cdb65a9c582",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "473363d1e1fc0aae9e9df22da0cbd5f8695491863ff6cf82f2bc0a6ba86326f4",
+  "worker_auth_proof": "1017e11704cf1c5f05402b650bf97d1714c049dd2679f2c990900ba1bdb20128",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_C1_PREREQUISITE_AUDIT+FROZEN_CONTROL_IDENTITY_CHECK",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "state/CURRENT.json@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+    "parent-state-blob@810da70aa50f854ccd27786f8d1edfa421974604",
+    "control/CAL-003-810da70a.json@9c0d21898b3bb6f1e41d9f7e5445da74438fdf2a",
+    "assignments/CAL-003-810da70a.json@4db032c468fb1ee2edf87267fe5884d42d99b1d9",
+    "PROTOCOL.md@46fbe337605e7a44904179109279a51ffc45ae5e",
+    "WORKER_PROTOCOL.md@85601caa3468b58abeaf6d39c56f0994a65c75c3",
+    "plan/PLAN.json@b1da6b552b2627414202a34d6a3f9fa2a21cb964",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+    "schemas/control.schema.json@9602c91a0c18f143b212fe6436ceb0839904bb5d",
+    "schemas/state.schema.json@b265ef615b6207c94996fe4eaef61bcca51674aa",
+    "schemas/assignment.schema.json@d0e1a9fc4c82f68c98961a89bf77da4908edc6bb",
+    "schemas/report.schema.json@f5317f12f341ef1d686574f2c7f97bddcdb4ad89",
+    "schemas/verification.schema.json@e51f6f9fe7249f21431df8f0c3164d60aed5a20a",
+    "schemas/integration.schema.json@20dbff6221339bd1a4395f9e727898703ee0c792",
+    "schemas/director.schema.json@ce6477254e866b0cf954797938e05632f6a21aa5",
+    "schemas/research.schema.json@1f041cb60c0117f3fc4134ada8ab2e99d9d68756",
+    "scripts/validate_bus.py@97cbfb4537688827ca3619dd3c265bb76cdd7168",
+    ".github/workflows/validate-bus.yml@6a0c30c584dfca01c06f39be5fbfbb7076cc0b09",
+    "canonical-main-prewrite@c6784e572e54a01386161c968c619b2e0997398c"
+  ],
+  "claim_scope": "Replay-safe C1 verified-product closure prerequisite/specification audit for the active authenticated frozen-control calibration cohort. No fresh/protected benchmark evidence, C1 comparative score, prospective uplift, runtime change, or promotion claim.",
+  "runtime_implementation_implication": "No runtime implementation is established by this calibration assignment. C1 remains an implementation requirement only: a generic verified-product reuse layer must bind product identity/type/version/dependencies/checker/operator and support the frozen three-arm closure experiment before any C1 score can be claimed.",
+  "next_action": "MM06 should independently verify this authenticated immutable receipt. Scientifically, do not run C1 until transport calibration is complete, actual generic product-reuse runtime support exists, and a later fresh assignment/private manifest explicitly freezes the C1 execution contract.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "State and MF05 assignment are GITHUB_BUS_CALIBRATION with fresh_allowed=false; no private manifest was fetched and fresh_evidence_ids is empty."
+    },
+    {
+      "type": "C1_COMPARATIVE_SCORE_NOT_MEASURED",
+      "detail": "Closure-disabled, closure-enabled/product-absent, and closure-enabled/verified-product-present arms were not executed. No C0/C1/C2 or net verified-value score is claimed."
+    },
+    {
+      "type": "RUNTIME_SUPPORT_NOT_ESTABLISHED",
+      "detail": "The frozen calibration artifacts do not establish an executable generic VerifiedProduct/ProductStore-style C1 runtime surface assigned for measurement; per role contract this run emits implementation requirements only."
+    },
+    {
+      "type": "BENCHMARK_EXECUTIONS_ZERO",
+      "detail": "No benchmark task or protected holdout was opened or executed."
+    },
+    {
+      "type": "DEEP_RESEARCH_ZERO",
+      "detail": "MF05 performed no deep research; only structured research questions are emitted."
+    },
+    {
+      "type": "FROZEN_CONTROL_DRIFT_NONE_OBSERVED",
+      "detail": "All 15 control files named by the active control manifest reread with exactly the frozen Git blob identities."
+    },
+    {
+      "type": "WORKER_AUTH_COMMITMENT_MATCH",
+      "detail": "The prompt-private MF05 capability material matched the public MF05 commitment and produced the required cohort-bound HMAC proof without exposing the secret."
+    },
+    {
+      "type": "CI_NOT_OBSERVED_PREWRITE",
+      "detail": "The connector exposed no combined status entries for the pre-write main commit; this is recorded as CI_NOT_OBSERVED, not PASS."
+    }
+  ],
+  "research_questions": [
+    {
+      "question": "What is the minimal machine-checkable contract for generic verified-product reuse that preserves product type/version/dependency/checker semantics across producer and consumer operations while supporting revocation and invalidation?",
+      "parent_blocker_or_claim": "C1 generic verified-product closure/reuse",
+      "why_it_matters": "C1 cannot be measured soundly until reusable products have an explicit identity, authority, compatibility, dependency-freshness, and invalidation contract rather than being treated as reusable merely because bytes or a prior result exist.",
+      "closure_criterion": "Produce an executable specification with typed product identity, producer verification receipt, dependency and checker bindings, consumer compatibility predicate, invalidation/revalidation rules, and negative tests that reject stale, wrong-type, wrong-version, wrong-checker, and incompatible-consumer reuse.",
+      "preferred_source_families": [
+        "program proof-carrying artifact systems",
+        "build/cache provenance and dependency validation",
+        "typed artifact and proof-object systems",
+        "software supply-chain attestation standards"
+      ],
+      "urgency": "HIGH"
+    },
+    {
+      "question": "What prospective experimental design best isolates a genuine verified-product reuse effect from ordinary memoization, warm caches, retained process state, and unequal amortization when comparing closure disabled, product absent, and verified product present?",
+      "parent_blocker_or_claim": "C1 three-arm complete-cost experiment",
+      "why_it_matters": "Without cache/state isolation and full amortized accounting, an apparent C1 gain can come from ordinary warm-state reuse or hidden generation/verification costs rather than the verified-product mechanism.",
+      "closure_criterion": "Specify a frozen three-arm design with process/cache isolation, equal task/evaluator/model/tools/budget semantics, explicit reuse fan-out, and complete accounting for generation, verification, serialization/storage, lookup, restoration, operator/combination, invalidation/revalidation, and final verification.",
+      "preferred_source_families": [
+        "controlled systems experiments",
+        "benchmark methodology",
+        "cache and memoization evaluation",
+        "repeated-measures and matched-cost experimental design"
+      ],
+      "urgency": "HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "C1 verified-product closure evidence/spec",
+    "assigned_target": "T0 authenticated frozen-control calibration with replay-safe C1 prerequisite audit",
+    "identity_and_lineage_checks": {
+      "plan": "PASS",
+      "cohort": "PASS",
+      "generation": "PASS",
+      "parent_state_blob_resolved": "PASS",
+      "checkpoint": "PASS",
+      "runtime_state": "PASS",
+      "assignment_blob": "PASS",
+      "control_manifest_blob": "PASS",
+      "visibility_token": "PASS",
+      "superseded_status": "PASS_NON_SUPERSEDED",
+      "frozen_control_files": "PASS_15_OF_15",
+      "worker_auth_commitment": "PASS"
+    },
+    "c1_status": {
+      "runtime_support": "NOT_ESTABLISHED_BY_ASSIGNED_REPLAY_SAFE_ARTIFACTS",
+      "measurement_eligibility": "NOT_ELIGIBLE_IN_CALIBRATION",
+      "closure_disabled": "NOT_MEASURED",
+      "closure_enabled_product_absent": "NOT_MEASURED",
+      "closure_enabled_verified_product_present": "NOT_MEASURED",
+      "net_verified_value": "NOT_MEASURED"
+    },
+    "implementation_requirement": {
+      "status": "SPEC_ONLY_NOT_RUNTIME_AUTHORITY",
+      "required_product_bindings": [
+        "product identity",
+        "product type/schema",
+        "semantic version/scope",
+        "dependency identities/state",
+        "checker semantics and checker implementation identity",
+        "producer verification receipt",
+        "operator/consumer compatibility contract",
+        "provenance and creation/verification cost"
+      ],
+      "required_use_time_checks": [
+        "artifact integrity",
+        "type/schema/version compatibility",
+        "dependency freshness",
+        "checker/receipt authority and revocation state",
+        "consumer preconditions",
+        "invalidation/revalidation condition"
+      ],
+      "required_experiment_arms": [
+        "closure disabled",
+        "closure enabled with product absent",
+        "closure enabled after independently generated and verified product"
+      ],
+      "required_costs": [
+        "generation",
+        "initial verification",
+        "storage/serialization",
+        "lookup",
+        "restoration",
+        "combination/operator execution",
+        "invalidation/revalidation",
+        "final verification",
+        "orchestration/accounting overhead"
+      ],
+      "promotion_status": "NOT_ELIGIBLE"
+    },
+    "prospective_status": "NOT_MEASURED"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-safe frozen-control and C1 prerequisite/specification audit only. No fresh/protected evidence, benchmark execution, or deep research."
+  },
+  "public_safety_status": "PASS",
+  "git_reread_verified": true,
+  "ci_status": "CI_NOT_OBSERVED"
+}
