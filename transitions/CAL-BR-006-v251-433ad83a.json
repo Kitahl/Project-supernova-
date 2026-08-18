@@ -1,0 +1,17 @@
+{
+  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "transition_id":"TRANSITION-CAL-BR-006-v251-433ad83a",
+  "parent_state_blob":"433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "expected_main_head":"a673507d01a8664f54fe3ee4ad262fdb7785121a",
+  "new_generation":6,
+  "new_cohort_id":"CAL-BR-006-v251-433ad83a",
+  "generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f",
+  "control_blob":"d18e640729d9099a62774826993276971ed8e586",
+  "assignment_blob":"07f21675007c3ec085ec79b95a6fd71171324967",
+  "transport_mode":"BRANCH_GITOPS",
+  "calibration_countable":false,
+  "fresh_allowed":false,
+  "repo_policy_observed_protected":false,
+  "reason":"Activate the first corrected branch-isolated bootstrap under the canonical new plan while fail-closing on the still-unprotected default branch.",
+  "next_action":"Merge with expected head only; scheduled branch reconciler then validates exact generation/worker/verifier/integrator heads. Enable main protection before any calibration credit."
+}
