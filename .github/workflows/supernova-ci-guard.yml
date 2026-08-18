@@ -27,16 +27,17 @@ jobs:
           python-version: '3.12'
       - name: Install frozen validation dependency
         run: python -m pip install --disable-pip-version-check -r requirements-validation.txt
-      - name: Execute frozen validator, semantic guard, and adversarial controls
+      - name: Execute frozen validator, semantic guards, and adversarial controls
         id: validation
         continue-on-error: true
         shell: bash
         run: |
           set +e
           rc=0
-          python -m unittest discover -s tests -p 'test_ci_guard.py' || rc=1
+          python -m unittest discover -s tests -p 'test_*guard.py' || rc=1
           python scripts/validate_bus.py || rc=1
           python scripts/ci_guard.py || rc=1
+          python scripts/parent_lineage_guard.py || rc=1
           exit "$rc"
       - name: Publish connector-visible commit status
         if: always()
@@ -55,7 +56,7 @@ jobs:
           body = json.dumps({
               "state": state,
               "context": "supernova/ci-guard",
-              "description": "Frozen bus validator + semantic Git-binding guard",
+              "description": "Frozen bus validator + semantic Git/lineage guards",
           }).encode()
           req = urllib.request.Request(url, data=body, method="POST")
           req.add_header("Accept", "application/vnd.github+json")
