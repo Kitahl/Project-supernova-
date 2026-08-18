@@ -1,0 +1,298 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-JOINT-A01 | Runtime & Transport Audit",
+    "target_program": "JOINT",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-006-6c6e91e2",
+    "iteration_number": 6,
+    "role_id": "EXT01",
+    "goal": "Audit repaired two-layer validation, immutable generation, worker isolation, public/private split, model-binding honesty, benchmark succession and single-PR consolidation.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-006-6c6e91e2",
+  "worker_id": "EXT01",
+  "report_id": "EXT01-CAL-BR-006-6c6e91e2",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-6c6e91e2",
+  "assignment_git_identity": "9ef2ce1f13f3f59d77d72310950951bc10591def",
+  "generation_seq": 6,
+  "parent_state_git_identity": "57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+  "control_manifest_id": "CTRL-CAL-BR-006-6c6e91e2-V23-BR241",
+  "control_manifest_git_identity": "946e6992675ee7c7ceed75062bf2b215aa6dc415",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "27807d68a78bdf1c4807b8c7ab523207",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "74216d4e0414c15b747b329e4de2133dd2c9528fdf99d3e9a709136533f9d87b",
+  "worker_auth_proof": "a6e3503914d5f961f46b5d6966e35af9cca79a075b270e91cdcfdb55f4df57c7",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_BRANCH_GITOPS_CONTROL_AUDIT+GITHUB_REF_COMPARISON+OFFICIAL_GITHUB_CONTROL_CHECK",
+  "executive_status": "PASS_CURRENT_COHORT_OBSERVATIONS_WITH_OPEN_ENFORCEMENT_GAPS",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "EXT01-GEN-FREEZE",
+      "status": "PASS",
+      "description": "Verified control-release overlay points to generation 6, generation branch currently equals the recorded generation head, and generation creation differs from the recorded control-release start by exactly the cohort control manifest and assignment.",
+      "evidence_refs": ["state/BRANCH_STATE.json@2672995c4ee9209bae72dbaedc72799d1ff78528", "generation_head@2384fd5e6d136be01cc986cc881771804a95c432", "compare:6c6e91e2..2384fd5e"],
+      "next_action": "MM06 must independently repeat the generation-head/ref check before calibration admission."
+    },
+    {
+      "task_id": "EXT01-CONTROL-27",
+      "status": "PASS",
+      "description": "Verified the exact BASE_21_PLUS_OVERLAY_6 control union; all 27 frozen paths observed at the generation SHA matched the control-manifest Git blob identities.",
+      "evidence_refs": ["control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415", "generation_head@2384fd5e6d136be01cc986cc881771804a95c432"],
+      "next_action": "Preserve the same exact union through MM06 verification."
+    },
+    {
+      "task_id": "EXT01-WORKER-ISOLATION",
+      "status": "PASS_CURRENT_OBSERVATION",
+      "description": "All 12 assigned worker refs have generation SHA as merge base. At audit time six refs were identical to generation and six were exactly one commit ahead adding only their own reports/<cohort>/<worker>.json path.",
+      "evidence_refs": ["compare:worker_refs_vs_2384fd5e", "branch/CONFIG.json@6451943a34cd8d5d29e910cc154a72d5af9f7ec1"],
+      "next_action": "MM06 must re-evaluate all branch heads and exact diff scopes after all workers finish."
+    },
+    {
+      "task_id": "EXT01-AUTH-PUBLIC-PRIVATE",
+      "status": "PASS",
+      "description": "EXT01 prompt-private capability hashes to the frozen public commitment; cohort-bound HMAC was computed without exposing the capability. Assignment allows no fresh work, private manifest, or opaque evidence IDs.",
+      "evidence_refs": ["config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b", "assignments/CAL-BR-006-6c6e91e2.json@9ef2ce1f13f3f59d77d72310950951bc10591def"],
+      "next_action": "MM06 independently recomputes commitment and HMAC."
+    },
+    {
+      "task_id": "EXT01-BENCH-SUCCESSION",
+      "status": "PASS_DESIGN_ONLY",
+      "description": "Benchmark registry keeps Mastermind and Math Foundry cursors independent, requires verified completion receipts before successor advancement, and enters BENCHMARK_DISCOVERY_WAIT when no eligible successor exists.",
+      "evidence_refs": ["benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"],
+      "next_action": "No benchmark transition is permitted in this calibration cohort."
+    },
+    {
+      "task_id": "EXT01-CONSOLIDATION",
+      "status": "NOT_MEASURED",
+      "description": "No consolidation branch or open PR exists yet for this cohort, so the one-PR copy-safe-refs and CAS merge path has not been exercised end-to-end.",
+      "evidence_refs": ["BRANCH_PROTOCOL.md@18616ac7b45391873972bc3e470ab65daefcc93c", "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb"],
+      "next_action": "BIL00 executes consolidation only after MM06 complete verification and MF06 safe-ref integration."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "EXT01-BRANCH-STATE-VALIDATION-GAP",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "state/BRANCH_STATE.json is the mutable discovery pointer for the in-flight generation, but scripts/validate_branch_bus.py does not load or validate it, does not bind its generation_head_sha/control/assignment refs, and does not apply schemas/branch_generation.schema.json to this pointer.",
+      "evidence_refs": ["state/BRANCH_STATE.json@2672995c4ee9209bae72dbaedc72799d1ff78528", "scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3", "schemas/branch_generation.schema.json@36cac41c199eee816c2116a9161ba453173ce0d7"],
+      "owner": "BIL00/MM06",
+      "fix_or_next": "Add a frozen schema and explicit branch-state validation/lineage check, or have MM06 independently attest every pointer relation before a cohort can count."
+    },
+    {
+      "issue_id": "EXT01-WORKER-DIFF-SCOPE-NOT-ENFORCED",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The branch validator validates a worker report in the local tree but does not prove the worker branch is exactly descended from generation_head_sha nor that its only delta is the assigned report path. Current GitHub compare observations are clean, but the invariant is not enforced by the frozen validator.",
+      "evidence_refs": ["scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3", "compare:worker_refs_vs_2384fd5e"],
+      "owner": "MM06/BIL00",
+      "fix_or_next": "MM06 must record branch head, merge base, and exact changed-file allowlist; preferably add this to a frozen verifier/branch-validation implementation."
+    },
+    {
+      "issue_id": "EXT01-CONSOLIDATION-GUARD-SEMANTICS",
+      "severity": "HIGH",
+      "status": "BLOCKED",
+      "summary": "The consolidation schema records merge_guard=EXPECTED_HEAD_SHA_PLUS_STATE_LINEAGE, but validate_branch_bus.py only schema-validates the consolidation receipt and does not execute or prove expected-head and state-lineage checks. The end-to-end consolidation path is not yet exercised.",
+      "evidence_refs": ["schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb", "scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3", "BRANCH_PROTOCOL.md@18616ac7b45391873972bc3e470ab65daefcc93c"],
+      "owner": "BIL00",
+      "fix_or_next": "At consolidation, capture current main/state identities, enforce GitHub expected-head merge CAS plus explicit state-lineage check, and record the observed values in the immutable consolidation receipt."
+    },
+    {
+      "issue_id": "EXT01-MERGE-GUARD-ARTIFACT-FREEZE",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "summary": "scripts/ci_guard.py, scripts/parent_lineage_guard.py and .github/workflows/supernova-ci-guard.yml exist in the generation tree but are outside the 27-file frozen branch control set. If BIL00 relies on them for the v2.4 consolidation safety claim, their exact versions are not cohort-frozen.",
+      "evidence_refs": ["control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415", "scripts/ci_guard.py@4586c5684ead40db94ed731d20660c533d6fbd17", "scripts/parent_lineage_guard.py@ac08295155f3154a642828d1cdec850526e11b60", ".github/workflows/supernova-ci-guard.yml@4ae3498d9ac35d87a37b511e95e29821e81bbf1b"],
+      "owner": "BIL00",
+      "fix_or_next": "Freeze any enforcement artifact that supplies evidence for countable consolidation, or explicitly make it non-authoritative and prove the required CAS/lineage checks independently."
+    },
+    {
+      "issue_id": "EXT01-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "Model target is known for this session, but the automation surface provides no independent reasoning-effort execution receipt; EXTRA_HIGH cannot be honestly marked verified.",
+      "evidence_refs": ["SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1", "BRANCH_PROTOCOL.md@18616ac7b45391873972bc3e470ab65daefcc93c"],
+      "owner": "BIL00",
+      "fix_or_next": "Keep PARTIAL_UNVERIFIED for replay calibration and require a runtime binding receipt before model-sensitive fresh promotion."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "EXT01-T-GEN-REF",
+      "kind": "Git ref CAS comparison",
+      "status": "PASS",
+      "description": "Compared recorded generation head to live ps/gen ref.",
+      "evidence_refs": ["compare:2384fd5e..ps/gen/CAL-BR-006-6c6e91e2"],
+      "result": "identical; ahead_by=0; behind_by=0"
+    },
+    {
+      "test_id": "EXT01-T-GEN-CONTENTS",
+      "kind": "Generation construction diff",
+      "status": "PASS",
+      "description": "Compared recorded control-release start to generation head.",
+      "evidence_refs": ["compare:6c6e91e2..2384fd5e"],
+      "result": "exactly two commits adding only control/CAL-BR-006-6c6e91e2.json and assignments/CAL-BR-006-6c6e91e2.json"
+    },
+    {
+      "test_id": "EXT01-T-CONTROL-27",
+      "kind": "Frozen blob identity",
+      "status": "PASS",
+      "description": "Checked base-21 plus overlay-6 file identities at generation SHA.",
+      "evidence_refs": ["control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415"],
+      "result": "27/27 matched"
+    },
+    {
+      "test_id": "EXT01-T-WORKER-BRANCHES",
+      "kind": "Per-worker branch compare",
+      "status": "PASS",
+      "description": "Compared all 12 worker refs against generation head.",
+      "evidence_refs": ["compare:all_worker_refs_vs_2384fd5e"],
+      "result": "all have merge base generation head; six identical, six one commit ahead with only their own report path"
+    },
+    {
+      "test_id": "EXT01-T-HMAC",
+      "kind": "Worker identity proof",
+      "status": "PASS",
+      "description": "Verified prompt-private capability commitment and computed cohort-bound HMAC.",
+      "evidence_refs": ["config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"],
+      "result": "commitment match; HMAC generated; raw capability not stored/published"
+    },
+    {
+      "test_id": "EXT01-T-MODEL-BINDING",
+      "kind": "Binding honesty",
+      "status": "PASS",
+      "description": "Checked session standard against observable model/effort evidence.",
+      "evidence_refs": ["SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"],
+      "result": "PARTIAL_UNVERIFIED is the strongest justified status"
+    },
+    {
+      "test_id": "EXT01-T-CONSOLIDATION-E2E",
+      "kind": "Single-PR consolidation",
+      "status": "NOT_MEASURED",
+      "description": "Checked for cohort consolidation branch and open PR.",
+      "evidence_refs": ["branch-search:ps/consolidate/CAL-BR-006-6c6e91e2", "open-pr-search"],
+      "result": "no consolidation branch and no open PR at audit time"
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_BRANCH_GITOPS_IMMUTABLE_GENERATION",
+      "status": "PARTIAL",
+      "evidence_refs": ["generation_head@2384fd5e6d136be01cc986cc881771804a95c432", "compare:worker_refs_vs_generation"],
+      "notes": "Current GitHub state demonstrates immutable generation and clean worker deltas, but frozen validator does not itself enforce branch-head/diff-scope invariants."
+    },
+    {
+      "obligation_id": "T0_AUTHENTICATED_PUBLIC_SAFE_REPORTING",
+      "status": "ALIGNED",
+      "evidence_refs": ["config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b", "assignments/CAL-BR-006-6c6e91e2.json@9ef2ce1f13f3f59d77d72310950951bc10591def"],
+      "notes": "EXT01 is replay-only, commitment matches, HMAC generated, no private manifest or protected evidence consumed."
+    },
+    {
+      "obligation_id": "BENCHMARK_SUCCESSION",
+      "status": "ALIGNED",
+      "evidence_refs": ["benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"],
+      "notes": "Program cursors are independent and completion/eligibility gates are explicit; no transition is allowed in this run."
+    },
+    {
+      "obligation_id": "T0_SINGLE_PR_CONSOLIDATION",
+      "status": "BLOCKED",
+      "evidence_refs": ["BRANCH_PROTOCOL.md@18616ac7b45391873972bc3e470ab65daefcc93c", "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb"],
+      "notes": "Path is designed but not executed; CAS/state-lineage enforcement still requires observed proof."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/BRANCH_STATE.json@2672995c4ee9209bae72dbaedc72799d1ff78528",
+      "generation_head@2384fd5e6d136be01cc986cc881771804a95c432",
+      "control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415",
+      "assignments/CAL-BR-006-6c6e91e2.json@9ef2ce1f13f3f59d77d72310950951bc10591def",
+      "BRANCH_PROTOCOL.md@18616ac7b45391873972bc3e470ab65daefcc93c",
+      "branch/CONFIG.json@6451943a34cd8d5d29e910cc154a72d5af9f7ec1",
+      "scripts/validate_branch_bus.py@de6a4b37b5c54c1fed2b36741cb22ea265d3bde3",
+      "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "official GitHub protected-branch/ruleset and pull-request merge expected-head documentation audited 2026-08-19"
+    ],
+    "artifact_refs": [
+      "ps/gen/CAL-BR-006-6c6e91e2",
+      "ps/work/CAL-BR-006-6c6e91e2/EXT01",
+      "ps/verify/CAL-BR-006-6c6e91e2",
+      "ps/integrate/CAL-BR-006-6c6e91e2"
+    ],
+    "notes": "Mutable main was not used as in-flight control. Control-release state selected a frozen generation; all substantive checks were bound to the recorded generation SHA. GitHub compare was used to inspect live ref ancestry/deltas. Narrow official GitHub documentation was used only to confirm available branch/merge enforcement primitives."
+  },
+  "claim_scope": "Replay-safe external audit of Branch-GitOps transport/control semantics for CAL-BR-006 only. No scientific benchmark, fresh/protected evidence, runtime modification, benchmark advancement, or Supernova capability promotion is claimed.",
+  "runtime_implementation_implication": "NONE. Findings concern external orchestration integrity only. No task/branch/PR outcome changes Math Foundry or Mastermind runtime truth without an independently validated RUNTIME_UPDATE_RECEIPT.",
+  "negative_zero_outcomes": [
+    {"type":"FRESH_EVIDENCE_NOT_CONSUMED","detail":"fresh_evidence_ids is empty and assignment fresh_allowed=false."},
+    {"type":"PRIVATE_MANIFEST_NOT_READ","detail":"EXT01 assignment has no private manifest and protected_manifest_reads=0."},
+    {"type":"BENCHMARK_EXECUTIONS_ZERO","detail":"No benchmark task, evaluator, or protected holdout was executed."},
+    {"type":"DEEP_RESEARCH_ZERO","detail":"No broad/deep research was run; only a narrow official GitHub control check was performed."},
+    {"type":"RUNTIME_PROMOTION_NONE","detail":"No runtime write, promotion, benchmark cursor advance, or RUNTIME_UPDATE_RECEIPT was created."},
+    {"type":"CI_NOT_OBSERVED","detail":"No combined commit status entries were observed for the frozen generation head; this is not treated as PASS."},
+    {"type":"CONSOLIDATION_NOT_MEASURED","detail":"No consolidation branch or PR existed at audit time."}
+  ],
+  "research_questions": [
+    {
+      "question": "What is the minimal immutable/cas-bound schema and verifier contract for the mutable Branch-GitOps discovery pointer so a worker cannot be redirected to a stale, superseded, or mismatched generation without detection?",
+      "parent_blocker_or_claim": "T0 branch-state discovery/lineage integrity",
+      "why_it_matters": "The current branch validator checks generation-local controls but does not validate state/BRANCH_STATE.json even though scheduled workers use that pointer to discover the active cohort and generation SHA.",
+      "closure_criterion": "A frozen validator or verifier-owned attestation checks pointer schema, plan/overlay, cohort, generation sequence, generation ref/head, control and assignment blobs, supersession, checkpoint/runtime IDs, and permitted branch set; negative redirect/stale-pointer mutations fail closed.",
+      "preferred_source_families": ["Git reference CAS semantics","GitOps controller reconciliation","software supply-chain attestations","append-only transparency/manifest systems"],
+      "urgency": "HIGH"
+    },
+    {
+      "question": "How should the single-PR consolidation path make expected-head and state-lineage enforcement independently auditable when the merge guard is more than a declarative field in a receipt?",
+      "parent_blocker_or_claim": "T0 single-PR CAS consolidation",
+      "why_it_matters": "The schema records the intended guard, but calibration needs proof that the actual PR head and current state lineage were checked at merge time and that the enforcing implementation was itself version-bound.",
+      "closure_criterion": "The consolidation receipt records observed main/state identities, PR head, verifier/integrator heads and safe refs; merge uses GitHub expected-head CAS and fails on stale state; enforcement artifacts or API observations are frozen/attested; stale-head and stale-state negative tests both reject.",
+      "preferred_source_families": ["official GitHub pull-request merge API","GitHub protected branch/ruleset documentation","compare-and-swap state transitions","software supply-chain verification attestations"],
+      "urgency": "HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "Independent runtime/build + transport audit",
+    "overlay_version": "2.4.1",
+    "overlay_id": "78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
+    "generation_branch": "ps/gen/CAL-BR-006-6c6e91e2",
+    "generation_head_sha": "2384fd5e6d136be01cc986cc881771804a95c432",
+    "generation_ref_current_status": "IDENTICAL_TO_RECORDED_HEAD",
+    "frozen_control_status": "PASS_27_OF_27",
+    "worker_branch_isolation_observation": {
+      "all_merge_base_generation": true,
+      "own_report_only_branches": ["MF01","MF03","MF05","MM01","MM02","MM03"],
+      "not_yet_written_identical_branches": ["MF02","MF04","MM04","MM05","MM07","EXT01"],
+      "unexpected_worker_deltas": []
+    },
+    "auth_commitment_status": "PASS",
+    "public_private_boundary": "PASS_REPLAY_ONLY",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "benchmark_succession": "PASS_DESIGN_ONLY",
+    "single_pr_consolidation": "NOT_MEASURED",
+    "calibration_admission_recommendation": "MM06_MUST_COMPENSATE_FOR_OPEN_BRANCH_STATE_AND_DIFF_SCOPE_VALIDATOR_GAPS; BIL00_MUST_PROVE_CAS_STATE_LINEAGE_AT_CONSOLIDATION"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-safe GitHub control/ref audit only. No benchmark/protected evidence. Narrow official GitHub merge/protection documentation check is not a deep-research run."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently rereads all 12 worker branches after completion, verifies exact generation ancestry and own-report-only diff scope in addition to schema/HMAC/public safety, and blocks calibration if branch-state pointer or branch-scope invariants are not independently attested. After MF06 integration, BIL00 must exercise one consolidation PR with observed expected-head and state-lineage CAS proof before the cohort can count."
+}
