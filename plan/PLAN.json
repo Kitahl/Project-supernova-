@@ -37,7 +37,7 @@
     "immutable_receipts": true,
     "state_pointer_mutable_with_optimistic_sha": true,
     "cohort_control_manifest_required": true,
-    "control_manifest_freezes": ["PROTOCOL.md", "WORKER_PROTOCOL.md", "plan/PLAN.json", "config/roles.json", "schemas/assignment.schema.json", "schemas/report.schema.json", "schemas/verification.schema.json", "schemas/integration.schema.json", "schemas/director.schema.json", "schemas/research.schema.json", "scripts/validate_bus.py"],
+    "control_manifest_freezes": ["PROTOCOL.md", "WORKER_PROTOCOL.md", "plan/PLAN.json", "config/roles.json", "schemas/assignment.schema.json", "schemas/report.schema.json", "schemas/verification.schema.json", "schemas/integration.schema.json", "schemas/director.schema.json", "schemas/research.schema.json", "scripts/validate_bus.py", ".github/workflows/validate-bus.yml"],
     "mixed_control_revision_cohort_ineligible": true,
     "superseded_cohort_never_increments_calibration": true
   },
