@@ -1,0 +1,84 @@
+{
+  "task_network_plan_id": "90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682",
+  "cohort_id": "CAL-002",
+  "worker_id": "MF02",
+  "report_id": "MF02-CAL-002",
+  "assignment_id": "PS-GHBUS-CAL-002",
+  "assignment_git_identity": "3930160b25cb8b48f894d1afc16ec55569f3e71b",
+  "control_manifest_id": "CTRL-CAL-002-V21",
+  "control_manifest_git_identity": "5b8ddd9e361af6d8acea29a7741993cf7d4520cb",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "012fefdb9b868998ce2fd31de126c7ed",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "FROZEN_CONTROL_REPLAY_CALIBRATION",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "state/CURRENT.json@810da70aa50f854ccd27786f8d1edfa421974604",
+    "control/CAL-002.json@5b8ddd9e361af6d8acea29a7741993cf7d4520cb",
+    "assignments/CAL-002.json@3930160b25cb8b48f894d1afc16ec55569f3e71b",
+    "PROTOCOL.md@c4e0ff395c3c9f7f1a219074fc212412ac8e3498",
+    "WORKER_PROTOCOL.md@177024dd1780772b755173c58504215185a208bc",
+    "plan/PLAN.json@10ab4028d6f05387a1e6c9cbe9ac590959a3a95d",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "schemas/assignment.schema.json@78f82163882b4dd3f1b86736bed141ccacc585be",
+    "schemas/report.schema.json@be9b4bf3840c863efc3755c4247ff6aa198645cb",
+    "schemas/verification.schema.json@12f51ab2695685d7ba9256c6491df5b2d75a81f0",
+    "schemas/integration.schema.json@86c2bdea47f878a5cce53c19ebce5a356b35ebff",
+    "schemas/director.schema.json@804e888068a193604e9267f22142906d2803eb64",
+    "schemas/research.schema.json@cd9a9cd6cd3074e7df528e755e6713e36ba9d7c1",
+    "scripts/validate_bus.py@cacd1ce822c6c7ad48412b1bfc9b9e739cde8863",
+    ".github/workflows/validate-bus.yml@6a0c30c584dfca01c06f39be5fbfbb7076cc0b09"
+  ],
+  "claim_scope": "Countable replay-only transport and evidence-contract calibration for MF02 under one frozen v2.1 control manifest. No fresh or protected benchmark evidence, no E1 performance outcome, no runtime change, and no mechanism promotion claim.",
+  "runtime_implementation_implication": "NONE. The frozen role still requires a future explicitly fresh-authorized E1 matrix covering BASE, SBS, single-route VBS, AUTO, and same-total-budget ORACLE_SCHEDULE/portfolio where admissible; this calibration receipt provides no scientific performance credit.",
+  "next_action": "MM06 should independently verify this immutable CAL-002 receipt, exact frozen-control and assignment/token binding, schema/public-safety invariants, and report-commit CI status where observable. MF02 should not repeat CAL-002 once this GitHub receipt rereads correctly.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "State and assignment are GITHUB_BUS_CALIBRATION; MF02 fresh_allowed=false, opaque_evidence_ids is empty, and no private manifest is assigned."
+    },
+    {
+      "type": "E1_OUTCOMES_NOT_MEASURED",
+      "detail": "BASE, SBS, single-route VBS, AUTO, same-total-budget ORACLE_SCHEDULE, routing regret, and schedule headroom were not measured because this cohort is replay-safe transport calibration only."
+    },
+    {
+      "type": "CONTROL_PLANE_DRIFT_NOT_OBSERVED",
+      "detail": "All twelve control files fetched from the canonical repository matched the exact Git blob identities frozen by CTRL-CAL-002-V21."
+    },
+    {
+      "type": "CI_NOT_OBSERVED_PREWRITE",
+      "detail": "The latest pre-write canonical commit exposed no combined status entries; absence of an observable status is recorded conservatively and is not treated as PASS."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "role": "E1 route/schedule truth owner",
+    "assignment_role": "E1 route/schedule contract replay-safe audit",
+    "network_mode_observed": "GITHUB_BUS_CALIBRATION",
+    "control_manifest_check": "PASS_ALL_FROZEN_BLOBS_MATCH",
+    "assignment_identity_check": "PASS",
+    "visibility_token_check": "PASS",
+    "non_superseded_check": "PASS",
+    "public_private_boundary": "PASS_NO_PROTECTED_CONTENT_OR_PRIVATE_MANIFEST_PAYLOAD",
+    "e1_contract_preserved": {
+      "required_future_arms": ["BASE", "SBS", "SINGLE_ROUTE_VBS", "AUTO", "ORACLE_SCHEDULE"],
+      "single_route_vbs_universal_ceiling": false,
+      "fresh_measurement_status": "NOT_MEASURED",
+      "scientific_promotion_status": "NOT_ELIGIBLE"
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only verification of canonical state, active control manifest, assignment, and all twelve frozen control files; no benchmark execution."
+  },
+  "public_safety_status": "PASS",
+  "git_reread_verified": true,
+  "ci_status": "CI_NOT_OBSERVED"
+}
