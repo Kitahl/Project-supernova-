@@ -1,0 +1,307 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-JOINT-A01 | Runtime & Transport Audit",
+    "target_program": "JOINT",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "EXT01",
+    "goal": "Independently audit the short v2.3 loop's control freeze, public/private split, session standard, model-binding honesty and benchmark-successor registry without runtime modification.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "EXT01",
+  "report_id": "EXT01-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "b8f47c5e5b00d89317b44cd3c6fb2c96",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "74216d4e0414c15b747b329e4de2133dd2c9528fdf99d3e9a709136533f9d87b",
+  "worker_auth_proof": "4a26a9f256575895f843878cb89522fd828570dcc8aa735a661007b1b807d1bd",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "V2.3_SHORT_INDEPENDENT_TRANSPORT_CONTROL_AUDIT+NARROW_OFFICIAL_PRODUCT_CHECK",
+  "executive_status": "PASS: active v2.3 control/assignment/auth lineage, 21-file freeze, closed-schema runtime setup, session naming, public/private split and benchmark succession are internally consistent. Model binding is honestly PARTIAL_UNVERIFIED; CI is CI_NOT_OBSERVED. No benchmark, protected evidence, private manifest, deep research or runtime modification occurred.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "EXT01-T0-CONTROL",
+      "status": "PASS",
+      "description": "Verified active state/control/assignment lineage, all 21 frozen control-file blob identities, EXT01 token and worker authentication.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "next_action": "MM06 independently repeat control/auth/reread checks."
+    },
+    {
+      "task_id": "EXT01-T0-SCHEMA-SESSION",
+      "status": "PASS",
+      "description": "Verified pinned Draft-2020-12 validation, closed top-level receipt schemas, standardized session/report framework and stable persistent-lane naming.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262"
+      ],
+      "next_action": "MM06 runs the reserved in-memory missing-field and undeclared-field negative mutations."
+    },
+    {
+      "task_id": "EXT01-T0-BENCHMARK-SUCCESSION",
+      "status": "PASS",
+      "description": "Verified independent Mastermind/Math Foundry successor chains, completion-receipt gating, preflight/freeze requirement and BENCHMARK_DISCOVERY_WAIT on exhausted/ineligible successors.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "schemas/benchmark_completion.schema.json@a0d5179cab908d348a2ac486fa3c5121b2c2dbce"
+      ],
+      "next_action": "Do not advance either lane until its current suite has an independently verified completion receipt and successor preflight."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "O-T0-CALIBRATION_AND_SCHEMA_RUNTIME",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Transport remains the active blocker: two consecutive clean authenticated short cohorts are required; state is 0/2 and fresh globally false.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Complete CAL-004 full fan-in/MM06/MF06/BIL00, then one second clean short cohort."
+    },
+    {
+      "issue_id": "O-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "Model identity is GPT-5.6 Sol, but no independent reasoning-effort receipt is exposed; EXTRA_HIGH is a target rather than verified execution fact.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "OpenAI Help Center Tasks in ChatGPT checked 2026-08-18"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Keep model-sensitive fresh promotion blocked unless future private manifest/runtime receipt satisfies the binding rule."
+    },
+    {
+      "issue_id": "O-CI-OBSERVABILITY",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "GitHub combined status returned no entries for the latest observed main commit; absence is not PASS.",
+      "evidence_refs": [
+        "main@649486e1985d42cc6e687cf0c33132ce5ca92314",
+        ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+      ],
+      "owner": "MM06",
+      "fix_or_next": "Use independent frozen validation when CI is not observable."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-CONTROL-FREEZE",
+      "kind": "transport/control",
+      "status": "PASS",
+      "description": "Fetched all frozen control files and compared Git identities.",
+      "evidence_refs": [
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "result": "21/21 matched; mixed control revision not observed."
+    },
+    {
+      "test_id": "T0-PARENT-AUTH",
+      "kind": "lineage/authentication",
+      "status": "PASS",
+      "description": "Verified parent-state generation transition and EXT01 commitment/HMAC.",
+      "evidence_refs": [
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Parent generation 3 exists; active generation 4 binds the same parent in control+assignment; auth commitment matched and HMAC computed."
+    },
+    {
+      "test_id": "T0-CLOSED-SCHEMA-SETUP",
+      "kind": "schema/runtime",
+      "status": "PASS",
+      "description": "Audited frozen validator/workflow and closed-world receipt schemas; did not substitute for MM06's reserved mutation test.",
+      "evidence_refs": [
+        "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262"
+      ],
+      "result": "jsonschema 4.26.0 + Draft202012 validator are frozen; MM06 negative mutation remains required for cohort pass."
+    },
+    {
+      "test_id": "T0-SESSION-MODEL",
+      "kind": "session/model",
+      "status": "PASS",
+      "description": "Audited stable lane/header format and model-binding honesty against frozen policy plus one narrow official OpenAI Tasks documentation check.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "OpenAI Help Center Tasks in ChatGPT checked 2026-08-18"
+      ],
+      "result": "Stable naming is aligned; GPT-5.6 Sol known, reasoning effort unreceipted, so PARTIAL_UNVERIFIED is correct."
+    },
+    {
+      "test_id": "T0-BENCHMARK-SUCCESSOR",
+      "kind": "benchmark orchestration",
+      "status": "PASS",
+      "description": "Audited both program successor chains and completion semantics.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "result": "Mastermind current -> Design2Code-HARD after verified completion/preflight; Foundry E1 -> G1 after verified completion/preflight; lanes independent; exhausted lane -> BENCHMARK_DISCOVERY_WAIT."
+    },
+    {
+      "test_id": "T0-REPLAY-SAFETY",
+      "kind": "safety",
+      "status": "PASS",
+      "description": "Honored short calibration constraints.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "result": "fresh=0; private reads=0; benchmark executions=0; deep research=0; runtime change=none."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0-short-authenticated-calibration",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "notes": "EXT01 is one worker contribution; only complete 12-worker fan-in + MM06 + MF06 + BIL00 can count CAL-004."
+    },
+    {
+      "obligation_id": "persistent-session-standardized-naming",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "notes": "Stable lane name is separated from dynamic iteration metadata."
+    },
+    {
+      "obligation_id": "draft202012-closed-schema-runtime",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262"
+      ],
+      "notes": "Setup present; MM06 T0-SCHEMA-NEGATIVE is the direct cohort closure probe."
+    },
+    {
+      "obligation_id": "benchmark-succession",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "notes": "Current-suite completion does lead to a successor after verified completion+preflight; no-successor case is explicit discovery wait."
+    },
+    {
+      "obligation_id": "E1-route-schedule-truth",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a"
+      ],
+      "notes": "E1 is next Foundry science but intentionally unmeasured until T0 and private freeze complete."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c",
+      "OpenAI Help Center Tasks in ChatGPT checked 2026-08-18"
+    ],
+    "artifact_refs": [
+      "reports/CAL-004-bcedd2a9/EXT01.json"
+    ],
+    "notes": "All 21 frozen control identities were fetched/matched. Private vault payload was not accessed because no private manifest is assigned. Online work was limited to one official product-doc check for model-binding honesty."
+  },
+  "claim_scope": "Short replay-only T0 control-plane audit only. This is external orchestration evidence, not scientific benchmark evidence, a runtime handoff, runtime update, Mastermind promotion or Math Foundry runtime truth.",
+  "runtime_implementation_implication": "NONE. No runtime or benchmark advancement from this worker report. Foundry E1 remains next after transport/private freeze; Mastermind remains on its current suite until independently completed.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "Calibration and assignment fresh=false; fresh_evidence_ids is empty."
+    },
+    {
+      "type": "PRIVATE_MANIFEST_NOT_READ",
+      "detail": "No private manifest assigned; protected_manifest_reads=0."
+    },
+    {
+      "type": "BENCHMARK_EXECUTION_NONE",
+      "detail": "short_test=true and benchmark program/suite are null; benchmark_executions=0."
+    },
+    {
+      "type": "DEEP_RESEARCH_NONE",
+      "detail": "No deep research or broad prior sweep; deep_research_runs=0."
+    },
+    {
+      "type": "RUNTIME_CHANGE_NONE",
+      "detail": "No runtime handoff/update created or applied."
+    },
+    {
+      "type": "MODEL_EFFORT_NOT_VERIFIED",
+      "detail": "Model identity known; reasoning-effort identity not independently receipted."
+    },
+    {
+      "type": "CI_NOT_OBSERVED",
+      "detail": "No combined status entries observed for latest main; not treated as PASS."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "frozen_control_files": "21/21",
+    "mixed_control_revision_observed": false,
+    "parent_generation": 3,
+    "active_generation": 4,
+    "benchmark_succession": {
+      "mastermind_current": "MM-ORACLE-PHASE1-REACT",
+      "mastermind_successor": "MM-DESIGN2CODE-HARD-STATEFUL",
+      "math_foundry_current": "MF-E1-CLEAN-ROUTE-TRUTH",
+      "math_foundry_successor": "MF-G1-CLEAN-PROSPECTIVE",
+      "lanes_advance_independently": true,
+      "registry_exhaustion_action": "BENCHMARK_DISCOVERY_WAIT"
+    },
+    "model_binding": {
+      "status": "PARTIAL_UNVERIFIED",
+      "promotion_guard_preserved": true
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only short audit; one narrow official OpenAI product-doc check only."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently Git-rereads this receipt, validates schema/HMAC/public safety, runs T0-SCHEMA-NEGATIVE, and verifies all 12 reports. If CAL-004 is clean, MF06 integrates and BIL00 counts it, then reuses the same persistent lanes for one second short clean cohort. Only after two consecutive clean cohorts may transport become FRESH_ENABLED; benchmark advancement still requires verified completion, preflight and private freeze."
+}
