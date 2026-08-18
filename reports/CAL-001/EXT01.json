@@ -1,0 +1,134 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-001",
+  "worker_id": "EXT01",
+  "report_id": "EXT01-CAL-001",
+  "assignment_id": "PS-GHBUS-CAL-001",
+  "assignment_git_identity": "8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "b8330449fdd154f7fab9a7b2ebceca96",
+  "status": "VALID_CALIBRATION_REPORT_WITH_BLOCKERS",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "CANONICAL_BUS_AUDIT+BOUND_ARTIFACT_QUALIFICATION_RECORDS+NARROW_PRIMARY_SOURCE_SPOT_CHECK",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "PROTOCOL.md@bf0290e2df191ad3fa86e3a5f3729a9562dbc5b4",
+    "state/CURRENT.json@b23ab10b7e2fa8f381ef7a860f0115fc044c311c",
+    "plan/PLAN.json@3bc9ed86294e0f523690eb542635b015a67571ab",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "schemas/report.schema.json@a48996ad63c6e5e76c69652e52720ce249cc8425",
+    "schemas/private_manifest_contract.schema.json@073d643f039edf851ccfef20754f61d1735da2ff",
+    "assignments/CAL-001.json@8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+    "scripts/validate_bus.py@358004ad7b8040a409a16c43bade67daaae9b103",
+    ".github/workflows/validate-bus.yml@6a0c30c584dfca01c06f39be5fbfbb7076cc0b09",
+    "BOUND_FOUNDRY_ARCHIVE_SHA256@a9f220078a0c087a1c80a4bc6255951225734f7e73b50660138c20372257a0e8",
+    "BOUND_MASTERMIND_ARCHIVE_SHA256@e54f98cc9a1d527fda6626a01d6e8bf67ba71cc728b75263f3e88459436a9812",
+    "PRIVATE_VAULT_ROOT_STATE_BLOB@0ba4fef6d3a7b27c3c5bccfa06177d4ebd1fa7db",
+    "ARXIV_FIXED_BUDGET_PORTFOLIO_PRIOR@2026-08-18"
+  ],
+  "claim_scope": "Replay-safe independent audit of canonical bus integrity and bound runtime qualification records. No fresh or protected benchmark unit was opened; no prospective capability result, runtime change, product closure, mechanism uplift, selector, ignition state, or promotion is claimed.",
+  "runtime_implementation_implication": "NONE. Bound qualification records support executable route substrate and authority separation, but the current E1 schedule oracle, G1 prospective gain, C1 generic product closure, and E3 executable learned-versus-random-versus-no-change effect remain unmeasured or blocked. Scheduled-task receipts do not create runtime implementation.",
+  "next_action": "Do not count CAL-001 toward the two-clean-cohort calibration streak. Freeze one immutable control-plane manifest for the next calibration cohort binding the exact plan, protocol, worker protocol, role registry, all receipt schemas, validator and validation policy; require every worker, MM06, MF06 and BIL00 receipt to echo that control-manifest identity. Strengthen deterministic validation to enforce report schema, path/cohort/worker correspondence, assignment/checkpoint/runtime/token binding, private-manifest rules and downstream verification/integration/director schemas. Keep fresh work disabled until two clean cohorts pass under one frozen control plane.",
+  "negative_zero_outcomes": [
+    {"type": "FRESH_EVIDENCE_NOT_CONSUMED", "detail": "The active state and assignment are calibration-only, EXT01 fresh_allowed=false, opaque evidence is empty, and no private manifest was fetched."},
+    {"type": "CALIBRATION_FANIN_INCOMPLETE", "detail": "Before this receipt, only four of twelve expected worker receipts were present in the canonical CAL-001 report directory; no verification or integration receipt exists."},
+    {"type": "CONTROL_PLANE_REVISION_DRIFT", "detail": "CAL-001 worker receipts were produced across different control-plane revisions. MM02 recorded an earlier protocol revision while later receipts bind the current protocol, so the cohort does not demonstrate one frozen protocol/schema/validator contract."},
+    {"type": "CI_NOT_OBSERVED", "detail": "The current canonical HEAD exposes no combined status entries. This is not a CI pass; independent invariant checks were performed instead."},
+    {"type": "VALIDATOR_COVERAGE_GAP", "detail": "The current deterministic validator does not enforce the report JSON schema or exact report path/cohort/worker/assignment/checkpoint/runtime/token correspondence, so a nominal validator pass is insufficient to certify calibration fan-in."},
+    {"type": "PRIVATE_VAULT_ROOT_STATE_DRIFT", "detail": "The private vault root state still references a legacy orchestration plan. No protected manifest was used here, but future fresh work must use a dedicated manifest namespace and exact canonical-plan/cohort/checkpoint/runtime binding rather than infer authority from legacy vault state."},
+    {"type": "RUNTIME_HANDOFF_NONE", "detail": "No verified runtime handoff packet or runtime-update receipt was found; runtime_state_id remains unchanged."},
+    {"type": "E1_ORACLE_SCHEDULE_NOT_MEASURED", "detail": "Foundry qualification records establish bounded executable route substrate but not the frozen current BASE/SBS/single-route-VBS/AUTO/same-total-budget schedule-oracle matrix with complete cost accounting."},
+    {"type": "G1_NOT_MEASURED", "detail": "No fresh prospective candidate-versus-parent capability-gap experiment was authorized or consumed."},
+    {"type": "C1_NOT_MEASURED", "detail": "No controlled closure-disabled/closure-enabled generic verified-product reuse experiment exists in the verified canonical bus evidence."},
+    {"type": "E3_NOT_MEASURED", "detail": "No executable learned/random/no-change candidate set or frozen prospective E3 evaluator contract was assigned."}
+  ],
+  "research_questions": [
+    {
+      "question": "What minimal content-addressed control-plane manifest and validation rule set is sufficient to prove that an asynchronous multi-worker calibration cohort executed under one immutable protocol, schema, role and validator contract rather than semantically drifting between worker runs?",
+      "parent_blocker_or_claim": "O-CANONICAL-GITHUB-FANIN-CALIBRATION",
+      "why_it_matters": "CAL-001 already contains otherwise well-bound receipts produced against different protocol/control-plane revisions, so assignment identity alone is insufficient to certify a clean cohort.",
+      "closure_criterion": "Specify the immutable control manifest and deterministic negative tests such that wrong control-manifest identity, token, assignment, cohort, checkpoint, runtime identity, report path, schema version or validator policy all fail closed while a clean replay-only cohort passes.",
+      "preferred_source_families": ["software supply-chain provenance and attestation standards", "reproducible-build provenance", "content-addressed workflow and hermetic execution systems"],
+      "urgency": "HIGH"
+    },
+    {
+      "question": "For E1, what predeclared same-total-budget schedule policy class and complete-cost accounting contract should define ORACLE_SCHEDULE so it is a fair upper comparator for the admissible multi-route policy class rather than either single-route VBS or an unlimited post-hoc oracle?",
+      "parent_blocker_or_claim": "E1 route/schedule truth",
+      "why_it_matters": "Current Foundry routes can be complementary or stochastic, so a policy allowed to schedule multiple routes may have genuine same-budget headroom beyond a best single route, but the comparator must not receive extra uncharged search or selection opportunities.",
+      "closure_criterion": "Freeze the admissible route/schedule language, stopping rules, repetitions/randomization, evaluator and all proposal/selection/execution/verification costs before outcomes; define a computable oracle comparator over exactly that policy class.",
+      "preferred_source_families": ["fixed-budget algorithm portfolio methodology", "algorithm selection and scheduling", "randomized algorithm evaluation and cost accounting"],
+      "urgency": "HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "Independent runtime/build + transport audit",
+    "assignment_identity_check": "PASS",
+    "plan_checkpoint_runtime_token_check": "PASS",
+    "public_private_safety": "PASS_NO_PROTECTED_CONTENT_OR_PRIVATE_MANIFEST_PAYLOAD",
+    "fresh_authorization": "DISALLOWED_BY_CALIBRATION_AND_ASSIGNMENT",
+    "calibration_fanin": {
+      "expected_workers": 12,
+      "prewrite_worker_receipts_present": 4,
+      "prewrite_receipts": ["MM02", "MM03", "MM04", "MM05"],
+      "expected_receipts_after_this_write": 5,
+      "verification_receipt": "ABSENT",
+      "integration_receipt": "ABSENT",
+      "calibration_eligible": false
+    },
+    "control_plane_audit": {
+      "status": "BLOCK",
+      "finding": "Cohort lacks one immutable control-plane manifest and contains protocol revision drift across worker receipts.",
+      "required_repair": "Content-address and bind the plan/protocol/worker-protocol/roles/schemas/validator policy as one control manifest for each cohort."
+    },
+    "validator_audit": {
+      "status": "INSUFFICIENT_FOR_FULL_CALIBRATION",
+      "current_checks": "JSON/public-safety/state-assignment/basic calibration-fresh invariants",
+      "missing_load_bearing_checks": [
+        "JSON-schema validation of worker and downstream receipts",
+        "report path to cohort and worker correspondence",
+        "assignment_id and assignment_git_identity correspondence",
+        "network checkpoint and runtime identity correspondence",
+        "worker visibility-token correspondence",
+        "private-manifest identity rules",
+        "verification/integration/director receipt validation",
+        "single frozen control-plane identity across the cohort"
+      ]
+    },
+    "ci_audit": {
+      "head_commit": "1ed7f32bdac63c19ea942acb007aa7788c1f0a25",
+      "combined_status": "CI_NOT_OBSERVED",
+      "interpretation": "NEITHER_PASS_NOR_PERMANENT_FAILURE"
+    },
+    "bound_artifact_audit": {
+      "foundry_archive_sha_matches_state": true,
+      "foundry_qualification_record": "PASS_RECORD_CROSS_CHECKED_NOT_RERUN_IN_THIS_TASK",
+      "foundry_route_truth_substrate": "PARTIAL_SUPPORT_EXECUTION_CLOSURE_QUALIFIED",
+      "mastermind_archive_sha_matches_state": true,
+      "mastermind_qualification_record": "PASS_RECORD_CROSS_CHECKED_NOT_RERUN_IN_THIS_TASK",
+      "mastermind_authority_boundary": "PRE_REVIEW_ONLY_CONFIRMED"
+    },
+    "runtime_blockers": {
+      "E1_ROUTE_TRUTH": "PARTIAL",
+      "E1_ORACLE_SCHEDULE": "NOT_MEASURED",
+      "G1": "NOT_MEASURED",
+      "C1_PRODUCT_CLOSURE": "BLOCKED_NOT_MEASURED",
+      "E3_EXEC_MECHANISM": "BLOCKED_NOT_MEASURED"
+    },
+    "runtime_handoff": "NONE_FOUND",
+    "runtime_update_receipt": "NONE_FOUND",
+    "runtime_state_change": "NONE"
+  },
+  "cost_ledger": {
+    "fresh_benchmark_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "private_vault_metadata_reads": 2,
+    "canonical_bus_files_audited": 13,
+    "worker_receipts_audited": 4,
+    "deep_research_runs": 0,
+    "narrow_primary_source_spot_checks": 3
+  },
+  "ci_status": "CI_NOT_OBSERVED; INDEPENDENT_AUDIT_FOUND_VALIDATOR_COVERAGE_GAPS"
+}
