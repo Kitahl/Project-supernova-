@@ -1,0 +1,228 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W04 | Senior SWE Architecture",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-006-6c6e91e2",
+    "iteration_number": 6,
+    "role_id": "MM04",
+    "goal": "Prove MM04 branch-isolated write and evaluator-validity gate under repaired validation.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-006-6c6e91e2",
+  "worker_id": "MM04",
+  "report_id": "RPT-CAL-BR-006-6c6e91e2-MM04",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-6c6e91e2",
+  "assignment_git_identity": "9ef2ce1f13f3f59d77d72310950951bc10591def",
+  "generation_seq": 6,
+  "parent_state_git_identity": "57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+  "control_manifest_id": "CTRL-CAL-BR-006-6c6e91e2-V23-BR241",
+  "control_manifest_git_identity": "946e6992675ee7c7ceed75062bf2b215aa6dc415",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "cc397cc2dbaf455a936b2749ef6069af",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "836768b1672cc8639cfeb3fe06ebd8ce1667cdb0dc5ce1c7a6cd6c263f1521d0",
+  "worker_auth_proof": "8dcb4e8baf6112e752d280cb62815e1ac004942decc492054c2ac80a558024fe",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "CALIBRATION_TRANSPORT_ONLY",
+  "executive_status": "WORKER_PASS_PENDING_MM06_INDEPENDENT_REREAD",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM04-BRANCH-WRITE",
+      "status": "PASS",
+      "description": "Active generation, assignment, worker branch, branch overlay, and full frozen control closure were verified before the create-once worker write.",
+      "evidence_refs": [
+        "generation:2384fd5e6d136be01cc986cc881771804a95c432",
+        "control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415",
+        "assignments/CAL-BR-006-6c6e91e2.json@9ef2ce1f13f3f59d77d72310950951bc10591def",
+        "control_closure:27/27"
+      ],
+      "next_action": "Create only reports/CAL-BR-006-6c6e91e2/MM04.json on the assigned MM04 worker branch and await MM06 independent verification."
+    },
+    {
+      "task_id": "MM04-EVALUATOR-VALIDITY",
+      "status": "PASS",
+      "description": "Evaluator-execution validity was retained as a hard gate: no Senior SWE benchmark or evaluator execution occurred, so architecture performance is not measured.",
+      "evidence_refs": [
+        "assignment:short_test=true",
+        "assignment:benchmark_program=null",
+        "assignment:MM04.fresh_allowed=false",
+        "assignment:MM04.constraints=no benchmark execution"
+      ],
+      "next_action": "Keep architecture outcome NOT_MEASURED until a future explicitly fresh-authorized assignment binds and executes an eligible evaluator."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM04-ARCH-PERFORMANCE",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "Senior SWE architecture performance is intentionally unmeasured because this calibration assignment forbids benchmark execution.",
+      "evidence_refs": [
+        "assignments/CAL-BR-006-6c6e91e2.json@9ef2ce1f13f3f59d77d72310950951bc10591def"
+      ],
+      "owner": "MM04",
+      "fix_or_next": "Measure only under a future frozen fresh assignment with evaluator execution and valid model/runtime binding."
+    },
+    {
+      "issue_id": "MM04-MODEL-BINDING",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "Requested model family is known, but reasoning-effort binding is not independently attested by the automation surface.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json:model_binding_enforceable_by_automation_api=false",
+        "SESSION_STANDARD.md:model-binding contract"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Require an explicit runtime binding receipt before any model-sensitive fresh evidence is promotable."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM04-CONTROL-CLOSURE",
+      "kind": "frozen-control-identity",
+      "status": "PASS",
+      "description": "Observed Git blob identities for the exact base-21 plus overlay-6 frozen control set matched the generation control manifest.",
+      "evidence_refs": [
+        "control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415",
+        "validation_model:BASE_21_PLUS_OVERLAY_6",
+        "observed_frozen_files:27"
+      ],
+      "result": "PASS 27/27; no mixed control revision detected."
+    },
+    {
+      "test_id": "MM04-GENERATION-IMMUTABILITY",
+      "kind": "branch-lineage",
+      "status": "PASS",
+      "description": "The frozen generation branch and the MM04 worker branch both resolved exactly to the recorded generation head immediately before report creation.",
+      "evidence_refs": [
+        "ps/gen/CAL-BR-006-6c6e91e2=2384fd5e6d136be01cc986cc881771804a95c432",
+        "ps/work/CAL-BR-006-6c6e91e2/MM04=2384fd5e6d136be01cc986cc881771804a95c432"
+      ],
+      "result": "PASS; worker branch was zero commits ahead and zero behind generation before write."
+    },
+    {
+      "test_id": "MM04-WORKER-AUTH",
+      "kind": "capability-commitment-and-hmac",
+      "status": "PASS",
+      "description": "The private worker capability commitment matched the frozen MM04 commitment and the cohort-bound HMAC proof was computed over the frozen plan/cohort/assignment/control/worker tuple.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "worker_auth_scheme:PS-HMAC-SHA256-WORKER-PROOF-1"
+      ],
+      "result": "PASS; raw capability material was not persisted in the report."
+    },
+    {
+      "test_id": "MM04-SENIOR-SWE-EVALUATOR",
+      "kind": "evaluator-execution-validity",
+      "status": "NOT_MEASURED",
+      "description": "No Senior SWE evaluator was executed in this replay-only calibration.",
+      "evidence_refs": [
+        "assignment:short_test=true",
+        "cost_ledger:benchmark_executions=0"
+      ],
+      "result": "NOT_MEASURED; no architecture score, mechanism success claim, or promotion is valid from this receipt."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "BRANCH-ISOLATED-WORKER-WRITE",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "BRANCH_PROTOCOL.md@18616ac7b45391873972bc3e470ab65daefcc93c",
+        "branch/CONFIG.json@6451943a34cd8d5d29e910cc154a72d5af9f7ec1"
+      ],
+      "notes": "MM04 is restricted to one create-once report on its assigned worker branch."
+    },
+    {
+      "obligation_id": "MM04-ARCHITECTURE-SURFACE-CLOSURE",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "assignment:MM04.fresh_allowed=false"
+      ],
+      "notes": "Scientific architecture evidence is blocked in this short calibration because no fresh evaluator execution is authorized."
+    },
+    {
+      "obligation_id": "REPLAY-ONLY-ZERO-COST",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "assignment:short_test=true",
+        "assignment:MM04.constraints=SAFE_REPLAY_ONLY"
+      ],
+      "notes": "Fresh evidence, protected-manifest reads, benchmark executions, and deep-research runs are all zero."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "generation_head_sha:2384fd5e6d136be01cc986cc881771804a95c432",
+      "control_manifest_blob_sha:946e6992675ee7c7ceed75062bf2b215aa6dc415",
+      "assignment_blob_sha:9ef2ce1f13f3f59d77d72310950951bc10591def",
+      "overlay_id:78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
+      "report_schema_blob_sha:8f20f43e862201477c401db3334d2afc06cbeae6",
+      "branch_validator_blob_sha:de6a4b37b5c54c1fed2b36741cb22ea265d3bde3"
+    ],
+    "artifact_refs": [
+      "state/BRANCH_STATE.json@ps/v2.4-control-release",
+      "control/CAL-BR-006-6c6e91e2.json@generation",
+      "assignments/CAL-BR-006-6c6e91e2.json@generation",
+      "reports/CAL-BR-006-6c6e91e2/MM04.json@ps/work/CAL-BR-006-6c6e91e2/MM04"
+    ],
+    "notes": "All control and assignment reads were taken from the immutable generation SHA; mutable main was not used as in-flight control. Public-source research, protected evidence, benchmark execution, and deep research were not performed."
+  },
+  "claim_scope": "Transport/authentication/branch-isolation calibration only. This receipt does not measure Senior SWE architecture quality and does not establish a promotable Mastermind mechanism.",
+  "runtime_implementation_implication": "NONE. No runtime, benchmark cursor, mechanism, calibration state, or scientific authority transition is authorized by this originating worker receipt.",
+  "negative_zero_outcomes": [
+    {
+      "type": "fresh_evidence",
+      "detail": "0 units consumed."
+    },
+    {
+      "type": "protected_manifest_reads",
+      "detail": "0 reads."
+    },
+    {
+      "type": "benchmark_execution",
+      "detail": "0 executions; Senior SWE architecture remains NOT_MEASURED."
+    },
+    {
+      "type": "deep_research",
+      "detail": "0 runs; no public-source sweep performed."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "evaluator_execution_validity_gate": "RETAINED",
+    "architecture_result": "NOT_MEASURED",
+    "benchmark_executed": false,
+    "mechanism_promotion": "NONE",
+    "control_validation_model": "BASE_21_PLUS_OVERLAY_6",
+    "frozen_control_files_expected": 27,
+    "frozen_control_files_observed_matching": 27,
+    "generation_head_verified": true,
+    "worker_branch_prewrite_matches_generation": true
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only short calibration. No protected manifest access, benchmark execution, deep research, or public-source sweep."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 must independently fetch the MM04 worker branch, record its exact head and report blob, and verify Draft-2020-12 schema, HMAC, public-safety, lineage, zero-cost, and evaluator-validity semantics before MF06 integration."
+}
