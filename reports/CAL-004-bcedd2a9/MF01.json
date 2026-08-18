@@ -1,0 +1,258 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W01 | Representation Lab",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MF01",
+    "goal": "Prove MF01 can complete the standardized v2.3 transport/report contract and represent the current T0 blocker without scientific benchmark work.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MF01",
+  "report_id": "MF01-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "957c5ea0216b0969f391ab6d21ed9048",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "74ae88fc0a346a423d7fe0e0dcd3787ab0b29fbe455ae4e8b17f30b96923d74f",
+  "worker_auth_proof": "d0e905213f32e00a0e700b7b2f3dc89d5d6e89096b61f6ba70e044acee5cce9d",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "V2.3_SHORT_DETERMINISTIC_TRANSPORT_CONTROL_REPLAY",
+  "executive_status": "PASS: MF01 verified the active v2.3 frozen-control calibration assignment, worker authentication, lineage, public-safe replay constraints, and the T0 plan gate. No scientific benchmark, protected evidence, private manifest, deep research, or runtime modification was performed.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF01-T0-FROZEN-CONTROL",
+      "status": "PASS",
+      "description": "Fetched the active control manifest and every frozen control-plane blob listed by it; all referenced blobs were readable and the control identity matched state.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "next_action": "MM06 independently repeat exact frozen-control and schema checks."
+    },
+    {
+      "task_id": "MF01-T0-ASSIGNMENT-AUTH",
+      "status": "PASS",
+      "description": "Verified plan, cohort, generation, parent-state, control, checkpoint, runtime, MF01 assignment entry/token, calibration fresh=false, and worker-auth commitment; computed the cohort-bound HMAC proof.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+      ],
+      "next_action": "MM06 independently verify the public commitment and report HMAC."
+    },
+    {
+      "task_id": "MF01-T0-BLOCKER-REPRESENTATION",
+      "status": "PASS",
+      "description": "Represented the exact current T0 gate without scientific work: fresh evidence remains disabled until two consecutive non-superseded v2.3 short authenticated calibration cohorts complete full 12-worker fan-in, MM06 verification, MF06 integration, and BIL00 decision/state advancement.",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a"
+      ],
+      "next_action": "Complete the remaining cohort fan-in; do not execute E1 yet."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "O-T0-CALIBRATION_AND_SCHEMA_RUNTIME",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The active runtime blocker is transport/schema calibration. State requires two clean v2.3 authenticated short cohorts; current streak is 0/2 and fresh_allowed_globally=false.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Obtain one complete clean CAL-004 fan-in, then a second consecutive clean v2.3 cohort before transport may become FRESH_ENABLED."
+    },
+    {
+      "issue_id": "O-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "The runtime exposes the model identity as GPT-5.6 Sol, but no reliable reasoning-effort receipt is exposed; binding is therefore PARTIAL_UNVERIFIED.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "owner": "EXT01",
+      "fix_or_next": "Keep model-sensitive fresh promotion blocked unless a future frozen execution manifest and runtime receipt satisfy the binding rule."
+    },
+    {
+      "issue_id": "O-CI-OBSERVABILITY",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "The GitHub combined-status surface exposed no status entries for the prewrite main HEAD; this is CI_NOT_OBSERVED, not PASS.",
+      "evidence_refs": [
+        "main@ca88ed7d8e68cf7c57e283017338ea2c36173b85",
+        ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+      ],
+      "owner": "MM06",
+      "fix_or_next": "MM06 should independently run/fetch deterministic validation evidence and record CI observation without treating absence as success."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-CONTROL-FREEZE",
+      "kind": "transport/control",
+      "status": "PASS",
+      "description": "Active control manifest identity and complete frozen file set were fetched; no mixed-control revision was observed.",
+      "evidence_refs": ["control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"],
+      "result": "21/21 frozen control entries fetched by their declared Git blob identities."
+    },
+    {
+      "test_id": "T0-LINEAGE-ASSIGNMENT",
+      "kind": "lineage",
+      "status": "PASS",
+      "description": "State, control, assignment and parent state agree on generation, parent lineage, checkpoint and runtime; active cohort is not listed as superseded.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "T0-WORKER-AUTH",
+      "kind": "authentication",
+      "status": "PASS",
+      "description": "MF01 prompt-private secret commitment matches the frozen public commitment and the cohort-bound HMAC proof was computed using the frozen formula.",
+      "evidence_refs": ["config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"],
+      "result": "Commitment and HMAC proof generated without exposing the raw secret."
+    },
+    {
+      "test_id": "T0-REPLAY-SAFETY",
+      "kind": "safety",
+      "status": "PASS",
+      "description": "Calibration constraints were honored: no fresh evidence, protected manifest access, benchmark execution, broad prior search, or deep research.",
+      "evidence_refs": ["assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"],
+      "result": "All protected/scientific counters remain zero."
+    },
+    {
+      "test_id": "T0-PLAN-GATE",
+      "kind": "plan-gating",
+      "status": "PASS",
+      "description": "Confirmed the exact gate: Math Foundry's E1 clean route/schedule suite is the next scientific target, but it is not executable in this calibration cohort because transport requires two consecutive clean short v2.3 cohorts and no private frozen fresh manifest is assigned.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a"
+      ],
+      "result": "E1 remains gated; no benchmark unit opened."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0-two-consecutive-clean-short-authenticated-cohorts",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "notes": "This MF01 receipt is one worker contribution to the first active countable v2.3 short cohort; only full end-to-end fan-in can count the cohort."
+    },
+    {
+      "obligation_id": "E1-route-schedule-truth",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a"
+      ],
+      "notes": "E1 is the next Foundry clean benchmark target but is intentionally not measured during T0 calibration."
+    },
+    {
+      "obligation_id": "worker-no-deep-research",
+      "status": "ALIGNED",
+      "evidence_refs": ["WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"],
+      "notes": "No public prior-art sweep or deep research was performed."
+    },
+    {
+      "obligation_id": "persistent-session-standardized-naming",
+      "status": "ALIGNED",
+      "evidence_refs": ["SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"],
+      "notes": "Stable lane name and standardized dynamic session header were used."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+    ],
+    "artifact_refs": [
+      "reports/CAL-004-bcedd2a9/MF01.json",
+      "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+      "main-prewrite@ca88ed7d8e68cf7c57e283017338ea2c36173b85"
+    ],
+    "notes": "All 21 control-plane entries declared by the active control manifest were fetched at their exact blob identities. No protected/private payload was read."
+  },
+  "claim_scope": "Short deterministic v2.3 T0 transport/control calibration only. This receipt establishes MF01 control/assignment/auth/session/report participation and the current T0 gate; it is not scientific benchmark evidence and makes no runtime or capability claim.",
+  "runtime_implementation_implication": "NONE. The only represented blocker is external transport/schema calibration; no Foundry runtime change is authorized or implied.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "fresh_allowed_globally=false and MF01 fresh_allowed=false; fresh_evidence_ids is empty."
+    },
+    {
+      "type": "PROTECTED_MANIFEST_NOT_READ",
+      "detail": "No private manifest was assigned or accessed."
+    },
+    {
+      "type": "BENCHMARK_NOT_EXECUTED",
+      "detail": "Short-test constraints prohibit benchmark execution; E1 was only confirmed as the next gated Foundry suite."
+    },
+    {
+      "type": "DEEP_RESEARCH_NOT_RUN",
+      "detail": "MF01 is not the deep-research owner and performed no broad public-source sweep."
+    },
+    {
+      "type": "RUNTIME_CHANGE_NONE",
+      "detail": "No runtime artifact, network state, benchmark cursor, or scientific claim was promoted."
+    },
+    {
+      "type": "CI_NOT_OBSERVED",
+      "detail": "The prewrite main commit exposed no combined status entries; absence was not treated as PASS."
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Only GitHub control-plane reads, one parent-state read, auth computation, status observation, and immutable report creation were performed."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently fetch this report, validate it against the frozen Draft 2020-12 schema, verify MF01 commitment/HMAC/public safety and record authoritative reread evidence. After all 12 worker reports are safe, MF06 integrates and BIL00 decides whether CAL-004 counts and publishes the retry-safe next cohort. No E1 work before two consecutive clean countable cohorts and a separate valid private fresh manifest."
+}
