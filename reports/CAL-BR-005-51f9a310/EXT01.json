@@ -1,0 +1,393 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-JOINT-A01 | Runtime & Transport Audit",
+    "target_program": "JOINT",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-005-51f9a310",
+    "iteration_number": 5,
+    "role_id": "EXT01",
+    "goal": "Independently audit immutable generation, worker isolation, public/private split, model-binding honesty, benchmark succession, and consolidation design.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-005-51f9a310",
+  "worker_id": "EXT01",
+  "report_id": "EXT01-CAL-BR-005-51f9a310",
+  "assignment_id": "PS-BRANCH-CAL-BR-005-51f9a310",
+  "assignment_git_identity": "62bbc215254da0803cfaf8a8f842c90105750a3b",
+  "generation_seq": 5,
+  "parent_state_git_identity": "7fff4d309e587667703d78f2e9635f8cba4f062a",
+  "control_manifest_id": "CTRL-CAL-BR-005-51f9a310-V23-BR24",
+  "control_manifest_git_identity": "a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "b688ce1dd53543150aa1cba30dfbbcbb",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "74216d4e0414c15b747b329e4de2133dd2c9528fdf99d3e9a709136533f9d87b",
+  "worker_auth_proof": "4d6283f9faab793b6ced4b3ec3f0909a9fe364213b450793af91b4f3d53a00fa",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_BRANCH_GITOPS_TRANSPORT_AUDIT",
+  "executive_status": "PASS_WITH_CONSOLIDATION_HARDENING_OPEN",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "EXT01-BR24-STATE",
+      "status": "PASS",
+      "description": "Verified v2.4 overlay identity, active cohort/generation, generation SHA, control and assignment blob bindings from ps/v2.4-control-release.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+        "ps/gen/CAL-BR-005-51f9a310@5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b"
+      ],
+      "next_action": "MM06 should independently re-observe the generation head and every worker branch after worker writes complete."
+    },
+    {
+      "task_id": "EXT01-BR24-FREEZE",
+      "status": "PASS",
+      "description": "Verified the generation branch remains exactly at the recorded generation head and all 25 files in the frozen control manifest match their generation-SHA Git blob identities.",
+      "evidence_refs": [
+        "generation-compare:expected-head==ps/gen/CAL-BR-005-51f9a310",
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9"
+      ],
+      "next_action": "Do not move the generation ref; any movement invalidates the cohort."
+    },
+    {
+      "task_id": "EXT01-BR24-ISOLATION",
+      "status": "PASS_OBSERVED_STATE",
+      "description": "All 12 expected worker branches exist with merge-base equal to the frozen generation SHA. At audit time 11 were still identical to G; MM01 was exactly one commit ahead and changed only its own report path.",
+      "evidence_refs": [
+        "ps/work/CAL-BR-005-51f9a310/*",
+        "MM01-diff:reports/CAL-BR-005-51f9a310/MM01.json-only"
+      ],
+      "next_action": "MM06 must later verify each completed worker branch head and enforce one-report-only path isolation."
+    },
+    {
+      "task_id": "EXT01-BR24-AUTH-PRIVACY",
+      "status": "PASS",
+      "description": "EXT01 capability commitment matches the frozen public commitment and the cohort-bound HMAC was computed; assignment is replay-only with no private manifest or protected evidence IDs.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "assignment:EXT01:fresh_allowed=false",
+        "assignment:EXT01:private_manifest_id=null"
+      ],
+      "next_action": "MM06 independently recomputes the HMAC using verifier-side secret material."
+    },
+    {
+      "task_id": "EXT01-BR24-SUCCESSION-CONSOLIDATION",
+      "status": "PARTIAL",
+      "description": "Benchmark succession is explicitly independent per program and successor-gated. Single-PR consolidation design is coherent, but no consolidation branch/PR exists yet and merge-policy enforcement is not fully frozen by the generation manifest.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "BRANCH_PROTOCOL.md@1efa5352d0156351e1eaef97cdbc8079d1b90213",
+        "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb"
+      ],
+      "next_action": "BIL00 should freeze or explicitly bind the merge/lineage guard implementation and then prove one expected-head/state-lineage-protected consolidation PR."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "EXT01-BR24-001",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "v2.4 consolidation relies on semantic CI/parent-lineage guard files that are present at the generation SHA but are not included in the frozen control manifest.",
+      "evidence_refs": [
+        "scripts/ci_guard.py@4586c5684ead40db94ed731d20660c533d6fbd17",
+        "scripts/parent_lineage_guard.py@ac08295155f3154a642828d1cdec850526e11b60",
+        ".github/workflows/supernova-ci-guard.yml@4ae3498d9ac35d87a37b511e95e29821e81bbf1b",
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Freeze these merge-policy/lineage enforcement files in the next branch control manifest or bind their exact blob identities in a separate immutable merge-policy manifest consumed by consolidation."
+    },
+    {
+      "issue_id": "EXT01-BR24-002",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "summary": "Overlay state calls the network mode GITHUB_BRANCH_CALIBRATION while the frozen v2.3 assignment schema/assignment encode GITHUB_BUS_CALIBRATION; the transport overlay/base-mode split is not machine-explicit.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b",
+        "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Add an explicit overlay_transport_mode field/schema or extend the assignment mode enum in the next control revision; do not make downstream equality assumptions across overlay/base network_mode fields."
+    },
+    {
+      "issue_id": "EXT01-BR24-003",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "Repository branch-protection/ruleset enforcement for main and immutable generation refs was not independently observable through the available connector; protocol-level branch isolation is therefore stronger than proven GitHub permission isolation.",
+      "evidence_refs": [
+        "BRANCH_PROTOCOL.md@1efa5352d0156351e1eaef97cdbc8079d1b90213",
+        "GitHub-official-branch-protection-rulesets-audit-2026-08-19"
+      ],
+      "owner": "Repository administrator / BIL00",
+      "fix_or_next": "Require PR/status-check protection on main and lock/restrict ps/gen/* where supported; document the active ruleset/protection identity or independently re-check generation head at verification and merge time."
+    },
+    {
+      "issue_id": "EXT01-BR24-004",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "summary": "Requested model identity is known in this runtime, but the Scheduled Tasks surface does not expose an independent reasoning-effort receipt; model binding is therefore only PARTIAL_UNVERIFIED.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "OpenAI-Scheduled-Tasks-official-doc-audit-2026-08-19"
+      ],
+      "owner": "BIL00 / execution-manifest owner",
+      "fix_or_next": "Keep model-sensitive fresh promotion disabled unless a future frozen execution manifest and runtime receipt independently bind both model and required reasoning configuration."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-BR-GENERATION-IMMUTABLE",
+      "kind": "Git ref comparison",
+      "status": "PASS",
+      "description": "Compared recorded generation_head_sha with ps/gen/CAL-BR-005-51f9a310.",
+      "evidence_refs": [
+        "compare:5b2550a33d46cab59643ea1169f766ac5b96dcb9...ps/gen/CAL-BR-005-51f9a310"
+      ],
+      "result": "identical; ahead_by=0; behind_by=0"
+    },
+    {
+      "test_id": "T0-BR-FROZEN-CONTROL-25",
+      "kind": "Git blob identity audit",
+      "status": "PASS",
+      "description": "Checked every frozen control-manifest file against the Git object at the generation SHA.",
+      "evidence_refs": [
+        "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9"
+      ],
+      "result": "25/25 frozen blob identities match."
+    },
+    {
+      "test_id": "T0-BR-WORKER-ISOLATION",
+      "kind": "Branch ancestry/diff audit",
+      "status": "PASS",
+      "description": "Verified all 12 expected worker branches share the exact generation merge-base; the only completed worker branch observed so far changed only its own report file.",
+      "evidence_refs": [
+        "ps/work/CAL-BR-005-51f9a310/*"
+      ],
+      "result": "12/12 branches present; no observed cross-worker file write."
+    },
+    {
+      "test_id": "T0-BR-HMAC",
+      "kind": "Commitment and cohort-bound HMAC",
+      "status": "PASS",
+      "description": "Verified EXT01 private capability hashes to the frozen public commitment and computed the required cohort-bound HMAC without publishing capability material.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment match; HMAC proof format valid."
+    },
+    {
+      "test_id": "T0-BR-PUBLIC-PRIVATE",
+      "kind": "Assignment privacy gate",
+      "status": "PASS",
+      "description": "Verified calibration assignment carries no private manifest and no protected/fresh evidence IDs for EXT01.",
+      "evidence_refs": [
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b"
+      ],
+      "result": "fresh_allowed=false; opaque_evidence_ids=[]; private manifest fields null."
+    },
+    {
+      "test_id": "T0-BR-MODEL-BINDING-HONESTY",
+      "kind": "Runtime identity honesty",
+      "status": "PASS",
+      "description": "Did not claim verification of an effort setting not exposed by the task runtime.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "result": "MODEL_BINDING_STATUS=PARTIAL_UNVERIFIED."
+    },
+    {
+      "test_id": "T0-BR-BENCHMARK-SUCCESSION",
+      "kind": "Registry logic audit",
+      "status": "PASS",
+      "description": "Verified Mastermind and Math Foundry have independent active cursors and explicit successor chains with verified-completion/preflight requirements.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "result": "Independent succession rules present; exhaustion enters BENCHMARK_DISCOVERY_WAIT."
+    },
+    {
+      "test_id": "T0-BR-SINGLE-PR-CONSOLIDATION",
+      "kind": "Consolidation design/end-to-end execution",
+      "status": "NOT_MEASURED",
+      "description": "Protocol/schema specify one consolidation branch and PR with expected-head/state-lineage guard, but the branch/PR has not yet been created in this cohort.",
+      "evidence_refs": [
+        "BRANCH_PROTOCOL.md@1efa5352d0156351e1eaef97cdbc8079d1b90213",
+        "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb"
+      ],
+      "result": "Design present; end-to-end merge safety not yet demonstrated."
+    },
+    {
+      "test_id": "T0-BR-CI-OBSERVATION",
+      "kind": "Commit status observation",
+      "status": "NOT_MEASURED",
+      "description": "Queried combined status surface for the frozen generation commit.",
+      "evidence_refs": [
+        "generation_head_sha:5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "result": "No connector-visible statuses observed; recorded as CI_NOT_OBSERVED, not PASS."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_BRANCH_IMMUTABLE_GENERATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "ps/gen/CAL-BR-005-51f9a310@5b2550a33d46cab59643ea1169f766ac5b96dcb9"
+      ],
+      "notes": "Frozen generation ref currently remains identical to recorded G."
+    },
+    {
+      "obligation_id": "T0_PER_WORKER_BRANCH_ISOLATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "ps/work/CAL-BR-005-51f9a310/*"
+      ],
+      "notes": "Branch ancestry and observed diffs match own-report-only design; permission-level isolation remains unverified."
+    },
+    {
+      "obligation_id": "T0_AUTH_PUBLIC_PRIVATE",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b"
+      ],
+      "notes": "HMAC commitment and replay-only privacy boundary pass."
+    },
+    {
+      "obligation_id": "T0_MODEL_BINDING_HONESTY",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "notes": "Binding reported PARTIAL_UNVERIFIED; no fresh model-sensitive claim."
+    },
+    {
+      "obligation_id": "BENCHMARK_SUCCESSION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "notes": "Independent program cursors and successor gating are explicit."
+    },
+    {
+      "obligation_id": "T0_SINGLE_PR_CONSOLIDATION",
+      "status": "PARTIAL",
+      "evidence_refs": [
+        "BRANCH_PROTOCOL.md@1efa5352d0156351e1eaef97cdbc8079d1b90213",
+        "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb"
+      ],
+      "notes": "Design is coherent but execution is pending and merge-policy guard code is not frozen in the generation control manifest."
+    },
+    {
+      "obligation_id": "RUNTIME_AUTHORITY_SEPARATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "BRANCH_PROTOCOL.md@1efa5352d0156351e1eaef97cdbc8079d1b90213"
+      ],
+      "notes": "Overlay changes transport only; no task/merge creates Math Foundry or Mastermind runtime truth."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/BRANCH_STATE.json@57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+      "generation_head_commit@5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+      "control/CAL-BR-005-51f9a310.json@a0ed9b8f47f906c3b116f7e2781a9c82d0313ac9",
+      "assignments/CAL-BR-005-51f9a310.json@62bbc215254da0803cfaf8a8f842c90105750a3b",
+      "BRANCH_PROTOCOL.md@1efa5352d0156351e1eaef97cdbc8079d1b90213",
+      "branch/CONFIG.json@6d64a09cf35078168f1a636d2254827dd261dff7",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "schemas/branch_consolidation.schema.json@fcd45d80d8b50001d1d4f1cf7e61c0696c2533cb",
+      "scripts/ci_guard.py@4586c5684ead40db94ed731d20660c533d6fbd17",
+      "scripts/parent_lineage_guard.py@ac08295155f3154a642828d1cdec850526e11b60",
+      ".github/workflows/supernova-ci-guard.yml@4ae3498d9ac35d87a37b511e95e29821e81bbf1b",
+      "GitHub-official-rulesets-and-protected-branches-audit-2026-08-19",
+      "OpenAI-official-Scheduled-Tasks-audit-2026-08-19"
+    ],
+    "artifact_refs": [
+      "ps/v2.4-control-release",
+      "ps/gen/CAL-BR-005-51f9a310",
+      "ps/work/CAL-BR-005-51f9a310/EXT01",
+      "ps/verify/CAL-BR-005-51f9a310",
+      "ps/integrate/CAL-BR-005-51f9a310"
+    ],
+    "notes": "Audit used the v2.4 control-release pointer and exact generation SHA, not mutable main. Main was consulted neither as worker control nor as scientific evidence."
+  },
+  "claim_scope": "Replay-safe Branch-GitOps transport/control audit only. No fresh or protected benchmark evidence, no benchmark execution, no deep research, no scientific uplift, and no Foundry/Mastermind runtime modification or promotion.",
+  "runtime_implementation_implication": "NONE. The branch overlay isolates transport writes and preserves runtime authority separation. Findings concern control/merge hardening only.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "fresh_allowed_globally=false and EXT01 fresh_allowed=false; fresh_evidence_ids is empty."
+    },
+    {
+      "type": "PROTECTED_MANIFEST_NOT_READ",
+      "detail": "EXT01 assignment has null private-manifest fields; protected_manifest_reads=0."
+    },
+    {
+      "type": "BENCHMARK_EXECUTIONS_ZERO",
+      "detail": "No benchmark task, evaluator, or protected holdout was opened."
+    },
+    {
+      "type": "DEEP_RESEARCH_ZERO",
+      "detail": "Only narrow official documentation spot-checks were used for transport/model-binding hardening; no deep-research lane was run."
+    },
+    {
+      "type": "RUNTIME_CHANGE_NONE",
+      "detail": "No runtime artifact, state, or promotion action was created."
+    },
+    {
+      "type": "CONSOLIDATION_PR_NOT_YET_CREATED",
+      "detail": "The consolidation branch/PR is intentionally absent until MM06 and MF06 complete."
+    },
+    {
+      "type": "CI_NOT_OBSERVED",
+      "detail": "No connector-visible combined status entries were observed for the frozen generation commit; this is not treated as PASS."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "role": "Independent runtime/build + transport audit",
+    "overlay_version": "2.4",
+    "overlay_id": "78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
+    "generation_branch": "ps/gen/CAL-BR-005-51f9a310",
+    "generation_head_sha": "5b2550a33d46cab59643ea1169f766ac5b96dcb9",
+    "generation_head_check": "PASS_IDENTICAL",
+    "frozen_control_blobs": "PASS_25_OF_25",
+    "worker_branch_count": 12,
+    "worker_branch_isolation_observation": "PASS_CURRENT_STATE",
+    "ext01_branch_prewrite_state": "IDENTICAL_TO_GENERATION_HEAD",
+    "hmac_commitment_check": "PASS",
+    "public_private_boundary": "PASS_REPLAY_ONLY",
+    "benchmark_succession": "PASS_BY_REGISTRY_DESIGN",
+    "single_pr_consolidation": "DESIGN_PASS_EXECUTION_NOT_MEASURED",
+    "merge_policy_freeze": "PARTIAL_UNFROZEN_GUARDS_IDENTIFIED",
+    "model_binding": "PARTIAL_UNVERIFIED",
+    "prospective_status": "NOT_MEASURED"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-safe Git branch/control audit plus narrow official GitHub/OpenAI documentation checks only."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently reread all 12 worker branches and validate HMAC/schema/public safety. Before BIL00 counts this branch cohort, freeze or explicitly bind the v2.4 merge/lineage guard implementation, resolve the overlay/base network-mode semantic split, and prove the one-PR expected-head plus state-lineage consolidation path."
+}
