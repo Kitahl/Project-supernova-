@@ -1,0 +1,8 @@
+{
+  "cohort_id":"CAL-005-7fff4d30",
+  "superseded_by":"CAL-BR-006-v251-433ad83a",
+  "reason":"Branch-isolated GitOps transport under the same canonical 0aa plan strictly dominates direct-to-main worker fan-out for concurrency and provenance. CAL-005 never had calibration credit or fresh evidence.",
+  "evidence_preserved":true,
+  "calibration_credit":false,
+  "fresh_evidence_consumed_by_supersession":0
+}
