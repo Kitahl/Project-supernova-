@@ -1,0 +1,242 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MF04",
+    "goal": "Prove MF04 can complete the standardized v2.3 transport/report contract and run one cheap adversarial check of schema/auth/lineage without broad research.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MF04",
+  "report_id": "MF04-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "f2f6bcce6ee92d9d4d42323e99e41883",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "b066b343a0423b353cd14cd8fb0f4bf34a78119be2be1d016d5db66ca1f94ffc",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_CONTROL_PLANE_FALSIFIER",
+  "executive_status": "COMPLETE_REPLAY_SAFE_WITH_CONFIRMED_PARENT_OBJECT_VALIDATION_GAP",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF04-CAL004-CONTROL",
+      "status": "COMPLETE",
+      "description": "Verified active state, assignment, control manifest, registry, worker-auth commitment, parent-state object resolution, and all 21 frozen v2.3 control-file Git blob identities.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+      ],
+      "next_action": "Await MM06 independent report reread, schema/auth verification, and cohort-level adjudication."
+    },
+    {
+      "task_id": "MF04-CAL004-FALSIFIER",
+      "status": "COMPLETE_WITH_FAILURE_FOUND",
+      "description": "Ran one cheap deterministic lineage falsifier against the frozen validator contract: a syntactically valid but nonexistent 40-hex parent identity is not resolved by scripts/validate_bus.py; the frozen schemas constrain only format and the validator compares equality among current state/control/assignment.",
+      "evidence_refs": [
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+        "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+        "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+        "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+        "nonexistent-parent-probe@0000000000000000000000000000000000000000:GITHUB_404"
+      ],
+      "next_action": "Require verifier-side Git-object resolution now; harden a future frozen validator to reject nonexistent or semantically invalid parent-state objects."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MF04-LINEAGE-001",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The frozen v2.3 CI validator does not resolve active_parent_state_git_identity as a Git blob or validate the referenced prior-state content. A nonexistent 40-hex parent can satisfy schema syntax and the validator's current equality-only lineage checks if state/control/assignment are made mutually consistent.",
+      "evidence_refs": [
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+        "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+        "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+        "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+        "nonexistent-parent-probe@0000000000000000000000000000000000000000:GITHUB_404"
+      ],
+      "owner": "MM06+BIL00",
+      "fix_or_next": "For this cohort, MM06 should independently resolve and inspect the parent blob. For a future control revision, validate Git-object existence and an explicit allowed prior-state transition, not only 40-hex syntax and cross-file equality."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MF04-FROZEN-CONTROL-IDENTITY",
+      "kind": "FROZEN_GIT_BLOB_IDENTITY",
+      "status": "PASS",
+      "description": "Fetched every path frozen by control/CAL-004-bcedd2a9.json and compared the returned Git blob SHA to the frozen manifest.",
+      "evidence_refs": [
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "result": "21/21 frozen control files matched exactly; no mixed control revision observed."
+    },
+    {
+      "test_id": "MF04-WORKER-AUTH",
+      "kind": "COMMITMENT_AND_COHORT_BOUND_HMAC",
+      "status": "PASS",
+      "description": "Verified the prompt-private worker capability material against the public MF04 commitment and computed the cohort-bound HMAC over the frozen plan/cohort/assignment/control/worker tuple without exposing that material.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "result": "Commitment matched; report HMAC proof computed for MF04 and current cohort."
+    },
+    {
+      "test_id": "MF04-CURRENT-PARENT-RESOLUTION",
+      "kind": "GIT_PARENT_OBJECT_RESOLUTION",
+      "status": "PASS",
+      "description": "Resolved the actual active parent-state Git blob referenced by CAL-004 and inspected it as the prior external-bus state.",
+      "evidence_refs": [
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+      ],
+      "result": "Actual parent blob exists and contains generation 3 / CAL-003-810da70a state; the current cohort's real parent is therefore not falsified by the probe."
+    },
+    {
+      "test_id": "MF04-NONEXISTENT-PARENT-FALSIFIER",
+      "kind": "LINEAGE_NEGATIVE_PROBE",
+      "status": "FAIL",
+      "description": "Used an all-zero 40-hex parent identity as the cheapest discriminator. GitHub object resolution rejects it, but the frozen state/control/assignment schemas accept its syntax and scripts/validate_bus.py contains no parent-object resolution/content check.",
+      "evidence_refs": [
+        "nonexistent-parent-probe@0000000000000000000000000000000000000000:GITHUB_404",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262"
+      ],
+      "result": "Confirmed validator coverage gap: CI logic can establish cross-file equality of a parent identity but not that the parent Git object exists or is an allowed prior state."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "PARTIAL",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262"
+      ],
+      "notes": "MF04 transport/auth/frozen-file obligations completed replay-safely. Cohort remains pending MM06 independent reread/auth/schema verification, and the lineage validator gap should be explicitly compensated or fixed before relying on CI as complete fail-closed lineage proof."
+    },
+    {
+      "obligation_id": "E1_AND_LATER_SCIENTIFIC_STAGES",
+      "status": "NOT_APPLICABLE",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "notes": "Calibration assignment forbids benchmark execution, protected evidence, broad research, and runtime modification."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121",
+      "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+      "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+      "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "schemas/verification.schema.json@d2e38cfae93663f109cbfc7dd12fd1370806be9c",
+      "schemas/integration.schema.json@b2fd1c003c1496e1731e190cf4e7785799489084",
+      "schemas/director.schema.json@e770a72f3e5394868dbea10a87335879b9d90f18",
+      "schemas/research.schema.json@3b0f2544decb7c8189caf8714632ef8267aa107a",
+      "schemas/benchmark_registry.schema.json@67954d036c03466950d56a386f5ce50c2d85ebde",
+      "schemas/benchmark_completion.schema.json@a0d5179cab908d348a2ac486fa3c5121b2c2dbce",
+      "schemas/private_manifest_contract.schema.json@05ef541391432327d1686f69d3b1646d8a6cbc35",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+    ],
+    "artifact_refs": [
+      "reports/CAL-004-bcedd2a9/MF04.json",
+      "nonexistent-parent-probe@0000000000000000000000000000000000000000:GITHUB_404"
+    ],
+    "notes": "All frozen control paths were fetched from the canonical bus and matched the manifest. No private-vault manifest was accessed because fresh work is disabled. The single falsifier was confined to lineage/schema/auth control-plane semantics."
+  },
+  "claim_scope": "Replay-safe adversarial audit of CAL-004 v2.3 transport/control only. The confirmed finding is limited to parent-object validation coverage in the frozen public CI validator; it does not show that CAL-004's actual parent is missing or invalid, and it is not scientific benchmark evidence.",
+  "runtime_implementation_implication": "NONE. No runtime state, benchmark state, Foundry artifact, Mastermind artifact, or promotion decision is changed by this worker report.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "fresh_allowed=false and fresh_allowed_globally=false; no protected manifest was read and no benchmark work was executed."
+    },
+    {
+      "type": "ACTUAL_PARENT_OBJECT_MISSING_NOT_OBSERVED",
+      "detail": "The real CAL-004 parent-state Git blob resolved successfully; the falsifier concerns validator completeness, not an observed broken current parent."
+    },
+    {
+      "type": "CONTROL_DRIFT_NOT_OBSERVED",
+      "detail": "All 21 frozen v2.3 control files matched their manifest Git blob identities."
+    },
+    {
+      "type": "SCIENTIFIC_EFFECT_NOT_MEASURED",
+      "detail": "No E1/G1/C1/E3 or later scientific result was attempted; a failed or successful control-plane falsifier is not a capability proof."
+    }
+  ],
+  "research_questions": [
+    {
+      "question": "What minimal fail-closed lineage rule should the v2.3 bus enforce so active_parent_state_git_identity proves both Git-object existence and an allowed immediate prior-state transition, including explicit protocol/plan migration cases?",
+      "parent_blocker_or_claim": "T0 authenticated frozen-control transport lineage",
+      "why_it_matters": "Current frozen validation proves syntax and cross-file equality but not existence or semantic validity of the referenced parent state.",
+      "closure_criterion": "A frozen verifier rejects a nonexistent 40-hex parent, resolves the actual parent object, validates the parent state's required identity fields, and checks an explicit transition relation for same-version and version-migration cases.",
+      "preferred_source_families": [
+        "Git object model documentation",
+        "software supply-chain provenance and attestation standards"
+      ],
+      "urgency": "HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "Adversarial destruction/falsifier",
+    "assigned_target": "CAL-004 v2.3 replay-only transport/control loop",
+    "frozen_control_files": "PASS_21_OF_21",
+    "auth_check": "PASS",
+    "current_parent_resolution": "PASS",
+    "adversarial_probe": {
+      "name": "PARENT_GIT_OBJECT_EXISTENCE_GAP",
+      "status": "CONFIRMED_REPLAY_SAFE_VALIDATOR_GAP",
+      "attack": "Substitute a nonexistent but schema-valid 40-hex parent identity consistently across current state, control, and assignment. The frozen schemas allow the value and the frozen validator has no Git-object resolution or prior-state content check.",
+      "discriminator": "The all-zero 40-hex object identifier returned GitHub 404, while all three schemas accept the same lexical form.",
+      "bounded_conclusion": "The frozen CI validator cannot by itself certify parent-state object existence. The actual CAL-004 parent resolves, so this is a validator-completeness defect rather than evidence of current cohort corruption."
+    },
+    "prospective_status": "NOT_MEASURED"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "One narrow replay-safe lineage falsifier plus mandatory frozen-control/auth checks; zero fresh, protected, benchmark, or deep-research consumption."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently reread this immutable report, verify schema/auth/public safety, resolve the actual parent Git object, and quarantine any use of CI PASS as complete parent-lineage proof unless verifier-side resolution compensates. BIL00 should not promote state/runtime from this worker report."
+}
