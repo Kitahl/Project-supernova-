@@ -1,0 +1,218 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W01 | Representation Lab",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-007-2672995c",
+    "iteration_number": 7,
+    "role_id": "MF01",
+    "goal": "Prove MF01 branch-isolated write and standardized report contract under the clean frozen generation.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-007-2672995c",
+  "worker_id": "MF01",
+  "report_id": "MF01-CAL-BR-007-2672995c",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-2672995c",
+  "assignment_git_identity": "1c373303e360bc8f47c774619cef5f2de6fa01eb",
+  "generation_seq": 7,
+  "parent_state_git_identity": "2672995c4ee9209bae72dbaedc72799d1ff78528",
+  "control_manifest_id": "CTRL-CAL-BR-007-2672995c-V23-BR241",
+  "control_manifest_git_identity": "27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "96fc3bd7cdf59f72b134b45f56a3041e",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "74ae88fc0a346a423d7fe0e0dcd3787ab0b29fbe455ae4e8b17f30b96923d74f",
+  "worker_auth_proof": "28a4911752dc776d5f4cc848f88621288cd0dbfa2b19a0b24ba35d2c87a17e85",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "TRANSPORT_CALIBRATION_REPLAY_ONLY",
+  "executive_status": "PASS: MF01 verified the clean frozen generation, exact 21+6 two-layer control union, assignment/session binding, worker authentication, immutable generation head, and isolated worker-branch prewrite state. Scientific execution remains blocked by T0 calibration.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF01-T0-TRANSPORT",
+      "status": "PASS",
+      "description": "Perform the minimal assigned MF01 replay-only branch transport/report role against the exact frozen generation.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@ps/v2.4-control-release",
+        "assignments/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "control/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "next_action": "MM06 independently rereads and validates this worker receipt."
+    },
+    {
+      "task_id": "MF01-T0-REPRESENT-BLOCKER",
+      "status": "PASS",
+      "description": "Represent the current runtime blocker without scientific benchmark work: transport calibration remains open and fresh execution is disabled.",
+      "evidence_refs": [
+        "state/CURRENT.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "benchmark/registry.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "next_action": "Hold MF-E1-CLEAN-ROUTE-TRUTH until transport calibration and later private pre-outcome freezing permit execution."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "O-T0-CALIBRATION_AND_SCHEMA_RUNTIME",
+      "severity": "HIGH",
+      "status": "BLOCKED",
+      "summary": "Two consecutive clean replay-only transport cohorts are still required before fresh/protected work may open; this worker cannot count or promote the cohort.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@ps/v2.4-control-release",
+        "PROTOCOL.md@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Complete all worker receipts, MM06 independent verification, MF06 integration, and BIL00 consolidation/state decision for countable clean cohorts."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-FROZEN-CONTROL-UNION",
+      "kind": "CONTROL_INTEGRITY",
+      "status": "PASS",
+      "description": "Fetched every frozen control file from the exact generation head and checked identities against the manifest.",
+      "evidence_refs": [
+        "control/CAL-BR-007-2672995c.json#files",
+        "branch/CONFIG.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "27/27 matched; exact base-21 plus overlay-6 union."
+    },
+    {
+      "test_id": "T0-TWO-LAYER-VALIDATION",
+      "kind": "VALIDATOR_CONTRACT",
+      "status": "PASS",
+      "description": "Checked repaired two-layer semantics without requiring the v2.3 trunk validator to own overlay controls.",
+      "evidence_refs": [
+        "scripts/validate_bus.py@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "scripts/validate_branch_bus.py@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "BRANCH_PROTOCOL.md@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Trunk base set is 21; branch overlay independently extends with exactly 6 files."
+    },
+    {
+      "test_id": "T0-GENERATION-IMMUTABILITY",
+      "kind": "BRANCH_LINEAGE",
+      "status": "PASS",
+      "description": "Compared the generation branch to the recorded frozen generation head before worker write.",
+      "evidence_refs": [
+        "ps/gen/CAL-BR-007-2672995c",
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Generation branch identical to frozen head; worker branch also identical to that head before write."
+    },
+    {
+      "test_id": "T0-AUTH-BINDING",
+      "kind": "WORKER_AUTH",
+      "status": "PASS",
+      "description": "Verified the prompt-private MF01 capability commitment and computed the frozen cohort-bound HMAC proof.",
+      "evidence_refs": [
+        "config/worker_auth.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Commitment matched; cohort-bound HMAC recorded. Raw capability secret excluded."
+    },
+    {
+      "test_id": "T0-SESSION-EQUALITY",
+      "kind": "SESSION_BINDING",
+      "status": "PASS",
+      "description": "Bound session phase, goal, target program, iteration, role, plan, runtime, model target and execution mode to the active MF01 assignment.",
+      "evidence_refs": [
+        "assignments/CAL-BR-007-2672995c.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "schemas/report.schema.json@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Exact assignment phase/goal/target used; model identity known while reasoning-effort enforcement remains unavailable."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "BRANCH_PROTOCOL.md@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "notes": "This worker performed only replay-safe transport/report validation."
+    },
+    {
+      "obligation_id": "MF-E1-CLEAN-ROUTE-TRUTH",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "benchmark/registry.json@ef23332548400d1b798d53c39ff7f8c3ebf14076",
+        "state/BRANCH_STATE.json@ps/v2.4-control-release"
+      ],
+      "notes": "E1 is the next Math Foundry scientific suite but remains gated because fresh_allowed_globally=false and transport calibration is incomplete."
+    },
+    {
+      "obligation_id": "NO_ORIGINATING_TASK_PROMOTION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "notes": "MF01 made no network, benchmark, or runtime promotion."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "generation_head:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+      "branch_state_blob:df60b078f0a14058d94696ea1b3e24c985f8d8e6",
+      "assignment_blob:1c373303e360bc8f47c774619cef5f2de6fa01eb",
+      "control_manifest_blob:27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+      "overlay_id:78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96"
+    ],
+    "artifact_refs": [
+      "ps/gen/CAL-BR-007-2672995c",
+      "ps/work/CAL-BR-007-2672995c/MF01",
+      "control/CAL-BR-007-2672995c.json",
+      "assignments/CAL-BR-007-2672995c.json",
+      "config/worker_auth.json",
+      "schemas/report.schema.json",
+      "scripts/validate_branch_bus.py"
+    ],
+    "notes": "All declared control files were fetched from the exact frozen generation head. Main was not used as an in-flight control source. Worker-origin reread is non-authoritative."
+  },
+  "claim_scope": "Transport-only replay calibration for MF01. No fresh scientific evidence, protected benchmark evidence, benchmark score, research finding, runtime implementation, or promotion claim.",
+  "runtime_implementation_implication": "NONE. External transport evidence only; runtime truth is unchanged.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE",
+      "detail": "0 fresh evidence units consumed."
+    },
+    {
+      "type": "PROTECTED_MANIFEST",
+      "detail": "0 protected/private manifest reads."
+    },
+    {
+      "type": "BENCHMARK_EXECUTION",
+      "detail": "0 benchmark executions."
+    },
+    {
+      "type": "DEEP_RESEARCH",
+      "detail": "0 deep-research runs."
+    },
+    {
+      "type": "RUNTIME_PROMOTION",
+      "detail": "No runtime, network, or benchmark cursor promotion performed."
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only calibration. No protected evidence or benchmark compute consumed."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 must independently fetch ps/work/CAL-BR-007-2672995c/MF01, record branch head and report blob, verify Draft-2020-12 schema/HMAC/public safety/session equality/control union, and only then expose the receipt to MF06 integration."
+}
