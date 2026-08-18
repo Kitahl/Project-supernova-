@@ -1,0 +1,71 @@
+name: Supernova v2.4 One-Shot Bundle Expander
+
+on:
+  push:
+    branches:
+      - release/supernova-v2.4-0aa3411
+    paths:
+      - releases/v2.4/.staging-bundle.tar.gz
+      - .github/workflows/supernova-v2.4-expand.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: supernova-v24-bundle-expander
+  cancel-in-progress: false
+
+jobs:
+  expand:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact staging commit
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify and expand staged source bundle
+        shell: bash
+        env:
+          EXPECTED_BUNDLE_SHA256: e3cc08a87eb8083971c3b61c83e6349c244a2b054eb7c56347895ab276febd93
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import pathlib
+          import tarfile
+          import os
+
+          root = pathlib.Path('.').resolve()
+          bundle = root / 'releases/v2.4/.staging-bundle.tar.gz'
+          observed = hashlib.sha256(bundle.read_bytes()).hexdigest()
+          expected = os.environ['EXPECTED_BUNDLE_SHA256']
+          if observed != expected:
+              raise SystemExit(f'bundle digest mismatch: {observed} != {expected}')
+
+          with tarfile.open(bundle, 'r:gz') as archive:
+              members = archive.getmembers()
+              for member in members:
+                  target = (root / member.name).resolve()
+                  if root not in target.parents and target != root:
+                      raise SystemExit(f'unsafe archive path: {member.name}')
+                  if member.issym() or member.islnk():
+                      raise SystemExit(f'archive link forbidden: {member.name}')
+              archive.extractall(root)
+
+          bundle.unlink()
+          expander = root / '.github/workflows/supernova-v2.4-expand.yml'
+          expander.unlink()
+          PY
+
+      - name: Commit expanded release candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Project Supernova Release Bot"
+          git config user.email "supernova-release-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "Expand Project Supernova v2.4 release candidate"
+          git push origin HEAD:release/supernova-v2.4-0aa3411
