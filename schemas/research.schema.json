@@ -1,11 +1,1 @@
-{
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"Project Supernova Deep Research Receipt",
-  "type":"object",
-  "required":["research_id","slot_time_vancouver","task_network_plan_id","source_questions","ranked_questions","findings","source_receipt","search_receipt","residual_gaps","recommended_assignment_changes"],
-  "properties":{
-    "research_id":{"type":"string"},"slot_time_vancouver":{"type":"string"},"task_network_plan_id":{"type":"string"},"source_questions":{"type":"array"},"ranked_questions":{"type":"array"},
-    "findings":{"type":"array","items":{"type":"object","required":["status","claim_or_question","result","sources","residual_gap"],"properties":{"status":{"enum":["EXACT_CLOSURE","SUPPORTING_PRIOR","CONTRADICTION_OR_CORRECTION","NO_PRIOR_FOUND_UNDER_RECORDED_SEARCH","UNRESOLVED_OR_NOT_MEASURED"]},"claim_or_question":{"type":"string"},"result":{"type":"string"},"sources":{"type":"array"},"residual_gap":{"type":"string"}}}},
-    "source_receipt":{"type":"array"},"search_receipt":{"type":"array"},"residual_gaps":{"type":"array"},"recommended_assignment_changes":{"type":"array"},"authority_note":{"type":"string"}
-  }
-}
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Project Supernova Deep Research Receipt v2.1","type":"object","required":["research_id","slot_time_vancouver","task_network_plan_id","verified_integration_refs","source_questions","ranked_questions","findings","source_receipt","search_receipt","residual_gaps","recommended_assignment_changes","authority_note"],"properties":{"research_id":{"type":"string"},"slot_time_vancouver":{"type":"string"},"task_network_plan_id":{"type":"string","const":"90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682"},"verified_integration_refs":{"type":"array","items":{"type":"object"}},"source_questions":{"type":"array"},"ranked_questions":{"type":"array"},"findings":{"type":"array","items":{"type":"object","required":["status","claim_or_question","result","sources","residual_gap"],"properties":{"status":{"enum":["EXACT_CLOSURE","SUPPORTING_PRIOR","CONTRADICTION_OR_CORRECTION","NO_PRIOR_FOUND_UNDER_RECORDED_SEARCH","UNRESOLVED_OR_NOT_MEASURED"]},"claim_or_question":{"type":"string"},"result":{"type":"string"},"sources":{"type":"array"},"residual_gap":{"type":"string"}}}},"source_receipt":{"type":"array"},"search_receipt":{"type":"array"},"residual_gaps":{"type":"array"},"recommended_assignment_changes":{"type":"array"},"authority_note":{"type":"string"}}}
