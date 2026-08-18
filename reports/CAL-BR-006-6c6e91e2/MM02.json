@@ -1,0 +1,195 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W02 | DeepSWE Mechanisms",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-006-6c6e91e2",
+    "iteration_number": 6,
+    "role_id": "MM02",
+    "goal": "Prove MM02 branch-isolated write and authority separation under repaired validation.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-006-6c6e91e2",
+  "worker_id": "MM02",
+  "report_id": "MM02-CAL-BR-006-6c6e91e2",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-6c6e91e2",
+  "assignment_git_identity": "9ef2ce1f13f3f59d77d72310950951bc10591def",
+  "generation_seq": 6,
+  "parent_state_git_identity": "57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+  "control_manifest_id": "CTRL-CAL-BR-006-6c6e91e2-V23-BR241",
+  "control_manifest_git_identity": "946e6992675ee7c7ceed75062bf2b215aa6dc415",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "e96ab73a7a601efaad79c505041dacb7",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "7b9b613a2030974f31a9f33e258c8fc47ffb70def450fc498e144f30d72c4f3a",
+  "worker_auth_proof": "c870e456edf6ed2a242e91e552893c6d373445f3b4eebb77bc1cabe07c820e7d",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_ONLY_TRANSPORT_CALIBRATION",
+  "executive_status": "PASS — MM02 branch-isolated short-test leg completed against the immutable generation with zero scientific evidence consumption.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM02-T0-BRANCH-WRITE",
+      "status": "PASS",
+      "description": "Verified immutable generation and MM02 worker-branch base; prepared exactly one create-once report write on the assigned worker branch only.",
+      "evidence_refs": [
+        "state/BRANCH_STATE.json@2672995c4ee9209bae72dbaedc72799d1ff78528",
+        "generation_head@2384fd5e6d136be01cc986cc881771804a95c432",
+        "worker_branch:ps/work/CAL-BR-006-6c6e91e2/MM02"
+      ],
+      "next_action": "MM06 independently fetches and validates the worker-branch report."
+    },
+    {
+      "task_id": "MM02-T0-AUTHORITY-SEPARATION",
+      "status": "PASS",
+      "description": "Preserved TASK_CONTRACT != PRIMARY_AUTHORITY != EVALUATOR by making no evaluator or public-source semantic claims and executing no benchmark.",
+      "evidence_refs": [
+        "assignments/CAL-BR-006-6c6e91e2.json@9ef2ce1f13f3f59d77d72310950951bc10591def",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "next_action": "Retain the separation in later fresh work; no mechanism promotion from this calibration leg."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM02-MODEL-EFFORT-BINDING",
+      "severity": "LOW",
+      "status": "OPEN",
+      "summary": "GPT-5.6 Sol model identity is available, but the automation surface does not independently attest EXTRA_HIGH reasoning effort.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "branch/CONFIG.json@6451943a34cd8d5d29e910cc154a72d5af9f7ec1"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Require a runtime model/effort binding receipt before model-sensitive fresh promotion evidence."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-GENERATION-IMMUTABLE",
+      "kind": "branch-lineage",
+      "status": "PASS",
+      "description": "Generation branch remained exactly at the recorded immutable generation head.",
+      "evidence_refs": ["ps/gen/CAL-BR-006-6c6e91e2", "2384fd5e6d136be01cc986cc881771804a95c432"],
+      "result": "Branch comparison status identical; ahead_by=0; behind_by=0."
+    },
+    {
+      "test_id": "T0-CONTROL-FREEZE-27",
+      "kind": "control-integrity",
+      "status": "PASS",
+      "description": "Verified the complete base-21 plus overlay-6 frozen control set at the exact generation SHA.",
+      "evidence_refs": [
+        "control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415",
+        "generation_head@2384fd5e6d136be01cc986cc881771804a95c432"
+      ],
+      "result": "All 27 declared frozen paths matched their manifest blob identities."
+    },
+    {
+      "test_id": "T0-WORKER-BRANCH-BASE",
+      "kind": "branch-isolation",
+      "status": "PASS",
+      "description": "MM02 worker branch was identical to the immutable generation before report creation.",
+      "evidence_refs": ["ps/work/CAL-BR-006-6c6e91e2/MM02", "2384fd5e6d136be01cc986cc881771804a95c432"],
+      "result": "Branch comparison status identical; no pre-existing worker commits."
+    },
+    {
+      "test_id": "T0-WORKER-AUTH",
+      "kind": "authentication",
+      "status": "PASS",
+      "description": "Prompt-private capability commitment matched config and cohort-bound HMAC proof was computed from frozen assignment/control identities.",
+      "evidence_refs": ["config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"],
+      "result": "SHA-256 commitment match and PS-HMAC-SHA256-WORKER-PROOF-1 proof generated without persisting the raw secret."
+    },
+    {
+      "test_id": "T0-MM02-AUTHORITY-BOUNDARY",
+      "kind": "semantic-authority-separation",
+      "status": "PASS",
+      "description": "Short-test boundary preserved task contract, primary authority, and evaluator as distinct categories.",
+      "evidence_refs": [
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "assignment:MM02"
+      ],
+      "result": "No evaluator access, public-source semantic sweep, benchmark execution, or generalized semantic claim."
+    },
+    {
+      "test_id": "T0-ZERO-SCIENCE-CONSUMPTION",
+      "kind": "cost-and-contamination",
+      "status": "PASS",
+      "description": "Calibration leg consumed no fresh/protected/benchmark/deep-research evidence.",
+      "evidence_refs": ["assignment:MM02.constraints"],
+      "result": "fresh=0; private-manifest reads=0; benchmark executions=0; deep research=0."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": ["plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db", "generation_head@2384fd5e6d136be01cc986cc881771804a95c432"],
+      "notes": "MM02 completed its branch-isolated authenticated replay-only worker leg."
+    },
+    {
+      "obligation_id": "transport.mixed_control_revision_cohort_ineligible",
+      "status": "ALIGNED",
+      "evidence_refs": ["control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415"],
+      "notes": "All control reads were pinned to the immutable generation SHA; mutable main was not used for in-flight control."
+    },
+    {
+      "obligation_id": "scientific_controls.no_originating_task_promotion",
+      "status": "ALIGNED",
+      "evidence_refs": ["config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"],
+      "notes": "No mechanism, benchmark, runtime, or scientific promotion is claimed."
+    },
+    {
+      "obligation_id": "deep_research.other_tasks_prohibited",
+      "status": "ALIGNED",
+      "evidence_refs": ["plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"],
+      "notes": "MM02 performed no broad public-source or deep-research sweep."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "overlay:2.4.1:78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
+      "generation:2384fd5e6d136be01cc986cc881771804a95c432",
+      "assignment:9ef2ce1f13f3f59d77d72310950951bc10591def",
+      "control:946e6992675ee7c7ceed75062bf2b215aa6dc415",
+      "plan:61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0"
+    ],
+    "artifact_refs": [
+      "state/BRANCH_STATE.json",
+      "control/CAL-BR-006-6c6e91e2.json",
+      "assignments/CAL-BR-006-6c6e91e2.json",
+      "ps/gen/CAL-BR-006-6c6e91e2",
+      "ps/work/CAL-BR-006-6c6e91e2/MM02"
+    ],
+    "notes": "Control-plane evidence only. No benchmark item, protected manifest, evaluator payload, or external semantic source was opened."
+  },
+  "claim_scope": "Branch-GitOps transport/control calibration and MM02 authority-separation boundary only; no scientific benchmark result and no generalized DeepSWE mechanism update.",
+  "runtime_implementation_implication": "NONE",
+  "negative_zero_outcomes": [
+    {"type": "NO_SCIENTIFIC_RESULT", "detail": "No benchmark or prospective software-engineering outcome was measured in this short calibration leg."},
+    {"type": "ZERO_PROTECTED_CONSUMPTION", "detail": "Fresh evidence, private-manifest reads, benchmark executions, and deep-research runs were all zero."}
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Only GitHub control-plane reads, branch comparisons, local commitment/HMAC computation, and one worker-branch report write."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the exact MM02 worker branch, records branch head and report blob, executes Draft-2020-12 schema validation, recomputes HMAC/public-safety/lineage checks, and decides whether this worker leg is countable."
+}
