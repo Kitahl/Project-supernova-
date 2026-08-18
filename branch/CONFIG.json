@@ -15,7 +15,9 @@
   "consolidation_strategy":"COPY_MM06_SAFE_REFS_TO_HISTORY_THEN_SINGLE_PR",
   "merge_guard":"EXPECTED_MAIN_HEAD_PLUS_PARENT_STATE_LINEAGE_PLUS_BRANCH_CONSOLIDATE_STATUS",
   "scheduled_reconcile_minutes":5,
+  "structural_reconciler":{"primary":"scripts/reconcile_branch_rest.py via supernova-rest-branch-reconciler.yml; Python stdlib + GitHub REST only","secondary":"scripts/reconcile_branch_statuses.py plus validate_branch_bus_v251.py; dependency-locked checkout validator","rule":"Primary exact-head statuses are mechanical structural rejection only. MM06 still owns whole-report HMAC, schema/evidence and scientific-admission checks."},
   "required_status_contexts":{"generation":"supernova/branch-generation","worker":"supernova/branch-worker","verifier":"supernova/branch-verify","integrator":"supernova/branch-integrate","consolidation":"supernova/branch-consolidate"},
+  "future_generation_required_reconciler_paths":["scripts/reconcile_branch_rest.py",".github/workflows/supernova-rest-branch-reconciler.yml","scripts/reconcile_branch_statuses.py","scripts/validate_branch_bus_v251.py",".github/workflows/supernova-branch-reconciler.yml"],
   "two_clean_replay_cohorts_before_fresh":true,
   "model_target":"GPT-5.6 Sol","reasoning_effort_target":"EXTRA_HIGH","automation_model_binding_enforceable":false,
   "deep_research_owner":"BIL00","deep_research_times_vancouver":["00:58","12:58"]
