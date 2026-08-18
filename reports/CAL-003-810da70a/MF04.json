@@ -1,0 +1,130 @@
+{
+  "task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "cohort_id": "CAL-003-810da70a",
+  "worker_id": "MF04",
+  "report_id": "MF04-CAL-003-810da70a",
+  "assignment_id": "PS-GHBUS-CAL-003-810da70a",
+  "assignment_git_identity": "4db032c468fb1ee2edf87267fe5884d42d99b1d9",
+  "generation_seq": 3,
+  "parent_state_git_identity": "810da70aa50f854ccd27786f8d1edfa421974604",
+  "control_manifest_id": "CTRL-CAL-003-810da70a-V22",
+  "control_manifest_git_identity": "9c0d21898b3bb6f1e41d9f7e5445da74438fdf2a",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "dd5f87e9f66337ff2721c0243ad14554",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "ce0932e45c735a40b2ca5e4418c845006f5bf48f077f34b1555ccbd058d55fba",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_CONTROL_PLANE_FALSIFIER+LOCAL_NEGATIVE_PROBE+PRIMARY_SPEC_CHECK",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "state/CURRENT.json@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+    "parent-state-blob@810da70aa50f854ccd27786f8d1edfa421974604",
+    "control/CAL-003-810da70a.json@9c0d21898b3bb6f1e41d9f7e5445da74438fdf2a",
+    "assignments/CAL-003-810da70a.json@4db032c468fb1ee2edf87267fe5884d42d99b1d9",
+    "PROTOCOL.md@46fbe337605e7a44904179109279a51ffc45ae5e",
+    "WORKER_PROTOCOL.md@85601caa3468b58abeaf6d39c56f0994a65c75c3",
+    "plan/PLAN.json@b1da6b552b2627414202a34d6a3f9fa2a21cb964",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+    "schemas/control.schema.json@9602c91a0c18f143b212fe6436ceb0839904bb5d",
+    "schemas/state.schema.json@b265ef615b6207c94996fe4eaef61bcca51674aa",
+    "schemas/assignment.schema.json@d0e1a9fc4c82f68c98961a89bf77da4908edc6bb",
+    "schemas/report.schema.json@f5317f12f341ef1d686574f2c7f97bddcdb4ad89",
+    "schemas/verification.schema.json@e51f6f9fe7249f21431df8f0c3164d60aed5a20a",
+    "schemas/integration.schema.json@20dbff6221339bd1a4395f9e727898703ee0c792",
+    "schemas/director.schema.json@ce6477254e866b0cf954797938e05632f6a21aa5",
+    "schemas/research.schema.json@1f041cb60c0117f3fc4134ada8ab2e99d9d68756",
+    "scripts/validate_bus.py@97cbfb4537688827ca3619dd3c265bb76cdd7168",
+    ".github/workflows/validate-bus.yml@6a0c30c584dfca01c06f39be5fbfbb7076cc0b09",
+    "JSON-Schema-Draft-2020-12-core-audited-2026-08-18"
+  ],
+  "claim_scope": "Replay-safe adversarial audit of the authenticated frozen-control GitHub calibration layer only. No protected/fresh benchmark evidence, prospective scientific score, or runtime change was opened or measured.",
+  "runtime_implementation_implication": "NONE. The findings harden transport/evidence admission only. MM06/BIL00 should not interpret GitHub CI PASS or worker self-attestation as sufficient schema/reread proof until the identified gaps are independently closed.",
+  "next_action": "MM06 should independently validate this and every worker receipt against the frozen Draft 2020-12 schema, independently reread and bind the report blob/commit in verification, and quarantine any reliance on the frozen CI validator as proof of schema conformance. BIL00 should consider a control-plane repair before counting calibration if MM06 cannot fully compensate for these gaps.",
+  "negative_zero_outcomes": [
+    {"type":"FRESH_EVIDENCE_NOT_CONSUMED","detail":"Calibration and MF04 assignment both prohibit fresh work; no private manifest was fetched and fresh_evidence_ids is empty."},
+    {"type":"FROZEN_CONTROL_DRIFT_NONE_OBSERVED","detail":"All 15 files named by the active control manifest reread with exactly the frozen Git blob identities."},
+    {"type":"AUTH_COMMITMENT_MISMATCH_NONE","detail":"The prompt-private MF04 capability material hashes to the public MF04 commitment and a cohort-bound HMAC proof was computed without exposing that material."},
+    {"type":"CI_NOT_OBSERVED","detail":"The connector exposed no combined status entries for the pre-write active main commit; this is not treated as PASS."},
+    {"type":"SCIENTIFIC_UPLIFT_NOT_MEASURED","detail":"E1/G1/C1/E3 scientific uplift was not measured in this replay-only transport calibration role."}
+  ],
+  "research_questions": [
+    {
+      "question": "What is the minimal deterministic Draft 2020-12 validation profile for immutable experiment-bus receipts that both executes the frozen schemas and enforces a closed-world public-safety property policy without relying on a finite blacklist of sensitive key names?",
+      "parent_blocker_or_claim": "T0 authenticated frozen-control calibration: schema/public-safety admission",
+      "why_it_matters": "The frozen CI validator performs custom field checks but does not execute the frozen JSON Schemas, while the report schema itself leaves undeclared properties open by default. A malformed or unexpected-field receipt can therefore survive one layer that is informally described as schema/public-safety validation.",
+      "closure_criterion": "Specify an executable, version-frozen validation method with negative tests proving missing required fields and undeclared public fields are rejected, while preserving the allowed role_payload extension surface intentionally rather than accidentally.",
+      "preferred_source_families": ["official JSON Schema Draft 2020-12 specification","JSON Schema test suite","GitHub Actions dependency-pinning guidance"],
+      "urgency": "HIGH"
+    },
+    {
+      "question": "How should create-once immutable receipts represent post-write reread and post-commit CI observations without requiring the receipt to self-assert an event that can only occur after the receipt is created?",
+      "parent_blocker_or_claim": "T0 create-once receipt provenance and calibration write+reread proof",
+      "why_it_matters": "The frozen worker schema requires git_reread_verified=true inside the create-once report, but the protocol performs the GitHub reread only after creation. Independent verifier-owned attestation may be needed to make the temporal ordering explicit and auditable.",
+      "closure_criterion": "Define a machine-checkable provenance pattern, such as verifier-owned blob/commit attestation or a separate immutable acknowledgement, whose truth can only be asserted after the observed Git event and which cannot be overwritten by the originating worker.",
+      "preferred_source_families": ["Git object/content-addressing documentation","software supply-chain attestation standards","append-only transparency log designs"],
+      "urgency": "HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "Adversarial destruction/falsifier",
+    "assigned_target": "T0 authenticated frozen-control GitHub calibration",
+    "identity_and_lineage_checks": {
+      "plan": "PASS",
+      "cohort": "PASS",
+      "generation": "PASS",
+      "parent_state_blob_resolved": "PASS",
+      "checkpoint": "PASS",
+      "runtime_state": "PASS",
+      "assignment_blob": "PASS",
+      "control_manifest_blob": "PASS",
+      "visibility_token": "PASS",
+      "superseded_status": "PASS_NON_SUPERSEDED",
+      "frozen_control_files": "PASS_15_OF_15",
+      "worker_auth_commitment": "PASS"
+    },
+    "falsifiers": [
+      {
+        "name": "CI_SCHEMA_EXECUTION_GAP",
+        "status": "CONFIRMED_REPLAY_SAFE_FAILURE",
+        "observation": "The frozen scripts/validate_bus.py never invokes a Draft 2020-12 schema validator. Its report loop checks a selected subset of identities, mode, CI enum, cost counters and calibration fresh-work rules.",
+        "negative_probe": "A synthetic report object satisfying the frozen custom per-report checks while omitting eight fields required by schemas/report.schema.json produced zero custom-check errors; a Draft 2020-12 required-field validation rejects that same object.",
+        "omitted_required_fields_in_probe": ["report_id","evidence_tier","source_version_ids","claim_scope","runtime_implementation_implication","next_action","negative_zero_outcomes","research_questions"],
+        "bounded_conclusion": "BUS VALIDATION PASS from the frozen script is not, by itself, evidence that a worker report conforms to the frozen report JSON Schema. MM06 can compensate only by independently executing the frozen schema validation."
+      },
+      {
+        "name": "OPEN_WORLD_REPORT_PROPERTY_GAP",
+        "status": "CONFIRMED_SPEC_SEMANTICS",
+        "observation": "The frozen report schema does not set additionalProperties=false or an equivalent closed-world rule. Draft 2020-12 therefore permits undeclared properties by default. The public-safety validator rejects a finite set of key names and raw numbered test identifiers, not every undeclared field.",
+        "bounded_conclusion": "Schema conformance alone cannot be treated as an allowlist proof for public fields. This does not demonstrate an actual protected-data leak; it demonstrates that the structural policy is open-world and depends on additional semantic review."
+      },
+      {
+        "name": "POSTWRITE_REREAD_SELF_ATTESTATION_GAP",
+        "status": "CONFIRMED_PROTOCOL_ORDERING_GAP",
+        "observation": "The frozen report schema requires git_reread_verified=true in the immutable file, while the frozen worker protocol creates the file first and rereads it second.",
+        "bounded_conclusion": "The worker field is a completed-transaction assertion, not independent evidence of the post-write observation. The verifier must independently reread and record the observed Git blob/commit; otherwise the calibration write+reread claim is self-attested by the originator."
+      }
+    ],
+    "quarantine": [
+      "Do not interpret the frozen CI validator's PASS as proof of report.schema.json conformance.",
+      "Do not interpret schema conformance as closed-world public-field safety while undeclared properties remain allowed.",
+      "Do not interpret git_reread_verified=true in an originating report as independent proof of its own post-write reread."
+    ],
+    "prospective_status": "NOT_MEASURED"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-safe control-plane inspection, two local deterministic negative probes, one narrow official JSON Schema semantics check; no benchmark execution."
+  },
+  "public_safety_status": "PASS",
+  "git_reread_verified": true,
+  "ci_status": "CI_NOT_OBSERVED"
+}
