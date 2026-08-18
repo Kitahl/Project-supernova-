@@ -1,0 +1,26 @@
+{
+  "control_manifest_id": "CTRL-CAL-002-V21",
+  "task_network_plan_id": "90d04ec1f293d153fde2ea518e530b594d602d17a4c77411ae56c71ca21a3682",
+  "cohort_id": "CAL-002",
+  "protocol_version": "2.1",
+  "purpose": "First countable canonical GitHub calibration cohort after freezing the complete control plane. Replay-safe only.",
+  "files": {
+    "PROTOCOL.md": "c4e0ff395c3c9f7f1a219074fc212412ac8e3498",
+    "WORKER_PROTOCOL.md": "177024dd1780772b755173c58504215185a208bc",
+    "plan/PLAN.json": "10ab4028d6f05387a1e6c9cbe9ac590959a3a95d",
+    "config/roles.json": "ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "schemas/assignment.schema.json": "78f82163882b4dd3f1b86736bed141ccacc585be",
+    "schemas/report.schema.json": "be9b4bf3840c863efc3755c4247ff6aa198645cb",
+    "schemas/verification.schema.json": "12f51ab2695685d7ba9256c6491df5b2d75a81f0",
+    "schemas/integration.schema.json": "86c2bdea47f878a5cce53c19ebce5a356b35ebff",
+    "schemas/director.schema.json": "804e888068a193604e9267f22142906d2803eb64",
+    "schemas/research.schema.json": "cd9a9cd6cd3074e7df528e755e6713e36ba9d7c1",
+    "scripts/validate_bus.py": "cacd1ce822c6c7ad48412b1bfc9b9e739cde8863",
+    ".github/workflows/validate-bus.yml": "6a0c30c584dfca01c06f39be5fbfbb7076cc0b09"
+  },
+  "calibration_countable": true,
+  "fresh_allowed": false,
+  "mixed_control_revisions_allowed": false,
+  "deep_research_owner": "BIL00",
+  "deep_research_inputs": "MM06-safe and MF06-integrated only"
+}
