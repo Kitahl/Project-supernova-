@@ -1,0 +1,326 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W05 | Product Closure",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MF05",
+    "goal": "Prove MF05 can complete the standardized v2.3 transport/report contract and confirm C1 remains gated until E1/justification/runtime support.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MF05",
+  "report_id": "MF05-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "a0250c0d768690f10ed8022199436a5c",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "473363d1e1fc0aae9e9df22da0cbd5f8695491863ff6cf82f2bc0a6ba86326f4",
+  "worker_auth_proof": "16551327e9f3d41bc90752f27cb439af3ebc72f952e788e0a336550090b17530",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "V2.3_SHORT_DETERMINISTIC_TRANSPORT_CONTROL_REPLAY",
+  "executive_status": "PASS: MF05 completed the assigned short replay-only transport/auth/report test and confirmed C1 remains gated by the frozen plan/registry/role contract. No C1 benchmark unit was opened and no C1 score was produced. No fresh/protected evidence, benchmark execution, deep research, or runtime/state modification occurred.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF05-T0-FROZEN-CONTROL",
+      "status": "PASS",
+      "description": "Fetched active state, control, assignment and the complete frozen control set; all 21 declared frozen file Git blob identities matched the observed repository identities, including the benchmark registry and worker-auth configuration.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "next_action": "MM06 independently repeat frozen-control and schema/auth verification."
+    },
+    {
+      "task_id": "MF05-T0-LINEAGE-AUTH",
+      "status": "PASS",
+      "description": "Verified plan, cohort, generation, parent-state lineage, control identity, checkpoint, runtime identity, MF05 assignment/token, fresh=false constraint and public auth commitment; the prompt-private secret matched the public commitment and yielded the cohort-bound HMAC proof stored in this receipt.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "next_action": "MM06 independently verify MF05 commitment and HMAC proof from its verifier-side secret copy."
+    },
+    {
+      "task_id": "MF05-T0-C1-GATE",
+      "status": "PASS",
+      "description": "Confirmed the assigned MF05 gating fact only: E1 clean route/schedule truth is the next Foundry scientific suite; the registry marks C1 product closure BLOCKED_UNTIL_JUSTIFIED, and the MF05 role permits generic product-reuse measurement only when actual runtime support and an eligible assignment exist. This calibration assignment is replay-only and fresh=false.",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "next_action": "Do not measure C1. Wait for transport calibration, E1/justification, actual runtime support, and a separately valid C1 fresh assignment/private manifest before any C1 execution."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "O-T0-CALIBRATION_AND_SCHEMA_RUNTIME",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The active network remains in GITHUB_BUS_CALIBRATION with fresh_allowed_globally=false and calibration streak 0/2; this worker receipt alone cannot advance the cohort or runtime.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Complete full clean cohort fan-in, MM06 verification, MF06 integration and BIL00 decision/state advancement; then complete a second consecutive clean v2.3 calibration cohort."
+    },
+    {
+      "issue_id": "O-MF-C1-GATED",
+      "severity": "HIGH",
+      "status": "BLOCKED",
+      "summary": "C1 generic verified-product closure is not scientifically eligible in this cohort. The registry marks it BLOCKED_UNTIL_JUSTIFIED; E1 is the next Foundry suite, and MF05 requires actual runtime support plus an eligible assignment before measuring reuse.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "owner": "MF05",
+      "fix_or_next": "Preserve C1 as NOT_MEASURED until transport eligibility, E1/justification, runtime product-reuse support and a frozen fresh C1 contract are all present."
+    },
+    {
+      "issue_id": "O-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "The runtime model identity is known as GPT-5.6 Sol, but no reliable reasoning-effort receipt is exposed; model binding is PARTIAL_UNVERIFIED.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "owner": "EXT01",
+      "fix_or_next": "Do not use this calibration receipt as model-sensitive scientific promotion evidence."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-CONTROL-FREEZE",
+      "kind": "transport/control",
+      "status": "PASS",
+      "description": "Compared the active control manifest against the observed repository blob identities for every frozen file.",
+      "evidence_refs": [
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "result": "21/21 frozen control entries matched; no mixed-control revision observed."
+    },
+    {
+      "test_id": "T0-LINEAGE-ASSIGNMENT",
+      "kind": "lineage",
+      "status": "PASS",
+      "description": "State, control, assignment and the referenced parent-state blob agree on the active v2.3 cohort lineage, checkpoint and runtime; the active cohort is not listed as superseded.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "T0-WORKER-AUTH",
+      "kind": "authentication",
+      "status": "PASS",
+      "description": "MF05 prompt-private secret commitment matched the frozen public commitment and the cohort-bound HMAC proof was computed using the frozen v2.3 formula.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment matched and HMAC proof generated without publishing the raw secret."
+    },
+    {
+      "test_id": "T0-REPLAY-SAFETY",
+      "kind": "safety",
+      "status": "PASS",
+      "description": "Calibration constraints were honored: no fresh evidence, private/protected manifest access, benchmark execution, broad prior search, deep research, C1 scoring, runtime modification or state promotion.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "result": "All scientific/protected counters remained zero."
+    },
+    {
+      "test_id": "MF05-C1-GATE",
+      "kind": "plan-gating",
+      "status": "PASS",
+      "description": "Checked the MF05 role against the plan and benchmark registry. C1 requires justification and runtime support and is not assigned for fresh execution in this short calibration cohort.",
+      "evidence_refs": [
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "result": "C1 remains gated; no C1 score or benchmark result exists from this run."
+    },
+    {
+      "test_id": "T0-REPORT-SCHEMA",
+      "kind": "schema",
+      "status": "PASS",
+      "description": "Candidate MF05 receipt was validated locally against the frozen Draft 2020-12 worker report schema using the pinned jsonschema runtime before immutable creation.",
+      "evidence_refs": [
+        "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+        "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121"
+      ],
+      "result": "PASS under jsonschema 4.26.0 / Draft 2020-12."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0-two-consecutive-clean-short-authenticated-cohorts",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "notes": "This MF05 receipt is only one worker contribution to the active first v2.3 short cohort; it has no advancement authority."
+    },
+    {
+      "obligation_id": "C1-generic-verified-product-closure",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "notes": "C1 is intentionally NOT_MEASURED. The run establishes only the gating contract, not product-reuse efficacy or runtime implementation."
+    },
+    {
+      "obligation_id": "worker-no-deep-research",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"
+      ],
+      "notes": "No research sweep was performed; the research question queue remains empty for this short deterministic test."
+    },
+    {
+      "obligation_id": "persistent-session-standardized-naming",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "notes": "Stable MF05 lane naming and the standardized dynamic session header are used."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121",
+      "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+      "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+      "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "schemas/verification.schema.json@d2e38cfae93663f109cbfc7dd12fd1370806be9c",
+      "schemas/integration.schema.json@b2fd1c003c1496e1731e190cf4e7785799489084",
+      "schemas/director.schema.json@e770a72f3e5394868dbea10a87335879b9d90f18",
+      "schemas/research.schema.json@3b0f2544decb7c8189caf8714632ef8267aa107a",
+      "schemas/benchmark_registry.schema.json@67954d036c03466950d56a386f5ce50c2d85ebde",
+      "schemas/benchmark_completion.schema.json@a0d5179cab908d348a2ac486fa3c5121b2c2dbce",
+      "schemas/private_manifest_contract.schema.json@05ef541391432327d1686f69d3b1646d8a6cbc35",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+    ],
+    "artifact_refs": [
+      "reports/CAL-004-bcedd2a9/MF05.json",
+      "parent-state-blob@bcedd2a95ecac89b0500eda916a0c0562f8dd0fc"
+    ],
+    "notes": "Public-safe control-plane evidence only. The active state/control/assignment lineage and 21 frozen control file identities matched; registry/auth were fetched at the frozen identities. No private vault payload was read because this is short_test=true, fresh=false calibration."
+  },
+  "claim_scope": "External GitHub-bus transport/authentication/control calibration plus the assigned MF05 C1 gating fact only. This receipt makes no claim about C1 performance, verified-product reuse benefit, product-store implementation, benchmark score, or Math Foundry runtime truth.",
+  "runtime_implementation_implication": "No runtime implementation is promoted or modified. Under the frozen MF05 role, if actual verified-product closure/reuse support is absent, only an implementation requirement may be emitted; this run does not establish that support as present.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE",
+      "detail": "0 fresh evidence units consumed."
+    },
+    {
+      "type": "PROTECTED_MANIFEST_READS",
+      "detail": "0 private/protected manifest reads; no private vault payload accessed."
+    },
+    {
+      "type": "BENCHMARK_EXECUTION",
+      "detail": "0 benchmark executions."
+    },
+    {
+      "type": "C1_MEASUREMENT",
+      "detail": "C1 was NOT_MEASURED and no C1 score was produced."
+    },
+    {
+      "type": "DEEP_RESEARCH",
+      "detail": "0 deep-research runs and no public prior-art sweep."
+    },
+    {
+      "type": "RUNTIME_OR_STATE_CHANGE",
+      "detail": "0 runtime changes, promotions or state-pointer updates."
+    },
+    {
+      "type": "CI_NOT_OBSERVED",
+      "detail": "No GitHub CI result was observed in this worker run; absence is not PASS."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "short_test": true,
+    "assigned_role": "C1 verified-product closure evidence/spec",
+    "c1_measurement_status": "NOT_MEASURED",
+    "c1_registry_status": "BLOCKED_UNTIL_JUSTIFIED",
+    "next_foundry_scientific_suite": "MF-E1-CLEAN-ROUTE-TRUTH",
+    "runtime_support_status": "NOT_ESTABLISHED_BY_THIS_REPLAY_ONLY_BUS_RUN",
+    "required_c1_control_if_future_eligible": [
+      "closure disabled",
+      "closure enabled with product absent",
+      "closure enabled after independently generated and verified product"
+    ],
+    "required_c1_cost_accounting_if_future_eligible": [
+      "generation",
+      "verification",
+      "storage/serialization",
+      "lookup",
+      "restoration",
+      "combination/operator",
+      "invalidation",
+      "final verify"
+    ]
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Only public GitHub control-plane reads, parent-lineage verification, local auth computation, report-schema validation and one immutable report creation are in scope."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "WAIT for MM06 independent post-write Git reread plus schema/auth verification, then MF06/BIL00 fan-in handling. MF05 must not promote state or execute/score C1 until its frozen eligibility gates are satisfied."
+}
