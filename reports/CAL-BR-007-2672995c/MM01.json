@@ -1,0 +1,196 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W01 | React Mechanisms",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+    "iteration_id": "CAL-BR-007-2672995c",
+    "iteration_number": 7,
+    "role_id": "MM01",
+    "goal": "Prove MM01 branch-isolated write without protected React evidence under the exact assignment phase.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-007-2672995c",
+  "worker_id": "MM01",
+  "report_id": "PS-REPORT-CAL-BR-007-2672995c-MM01",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-2672995c",
+  "assignment_git_identity": "1c373303e360bc8f47c774619cef5f2de6fa01eb",
+  "generation_seq": 7,
+  "parent_state_git_identity": "2672995c4ee9209bae72dbaedc72799d1ff78528",
+  "control_manifest_id": "CTRL-CAL-BR-007-2672995c-V23-BR241",
+  "control_manifest_git_identity": "27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "a35ac9315bee85aca5f1f9d563b25531",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6",
+  "worker_auth_proof": "085b80f2a4486d3de4afa350a5ab5d963bcdaa2415bd1373a57170dcf9c8c2e0",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_REPLAY_ONLY_TRANSPORT",
+  "executive_status": "PASS: clean branch-isolated v2.4.1 transport/report calibration completed under the exact assignment phase without protected React evidence.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "T0-MM01-BRANCH-TRANSPORT",
+      "status": "COMPLETE",
+      "description": "Verified the frozen v2.4.1 branch-state overlay/cohort, immutable generation head, control and assignment identities, MM01 worker-branch base, exact 21+6 frozen control-file identities, and worker-auth commitment/HMAC; prepared one replay-only MM01 receipt using the full exact assignment phase.",
+      "evidence_refs": [
+        "ps/v2.4-control-release:state/BRANCH_STATE.json@df60b078f0a14058d94696ea1b3e24c985f8d8e6",
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:control/CAL-BR-007-2672995c.json@27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb"
+      ],
+      "next_action": "MM06 independently fetches and verifies this worker-branch receipt."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM01-MODEL-BINDING-EFFORT",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "The requested model identity is known, but a reliable runtime reasoning-effort receipt is not exposed; binding is therefore PARTIAL_UNVERIFIED.",
+      "evidence_refs": [
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "owner": "BIL00",
+      "fix_or_next": "Retain PARTIAL_UNVERIFIED unless the runtime exposes both model and effort identity."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM01-T0-GENERATION-HEAD",
+      "kind": "branch-integrity",
+      "status": "PASS",
+      "description": "Frozen generation branch resolves exactly to the recorded generation SHA.",
+      "evidence_refs": [
+        "ps/gen/CAL-BR-007-2672995c@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Exact-head comparison: identical; ahead_by=0; behind_by=0."
+    },
+    {
+      "test_id": "MM01-T0-WORKER-BASE",
+      "kind": "branch-isolation",
+      "status": "PASS",
+      "description": "MM01 worker branch was still exactly based on the frozen generation SHA before receipt creation.",
+      "evidence_refs": [
+        "ps/work/CAL-BR-007-2672995c/MM01@ef23332548400d1b798d53c39ff7f8c3ebf14076"
+      ],
+      "result": "Exact-head comparison before write: identical; ahead_by=0; behind_by=0."
+    },
+    {
+      "test_id": "MM01-T0-FROZEN-CONTROL",
+      "kind": "control-integrity",
+      "status": "PASS",
+      "description": "The exact union of the 21 base controls and 6 v2.4.1 overlay controls enumerated by the cohort manifest matched their frozen Git blob identities at the exact generation SHA.",
+      "evidence_refs": [
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:control/CAL-BR-007-2672995c.json@27facdd14dfe7f1b41d9e8bafdec3f669aa484d4"
+      ],
+      "result": "27/27 frozen manifest file identities matched."
+    },
+    {
+      "test_id": "MM01-T0-SESSION-PHASE",
+      "kind": "session-identity",
+      "status": "PASS",
+      "description": "Session header phase, goal, target program, role, cohort, generation, plan and runtime were bound exactly to the active assignment/state contract.",
+      "evidence_refs": [
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb"
+      ],
+      "result": "phase=T0_BRANCH_ISOLATED_FULL_LOOP_TEST with exact assigned goal and target program."
+    },
+    {
+      "test_id": "MM01-T0-AUTH",
+      "kind": "worker-auth",
+      "status": "PASS",
+      "description": "Prompt-private MM01 secret commitment matched the frozen public commitment and the cohort-bound HMAC was computed over the frozen authentication message.",
+      "evidence_refs": [
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment matched; HMAC proof generated without printing or persisting the raw secret."
+    },
+    {
+      "test_id": "MM01-T0-PROTECTED-ZERO",
+      "kind": "safety-accounting",
+      "status": "PASS",
+      "description": "No protected React evidence, private manifest, benchmark execution, or deep research was consumed.",
+      "evidence_refs": [
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:assignments/CAL-BR-007-2672995c.json@1c373303e360bc8f47c774619cef5f2de6fa01eb"
+      ],
+      "result": "fresh=0; private=0; benchmark=0; deep_research=0."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "ps/work/CAL-BR-007-2672995c/MM01",
+        "ef23332548400d1b798d53c39ff7f8c3ebf14076:BRANCH_PROTOCOL.md@18616ac7b45391873972bc3e470ab65daefcc93c"
+      ],
+      "notes": "MM01 performed only the assigned branch transport/report replay test under the full exact assignment phase; no scientific React evidence was consumed or promoted."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "overlay:78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
+      "generation:ef23332548400d1b798d53c39ff7f8c3ebf14076",
+      "control:27facdd14dfe7f1b41d9e8bafdec3f669aa484d4",
+      "assignment:1c373303e360bc8f47c774619cef5f2de6fa01eb"
+    ],
+    "artifact_refs": [
+      "state/BRANCH_STATE.json",
+      "control/CAL-BR-007-2672995c.json",
+      "assignments/CAL-BR-007-2672995c.json",
+      "config/worker_auth.json",
+      "schemas/report.schema.json",
+      "BRANCH_PROTOCOL.md",
+      "branch/CONFIG.json"
+    ],
+    "notes": "Replay-only transport evidence from frozen Git identities; no protected React task content or private manifest was read."
+  },
+  "claim_scope": "Transport/orchestration only: MM01 branch isolation, frozen-control integrity, exact assignment-phase session identity, report contract, and authentication. No React mechanism efficacy, benchmark score, or runtime scientific claim.",
+  "runtime_implementation_implication": "None. This receipt does not modify or promote Mastermind runtime truth.",
+  "negative_zero_outcomes": [
+    {
+      "type": "fresh_evidence_units",
+      "detail": "0"
+    },
+    {
+      "type": "protected_manifest_reads",
+      "detail": "0"
+    },
+    {
+      "type": "benchmark_executions",
+      "detail": "0"
+    },
+    {
+      "type": "deep_research_runs",
+      "detail": "0"
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "react_mechanism_evidence": "NOT_CONSUMED",
+    "protected_react_evidence_consumed": 0,
+    "promotion_attempted": false,
+    "assignment_phase_exact": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Short deterministic SAFE_REPLAY_ONLY transport/report calibration only."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches ps/work/CAL-BR-007-2672995c/MM01, verifies branch head/report blob/schema/HMAC/public safety and strict session equality, and records the authoritative reread result."
+}
