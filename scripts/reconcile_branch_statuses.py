@@ -13,7 +13,7 @@ def remote_head(branch):
 def validate(branch,generation_head):
  rc,out,err=git('checkout','--detach',remote_head(branch) or generation_head)
  if rc:return False,'checkout failed'
- p=subprocess.run([sys.executable,'scripts/validate_branch_bus.py','--branch',branch,'--generation-head',generation_head],cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
+ p=subprocess.run([sys.executable,'scripts/validate_branch_bus_v251.py','--branch',branch,'--generation-head',generation_head],cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
  line=(p.stdout.strip().splitlines()[-1] if p.stdout.strip() else 'validator failed')
  return p.returncode==0,line
 def main():
