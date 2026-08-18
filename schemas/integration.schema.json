@@ -1,0 +1,10 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Project Supernova Integration Manifest",
+  "type":"object",
+  "required":["task_network_plan_id","cohort_id","integration_id","verification_git_identity","network_checkpoint_id","runtime_state_id","safe_report_refs","external_evidence_delta","current_runtime_blocker","research_questions","runtime_handoff_status"],
+  "properties":{
+    "task_network_plan_id":{"type":"string"},"cohort_id":{"type":"string"},"integration_id":{"type":"string"},"verification_git_identity":{"type":"string"},"network_checkpoint_id":{"type":"string"},"runtime_state_id":{"type":"string"},
+    "safe_report_refs":{"type":"array"},"external_evidence_delta":{"type":"object"},"current_runtime_blocker":{"type":"string"},"research_questions":{"type":"array"},"runtime_handoff_status":{"type":"string"},"runtime_handoff_packet":{"type":["object","null"]},"quarantines":{"type":"array"},"costs_regressions_unknowns":{"type":"object"}
+  }
+}
