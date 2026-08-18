@@ -1,0 +1,312 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W05 | E3 Mechanism Controls",
+    "target_program": "MASTERMIND",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MM05",
+    "goal": "Prove MM05 can complete the standardized v2.3 transport/report contract and correctly report L/R/N as NOT_MEASURED without executable artifacts.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MM05",
+  "report_id": "MM05-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "ebea9087260d6cafca2598211b653fc5",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "9cb54215a604da9aea1570e7ccfc757435aed4643e2a94931a51cdf877c75739",
+  "worker_auth_proof": "f70f565b3007ab98672dfc8fe28c011ec8985d587fd9c5f23fecdcf3183682b3",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_AUTHENTICATED_FROZEN_CONTROL_SHORT_TEST",
+  "executive_status": "WORKER_PASS_PENDING_MM06_INDEPENDENT_REREAD_AND_FULL_COHORT_FANIN",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM05-T0-TRANSPORT",
+      "status": "PASS",
+      "description": "Validated the active v2.3 state, all 21 frozen control files, assignment, MM05 visibility token, worker-auth commitment, cohort-bound HMAC, standardized report contract, benchmark registry pointer, and replay-only constraints.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "next_action": "MM06 independently fetches and validates this immutable receipt."
+    },
+    {
+      "task_id": "MM05-T0-E3-NOT-MEASURED-GATE",
+      "status": "PASS",
+      "description": "Applied the frozen MM05 E3 gate without executing any candidate: L=LEARNED_PROPOSAL, R=RANDOM_ADMISSIBLE, and N=NO_CHANGE_EQUAL_COMPUTE are all NOT_MEASURED because this short calibration assignment provides no executable mechanism artifact, evaluator, or fresh execution authorization.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "next_action": "Retain L/R/N as NOT_MEASURED until a future frozen fresh assignment supplies an actual executable candidate and equal-compute contract."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "ISSUE-T0-FANIN-PENDING",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "This worker can pass its lane, but CAL-004 cannot count until all 12 worker receipts are independently reread/schema/auth verified by MM06, integrated by MF06, and decided by BIL00.",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a"
+      ],
+      "owner": "MM06/MF06/BIL00",
+      "fix_or_next": "Complete the remaining authenticated v2.3 fan-in chain; MM05 must not advance state."
+    },
+    {
+      "issue_id": "ISSUE-E3-EXECUTABLE-ARTIFACTS-ABSENT",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "No executable learned proposal, matched random admissible mutation, no-change equal-compute arm, evaluator receipt, or fresh execution contract is assigned in this T0 short test, so no E3 scientific comparison is measured.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "owner": "Future frozen E3 assignment / BIL00",
+      "fix_or_next": "Do not synthesize or execute arms during calibration; require a future explicitly fresh-authorized executable E3 contract."
+    },
+    {
+      "issue_id": "ISSUE-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "BLOCKED",
+      "summary": "The runtime identifies the GPT-5.6 Sol model, but the scheduled-task surface does not independently expose or attest EXTRA_HIGH reasoning effort.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "owner": "Execution runtime / future private execution manifest",
+      "fix_or_next": "Keep MODEL_BINDING_STATUS=PARTIAL_UNVERIFIED and block model-sensitive fresh promotion unless the frozen execution contract supplies the required binding."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-MM05-CONTROL-FREEZE",
+      "kind": "CONTROL_PLANE",
+      "status": "PASS",
+      "description": "Fetched all 21 files frozen by the active control manifest and matched each observed Git blob SHA to the manifest.",
+      "evidence_refs": [
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "result": "21/21 frozen control-file identities matched; mixed-control revision not observed."
+    },
+    {
+      "test_id": "T0-MM05-LINEAGE",
+      "kind": "STATE_ASSIGNMENT_LINEAGE",
+      "status": "PASS",
+      "description": "Checked plan, cohort, generation, parent state, control, checkpoint, runtime, assignment, MM05 role, visibility token, fresh flag, private refs, and constraints against current state.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "result": "All MM05 lineage and assignment bindings matched; CAL-004-bcedd2a9 is active and not superseded."
+    },
+    {
+      "test_id": "T0-MM05-AUTH",
+      "kind": "WORKER_AUTH",
+      "status": "PASS",
+      "description": "Verified the prompt-private capability secret against the public MM05 SHA-256 commitment and computed the frozen cohort HMAC proof without persisting or publishing the raw secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment matched and a correctly formatted cohort-bound HMAC proof was produced."
+    },
+    {
+      "test_id": "T0-MM05-E3-L",
+      "kind": "E3_LEARNED_PROPOSAL_ARM",
+      "status": "NOT_MEASURED",
+      "description": "L=LEARNED_PROPOSAL was not executed in the replay-only short test.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "result": "NOT_MEASURED: no executable learned proposal artifact or evaluator was assigned."
+    },
+    {
+      "test_id": "T0-MM05-E3-R",
+      "kind": "E3_RANDOM_ADMISSIBLE_ARM",
+      "status": "NOT_MEASURED",
+      "description": "R=RANDOM_ADMISSIBLE was not executed in the replay-only short test.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "result": "NOT_MEASURED: no matched mutation/security envelope or executable evaluator was assigned."
+    },
+    {
+      "test_id": "T0-MM05-E3-N",
+      "kind": "E3_NO_CHANGE_EQUAL_COMPUTE_ARM",
+      "status": "NOT_MEASURED",
+      "description": "N=NO_CHANGE_EQUAL_COMPUTE was not executed in the replay-only short test.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5"
+      ],
+      "result": "NOT_MEASURED: no executable equal-compute baseline contract or evaluator was assigned."
+    },
+    {
+      "test_id": "T0-MM05-ZERO-COST-GATE",
+      "kind": "CALIBRATION_COST",
+      "status": "PASS",
+      "description": "Confirmed replay-only calibration counters remain zero.",
+      "evidence_refs": [
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"
+      ],
+      "result": "Fresh evidence=0; protected manifest reads=0; benchmark executions=0; deep research runs=0."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "notes": "MM05 completed its short authenticated worker-side transport/report obligations; full cohort calibration remains pending downstream fan-in."
+    },
+    {
+      "obligation_id": "E3_EXECUTABLE_LEARNED_RANDOM_NOCHANGE_CONTROL",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "notes": "Normal E3 requires a frozen executable equal-compute fresh contract. This T0 short test provides none; L/R/N remain NOT_MEASURED and no comparison was executed."
+    },
+    {
+      "obligation_id": "MODEL_BINDING_HONESTY",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "notes": "Reported PARTIAL_UNVERIFIED rather than fabricating EXTRA_HIGH reasoning-effort verification."
+    },
+    {
+      "obligation_id": "NO_WORKER_DEEP_RESEARCH",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "notes": "No web/prior-art sweep or deep-research execution was performed."
+    },
+    {
+      "obligation_id": "NO_WORKER_PROMOTION_OR_STATE_CHANGE",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"
+      ],
+      "notes": "MM05 created only a worker receipt and did not modify state, benchmark cursors, runtime truth, or promotion status."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121",
+      "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+      "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+      "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "schemas/verification.schema.json@d2e38cfae93663f109cbfc7dd12fd1370806be9c",
+      "schemas/integration.schema.json@b2fd1c003c1496e1731e190cf4e7785799489084",
+      "schemas/director.schema.json@e770a72f3e5394868dbea10a87335879b9d90f18",
+      "schemas/research.schema.json@3b0f2544decb7c8189caf8714632ef8267aa107a",
+      "schemas/benchmark_registry.schema.json@67954d036c03466950d56a386f5ce50c2d85ebde",
+      "schemas/benchmark_completion.schema.json@a0d5179cab908d348a2ac486fa3c5121b2c2dbce",
+      "schemas/private_manifest_contract.schema.json@05ef541391432327d1686f69d3b1646d8a6cbc35",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+    ],
+    "artifact_refs": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "reports/CAL-004-bcedd2a9/MM05.json"
+    ],
+    "notes": "Short deterministic public-safe calibration only. No private vault payload was read, no fresh or protected evidence was consumed, and no E3 executable comparison was run."
+  },
+  "claim_scope": "Authenticated frozen-control transport/report evidence and the deterministic E3 missing-executable gate only; no mechanism-effectiveness or capability claim.",
+  "runtime_implementation_implication": "NONE. No runtime implementation, promotion, benchmark succession, or state change follows from this worker receipt.",
+  "negative_zero_outcomes": [
+    {
+      "type": "L_LEARNED_PROPOSAL",
+      "detail": "NOT_MEASURED; no executable learned proposal artifact/evaluator assigned."
+    },
+    {
+      "type": "R_RANDOM_ADMISSIBLE",
+      "detail": "NOT_MEASURED; no matched executable random admissible arm/evaluator assigned."
+    },
+    {
+      "type": "N_NO_CHANGE_EQUAL_COMPUTE",
+      "detail": "NOT_MEASURED; no equal-compute executable baseline/evaluator assigned."
+    },
+    {
+      "type": "CALIBRATION_COSTS",
+      "detail": "Fresh evidence, protected manifest reads, benchmark executions, and deep research runs were all zero."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "e3_control_status": {
+      "comparison_executed": false,
+      "fresh_execution_authorized": false,
+      "executable_candidate_assigned": false,
+      "evaluator_assigned": false,
+      "L": {
+        "arm": "LEARNED_PROPOSAL",
+        "status": "NOT_MEASURED"
+      },
+      "R": {
+        "arm": "RANDOM_ADMISSIBLE",
+        "status": "NOT_MEASURED"
+      },
+      "N": {
+        "arm": "NO_CHANGE_EQUAL_COMPUTE",
+        "status": "NOT_MEASURED"
+      }
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Calibration-only deterministic transport/report test; no private vault payload, benchmark, protected evidence, or deep research consumed."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently rereads reports/CAL-004-bcedd2a9/MM05.json and verifies schema, HMAC, public safety, frozen lineage, and zero-cost replay-only compliance; MM05 takes no promotion or state action."
+}
