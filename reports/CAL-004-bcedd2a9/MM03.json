@@ -1,0 +1,261 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W03 | SlopCode Contracts",
+    "target_program": "MASTERMIND",
+    "phase": "T0",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MM03",
+    "goal": "Prove MM03 can complete the standardized v2.3 transport/report contract and represent typed missing/NOT_MEASURED correctly.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MM03",
+  "report_id": "MM03-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "7663b26bac45388210340cb7c0b46ed9",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "d5d29c40c01d773210aa8bcd880ad7db3d56d79d4552c58c9183410c79dda197",
+  "worker_auth_proof": "67c7fe0abac6f616dcfc04eb795c1013e9d316625b65b9e88f0b4dbc0eaf2463",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "V2.3_SHORT_AUTHENTICATED_CALIBRATION_REPLAY",
+  "executive_status": "VALID_ASSIGNED_REPORT with one non-clean execution defect: canonical v2.3 control/assignment/authentication and typed-missing checks passed, but the first visible chat prelude was not the exact SESSION_STANDARD.md header. This worker receipt should be accepted as failure evidence but must not make CAL-004 clean.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM03-T0-01",
+      "status": "PASS",
+      "description": "Validate exact active state, control manifest, assignment lineage and frozen control identities for CAL-004-bcedd2a9.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "next_action": "MM06 independently rereads and verifies the completed report against the same frozen cohort."
+    },
+    {
+      "task_id": "MM03-T0-02",
+      "status": "PASS",
+      "description": "Verify the MM03 worker-auth commitment and compute the cohort-bound HMAC proof without exposing the raw secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "PS-HMAC-SHA256-WORKER-PROOF-1"
+      ],
+      "next_action": "MM06 independently recomputes the commitment and HMAC using its verifier-side copy."
+    },
+    {
+      "task_id": "MM03-T0-03",
+      "status": "PASS",
+      "description": "Exercise SlopCode typed-missing semantics under the short-test contract: because no benchmark is authorized or executed, scientific SlopCode outcome is NOT_MEASURED rather than zero, pass, or clean evidence.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"
+      ],
+      "next_action": "Retain NOT_MEASURED until a later FRESH_ENABLED assignment supplies a valid private frozen pre-outcome manifest."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM03-I01-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "BLOCKED",
+      "summary": "Model identity is available from the runtime context, but scheduled-task reasoning-effort binding is not independently exposed; fresh model-sensitive promotion remains inadmissible under this limitation.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "owner": "BIL00/runtime execution surface",
+      "fix_or_next": "Require a later frozen private execution manifest and runtime receipt satisfying the model-binding rule before scientific promotion."
+    },
+    {
+      "issue_id": "MM03-I02-FIRST-VISIBLE-HEADER-NONCONFORMITY",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "The run emitted a provisional key=value prelude before fetching SESSION_STANDARD.md instead of beginning visible output with the exact canonical session header.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb"
+      ],
+      "owner": "MM03 scheduled-lane execution",
+      "fix_or_next": "On the next iteration, perform canonical GitHub fetches before any visible prose, then emit the exact SESSION_STANDARD.md header as the first visible output."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM03-TEST-FIRST-VISIBLE-HEADER",
+      "kind": "SESSION_STANDARDIZATION",
+      "status": "FAIL",
+      "description": "Verify the first visible output exactly matches the frozen SESSION_STANDARD.md header.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1"
+      ],
+      "result": "FAIL for this run: a provisional pre-fetch prelude was emitted first. The canonical report session_header itself is correct, but the chat-order requirement was not."
+    },
+    {
+      "test_id": "MM03-TEST-CONTROL-FREEZE",
+      "kind": "TRANSPORT_CONTROL",
+      "status": "PASS",
+      "description": "Frozen control-set identities inspected against the active control manifest.",
+      "evidence_refs": [
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "schemas/* frozen identities verified from GitHub contents metadata",
+        "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+        ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+      ],
+      "result": "No observed frozen-control identity drift for the files inspected in this short test."
+    },
+    {
+      "test_id": "MM03-TEST-AUTH",
+      "kind": "WORKER_AUTH",
+      "status": "PASS",
+      "description": "Prompt-private MM03 secret commitment matched the public commitment and generated a cohort-bound HMAC proof.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "Commitment matched; HMAC proof emitted only as the permitted derived proof."
+    },
+    {
+      "test_id": "MM03-TEST-TYPED-MISSING",
+      "kind": "SLOPCODE_CONTRACT",
+      "status": "PASS",
+      "description": "Check that prohibited/unexecuted SlopCode scientific evidence is represented as NOT_MEASURED, not coerced into zero/pass/clean evidence.",
+      "evidence_refs": [
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "result": "PASS: SlopCode benchmark outcome remains NOT_MEASURED; benchmark_executions=0 and fresh_evidence_units_consumed=0."
+    },
+    {
+      "test_id": "MM03-SCIENTIFIC-BENCHMARK",
+      "kind": "BENCHMARK_EXECUTION",
+      "status": "NOT_MEASURED",
+      "description": "Prospective SlopCode mechanism effect.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "result": "NOT_MEASURED by assignment design; no benchmark unit or evaluator was opened."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "notes": "This worker performed only the short authenticated replay transport/report payload required for T0."
+    },
+    {
+      "obligation_id": "NO_BENCHMARK_OR_PROTECTED_EVIDENCE_DURING_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "notes": "All fresh/private/benchmark/deep-research counters are zero."
+    },
+    {
+      "obligation_id": "MASTERMIND_PRE_REVIEW_ONLY",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "notes": "No mechanism or runtime promotion is claimed."
+    },
+    {
+      "obligation_id": "BENCHMARK_SUCCESSION",
+      "status": "NOT_APPLICABLE",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "notes": "This T0 short test does not complete or advance any scientific benchmark suite."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+    ],
+    "artifact_refs": [
+      "reports/CAL-004-bcedd2a9/MM03.json"
+    ],
+    "notes": "Short deterministic calibration evidence only. No public-source research, protected material, benchmark task, private manifest, or runtime artifact was consumed."
+  },
+  "claim_scope": "Authenticated v2.3 T0 transport/report calibration and MM03 typed-missing representation only. No SlopCode scientific mechanism effect measured.",
+  "runtime_implementation_implication": "NONE. This receipt is external transport evidence only and cannot modify Mastermind or Math Foundry runtime truth.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "fresh_evidence_units_consumed=0 by calibration assignment."
+    },
+    {
+      "type": "PROTECTED_MANIFEST_NOT_READ",
+      "detail": "protected_manifest_reads=0; private_manifest_id is null."
+    },
+    {
+      "type": "BENCHMARK_NOT_EXECUTED",
+      "detail": "benchmark_executions=0; prospective SlopCode effect is NOT_MEASURED."
+    },
+    {
+      "type": "DEEP_RESEARCH_NOT_RUN",
+      "detail": "deep_research_runs=0; workers are prohibited from deep research."
+    },
+    {
+      "type": "RUNTIME_CHANGE_NONE",
+      "detail": "No runtime or network state modification was attempted."
+    },
+    {
+      "type": "CALIBRATION_CLEAN_STATUS_NOT_CLAIMED",
+      "detail": "MM03 self-reports first-visible-header nonconformity; MM06 should not count this worker as a clean T0 session-format pass."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "typed_missing_check": {
+      "slopcode_scientific_status": "NOT_MEASURED",
+      "reason": "Short calibration assignment prohibits benchmark execution and fresh evidence.",
+      "coerce_missing_to_zero": false,
+      "coerce_missing_to_pass": false
+    },
+    "promotion_status": "NOT_ELIGIBLE"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Only canonical GitHub control/assignment/schema/auth reads plus one immutable report write were used."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches this report, verifies Draft-2020-12 schema conformance, worker HMAC, frozen lineage and post-write Git identity, and should mark CAL-004 non-clean for MM03 because the first-visible SESSION_STANDARD header ordering requirement failed. MM03's next iteration must fetch canonical control before any visible prose and then emit the exact standard header first."
+}
