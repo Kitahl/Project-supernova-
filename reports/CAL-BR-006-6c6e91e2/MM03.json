@@ -1,0 +1,200 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MM-W03 | SlopCode Contracts",
+    "target_program": "MASTERMIND",
+    "phase": "T0",
+    "iteration_id": "CAL-BR-006-6c6e91e2",
+    "iteration_number": 6,
+    "role_id": "MM03",
+    "goal": "Prove MM03 branch-isolated write and typed NOT_MEASURED semantics under repaired validation.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-BR-006-6c6e91e2",
+  "worker_id": "MM03",
+  "report_id": "MM03-CAL-BR-006-6c6e91e2",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-6c6e91e2",
+  "assignment_git_identity": "9ef2ce1f13f3f59d77d72310950951bc10591def",
+  "generation_seq": 6,
+  "parent_state_git_identity": "57c77f612e995b097c2ae6ecf0ae395b4d7aec69",
+  "control_manifest_id": "CTRL-CAL-BR-006-6c6e91e2-V23-BR241",
+  "control_manifest_git_identity": "946e6992675ee7c7ceed75062bf2b215aa6dc415",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "dafc32a72e5b8839422f98efae3ec248",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "d5d29c40c01d773210aa8bcd880ad7db3d56d79d4552c58c9183410c79dda197",
+  "worker_auth_proof": "c38b683f877b066456d692b66a2187ef017a6f6257d39a3c487f152e12188389",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "CALIBRATION_REPLAY_TRANSPORT_ONLY",
+  "executive_status": "PASS: repaired v2.4.1 branch-isolated MM03 transport/auth/report contract completed under SAFE_REPLAY_ONLY; scientific SlopCode outcome remains typed NOT_MEASURED.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM03-CONTROL-CLOSURE",
+      "status": "PASS",
+      "description": "Verified generation head, assignment/control bindings, MM03 branch base, and the exact 27-file frozen base-21 plus overlay-6 control set at the frozen generation SHA.",
+      "evidence_refs": [
+        "generation:2384fd5e6d136be01cc986cc881771804a95c432",
+        "control:946e6992675ee7c7ceed75062bf2b215aa6dc415",
+        "assignment:9ef2ce1f13f3f59d77d72310950951bc10591def"
+      ],
+      "next_action": "MM06 independently re-fetch generation and worker branch."
+    },
+    {
+      "task_id": "MM03-AUTH",
+      "status": "PASS",
+      "description": "Verified prompt-private capability against the frozen public MM03 SHA-256 commitment and computed the cohort-bound HMAC proof without persisting the raw capability.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "next_action": "MM06 recomputes HMAC from its verifier copy."
+    },
+    {
+      "task_id": "MM03-TYPED-MISSING",
+      "status": "PASS",
+      "description": "Represented the unexecuted SlopCode scientific result as NOT_MEASURED rather than zero, pass, fail, or inferred evidence.",
+      "evidence_refs": [
+        "assignment:PS-BRANCH-CAL-BR-006-6c6e91e2"
+      ],
+      "next_action": "No SlopCode scientific claim is promotable from this calibration receipt."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM03-SCIENTIFIC-RESULT",
+      "severity": "LOW",
+      "status": "NOT_MEASURED",
+      "summary": "No SlopCode benchmark or protected evidence was executed or read; mechanism effect is intentionally NOT_MEASURED.",
+      "evidence_refs": [
+        "assignment:PS-BRANCH-CAL-BR-006-6c6e91e2"
+      ],
+      "owner": "MM03",
+      "fix_or_next": "Remain NOT_MEASURED until a later fresh-authorized frozen manifest assigns executable SlopCode evidence."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM03-FROZEN-CONTROLS",
+      "kind": "transport_control_identity",
+      "status": "PASS",
+      "description": "Frozen generation and declared control identities matched at exact generation SHA.",
+      "evidence_refs": [
+        "generation:2384fd5e6d136be01cc986cc881771804a95c432"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "MM03-BRANCH-ISOLATION",
+      "kind": "branch_write_precondition",
+      "status": "PASS",
+      "description": "Assigned MM03 worker branch existed at the frozen generation head and no pre-existing MM03 report was present before creation.",
+      "evidence_refs": [
+        "ps/work/CAL-BR-006-6c6e91e2/MM03@2384fd5e6d136be01cc986cc881771804a95c432"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "MM03-AUTH-PROOF",
+      "kind": "worker_authentication",
+      "status": "PASS",
+      "description": "Public commitment check and cohort HMAC construction passed.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "PASS"
+    },
+    {
+      "test_id": "MM03-SLOPCODE-OUTCOME",
+      "kind": "typed_missing_semantics",
+      "status": "NOT_MEASURED",
+      "description": "Scientific SlopCode mechanism effect was not executed in calibration.",
+      "evidence_refs": [],
+      "result": "NOT_MEASURED"
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_BRANCH_ISOLATED_FULL_LOOP_TEST",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "assignment:PS-BRANCH-CAL-BR-006-6c6e91e2",
+        "generation:2384fd5e6d136be01cc986cc881771804a95c432"
+      ],
+      "notes": "Worker performed replay-only transport/auth/report work on its own branch."
+    },
+    {
+      "obligation_id": "ZERO_FRESH_PROTECTED_BENCHMARK_RESEARCH",
+      "status": "ALIGNED",
+      "evidence_refs": [],
+      "notes": "All prohibited consumption counters are zero."
+    },
+    {
+      "obligation_id": "ORIGINATING_WORKER_NONPROMOTION",
+      "status": "ALIGNED",
+      "evidence_refs": [],
+      "notes": "No state, benchmark cursor, runtime, verifier, integrator, consolidation, control-release, generation, or main branch write/promotion was performed."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "overlay:78eaafc34bcf56a6c0898d2085ba1462f687c95d9cf0d5d6a46a357d8c2d6f96",
+      "generation:2384fd5e6d136be01cc986cc881771804a95c432",
+      "control:946e6992675ee7c7ceed75062bf2b215aa6dc415",
+      "assignment:9ef2ce1f13f3f59d77d72310950951bc10591def",
+      "report-schema:8f20f43e862201477c401db3334d2afc06cbeae6",
+      "branch-validator:de6a4b37b5c54c1fed2b36741cb22ea265d3bde3"
+    ],
+    "artifact_refs": [
+      "state/BRANCH_STATE.json@2672995c4ee9209bae72dbaedc72799d1ff78528",
+      "control/CAL-BR-006-6c6e91e2.json@946e6992675ee7c7ceed75062bf2b215aa6dc415",
+      "assignments/CAL-BR-006-6c6e91e2.json@9ef2ce1f13f3f59d77d72310950951bc10591def"
+    ],
+    "notes": "Control source was ps/v2.4-control-release branch state followed by exact generation SHA; mutable main was not used. Frozen control closure matched the declared 27-file base-plus-overlay set."
+  },
+  "claim_scope": "Transport/auth/schema calibration only. No SlopCode benchmark quality, mechanism efficacy, score, regression, or improvement claim.",
+  "runtime_implementation_implication": "None. This worker receipt cannot change Mastermind runtime truth or benchmark state.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE",
+      "detail": "0 fresh evidence units consumed."
+    },
+    {
+      "type": "PROTECTED_MANIFEST",
+      "detail": "0 protected manifest reads."
+    },
+    {
+      "type": "BENCHMARK_EXECUTION",
+      "detail": "0 benchmark executions."
+    },
+    {
+      "type": "DEEP_RESEARCH",
+      "detail": "0 deep research runs."
+    },
+    {
+      "type": "SLOPCODE_SCIENTIFIC_RESULT",
+      "detail": "NOT_MEASURED."
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Short replay-only contract test; no fresh/protected benchmark or broad research work."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches ps/work/CAL-BR-006-6c6e91e2/MM03, records post-write head and report blob, recomputes HMAC, validates Draft 2020-12 schema/public safety and the frozen branch validator, then marks safe or quarantines."
+}
