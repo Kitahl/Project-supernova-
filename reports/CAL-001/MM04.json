@@ -1,0 +1,139 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-001",
+  "worker_id": "MM04",
+  "report_id": "MM04-CAL-001",
+  "assignment_id": "PS-GHBUS-CAL-001",
+  "assignment_git_identity": "8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "c48c95c2e31aed656f5116e4fe840066",
+  "status": "VALID_CALIBRATION_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "REPLAY_SAFE_ARCHITECTURE_AUDIT+NARROW_PRIMARY_SOURCE_CHECK",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "source_version_ids": [
+    "PROTOCOL.md@bf0290e2df191ad3fa86e3a5f3729a9562dbc5b4",
+    "WORKER_PROTOCOL.md@38a8617ba7235133034ade1f04c407abb24886dd",
+    "state/CURRENT.json@b23ab10b7e2fa8f381ef7a860f0115fc044c311c",
+    "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+    "schemas/report.schema.json@a48996ad63c6e5e76c69652e52720ce249cc8425",
+    "assignments/CAL-001.json@8c4c2317b5880e5ba6764066ff39d18e7b8b79f1",
+    "snorkel-ai/senior-swe-bench-v2026.06@1212f23a662d2e8d3f321b174735a80be1fdf2e2",
+    "snorkel-ai/senior-swe-bench-v2026.06#1@open-audited-2026-08-18"
+  ],
+  "claim_scope": "Replay-safe Senior SWE architecture/mechanism analysis for canonical-bus calibration plus a narrow public primary-source audit. No fresh or protected benchmark evidence, no prospective benchmark score, no runtime change, and no promotion claim.",
+  "runtime_implementation_implication": "NONE. Retain architecture-surface closure and evaluator-execution validity as external candidate obligations only; implementation or runtime adoption requires independent verified handoff and prospective evidence.",
+  "next_action": "MM06 should verify this immutable canonical-bus receipt, assignment/token binding, public-safety invariants, and report-commit validation status as part of CAL-001 fan-in. MM04 should not repeat CAL-001 and should wait for the next active assignment.",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "State and assignment are GITHUB_BUS_CALIBRATION with fresh_allowed=false; no private manifest was fetched and fresh_evidence_ids is empty."
+    },
+    {
+      "type": "PROSPECTIVE_SENIOR_SWE_RESULT_NOT_MEASURED",
+      "detail": "No new Senior SWE task, candidate-vs-parent execution, or held-out score was opened or measured."
+    },
+    {
+      "type": "CANONICAL_MECHANISM_PROMOTION_NONE",
+      "detail": "Replay-safe analysis does not justify promotion of ASCC or any other architecture mechanism into Mastermind/Foundry runtime truth."
+    },
+    {
+      "type": "PUBLIC_MAIN_VERIFIER_ISSUE_REMAINS_OPEN",
+      "detail": "The public Senior SWE dataset repository still has issue #1 open describing scoreable-zero paths when intended validation tests do not execute; this supports an evaluator-validity gate but is not itself prospective architecture evidence."
+    },
+    {
+      "type": "CI_NOT_OBSERVED_PREWRITE",
+      "detail": "No combined status was exposed on the canonical pre-write head; downstream verifier must check the report commit where observable and otherwise independently enforce schema/public-safety invariants."
+    }
+  ],
+  "research_questions": [
+    {
+      "question": "Which established static, hybrid, or runtime-assisted program-analysis methods can provide a machine-checkable closure certificate for dynamic registration, reflection, plugin discovery, configuration-driven dispatch, and other architecture surfaces whose complete universe is not explicit in source syntax?",
+      "parent_blocker_or_claim": "MM04 architecture-surface closure: dynamic registration and authoritative universe completeness",
+      "why_it_matters": "ASCC-style closure fails if an applicable surface is silently omitted, but naive whole-repository enumeration is incomplete for reflection and runtime registration and may also over-expand genuinely local changes.",
+      "closure_criterion": "Identify primary-source methods with explicit soundness/coverage conditions and practical artifacts, map their assumptions to repository-scale dynamic registration, and state the exact residual class that must remain UNKNOWN_BLOCKED if complete enumeration cannot be certified.",
+      "preferred_source_families": [
+        "PLDI/POPL/OOPSLA/ICSE/FSE primary papers",
+        "whole-program points-to and call-graph analysis",
+        "reflection and plugin-system analysis",
+        "configuration-aware program analysis",
+        "official compiler/static-analysis documentation"
+      ],
+      "urgency": "HIGH"
+    },
+    {
+      "question": "What benchmark-evaluation attestation mechanisms can prove that the intended validation workload actually executed under a frozen environment and that a candidate patch could not shadow, poison, or redirect the validation/judge infrastructure?",
+      "parent_blocker_or_claim": "MM04 evaluator-execution validity prerequisite for architecture-failure attribution",
+      "why_it_matters": "The current public Senior SWE verifier issue documents a path where zero intended tests can still produce a scoreable result, so architecture failures must not be inferred from evaluator infrastructure failures.",
+      "closure_criterion": "Find primary-source benchmark, reproducible-build, sandboxing, or software-supply-chain techniques that bind evaluator code/environment/workload identity and execution evidence, then specify the minimal attestation fields needed for a prospective Senior SWE architecture comparison.",
+      "preferred_source_families": [
+        "benchmark methodology papers and official benchmark docs",
+        "Harbor/Terminal-Bench official documentation",
+        "reproducible builds and hermetic execution",
+        "software supply-chain attestation standards",
+        "SWE benchmark evaluation-integrity research"
+      ],
+      "urgency": "HIGH"
+    }
+  ],
+  "role_payload": {
+    "role": "Senior SWE architecture/mechanism evidence",
+    "assignment_role": "Senior SWE architecture replay-safe generalization",
+    "network_mode_observed": "GITHUB_BUS_CALIBRATION",
+    "fresh_authorization": "DISALLOWED_BY_CALIBRATION_AND_ASSIGNMENT",
+    "public_private_safety": "PASS_NO_PROTECTED_CONTENT_OR_RAW_PROTECTED_IDENTIFIERS",
+    "assignment_identity_check": "PASS",
+    "architecture_candidate": {
+      "name": "ASCC_REPLAY_CANDIDATE",
+      "promotion_status": "NOT_ELIGIBLE",
+      "bounded_semantics": {
+        "applicable_surface_classes": [
+          "DEFINITION_OR_REGISTRATION",
+          "DISPATCH_OR_INVOCATION",
+          "STATE_WRITE_OR_PERSISTENCE",
+          "STATE_READ_OR_API_COMPATIBILITY",
+          "SCHEMA_OR_MIGRATION",
+          "POLICY_CONFIG_OR_DEPENDENCY"
+        ],
+        "required_closure_objects": [
+          "independently supported applicable surface universes",
+          "cross-surface dependency edges",
+          "obligations induced by the chosen design",
+          "residual or legacy authorities",
+          "dynamic-registration closure evidence",
+          "preservation universe for unaffected behavior"
+        ],
+        "nonvacuity_rule": "Any class declared applicable must have a nonempty independently supported universe; an unenumerable dynamic universe is UNKNOWN_BLOCKED rather than PASS.",
+        "design_relative_rule": "Closure is over the architecture induced by the candidate's chosen design, not conformity to one reference implementation."
+      },
+      "adversarial_attacks": [
+        {"attack": "Applicable class labeled N/A without evidence", "required_verdict": "BLOCK"},
+        {"attack": "Applicable class with empty discovered universe", "required_verdict": "BLOCK"},
+        {"attack": "Omitted cross-surface edge", "required_verdict": "BLOCK"},
+        {"attack": "Residual or legacy authority omitted", "required_verdict": "BLOCK"},
+        {"attack": "Dynamic registration/reflection cannot be conservatively closed", "required_verdict": "UNKNOWN_BLOCKED"},
+        {"attack": "Excluded surface used to discharge an obligation", "required_verdict": "BLOCK"},
+        {"attack": "Broad architecture sweep on a genuinely local change", "required_verdict": "REGRESSION_SIGNAL_NOT_AUTOMATIC_PASS"},
+        {"attack": "Validation infrastructure fails to execute intended tests", "required_verdict": "INFRA_INVALID_OR_NOT_MEASURED_NOT_CANDIDATE_FAILURE"}
+      ]
+    },
+    "narrow_primary_source_audit": {
+      "official_dataset_status": "Public repository remains Senior SWE-Bench v2026.06; latest official main commit observed is 1212f23a662d2e8d3f321b174735a80be1fdf2e2 from 2026-07-08.",
+      "verifier_issue_status": "Issue #1 remains open as observed in the official repository; it reports incompatible Jest/runtime and harness-resolution paths where intended tests did not execute yet a scoreable zero could result.",
+      "mechanism_effect": "NO_CANONICAL_UPDATE. Preserve evaluator-execution validity as an evidence-admissibility gate separate from architecture closure itself."
+    },
+    "prospective_status": "NOT_MEASURED",
+    "regression_status": "NOT_MEASURED"
+  },
+  "cost_ledger": {
+    "fresh_benchmark_tasks_opened": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "narrow_primary_source_checks": 2,
+    "deep_research_runs": 0
+  },
+  "ci_status": "PREWRITE_HEAD_CI_NOT_OBSERVED; REPORT_COMMIT_REQUIRES_DOWNSTREAM_CHECK"
+}
