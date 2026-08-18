@@ -1,0 +1,8 @@
+{
+  "cohort_id":"CAL-BR-006-433ad83a",
+  "superseded_by":"CAL-BR-006-v251-433ad83a",
+  "reason":"Unfinished generation discovered a circular assignment field that attempted to bind a final generation head before the assignment commit existed. No assignment was published, no worker branches were activated, no report was written, and it is permanently ineligible for calibration/adoption.",
+  "evidence_preserved":true,
+  "calibration_credit":false,
+  "fresh_evidence_consumed_by_supersession":0
+}
