@@ -1,0 +1,29 @@
+{
+  "task_network_plan_id": "ec86c19d38aec9a8a5f8f6c88169d7b4d770897e44b2aad82e02c0afba40545f",
+  "cohort_id": "CAL-003-810da70a",
+  "assignment_id": "PS-GHBUS-CAL-003-810da70a",
+  "generation_seq": 3,
+  "parent_state_git_identity": "810da70aa50f854ccd27786f8d1edfa421974604",
+  "control_manifest_id": "CTRL-CAL-003-810da70a-V22",
+  "control_manifest_path": "control/CAL-003-810da70a.json",
+  "control_manifest_git_identity": "9c0d21898b3bb6f1e41d9f7e5445da74438fdf2a",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "network_mode": "GITHUB_BUS_CALIBRATION",
+  "purpose": "Countable calibration cohort 1 of 2 under v2.2 frozen control, prompt-private worker HMAC proofs, and parent-state lineage. Replay-safe only.",
+  "workers": {
+    "MF01":{"fresh_allowed":false,"role":"Representation/blocker replay-safe E1 support","visibility_token":"ed1334963214f446c2f2a0a2727406b6","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no deep research"]},
+    "MF02":{"fresh_allowed":false,"role":"E1 route/schedule contract replay-safe audit","visibility_token":"5f019e9cac34ebdca9cf9b7813b1e692","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no benchmark execution","no deep research"]},
+    "MF03":{"fresh_allowed":false,"role":"Lemma/operator candidate replay-safe analysis","visibility_token":"8cde6680d805ac3cc41c774796ed4d43","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no deep research"]},
+    "MF04":{"fresh_allowed":false,"role":"Adversarial falsifier replay-safe analysis","visibility_token":"dd5f87e9f66337ff2721c0243ad14554","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no deep research"]},
+    "MF05":{"fresh_allowed":false,"role":"C1 product-closure prerequisite replay-safe audit","visibility_token":"e543302a368f629aee6b9cdb65a9c582","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no fabricated C1 score","no deep research"]},
+    "MM01":{"fresh_allowed":false,"role":"React mechanism replay-safe generalization","visibility_token":"4f33fcfc06130ae5b17c13213e63eb54","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no deep research"]},
+    "MM02":{"fresh_allowed":false,"role":"DeepSWE mechanism replay-safe generalization","visibility_token":"3c3930b83375e419387939a30da9c20c","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no deep research"]},
+    "MM03":{"fresh_allowed":false,"role":"SlopCode contract/mechanism replay-safe generalization","visibility_token":"3489c2fa0bbb04f08662504c7b45fb43","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no deep research"]},
+    "MM04":{"fresh_allowed":false,"role":"Senior SWE architecture replay-safe generalization","visibility_token":"ad80b843688367d976ad351348044350","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no deep research"]},
+    "MM05":{"fresh_allowed":false,"role":"E3 control-design replay-safe audit","visibility_token":"002e73ed2dbe036042bf5612b11ec2e3","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","L/R/N NOT_MEASURED without executable artifacts","no deep research"]},
+    "MM07":{"fresh_allowed":false,"role":"Before/after replay-safe diagnostic design","visibility_token":"601b55668e350965cc94932412844bef","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","no prospective self-promotion","no deep research"]},
+    "EXT01":{"fresh_allowed":false,"role":"Runtime/build and GitHub bus independent audit","visibility_token":"5e92638996de879b29dc24e2e8ff421f","opaque_evidence_ids":[],"private_manifest_id":null,"private_manifest_git_identity":null,"constraints":["v2.2 frozen control","worker HMAC proof required","replay-safe only","audit auth/lineage/control freeze","no deep research"]}
+  },
+  "sealed_slots": ["SEALED_ORACLE_SLOT_A","SEALED_ORACLE_SLOT_B"]
+}
