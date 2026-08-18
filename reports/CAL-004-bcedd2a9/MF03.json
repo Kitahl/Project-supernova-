@@ -1,0 +1,265 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-1",
+    "session_name": "PS-MF-W03 | Lemma & Operator Lab",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_SHORT_FULL_LOOP_TEST",
+    "iteration_id": "CAL-004-bcedd2a9",
+    "iteration_number": 4,
+    "role_id": "MF03",
+    "goal": "Prove MF03 can complete the standardized v2.3 transport/report contract and represent a candidate as external/not-promoted under T0.",
+    "plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "61fbe7206e43ec538f310acf875e72865daf8fbb0e4ccbe27dcd6d1a072ff8a0",
+  "cohort_id": "CAL-004-bcedd2a9",
+  "worker_id": "MF03",
+  "report_id": "MF03-CAL-004-bcedd2a9",
+  "assignment_id": "PS-GHBUS-CAL-004-bcedd2a9",
+  "assignment_git_identity": "0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+  "generation_seq": 4,
+  "parent_state_git_identity": "bcedd2a95ecac89b0500eda916a0c0562f8dd0fc",
+  "control_manifest_id": "CTRL-CAL-004-bcedd2a9-V23",
+  "control_manifest_git_identity": "3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+  "network_checkpoint_id": "fb197b199f683471ec7266a450cd9b709218535a5ece7b3e234bcf45ff3dd59e",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "72cd63cf72f59e4e071573713c0f5b3e",
+  "worker_auth_scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
+  "worker_auth_commitment": "060c3457b8ad4895f1f980a51bdea1a3d9ceca7eec2908c9a270b076bb4b8fb0",
+  "worker_auth_proof": "803f7e575ee689ed19733d282aeb03963fe8773585b1f10809e368cd69bd7592",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_REPLAY_ONLY_CONTROL_AND_AUTH",
+  "executive_status": "PASS: MF03 verified the complete frozen v2.3 control set, active assignment lineage, cohort-bound worker authentication, benchmark-registry successor contract, and the external/not-promoted candidate boundary. No benchmark, protected evidence, deep research, or runtime change was performed.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF03-T0-CONTROL",
+      "status": "PASS",
+      "description": "Verified all 21 control-file blob identities against the immutable active control manifest and confirmed no mixed-control revision.",
+      "evidence_refs": [
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+        "control-file-set:21/21-match"
+      ],
+      "next_action": "MM06 independently re-fetches the created report and verifies the same frozen control binding."
+    },
+    {
+      "task_id": "MF03-T0-AUTH",
+      "status": "PASS",
+      "description": "Verified the prompt-private capability secret against the public MF03 SHA-256 commitment and computed the required cohort-bound HMAC proof without persisting the secret.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+        "worker-auth:commitment-match",
+        "worker-auth:hmac-computed"
+      ],
+      "next_action": "MM06 independently verifies the public commitment and report HMAC using its verifier-side copy."
+    },
+    {
+      "task_id": "MF03-T0-ROLE-BOUNDARY",
+      "status": "PASS",
+      "description": "Represented one role-compatible candidate only as EXTERNAL_NOT_PROMOTED; no mathematical, ProductStore, VerifiedProduct, or runtime-truth claim was made.",
+      "evidence_refs": [
+        "role_payload.external_candidate"
+      ],
+      "next_action": "Keep candidate non-authoritative unless a later scientific assignment and independent handoff provide admissible evidence."
+    },
+    {
+      "task_id": "MF03-T0-BENCHMARK-SUCCESSION-CHECK",
+      "status": "PASS",
+      "description": "Confirmed the registry already encodes independent Mastermind and Math Foundry successor chains and requires a verified immutable completion receipt plus successor preflight before advancement.",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+        "MATH_FOUNDRY:MF-E1-CLEAN-ROUTE-TRUTH",
+        "MASTERMIND:MM-ORACLE-PHASE1-REACT"
+      ],
+      "next_action": "No benchmark action from MF03; BIL00 owns advancement after verified completion."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "I-MODEL-EFFORT-BINDING",
+      "severity": "MEDIUM",
+      "status": "NOT_MEASURED",
+      "summary": "Model identity is known as GPT-5.6 Sol, but the automation/runtime surface does not expose an independently verifiable EXTRA_HIGH reasoning-effort receipt.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db"
+      ],
+      "owner": "BIL00/runtime execution layer",
+      "fix_or_next": "Keep MODEL_BINDING_STATUS=PARTIAL_UNVERIFIED. This does not block T0 transport calibration, but model-sensitive fresh promotion must obey the private execution-manifest binding rule."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "T0-CF-01",
+      "kind": "FROZEN_CONTROL_IDENTITY",
+      "status": "PASS",
+      "description": "Compared every frozen control path against the active control manifest.",
+      "evidence_refs": [
+        "control-file-set:21/21-match"
+      ],
+      "result": "All 21 frozen control blob identities matched; mixed-control revisions were not observed."
+    },
+    {
+      "test_id": "T0-ASG-01",
+      "kind": "ASSIGNMENT_LINEAGE",
+      "status": "PASS",
+      "description": "Checked plan, cohort, generation, parent-state, control, checkpoint, runtime, worker entry, visibility token, fresh flag and sealed-slot calibration constraints.",
+      "evidence_refs": [
+        "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+        "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92"
+      ],
+      "result": "All MF03 assignment identities matched the active state/control; fresh_allowed=false and no private/evidence payload was assigned."
+    },
+    {
+      "test_id": "T0-AUTH-01",
+      "kind": "WORKER_AUTH",
+      "status": "PASS",
+      "description": "Checked SHA-256 commitment and computed the frozen cohort HMAC proof.",
+      "evidence_refs": [
+        "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b"
+      ],
+      "result": "MF03 public commitment matched the private secret; HMAC proof computed in the required message format."
+    },
+    {
+      "test_id": "T0-RPT-01",
+      "kind": "IMMUTABLE_REPORT_PRECONDITION",
+      "status": "PASS",
+      "description": "Checked the canonical report path before creation.",
+      "evidence_refs": [
+        "reports/CAL-004-bcedd2a9/MF03.json:404-before-create"
+      ],
+      "result": "No prior immutable MF03 receipt existed at the active cohort path."
+    },
+    {
+      "test_id": "T0-ZERO-01",
+      "kind": "CALIBRATION_ZERO_LEDGER",
+      "status": "PASS",
+      "description": "Verified this short test did not open benchmark/protected evidence or perform deep research.",
+      "evidence_refs": [
+        "cost_ledger"
+      ],
+      "result": "fresh=0, protected_manifest_reads=0, benchmark_executions=0, deep_research_runs=0."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "obligation_id": "T0_AUTHENTICATED_FROZEN_CONTROL_TRANSPORT_CALIBRATION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+        "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa"
+      ],
+      "notes": "MF03 completed only the short authenticated transport/report worker step; downstream MM06/MF06/BIL00 fan-in remains outside this worker."
+    },
+    {
+      "obligation_id": "MF03_LEMMA_OPERATOR_INTERMEDIATE_OBJECT_ROLE",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+        "role_payload.external_candidate"
+      ],
+      "notes": "Candidate representation was exercised without asserting a new mathematical result or runtime object."
+    },
+    {
+      "obligation_id": "BENCHMARK_SUCCESSION_AFTER_VERIFIED_COMPLETION",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+      ],
+      "notes": "Registry already advances program lanes independently after verified completion and successor eligibility; this worker does not advance either lane."
+    },
+    {
+      "obligation_id": "NO_RUNTIME_STATE_CHANGE_FROM_TASK_REPORT",
+      "status": "ALIGNED",
+      "evidence_refs": [
+        "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0"
+      ],
+      "notes": "No runtime or network state was modified."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source_version_ids": [
+      "PROTOCOL.md@bba1a83e9219bd1728e7af09cc9097fd2ff2e7f0",
+      "WORKER_PROTOCOL.md@4fd7320da0011806fc4ecfa0e2cfa641b13e0dcb",
+      "SESSION_STANDARD.md@b64883a2c4c3a2cfa52bc0434028efa9f82923b1",
+      "plan/PLAN.json@cc401f64a2838edf4ec86d7705bdca798d32e9db",
+      "config/roles.json@ef2e1954ef64cd2b73b4e390c33a98650b1b60f5",
+      "config/worker_auth.json@e8db1782ebf8e18112864d9c710502a18a35721b",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83",
+      "requirements-validation.txt@3ee1ea1a4270a73d0a83859fefca415177450121",
+      "schemas/control.schema.json@715da0c28634ee8dc4edbd2138a5b755a03f5051",
+      "schemas/state.schema.json@aa2ed6253322ec469280de0b77f2bfecd8bbb6ba",
+      "schemas/assignment.schema.json@58ab2ca2d42d173e3472068560a5b2281e78aa75",
+      "schemas/report.schema.json@8f20f43e862201477c401db3334d2afc06cbeae6",
+      "schemas/verification.schema.json@d2e38cfae93663f109cbfc7dd12fd1370806be9c",
+      "schemas/integration.schema.json@b2fd1c003c1496e1731e190cf4e7785799489084",
+      "schemas/director.schema.json@e770a72f3e5394868dbea10a87335879b9d90f18",
+      "schemas/research.schema.json@3b0f2544decb7c8189caf8714632ef8267aa107a",
+      "schemas/benchmark_registry.schema.json@67954d036c03466950d56a386f5ce50c2d85ebde",
+      "schemas/benchmark_completion.schema.json@a0d5179cab908d348a2ac486fa3c5121b2c2dbce",
+      "schemas/private_manifest_contract.schema.json@05ef541391432327d1686f69d3b1646d8a6cbc35",
+      "scripts/validate_bus.py@c35e450fdf132832d2f77f4362609f025a54f262",
+      ".github/workflows/validate-bus.yml@211797feb2f5fa7664da8d36ab0f749eaf47187c"
+    ],
+    "artifact_refs": [
+      "state/CURRENT.json@7fff4d309e587667703d78f2e9635f8cba4f062a",
+      "control/CAL-004-bcedd2a9.json@3b385351a8c504f51816dc0a0b4775fb0e405dfa",
+      "assignments/CAL-004-bcedd2a9.json@0ffcac84a96f0a3b12d01a5634081f7da95f6a92",
+      "benchmark/registry.json@195542d5dbbdaed8db512f9197579a5bc602eb83"
+    ],
+    "notes": "Every frozen control file was fetched and its Git blob identity matched the active control manifest. State was re-fetched immediately before report creation and remained on the same non-superseded cohort. No private-vault fetch, benchmark payload, protected identifier, or broad public-source research was used."
+  },
+  "claim_scope": "T0 replay-only transport, frozen-control, assignment-lineage, worker-authentication, standard-report, authority-boundary and benchmark-successor-contract evidence only. No new mathematical theorem, benchmark outcome, capability uplift, product closure, mechanism promotion, or runtime change.",
+  "runtime_implementation_implication": "NONE",
+  "negative_zero_outcomes": [
+    {
+      "type": "FRESH_EVIDENCE_NOT_CONSUMED",
+      "detail": "Calibration state and assignment prohibit fresh evidence; no fresh evidence unit was opened."
+    },
+    {
+      "type": "PROTECTED_MANIFEST_NOT_READ",
+      "detail": "No private manifest was assigned or fetched."
+    },
+    {
+      "type": "BENCHMARK_EXECUTION_NONE",
+      "detail": "short_test=true; no Math Foundry or Mastermind benchmark execution occurred."
+    },
+    {
+      "type": "DEEP_RESEARCH_NONE",
+      "detail": "MF03 is prohibited from deep research and performed none."
+    },
+    {
+      "type": "RUNTIME_PROMOTION_NONE",
+      "detail": "The external candidate remains explicitly EXTERNAL_NOT_PROMOTED and no state/runtime mutation was attempted."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "external_candidate": {
+      "candidate_id": "MF03-T0-EXTERNAL-BOUNDARY-CANDIDATE-v1",
+      "candidate_type": "EXTERNAL_OPERATOR_CANDIDATE",
+      "status": "EXTERNAL_NOT_PROMOTED",
+      "statement": "A lemma/operator/intermediate-object proposal emitted during T0 calibration remains external evidence metadata unless a later scientific assignment, admissible evidence, independent verification and runtime handoff establish a stronger status.",
+      "downstream_use": "Exercises MF03 candidate representation and authority separation only; it does not assert a new mathematical fact.",
+      "falsifier": "Any downstream component treating this candidate as Math Foundry runtime truth, VerifiedProduct, ProductStore content, or capability evidence solely because this report exists would violate the frozen authority boundary."
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Short deterministic T0 control/auth/report work only; no benchmark or private evidence costs."
+  },
+  "public_safety_status": "PASS",
+  "ci_status": "CI_NOT_OBSERVED",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently fetch this immutable report, verify its Git blob, Draft-2020-12 schema, public safety and MF03 HMAC, then include it in CAL-004-bcedd2a9 fan-in. MF03 should not repeat this cohort."
+}
