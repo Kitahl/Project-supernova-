@@ -1,0 +1,229 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W05 | E3 Mechanism Controls",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "role_id": "MM05",
+    "goal": "Validate branch-isolated transport and keep LEARNED/RANDOM/NO_CHANGE NOT_MEASURED without executable artifacts.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "worker_id": "MM05",
+  "report_id": "CAL-BR-006-v251-433ad83a-MM05",
+  "generation_seq": 6,
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MM05",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-v251-433ad83a",
+  "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+  "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "control_manifest_id": "CTRL-CAL-BR-006-v251-433ad83a",
+  "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "ba36b62640104204d681dd73d8abae65",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "9cb54215a604da9aea1570e7ccfc757435aed4643e2a94931a51cdf877c75739",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_TRANSPORT_REPLAY_ONLY_NON_COUNTABLE",
+  "executive_status": "Branch-isolated replay-only MM05 receipt. LEARNED_PROPOSAL, RANDOM_ADMISSIBLE, and NO_CHANGE remain NOT_MEASURED because no executable bounded artifact/evaluator/matched complete-cost envelope was assigned. No calibration credit. The observed generation structural CI context supernova/branch-generation is FAILURE and is preserved as a blocking transport condition, not reinterpreted as PASS.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task": "resolve_canonical_pointer",
+      "status": "PASS",
+      "detail": "Resolved active cohort and immutable generation from main:state/CURRENT.json only."
+    },
+    {
+      "task": "verify_generation_and_worker_branch_prewrite",
+      "status": "PASS",
+      "detail": "Generation branch and assigned MM05 worker branch were both identical to the declared generation head before first receipt."
+    },
+    {
+      "task": "verify_frozen_controls",
+      "status": "PASS",
+      "detail": "Control and assignment identities matched canonical state; generation differs from frozen control-release root only by adding this cohort's control and assignment files, so required control paths remain unchanged from the frozen control-release commit."
+    },
+    {
+      "task": "verify_worker_auth_commitment",
+      "status": "PASS",
+      "detail": "Prompt-private secret SHA-256 matched the frozen public MM05 commitment; secret was not published or persisted."
+    },
+    {
+      "task": "execute_e3_controls",
+      "status": "NOT_MEASURED",
+      "detail": "No executable learned proposal, matched random admissible control, equal-compute no-change arm, evaluator, or complete matched-cost envelope was assigned."
+    },
+    {
+      "task": "calibration_credit",
+      "status": "NO_CREDIT",
+      "detail": "Frozen assignment is non-countable bootstrap/calibration and fresh work is disabled."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue": "repo_policy_gate",
+      "status": "BLOCKING",
+      "detail": "Canonical state reports repo_policy_status=UNVERIFIED_BLOCKING; this cohort is non-countable."
+    },
+    {
+      "issue": "generation_structural_ci",
+      "status": "FAILURE",
+      "detail": "Observed required status context supernova/branch-generation=failure at the frozen generation head; not reinterpreted as PASS."
+    },
+    {
+      "issue": "runtime_binding",
+      "status": "PARTIAL_UNVERIFIED",
+      "detail": "Model target is GPT-5.6 Sol, but the frozen transport configuration does not make automation model/reasoning binding fully enforceable. No model-sensitive fresh promotion is attempted."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test": "canonical_plan_protocol_transport",
+      "result": "PASS"
+    },
+    {
+      "test": "active_cohort_not_superseded",
+      "result": "PASS"
+    },
+    {
+      "test": "generation_branch_equals_G",
+      "result": "PASS"
+    },
+    {
+      "test": "worker_branch_equals_G_prewrite",
+      "result": "PASS"
+    },
+    {
+      "test": "assigned_report_absent_prewrite",
+      "result": "PASS"
+    },
+    {
+      "test": "control_blob_identity",
+      "result": "PASS"
+    },
+    {
+      "test": "assignment_blob_identity",
+      "result": "PASS"
+    },
+    {
+      "test": "frozen_control_release_lineage",
+      "result": "PASS"
+    },
+    {
+      "test": "worker_auth_commitment",
+      "result": "PASS"
+    },
+    {
+      "test": "e3_executable_artifact_evaluator_cost_envelope",
+      "result": "NOT_AVAILABLE"
+    },
+    {
+      "test": "generation_structural_status",
+      "result": "FAILURE"
+    }
+  ],
+  "plan_alignment": [
+    {
+      "requirement": "BRANCH_GITOPS isolated worker write",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "SAFE_REPLAY_ONLY",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "zero fresh/private/benchmark/research cost",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "non-countable bootstrap receives no credit",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "LEARNED_PROPOSAL/RANDOM_ADMISSIBLE/NO_CHANGE typed NOT_MEASURED without executable controls",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "whole-report HMAC-2",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "origin_reread_claim=false",
+      "status": "ALIGNED"
+    }
+  ],
+  "evidence_and_provenance": {
+    "canonical_pointer": "main:state/CURRENT.json",
+    "generation_branch": "ps/gen/CAL-BR-006-v251-433ad83a",
+    "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+    "frozen_control_release_commit_sha": "a673507d01a8664f54fe3ee4ad262fdb7785121a",
+    "frozen_control_release_tree_sha": "86516a42d6862d1b6f5adf6b3c3dc0b8a32fed6a",
+    "generation_delta_from_control_release": [
+      "assignments/CAL-BR-006-v251-433ad83a.json",
+      "control/CAL-BR-006-v251-433ad83a.json"
+    ],
+    "frozen_report_schema_git_identity": "a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+    "frozen_session_standard_git_identity": "a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+    "frozen_worker_auth_git_identity": "a058230778cf9694b96ae4f6a508ded8dd303402",
+    "frozen_roles_git_identity": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "frozen_branch_worker_protocol_git_identity": "2103ec2cc4dcdf623f32e76878bd0a01f7a66d15",
+    "generation_structural_status": {
+      "context": "supernova/branch-generation",
+      "state": "failure"
+    },
+    "scientific_evidence_consumed": false,
+    "protected_references_read": false,
+    "worker_self_reread_authority": false
+  },
+  "claim_scope": "Transport/control evidence only for this replay-only MM05 lane. No E3 scientific effectiveness claim, no mechanism superiority claim, no calibration credit, and no promotion claim.",
+  "runtime_implementation_implication": "None. This receipt does not establish runtime implementation, promotion, learned-control superiority, or fresh model-sensitive evidence.",
+  "negative_zero_outcomes": [
+    "LEARNED_PROPOSAL=NOT_MEASURED",
+    "RANDOM_ADMISSIBLE=NOT_MEASURED",
+    "NO_CHANGE=NOT_MEASURED",
+    "No executable bounded artifact supplied.",
+    "No evaluator supplied.",
+    "No matched complete-cost envelope supplied.",
+    "No E3 score.",
+    "No calibration credit.",
+    "No fresh evidence.",
+    "No private-manifest read.",
+    "No benchmark execution.",
+    "No deep research."
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "LEARNED_PROPOSAL": "NOT_MEASURED",
+    "RANDOM_ADMISSIBLE": "NOT_MEASURED",
+    "NO_CHANGE": "NOT_MEASURED",
+    "NO_CHANGE_EQUAL_COMPUTE": "NOT_MEASURED",
+    "executable_bounded_artifact": false,
+    "evaluator_available": false,
+    "matched_complete_cost_envelope": false,
+    "e3_score": null,
+    "promotion": "NONE"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only transport/control verification only; no scientific fresh/private/benchmark/research consumption."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the assigned worker branch and verifies branch lineage, single-file diff, report blob/schema, whole-report HMAC-2, public safety, and structural statuses. No promotion or calibration credit while repo policy/generation structural gates are blocking.",
+  "worker_auth_proof": "2f9f5ffa0ccb751eb0a89408b16ce118ae643baf800b9f3670a5dda46a0fe36e"
+}
