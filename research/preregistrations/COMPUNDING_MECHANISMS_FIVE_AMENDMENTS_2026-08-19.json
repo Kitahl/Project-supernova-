@@ -1,0 +1,168 @@
+{
+  "schema_version": "PS-SUPERNOVA-COMPOUNDING-AMENDMENT-1",
+  "amendment_id": "SN-COMP-5A-2026-08-19",
+  "created_at_vancouver": "2026-08-19T09:34:00-07:00",
+  "status": "PREREGISTERED_RESEARCH_ONLY_NO_REV4_OR_PROTOCOL_CHANGE",
+  "authority": {
+    "protocol_version": "2.5",
+    "specification_revision": 4,
+    "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "does_not_modify": [
+      "REV4 scientific claims",
+      "protocol 2.5",
+      "stage order",
+      "authority boundaries",
+      "current T0 gate",
+      "fresh-evidence enablement"
+    ],
+    "current_run_rule": "NO_ADMISSIBLE_SCIENTIFIC_RUN_UNTIL_T0_AND_EXISTING_POOL_GATES_PASS"
+  },
+  "literature_motivation": [
+    {
+      "claim": "library-learning gains can vanish after compute matching and direct lemma reuse can be near-zero",
+      "source": "EACL 2026: Is This LLM Library Learning? Evaluation Must Account For Compute and Behaviour"
+    },
+    {
+      "claim": "TroVE compute-matched primitive baseline on MATH rose from 12% to 24% with equal sampling calls",
+      "source": "A Compute-Matched Re-Evaluation of TroVE on MATH"
+    },
+    {
+      "claim": "repeated sampling can Pareto-dominate more complex agent architectures under cost-controlled evaluation",
+      "source": "AI Agents That Matter"
+    }
+  ],
+  "five_amendments": {
+    "A1_repeated_sampling_arm": {
+      "new_arm": "H0_SAMPLE",
+      "definition": "Bare solver, no accumulated products/library/enablement signal; spend the same top-level model-call budget as the paired library/complex arm through independent repeated attempts.",
+      "aggregation": "Verifier-first best-of-k for formal outputs; self-consistency may break non-formal ranking ties but never substitutes for independent verification.",
+      "purpose": "separate library/reaction value from extra stochastic sampling",
+      "primary_kill": "If H1 does not beat H0_SAMPLE at the preregistered confirmatory threshold, no library-compounding claim is made."
+    },
+    "A2_direct_reuse_instrumentation": {
+      "per_problem_fields": [
+        "retrieved_product_ids",
+        "presented_product_ids",
+        "final_proof_product_ids",
+        "product_use_certificate_ids",
+        "attempt_id",
+        "problem_id",
+        "arm_id",
+        "complete_cost",
+        "verified_outcome"
+      ],
+      "per_product_fields": [
+        "distinct_problem_retrieval_count",
+        "distinct_problem_final_use_count",
+        "reuse_count=max(0,distinct_problem_final_use_count-1)"
+      ],
+      "primary_reuse_metrics": [
+        "mean_distinct_problem_final_use_count_among_used_products",
+        "median_distinct_problem_final_use_count_among_used_products",
+        "fraction_used_products_reused_on_2plus_distinct_problems",
+        "fraction_retrieved_products_never_used_in_final_proof"
+      ],
+      "reuse_claim_rule": "A reusable-library claim requires the lower 95% confidence bound on mean distinct-problem final use among used products to exceed 1.0. Solve-rate gain without this is not called direct reuse."
+    },
+    "A3_preregistration": {
+      "pool_assignment": {
+        "development_accumulation": "TRAIN",
+        "calibration": "CALIBRATION",
+        "confirmatory_evaluation": "G8",
+        "forbidden_for_confirmatory_reuse": [
+          "TRAIN",
+          "CALIBRATION",
+          "G1",
+          "GOAL2",
+          "RESEARCH_FROZEN"
+        ]
+      },
+      "confirmatory_contrasts": [
+        "C_LIB: H1 - H0_SAMPLE",
+        "C_ENABLE: H4 - H3"
+      ],
+      "familywise_alpha": 0.05,
+      "alpha_split": {
+        "C_LIB_two_sided": 0.025,
+        "C_ENABLE_two_sided": 0.025
+      },
+      "target_power": 0.8,
+      "unit_of_inference": "independent problem-level paired outcome",
+      "n_target_independent_problem_pairs": 240,
+      "mde": {
+        "primary_continuous_paired_standardized_effect_d": 0.2,
+        "note": "n=240 at two-sided alpha=0.025 gives approximately 80% power for d=0.20 under paired-t approximation; exact analysis follows the frozen outcome model."
+      },
+      "cost_matching": {
+        "primary_sampling_control": "match top-level model-call count, model identity, per-call token cap, and verification policy problem-by-problem",
+        "complete_cost_reporting": [
+          "model_calls",
+          "input_tokens",
+          "output_tokens",
+          "CPU_seconds",
+          "GPU_seconds",
+          "wall_seconds",
+          "retrieval_indexing",
+          "verification",
+          "revalidation",
+          "failure_recovery",
+          "selection_metalevel"
+        ],
+        "exchange_rate_policy": "No cross-resource substitution in the primary confirmatory claim; native resource caps/usage are reported component-wise. Any secondary scalarized complete-cost utility requires a rate table frozen before G8 reveal."
+      },
+      "stopping_rule": "No outcome-based early stopping or sample-size extension. Complete all preregistered arms for n=240 terminal problem pairs, or stop only for authority, contamination, verifier, transport, or hard resource-safety failure. Such a stop is not a scientific null.",
+      "pool_shortfall_rule": "If the sealed G8 reservoir cannot support n=240 independent pairs before reveal, do not run confirmatory inference; resize/re-preregister before any outcome visibility."
+    },
+    "A4_cost_accuracy_curves": {
+      "common_budget_fractions": [
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "report_per_arm": [
+        "verified solve rate",
+        "verified utility",
+        "native complete-cost vector",
+        "model-call count",
+        "reuse metrics where applicable"
+      ],
+      "decision_rule": "No single budget point is sufficient for an efficiency claim. Report the full curve and Pareto relations; if H4 wins only at high budget, report that regime rather than collapsing to one number."
+    },
+    "A5_H4_clean_ablation": {
+      "H3": "Same solver, products, retrieval, value model, action set, budget, cache/retention, verifier, stopping rule and event timing as H4, but enablement information is replaced by a schema/size/timing-matched preregistered placebo channel.",
+      "H4": "Identical to H3 with the true enablement signal substituted for the placebo channel.",
+      "only_intended_difference": "information content of the enablement signal",
+      "coupling": "Use paired problem assignment and frozen randomization/coupling wherever legal.",
+      "variance_diagnostics": [
+        "per-arm outcome variance",
+        "paired-difference variance",
+        "family-stratified variance",
+        "H4/H3 variance ratio",
+        "confidence-interval width",
+        "zero/unknown counts"
+      ],
+      "claim_rule": "Enablement control value is established only if the preregistered lower confidence bound for H4-H3 is >0 at alpha=0.025 after matched budget accounting. Higher variance is reported, never hand-waved or repaired post hoc."
+    }
+  },
+  "arm_constraints": {
+    "H0": "Existing bare-solver baseline unchanged.",
+    "H0_SAMPLE": "Only new arm.",
+    "H1": "Existing verified-product/library arm unchanged except reuse logging.",
+    "H2": "Existing arm unchanged.",
+    "H3": "Existing no-enablement control, constrained to be mechanically identical to H4 except placebo enablement information.",
+    "H4": "Existing enablement/reaction-aware arm, mechanically identical to H3 except true enablement information."
+  },
+  "confirmatory_interpretation": {
+    "H1_not_gt_H0_SAMPLE": "Known repeated-sampling explanation survives; no library-compounding claim.",
+    "H1_gt_H0_SAMPLE_but_reuse_not_established": "Performance gain exists but is not attributed to direct reusable-library behavior.",
+    "H4_not_gt_H3": "Enablement/reaction signal has no established incremental control value under this regime; graph may remain diagnostic/provenance infrastructure.",
+    "H4_gt_H3": "Reaction/enablement information has prospective incremental control value beyond identical products, retrieval and value model."
+  },
+  "run_state": {
+    "requested": "RUN_AFTER_FIVE_AMENDMENTS",
+    "current_authority_state": "BLOCKED_T0_FOR_ADMISSIBLE_SCIENTIFIC_RUN",
+    "permitted_now": "PREREGISTRATION_AND_NONADMISSIBLE_STATIC_VALIDATION_ONLY",
+    "no_bypass": true
+  }
+}
