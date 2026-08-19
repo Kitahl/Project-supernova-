@@ -10,6 +10,8 @@ on:
 permissions:
   contents: read
   statuses: write
+  pull-requests: read
+  actions: write
 
 concurrency:
   group: supernova-v25-rest-reconciler
@@ -19,7 +21,7 @@ jobs:
   reconcile:
     runs-on: ubuntu-latest
     steps:
-      - name: Run exact-main no-dependency reconcilers
+      - name: Run exact-main no-dependency reconcilers and PR admission watchdog
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -28,11 +30,14 @@ jobs:
           python3 - <<'PY'
           import os, urllib.request
           token=os.environ['GITHUB_TOKEN'];base=os.environ['BASE_URL']
-          for name in ('reconcile_branch_rest.py','reconcile_v25_admission.py'):
+          for name in ('reconcile_branch_rest.py','reconcile_v25_admission.py','dispatch_missing_pr_admission.py'):
               req=urllib.request.Request(f'{base}/{name}')
               req.add_header('Authorization',f'Bearer {token}')
               with urllib.request.urlopen(req,timeout=30) as r:
                   open('/tmp/'+name,'wb').write(r.read())
           PY
-          python3 /tmp/reconcile_branch_rest.py
-          python3 /tmp/reconcile_v25_admission.py
+          rc=0
+          python3 /tmp/reconcile_branch_rest.py || rc=1
+          python3 /tmp/reconcile_v25_admission.py || rc=1
+          python3 /tmp/dispatch_missing_pr_admission.py || rc=1
+          exit "$rc"
