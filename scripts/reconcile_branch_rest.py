@@ -16,10 +16,13 @@ def req(path,method='GET',data=None):
     if TOKEN:r.add_header('Authorization','Bearer '+TOKEN)
     with urllib.request.urlopen(r,timeout=30) as z:
         raw=z.read();return json.loads(raw) if raw else None
-def content(path,ref):
+def file_text(path,ref):
     o=req('/contents/'+urllib.parse.quote(path,safe='/')+'?ref='+urllib.parse.quote(ref,safe=''))
     if not isinstance(o,dict) or o.get('type')!='file':raise RuntimeError(f'{path}@{ref}: not a file')
-    text=base64.b64decode(o.get('content','')).decode('utf-8');return o,json.loads(text)
+    return o,base64.b64decode(o.get('content','')).decode('utf-8')
+def content(path,ref):
+    o,text=file_text(path,ref)
+    return o,json.loads(text)
 def branch_head(branch):
     try:return req('/branches/'+urllib.parse.quote(branch,safe=''))['commit']['sha']
     except urllib.error.HTTPError as e:
@@ -69,7 +72,7 @@ def main():
         expected={state['active_control_manifest_path'],state['active_assignment_path']}
         if set(files)!=expected:errors.append('generation root->G changed paths '+repr(files))
         for p in control.get('required_control_paths',[]):
-            a,_=content(p,root);b,_=content(p,G)
+            a,_=file_text(p,root);b,_=file_text(p,G)
             if a['sha']!=b['sha']:errors.append('frozen control drift '+p)
     except Exception as e:errors.append('generation exception: '+str(e))
     status(G,'supernova/branch-generation','failure' if errors else 'success',('FAIL: '+errors[0]) if errors else 'immutable generation/control/assignment PASS')
