@@ -1,0 +1,124 @@
+{
+  "schema_version": "PS-REV4-EXECUTION-1",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "protocol_version": "2.5",
+  "specification_revision": 4,
+  "status": "DESIGN_FROZEN_NONRETROACTIVE",
+  "source_integrity": "docs/REV4_SOURCE_INTEGRITY.json",
+  "canonical_definition": "Frozen-authority controller using independently verified mathematical products as resources for further executable operations, certified value-of-computation for continuation, and prospective matched-complete-cost admission.",
+  "goals": {
+    "goal1": "Finite fresh independently verified within-problem cascade beats strong controls at equal complete cost.",
+    "goal2": {
+      "opens_after": "GOAL1_G8_PASS",
+      "causal_ladder": ["T3_RW", "T5", "DR27_E5B"],
+      "separation": ["solver_F", "memory_M", "improver_I"],
+      "success": "I_(t+1) produces a better descendant than I_t from the same untouched F* under matched complete R&D budget, controlled memory, frozen authority and fresh independent evaluation."
+    }
+  },
+  "authority": {
+    "MATH_FOUNDRY": {
+      "owns": ["exact executable semantics", "legal actions", "real probes", "real products", "runtime receipts"],
+      "does_not_own": ["self-admission of products", "Court promotion", "scientific state"]
+    },
+    "MASTERMIND": {
+      "status": "PRE_REVIEW_ONLY",
+      "owns": ["bounded proposals", "adversarial designs", "falsifiers", "plans", "diagnostic hypotheses"],
+      "does_not_own": ["execution", "self-grading", "Court promotion", "scientific state"]
+    },
+    "TRIBUNAL": {
+      "owns": ["Librarian scientific history", "Court status", "causal experiments", "statement fidelity", "M5 holdout transfer", "M7 revalidation", "M8 interaction/locality challenge", "M9 protected admission/lifetime risk", "T3-RW", "T5"],
+      "does_not_own": ["learned prediction", "routine Foundry execution"]
+    },
+    "GENERAL_RHO_SN_HORIZON": {
+      "owns": ["finite-horizon decision allocation", "reasoning-computation allocation using registered evidence"],
+      "does_not_own": ["legal-action creation", "mathematical truth"]
+    },
+    "SN_CONSEQUENCE_SN_WORLD": {
+      "owns": ["non-authoritative consequence estimates", "optional calibrated bounds"],
+      "does_not_own": ["planning authority", "execution", "verification", "writeback"]
+    },
+    "GITHUB_SCHEDULED_NETWORK": {
+      "owns": ["transport", "isolated receipts", "verification/integration routing", "guarded control transitions"],
+      "does_not_own": ["runtime truth", "scientific truth", "private benchmark payloads"]
+    }
+  },
+  "state_separation": {
+    "invariant": "State_Supernova_control INTERSECT State_Tribunal_scientific = EMPTY",
+    "control_state_may_reference_scientific_objects_by_immutable_id": true,
+    "second_librarian_forbidden": true
+  },
+  "trusted_core_order": [
+    "EXACT_OPERATOR_CONTRACT_ENGINE_E_LAMBDA",
+    "SOUND_CERTIFIED_VIABILITY_DEADNESS_AND_COST_LOWER_BOUNDS",
+    "VERIFIED_PRODUCT_ENABLEMENT_AND_DIRECT_VALUE_PRIORS",
+    "CLASS_AWARE_REAL_MULTIFIDELITY_PROBES_WITH_SUCCESSIVE_HALVING",
+    "SN_COMPARE_WITH_C_PATH_AND_C_POLICY_SEPARATE",
+    "CALIBRATED_BEHAVIOURAL_NONINTERFERENCE",
+    "REAL_FOUNDRY_EXECUTION_THEN_INDEPENDENT_VERIFICATION_THEN_STATEMENT_FIDELITY_THEN_PRODUCT_ADMISSION"
+  ],
+  "unconditional_hard_prune_stages": [1, 2],
+  "frontier": {
+    "execution_authority": false,
+    "target": "SN_HORIZON",
+    "bound_evidence_kinds": ["SOUND", "ANYTIME_CALIBRATED", "FIXED_SAMPLE_CALIBRATED", "HEURISTIC_ONLY"],
+    "heuristic_rule": "HEURISTIC_ONLY may schedule a computation but may never narrow a certifying interval or support a stop.",
+    "stop_classes": ["CERTIFIED_SOUND_STOP", "RISK_LIMITED_CALIBRATED_STOP", "NO_CERTIFIABLE_STOP"],
+    "metalevel_controls": ["M0_CHEAPEST_ADMISSIBLE_PROBE", "M1_FIXED_COMPUTATION_ORDER", "M2_MYOPIC_VOC", "M3_LEARNED_COMPUTATION_SELECTOR", "MSTAR_EXACT_TINY_WORLD_ORACLE"],
+    "evidence_order": ["SOUND_BOUNDS", "REAL_PROBES", "SN_COMPARE", "ONE_STEP_SN_CONSEQUENCE", "DIRECT_HORIZON_PLAN_PREDICTION", "SHORT_RESIDUAL_SN_WORLD"],
+    "sn_world": "FRONTIER_ONLY_ORACLE_WORLD_AND_HEADROOM_FIRST",
+    "admission_gates": ["SNW_0", "SNW_1", "SNW_2", "SNW_3", "SNW_4", "SNW_5"]
+  },
+  "current_scope": {
+    "t0_qualified": false,
+    "scheduled_lanes": "REMAIN_ON_EXISTING_T0_REPLAY_ASSIGNMENTS",
+    "scheduled_prompt_repurposing": "FORBIDDEN_UNTIL_GATE",
+    "only_scheduled_research_lane": "T0-TRANSPORT-CLOSURE",
+    "offline_nonadmissible_allowed": ["H0", "H1", "OCN_0A_COSTING", "RETRO_0", "CID_0", "THEOREM_WRITING", "TYPED_EVENT_EXTRACTOR", "TCB_LIVENESS_HARDENING"]
+  },
+  "stage_sequence": [
+    "T0_AND_FRESH0_OCN0A_STATEMENT0_PREREQUISITES",
+    "DECISION_EVENT_AND_FRONTIER_CORPUS",
+    "RETRO0_CID0_MF0X",
+    "ORACLE_WORLD_HEADROOM0",
+    "SN_COMPARE",
+    "SN_CONSEQUENCE_ONE_STEP_DIRECT_HORIZON",
+    "FACTOR0",
+    "SN_HORIZON",
+    "SHORT_RESIDUAL_SN_WORLD",
+    "SNW0_TO_SNW5",
+    "DR26_ONE_GENERATION_PROSPECTIVE_UTILITY",
+    "T3_RW",
+    "T5",
+    "DR27_E5B"
+  ],
+  "stage0_loop": {
+    "pool": "TRAIN",
+    "max_generations": 4,
+    "predeclared_stop_required": true,
+    "non_admissible": true,
+    "may_start_after": ["T0", "TRAIN_POOL_FREEZE"],
+    "parallel_with": ["0A", "0D"],
+    "never_consumes": ["CALIBRATION", "G1", "G8", "GOAL2", "RESEARCH_FROZEN"],
+    "rho_improve": "DESCRIPTIVE_DIAGNOSTIC_ONLY"
+  },
+  "design_invariants": [
+    "FINITE_HORIZON_H_B_LAMBDA_OR_DIAGNOSTIC_ONLY",
+    "STATIC_SCREENS_ONE_SIDED",
+    "COST_RELATIVE_KILL_RULES",
+    "REPORT_PREDICTIVE_ACCURACY_CALIBRATION_RISK_AND_USABLE_INTERVENTION_COVERAGE",
+    "CONTINUOUS_EFFECT_SIZES",
+    "SYMMETRIC_FIDELITY_REGIME",
+    "KERNEL_VALID_AND_STATEMENT_FIDELITY_ORTHOGONAL",
+    "NO_RECEIPT_IS_NOT_A_NULL_RESULT",
+    "MULTI_CHECKER_IS_DEFENCE_IN_DEPTH_NOT_INDEPENDENCE",
+    "SN_WORLD_IS_NOT_A_SECOND_PLANNER",
+    "LEARN_ONLY_RESIDUAL_OF_EXACT_SEMANTICS",
+    "QUERY_BEFORE_MODEL"
+  ],
+  "blocking_obligations": [
+    "T0", "FRESH_0", "OCN_0A", "STATEMENT_0", "LIVENESS_0", "VERIFIER_DIVERSITY_0", "CORPUS_0", "STATE_COMPILER_0", "HEADROOM_0", "FACTOR_0", "GAMMA_0", "CAL_LIFE_0", "WORLDLINE_SN_0"
+  ],
+  "scientific_status_changed": false,
+  "active_cohort_changed": false,
+  "fresh_evidence_enabled": false
+}

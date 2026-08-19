@@ -1,15 +1,18 @@
 {
-  "schema_version":"PS-REPO-POLICY-3",
+  "schema_version":"PS-REPO-POLICY-4",
   "default_branch":"main",
   "required_protected":true,
   "required_pull_request_for_consolidation":true,
   "forbid_force_push":true,
   "forbid_branch_deletion":true,
   "required_main_status_contexts":["supernova/static-control","supernova/report-admission","supernova/transition-admission"],
+  "required_status_source_creator_logins":["github-actions[bot]"],
   "inflight_diagnostic_contexts":["supernova/branch-generation","supernova/branch-worker","supernova/branch-verify","supernova/branch-integrate","supernova/branch-consolidate"],
-  "status_source_rule":"All three required main contexts must be bound by GitHub branch/ruleset configuration to the intended GitHub App/Actions source. Textual context equality alone is insufficient and one context never substitutes for another.",
+  "status_source_rule":"All three required main contexts must be created by the frozen GitHub Actions workflow principal. Textual context equality alone is insufficient and one context never substitutes for another.",
+  "ruleset_user_confirmation":"USER_CONFIRMED_INSTALLED_2026-08-19",
+  "operational_source_binding_proof_required":true,
   "worker_forks_default":"FORBIDDEN_UNLESS_DISTINCT_SECURITY_PRINCIPAL",
-  "machine_observation_status":"PROTECTED_TRUE_SOURCE_BOUND_CONTEXT_POLICY_NOT_YET_INDEPENDENTLY_OBSERVED",
+  "machine_observation_status":"MAIN_PROTECTED_TRUE; SOURCE_BOUND_ACTIONS_CONTEXTS_MUST_BE_OBSERVED_ON_EXACT_HEAD_BEFORE_COUNTABLE_COHORT",
   "fresh_gate":"BLOCK",
-  "calibration_gate":"BLOCK_UNTIL_SOURCE_BOUND_CONTEXT_POLICY_OBSERVED_THEN_TWO_CLEAN_V25_COHORTS"
+  "calibration_gate":"BLOCK_UNTIL_ACTIONS_SOURCE_CONTEXTS_OBSERVED_THEN_TWO_CLEAN_V25_COHORTS"
 }

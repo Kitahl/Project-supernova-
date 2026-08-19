@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ModelQualificationCertificate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["certificate_id", "model_id", "model_version", "query_id", "semantic_version", "policy_family", "data_cutoff", "support_scope", "identification_status", "evidence_kind", "measured_error", "calibration_type", "complete_cost", "prospective_status", "authority"],
+  "properties": {
+    "certificate_id": {"type": "string"},
+    "model_id": {"type": "string"},
+    "model_version": {"type": "string"},
+    "query_id": {"type": "string"},
+    "semantic_version": {"type": "string"},
+    "policy_family": {"type": "string"},
+    "data_cutoff": {"type": "string"},
+    "support_scope": {"type": "string"},
+    "identification_status": {"enum": ["IDENTIFIED", "PARTIALLY_IDENTIFIED", "TRANSFER_IDENTIFIED", "UNSUPPORTED"]},
+    "evidence_kind": {"enum": ["SOUND", "ANYTIME_CALIBRATED", "FIXED_SAMPLE_CALIBRATED", "HEURISTIC_ONLY"]},
+    "measured_error": {"type": "object"},
+    "calibration_type": {"type": ["string", "null"]},
+    "joint_calibration_id": {"type": ["string", "null"]},
+    "dependency_source_set": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "complete_cost": {"type": "object"},
+    "valid_from": {"type": ["string", "null"]},
+    "valid_until": {"type": ["string", "null"]},
+    "prospective_status": {"enum": ["NOT_MEASURED", "QUALIFIED_SHADOW", "PROSPECTIVELY_VALIDATED", "REJECTED"]},
+    "authority": {"const": false}
+  }
+}

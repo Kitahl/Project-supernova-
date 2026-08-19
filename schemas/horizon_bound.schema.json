@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HorizonBound v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state_id", "action_or_plan_id", "horizon", "budget", "lower", "upper", "evidence_kind", "semantic_version", "source_ids", "dependency_source_set", "complete_computation_cost", "authority"],
+  "properties": {
+    "state_id": {"type": "string"},
+    "action_or_plan_id": {"type": "string"},
+    "horizon": {"type": "integer", "minimum": 0},
+    "budget": {"type": "number", "minimum": 0},
+    "lower": {"type": "number"},
+    "upper": {"type": "number"},
+    "evidence_kind": {"enum": ["SOUND", "ANYTIME_CALIBRATED", "FIXED_SAMPLE_CALIBRATED", "HEURISTIC_ONLY"]},
+    "risk_alpha": {"type": ["number", "null"], "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+    "joint_calibration_id": {"type": ["string", "null"]},
+    "support_scope": {"type": ["string", "null"]},
+    "policy_family": {"type": ["string", "null"]},
+    "semantic_version": {"type": "string"},
+    "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "dependency_source_set": {"type": "array", "items": {"type": "string"}},
+    "valid_until": {"type": ["string", "null"]},
+    "complete_computation_cost": {"type": "number", "minimum": 0},
+    "provenance_receipt": {"type": ["string", "null"]},
+    "authority": {"const": false}
+  }
+}

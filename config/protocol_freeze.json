@@ -1,18 +1,39 @@
 {
-  "schema_version": "PS-PROTOCOL-FREEZE-1",
+  "schema_version": "PS-PROTOCOL-FREEZE-2",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "frozen_protocol_version": "2.5",
+  "frozen_specification_revision": 4,
   "status": "FROZEN_UNTIL_TWO_CLEAN_COUNTABLE_COHORTS",
-  "no_successor_protocol_before": {
-    "repo_protection_verified": true,
-    "required_source_bound_contexts_verified": [
+  "no_successor_before": {
+    "protocol": "2.6",
+    "specification_revision": 5,
+    "repository_policy_independently_verified": true,
+    "required_source_bound_contexts": [
       "supernova/static-control",
       "supernova/report-admission",
       "supernova/transition-admission"
     ],
     "consecutive_countable_clean_v25_cohorts": 2
   },
+  "allowed_during_freeze": [
+    "H0_SYNTHETIC_ORACLE_QUALIFICATION",
+    "H1_SOUND_INTERVAL_KERNEL_QUALIFICATION",
+    "NON_ADMISSIBLE_RETROSPECTIVE_DIAGNOSTICS",
+    "OCN_0A_COSTING_PILOT_WITH_EXISTING_OR_SEPARATELY_PROVIDED_SOURCE",
+    "THEOREM_DRAFTING",
+    "SCHEMA_IMPLEMENTATION",
+    "MONOTONE_REJECTION_ONLY_HARDENING"
+  ],
+  "forbidden_during_freeze": [
+    "PROTOCOL_2_6",
+    "SPEC_REVISION_5",
+    "RETROACTIVE_EVIDENCE_REINTERPRETATION",
+    "FRESH_G1_G8_GOAL2_CONSUMPTION_BEFORE_GATES",
+    "ACTIVE_FROZEN_COHORT_MUTATION",
+    "SCHEDULED_LANE_REPURPOSING_BEFORE_T0"
+  ],
   "pre_cohort_repair_rule": "Any release-blocking transport/admission defect found before countable cohort 1 must be repaired inside protocol 2.5, frozen into the countable control release, and covered by negative tests before the streak begins.",
-  "mid_streak_change_rule": "Any change to the countable frozen control set after cohort 1 begins invalidates the streak unless it is provably non-authoritative external rejection-only evidence; default is reset to zero.",
-  "authority": "BIL00 may not create or adopt a 2.6 generation until these gates are independently evidenced."
+  "mid_streak_change_rule": "Any authoritative change to the countable frozen control set after cohort 1 begins resets the streak to zero by default. Non-authoritative external rejection-only evidence may be exempt only when its lack of authority is mechanically demonstrated.",
+  "current_bootstrap_rule": "Generation 6 / CAL-BR-006-v251-433ad83a remains immutable replay-only diagnostic history and never receives calibration credit retroactively.",
+  "authority": "BIL00 may not create or adopt protocol 2.6 or specification Revision 5 until the frozen gates are independently evidenced."
 }
