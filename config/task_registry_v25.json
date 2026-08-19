@@ -1,13 +1,16 @@
 {
-  "schema_version":"PS-SCHEDULED-TASK-REGISTRY-2.5",
+  "schema_version":"PS-SCHEDULED-TASK-REGISTRY-2.5-FROZEN",
   "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "protocol_version":"2.5",
+  "protocol_freeze":"NO_2_6_BEFORE_PROTECTION_AND_TWO_CLEAN_COUNTABLE_V25_COHORTS",
   "transport_mode":"BRANCH_GITOPS",
   "canonical_state":"main:state/CURRENT.json",
   "same_task_session_each_run":true,
   "timezone":"America/Vancouver",
   "model_target":"GPT-5.6 Sol",
   "reasoning_effort_target":"EXTRA_HIGH",
-  "model_binding_enforceable":false,
+  "model_binding_enforceable_by_task_surface":false,
+  "model_binding_rule":"Replay may report PARTIAL_UNVERIFIED/UNVERIFIED. Model-sensitive fresh evidence is non-promotable unless the private frozen execution manifest plus runtime receipt prove the predeclared observed model/reasoning/tools/environment binding; requested model text is not proof.",
   "schedule_hours_local":[0,6,12,18],
   "tasks":[
     {"role_id":"MF01","title":"PS-MF-W01 | Representation Lab","minute":5,"target_program":"MATH_FOUNDRY"},
@@ -26,9 +29,10 @@
     {"role_id":"MF06","title":"PS-JOINT-I01 | Evidence Integrator","minute":45,"target_program":"JOINT"},
     {"role_id":"BIL00","title":"PS-JOINT-D01 | Director + 12h Research","minute":58,"target_program":"JOINT","research_hours_local":[0,12]}
   ],
-  "worker_write_rule":"own ps/work/<cohort>/<role> branch only; exactly one report path",
-  "verifier_write_rule":"ps/verify/<cohort> only",
-  "integrator_write_rule":"ps/integrate/<cohort> only",
-  "director_write_rule":"one ps/consolidate/<cohort> PR to main only after verified integration and repository-protection gate",
-  "research_rule":"BIL00 only at 00:58 and 12:58 from MM06-safe/MF06-integrated questions"
+  "worker_write_rule":"Read main pointer, then frozen generation G; write exactly reports/<cohort>/<role>.json on assigned ps/work/<cohort>/<role> branch. Whole-report HMAC-2. No main writes.",
+  "verifier_write_rule":"Read all exact worker branches from G; write verification/<cohort>.json on ps/verify/<cohort> only. Record PRE_CI only; later exact-head supernova/report-admission is external evidence.",
+  "integrator_write_rule":"Require MM06 safe refs and later supernova/report-admission=success on the exact verifier head; write ps/integrate/<cohort> only.",
+  "director_write_rule":"Create one ps/consolidate/<cohort> PR from exact current main head only after verified integration. Require exact-head static-control/report-admission/transition-admission and CAS; no force/rebase/bypass.",
+  "research_rule":"BIL00 only at 00:58 and 12:58, and only when an accepted open research lane exists. While T0 is unqualified, T0 transport/repository/admission closure is the only admissible research lane; downstream questions remain queued.",
+  "admission_contexts":["supernova/static-control","supernova/report-admission","supernova/transition-admission"]
 }
