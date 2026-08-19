@@ -1,0 +1,25 @@
+{
+  "schema_version": "PS-REV4-LANE-OWNERSHIP-1",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "protocol_version": "2.5",
+  "specification_revision": 4,
+  "current_scope_rule": "While t0_qualified=false, all scheduled lanes remain within their existing frozen T0/replay assignment. This file does not authorize prompt, schedule, assignment or cohort changes.",
+  "lanes": {
+    "MF01": {"title":"PS-MF-W01 | Representation Lab","future_ownership":["0B_RPG","0C_CAR","REPRESENTATION_FIDELITIES","FACTOR_STRUCTURAL_SCOPES"]},
+    "MF02": {"title":"PS-MF-W02 | E1 Solver Routing","future_ownership":["E1_ORACLE_MATRIX","MF_0R","MF_0X","B0_B2","HEADROOM_SAME_MENU"]},
+    "MF03": {"title":"PS-MF-W03 | Lemma & Operator Lab","future_ownership":["OCN_0A","OPERATOR_CONTRACTS","PRODUCT_OUTPUT_SCHEMAS","C1_PREP"]},
+    "MF04": {"title":"PS-MF-W04 | Adversarial Falsifier","future_ownership":["CID_0","STATEMENT_FIDELITY_ATTACKS","H0_H1_ADVERSARIAL_WORLDS","VERIFIER_REGRESSIONS","RETRO_SANITY"]},
+    "MF05": {"title":"PS-MF-W05 | Product Closure","future_ownership":["VERIFIED_PRODUCT","PRODUCT_USE_CERTIFICATE","C1","STAGE0G_BINDINGS"]},
+    "MM01": {"title":"PS-MM-W01 | React Mechanisms","future_ownership":["MASTERMIND_TRAIN_LOOP","MM_ORACLE_REACT"]},
+    "MM02": {"title":"PS-MM-W02 | DeepSWE Mechanisms","future_ownership":["MASTERMIND_TRAIN_LOOP","MASTERMINDED_MECHANISM_SUITES"]},
+    "MM03": {"title":"PS-MM-W03 | SlopCode Contracts","future_ownership":["CONTRACT_SCHEMA_QUALITY","CDOC_PRECONDITIONS","TYPED_EVENT_GRAMMAR","NOT_MEASURED_DISCIPLINE"]},
+    "MM04": {"title":"PS-MM-W04 | Senior SWE Architecture","future_ownership":["TCB_REVIEW","OMISSION_NECESSITY_REVIEW","CASCADE_SOUNDNESS_REVIEW"]},
+    "MM05": {"title":"PS-MM-W05 | E3 Mechanism Controls","future_ownership":["E3_CONTROLS","M0_MSTAR_METALEVEL_CONTROLS","SN_HORIZON_QUALIFICATION"]},
+    "MM07": {"title":"PS-MM-W07 | Before/After Self-Bench","future_ownership":["STAGE0_LOOP_INSTRUMENTATION","RHO_IMPROVE_DESCRIPTIVE","F_M_I_SEPARATION_PILOT"]},
+    "EXT01": {"title":"PS-JOINT-A01 | Runtime & Transport Audit","future_ownership":["T0","LIVENESS_0","RETRO_EXTRACTION","TYPED_EVENT_CORPUS_EXTRACTION"]},
+    "MM06": {"title":"PS-JOINT-V01 | Evidence Verifier","future_ownership":["INDEPENDENT_REREAD","CLOSED_PARTITION","TCB_VERIFIER_ASSURANCE"],"never":["INTEGRATION"]},
+    "MF06": {"title":"PS-JOINT-I01 | Evidence Integrator","future_ownership":["EVIDENCE_TIER_INTEGRATION","COMPLETE_COST_ROLLUP"],"never":["SELF_VERIFICATION"]},
+    "BIL00": {"title":"PS-JOINT-D01 | Director + 12h Research","future_ownership":["GUARDED_TRANSITIONS","POOL_AND_CURSOR_TRANSITIONS","OPEN_LANE_RESEARCH"],"never":["BYPASS"]}
+  },
+  "offline_nonbus_work_rule": "H0/H1, OCN-0A, RETRO-0, CID-0, typed-event extractor and TCB/liveness development use a separate non-admissible engineering session until their scheduled gate opens."
+}
