@@ -37,7 +37,7 @@ jobs:
           req.add_header('Authorization',f'Bearer {token}'); req.add_header('Accept','application/vnd.github+json'); req.add_header('X-GitHub-Api-Version','2022-11-28')
           with urllib.request.urlopen(req,timeout=30) as r: print('heartbeat',sha,r.status)
           PY
-      - name: Clone trusted default-branch control plane
+      - name: Clone exact accepted default-branch control plane
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -45,23 +45,10 @@ jobs:
           git clone --filter=blob:none "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" trusted
           cd trusted
           git fetch --no-tags origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
-      - name: Install frozen validation environment
+      - name: Install frozen trusted validation environment
         run: python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock
-      - name: Validate exact owner-authored PR head with trusted reconciler
-        if: github.event_name == 'pull_request_target'
+      - name: Reconcile open PRs using trusted-main executable bytes only
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          cd trusted
-          python3 - <<'PY'
-          import os, pathlib
-          import scripts.reconcile_open_prs as r
-          pr=r.api('/pulls/'+os.environ['PR_NUMBER'])
-          if pr['head']['repo']['full_name'] != os.environ['GITHUB_REPOSITORY']:
-              raise SystemExit('cross-repository PR refused')
-          if pr['user']['login'] != os.environ['GITHUB_REPOSITORY'].split('/',1)[0]:
-              raise SystemExit('non-owner PR refused')
-          r.validate_pr(pathlib.Path.cwd(), pr)
-          PY
+        run: cd trusted && python3 scripts/reconcile_open_prs.py
