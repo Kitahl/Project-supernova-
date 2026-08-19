@@ -1,0 +1,208 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W01 | React Mechanisms",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "role_id": "MM01",
+    "goal": "Validate branch-isolated transport with zero protected React evidence and no self-promotion.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "worker_id": "MM01",
+  "report_id": "REPORT-CAL-BR-006-v251-433ad83a-MM01",
+  "generation_seq": 6,
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MM01",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-v251-433ad83a",
+  "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+  "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "control_manifest_id": "CTRL-CAL-BR-006-v251-433ad83a",
+  "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "81646672d9ca81f07934a8334f927ecf",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_REPLAY_TRANSPORT_ONLY_NON_COUNTABLE",
+  "executive_status": "WORKER_TRANSPORT_REPORT_CREATED; NON_COUNTABLE_BOOTSTRAP; PREWRITE_GENERATION_STRUCTURAL_STATUS_FAILURE_OBSERVED; NO_PROTECTED_REACT_EVIDENCE",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task": "Resolve canonical v2.5 BRANCH_GITOPS state and exact immutable generation",
+      "status": "PASS"
+    },
+    {
+      "task": "Verify MM01 worker branch starts exactly at generation head and target report is absent",
+      "status": "PASS"
+    },
+    {
+      "task": "Verify frozen control-release lineage and exact assignment/control blob identities",
+      "status": "PASS"
+    },
+    {
+      "task": "Authenticate complete report with PS-HMAC-SHA256-CANONICAL-REPORT-2",
+      "status": "PASS"
+    },
+    {
+      "task": "Write exactly reports/CAL-BR-006-v251-433ad83a/MM01.json on assigned worker branch",
+      "status": "PASS"
+    },
+    {
+      "task": "Consume protected React evidence or self-promote",
+      "status": "NOT_PERFORMED"
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue": "PREWRITE_GENERATION_STRUCTURAL_STATUS_FAILURE",
+      "status": "OBSERVED",
+      "context": "supernova/branch-generation",
+      "commit_sha": "c86c091c3be840559a46670218705be1277acd8f",
+      "effect": "Not reinterpreted as PASS. This bootstrap is already non-countable; MM06 must independently evaluate exact-head structural status after the worker write."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test": "main pointer protocol/plan/transport",
+      "result": "PASS",
+      "observed": {
+        "protocol_version": "2.5",
+        "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+        "transport_mode": "BRANCH_GITOPS"
+      }
+    },
+    {
+      "test": "generation branch equals frozen G",
+      "result": "PASS",
+      "observed": {
+        "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+        "compare_status": "identical"
+      }
+    },
+    {
+      "test": "MM01 worker branch equals frozen G before first receipt",
+      "result": "PASS",
+      "observed": {
+        "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MM01",
+        "compare_status": "identical"
+      }
+    },
+    {
+      "test": "assigned report absent before write",
+      "result": "PASS",
+      "observed": {
+        "path": "reports/CAL-BR-006-v251-433ad83a/MM01.json"
+      }
+    },
+    {
+      "test": "control-release commit tree identity",
+      "result": "PASS",
+      "observed": {
+        "control_release_commit_sha": "a673507d01a8664f54fe3ee4ad262fdb7785121a",
+        "control_release_tree_sha": "86516a42d6862d1b6f5adf6b3c3dc0b8a32fed6a"
+      }
+    },
+    {
+      "test": "generation additions after control release",
+      "result": "PASS",
+      "observed": {
+        "ahead_by": 2,
+        "changed_paths": [
+          "control/CAL-BR-006-v251-433ad83a.json",
+          "assignments/CAL-BR-006-v251-433ad83a.json"
+        ],
+        "required_control_paths_drift": "NONE"
+      }
+    },
+    {
+      "test": "MM01 secret SHA-256 commitment",
+      "result": "PASS",
+      "observed": {
+        "commitment": "0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6"
+      }
+    },
+    {
+      "test": "prewrite structural status on generation head",
+      "result": "FAIL_OBSERVED",
+      "observed": {
+        "context": "supernova/branch-generation",
+        "state": "failure"
+      }
+    }
+  ],
+  "plan_alignment": [
+    "T0 branch bootstrap only.",
+    "SAFE_REPLAY_ONLY.",
+    "Zero fresh/protected/private/benchmark/deep-research consumption.",
+    "Mastermind remains PRE_REVIEW_ONLY; no origin-task promotion.",
+    "No calibration credit because calibration_countable=false and repository policy remains unverified/blocking.",
+    "Worker writes one immutable report path on its assigned branch only."
+  ],
+  "evidence_and_provenance": {
+    "canonical_state_pointer": "main:state/CURRENT.json",
+    "canonical_bus_repo": "Kitahl/Project-supernova-",
+    "generation_branch": "ps/gen/CAL-BR-006-v251-433ad83a",
+    "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+    "control_release_commit_sha": "a673507d01a8664f54fe3ee4ad262fdb7785121a",
+    "control_release_tree_sha": "86516a42d6862d1b6f5adf6b3c3dc0b8a32fed6a",
+    "control_manifest_path": "control/CAL-BR-006-v251-433ad83a.json",
+    "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+    "assignment_path": "assignments/CAL-BR-006-v251-433ad83a.json",
+    "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+    "worker_branch_prewrite_compare_to_G": "identical",
+    "generation_branch_compare_to_G": "identical",
+    "generation_diff_from_control_release": {
+      "ahead_by": 2,
+      "changed_paths": [
+        "control/CAL-BR-006-v251-433ad83a.json",
+        "assignments/CAL-BR-006-v251-433ad83a.json"
+      ]
+    },
+    "prewrite_combined_status": {
+      "context": "supernova/branch-generation",
+      "state": "failure",
+      "interpreted_as_pass": false
+    },
+    "protected_react_evidence_consumed": 0,
+    "private_vault_reads": 0,
+    "benchmark_runs": 0,
+    "deep_research_runs": 0
+  },
+  "claim_scope": "Transport/authentication evidence only. No protected React task was opened, no React mechanism efficacy claim was made, and no scientific benchmark result is asserted.",
+  "runtime_implementation_implication": "None. No Mastermind runtime, benchmark cursor, canonical state, or promotion authority was changed.",
+  "negative_zero_outcomes": [
+    "fresh_evidence_units_consumed=0",
+    "protected_manifest_reads=0",
+    "benchmark_executions=0",
+    "deep_research_runs=0",
+    "protected_react_evidence_consumed=0",
+    "private_vault_reads=0",
+    "calibration_credit=0",
+    "self_promotion=0"
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only T0 transport/bootstrap. No private vault access, protected React evidence, benchmark execution, or deep research."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the MM01 branch, proves one-path/one-commit receipt history, validates schema/session/HMAC/public safety/zero costs, and evaluates structural status on the exact worker head. MM01 performs no self-promotion.",
+  "worker_auth_proof": "b70b31ad3bf82a46313d1b32e9b04639533cb78ea5606752688560185b4b8e75"
+}
