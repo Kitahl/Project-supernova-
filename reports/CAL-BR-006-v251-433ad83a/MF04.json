@@ -1,0 +1,129 @@
+{
+  "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-v251-433ad83a",
+  "claim_scope": "Transport/control finding only. This report does not claim a mathematical, benchmark, runtime-capability, calibration, or promotion result, and it does not claim MM06 would admit the mutated report.",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+  "control_manifest_id": "CTRL-CAL-BR-006-v251-433ad83a",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay-only transport/control analysis. No protected or scientific evidence consumed.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_blob": "07f21675007c3ec085ec79b95a6fd71171324967",
+    "auth_commitment_match": "PASS",
+    "canonical_state_source": "main:state/CURRENT.json",
+    "ci_observation": "CI_NOT_OBSERVED",
+    "control_manifest_blob": "d18e640729d9099a62774826993276971ed8e586",
+    "control_release_tree_sha": "86516a42d6862d1b6f5adf6b3c3dc0b8a32fed6a",
+    "frozen_path_verification": "Root-to-G Git compare changed only the cohort control and assignment files, neither of which is in required_control_paths; therefore all 30 frozen required paths retained their root blob identities at G.",
+    "generation_branch_prewrite": "IDENTICAL_TO_G",
+    "generation_root_sha": "a673507d01a8664f54fe3ee4ad262fdb7785121a",
+    "immutable_generation_head": "c86c091c3be840559a46670218705be1277acd8f",
+    "parent_state_resolution": "PASS",
+    "required_frozen_path_count": 30,
+    "worker_branch_prewrite": "IDENTICAL_TO_G"
+  },
+  "evidence_tier": "T0_TRANSPORT_REPLAY_ONLY",
+  "executive_status": "VALID_ASSIGNED_REPORT_WITH_HIGH_STRUCTURAL_CI_SESSION_MODE_GAP",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "generation_seq": 6,
+  "issue_ledger": [
+    {
+      "class": "STRUCTURAL_CI_STRICT_SESSION_GAP",
+      "finding": "scripts/validate_branch_bus_v251.py does not include session_header.execution_mode in its strict-session exact map and its calibration guard checks only top-level mode. A schema-valid, correctly signed report can therefore carry FRESH_EXECUTION in the session header while top-level mode remains SAFE_REPLAY_ONLY without this structural validator rejecting that contradiction.",
+      "issue_id": "MF04-I1",
+      "scope": "Frozen structural branch validator only. BRANCH_PROTOCOL.md separately assigns authoritative HMAC and strict-session reread to MM06, so this does not establish an end-to-end admission bypass.",
+      "severity": "HIGH",
+      "status": "OPEN"
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "Fresh evidence consumed: 0.",
+    "Protected/private manifest reads: 0.",
+    "Benchmark executions: 0.",
+    "Deep-research runs: 0.",
+    "Calibration credit: 0.",
+    "No end-to-end HMAC bypass claim; MM06 remains authoritative for independent HMAC verification."
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 should independently reread this receipt and run the contradictory execution-mode negative mutation. A successor validator should fail closed on session_header.execution_mode != top-level mode/assigned calibration mode before any cohort can count.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "plan_alignment": [
+    {
+      "check": "ROLE_SCOPE",
+      "detail": "Only one cheap control/lineage/session falsifier was run.",
+      "result": "PASS"
+    },
+    {
+      "check": "SAFE_REPLAY_ONLY",
+      "detail": "No fresh/private/benchmark/research work was performed.",
+      "result": "PASS"
+    },
+    {
+      "check": "CALIBRATION_CREDIT",
+      "detail": "Cohort is explicitly non-countable.",
+      "result": "NONE"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "RPT-CAL-BR-006-v251-433ad83a-MF04",
+  "research_questions": [],
+  "runtime_implementation_implication": "Add session_header.execution_mode to the strict-session equality map and require it to agree with top-level mode and calibration/fresh state. Add a negative mutation test that signs an otherwise-valid report with contradictory session_header.execution_mode and requires rejection.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Validate branch-isolated transport and attack one control/auth/lineage/branch-isolation assumption without protected work.",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF04",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "result": "Plan/cohort/generation/parent/runtime/checkpoint, control+assignment identities, generation root/tree, frozen paths, assigned token/goal/target/fresh/constraints, auth commitment, and prewrite branch lineage/head were checked.",
+      "status": "COMPLETE",
+      "task_id": "MF04-TRANSPORT-VERIFY"
+    },
+    {
+      "result": "One deterministic strict-session mutation was evaluated: change only session_header.execution_mode from SAFE_REPLAY_ONLY to FRESH_EXECUTION while retaining top-level mode SAFE_REPLAY_ONLY and all zero-cost calibration fields.",
+      "status": "COMPLETE",
+      "task_id": "MF04-FALSIFIER"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "expected": "Structural worker validation rejects session/header mode inconsistency.",
+      "kind": "DETERMINISTIC_MUTATION",
+      "mutation": "session_header.execution_mode: SAFE_REPLAY_ONLY -> FRESH_EXECUTION; all other report fields unchanged except recomputed whole-report HMAC",
+      "observed": "The frozen validator's exact session map omits execution_mode; the calibration guard reads r.mode, not session_header.execution_mode. No rejection condition is reached for this mutation.",
+      "result": "FALSIFIER_FOUND_HIGH",
+      "target": "scripts/validate_branch_bus_v251.py",
+      "test_id": "MF04-T1"
+    }
+  ],
+  "visibility_token": "73e1fb60c023f99c44a94a30b4c0751e",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "9108e043ff3dd9cf5e451d5b3bf73da314d9663ce86effb7f40f818d3c685a2e",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MF04",
+  "worker_id": "MF04"
+}
