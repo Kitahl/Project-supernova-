@@ -20,11 +20,12 @@ The actual archive bytes were not available in this worktree, so OCN-0A correctl
 
 - 10 exact deterministic H0 worlds with frozen oracle values.
 - H1 typed interval kernel with SOUND-only certified-stop authority, contradiction and semantic-scope enforcement, computation traces and metalevel cost.
-- 18 unit/schema/extractor/liveness/verifier tests: PASS.
+- 21 unit/schema/extractor/liveness/verifier tests: PASS.
 - H0/H1 qualification: 10 worlds, 21 exact SOUND action bounds, zero containment violations, zero incorrect certified stops: PASS.
 - Cascade/Horizon soundness drafts.
 - Proposed typed-event schema and offline extractor.
-- Liveness and verifier-assurance schemas and negative tests.
+- Liveness/verifier-assurance schemas plus an explicit cohort liveness contract and out-of-band GitHub receipt-deadline monitor; missing receipts never become zero-delta results and task pause cause remains unknown unless separately observed.
+- QuerySpec/HorizonBound Frontier interface schemas.
 - OCN-0A, RETRO-0 and CID-0 honest source/data-gap receipts.
 
 ## Authority check
