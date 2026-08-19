@@ -34,6 +34,10 @@ def compare(base,head):return req('/compare/'+base+'...'+head)
 
 def changed(base,head):return [f['filename'] for f in compare(base,head).get('files',[]) if f.get('status')!='unchanged']
 
+def result_state(errors,waiting=False):
+    if waiting:return 'pending'
+    return 'failure' if errors else 'success'
+
 def generation_check(state):
     e=[];G=state.get('generation_head_sha');gen=state.get('generation_branch');cohort=state.get('active_cohort_id')
     if state.get('protocol_version')!='2.5':e.append('protocol != 2.5')
@@ -92,8 +96,9 @@ def integration_check(state,verifier_head):
     return H,e
 
 def consolidation_check(state,vh,ih):
-    e=[];cohort=state['active_cohort_id'];cb=state.get('consolidation_branch');H=branch_head(cb) if cb else None
+    e=[];cohort=state['active_cohort_id'];G=state['generation_head_sha'];cb=state.get('consolidation_branch');H=branch_head(cb) if cb else None
     if not H:return H,['consolidation branch absent']
+    if H==G:return H,['consolidation receipt absent']
     try:
         _,r=content(f'history/{cohort}/CONSOLIDATION.json',H)
         M=branch_head('main');B=r.get('expected_main_head')
@@ -112,14 +117,28 @@ def main():
     G=state['generation_head_sha']
     ge=generation_check(state);status(G,'supernova/static-control','failure' if ge else 'success',('FAIL '+ge[0]) if ge else 'v2.5 frozen static control PASS')
     vh,ve=verification_check(state)
-    if vh:status(vh,'supernova/report-admission','failure' if ve else 'success',('FAIL '+ve[0]) if ve else 'MM06 exact-head report admission PASS')
+    v_wait=bool(vh and vh==G)
+    if vh:
+        vs=result_state(ve,v_wait)
+        vd='awaiting verifier receipt' if v_wait else (('FAIL '+ve[0]) if ve else 'MM06 exact-head report admission PASS')
+        status(vh,'supernova/report-admission',vs,vd)
     ih,ie=integration_check(state,vh)
-    if ih:status(ih,'supernova/branch-integrate','failure' if ie else 'success',('FAIL '+ie[0]) if ie else 'MF06 exact-head integration PASS')
+    i_wait=bool(ih and ih==G)
+    if ih:
+        is_=result_state(ie,i_wait)
+        idesc='awaiting integration receipt' if i_wait else (('FAIL '+ie[0]) if ie else 'MF06 exact-head integration PASS')
+        status(ih,'supernova/branch-integrate',is_,idesc)
     ch,ce=consolidation_check(state,vh,ih)
+    c_wait=bool(ch and ch==G)
     if ch:
         # Required branch-protection contexts are all emitted on the exact consolidation PR head.
         status(ch,'supernova/static-control','failure' if ge else 'success',('FAIL '+ge[0]) if ge else 'underlying v2.5 static control PASS')
-        status(ch,'supernova/report-admission','failure' if (ve or ie) else 'success',('FAIL '+(ve+ie)[0]) if (ve or ie) else 'verified fan-in/report admission PASS')
-        status(ch,'supernova/transition-admission','failure' if ce else 'success',('FAIL '+ce[0]) if ce else 'consolidation CAS/allowed-diff PASS')
+        ri_wait=v_wait or i_wait
+        rs=result_state(ve+ie,ri_wait)
+        rdesc='awaiting verifier/integration receipt' if ri_wait else (('FAIL '+(ve+ie)[0]) if (ve or ie) else 'verified fan-in/report admission PASS')
+        status(ch,'supernova/report-admission',rs,rdesc)
+        ts=result_state(ce,c_wait)
+        tdesc='awaiting consolidation receipt' if c_wait else (('FAIL '+ce[0]) if ce else 'consolidation CAS/allowed-diff PASS')
+        status(ch,'supernova/transition-admission',ts,tdesc)
     return 1 if ge else 0
 if __name__=='__main__':raise SystemExit(main())
