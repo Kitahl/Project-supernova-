@@ -1,132 +1,174 @@
 # Project Supernova Scheduled Experiment Bus Protocol v2.5
 
-## Authority
-This GitHub network is external experiment/referee/research infrastructure. Math Foundry owns mathematical/runtime truth. Mastermind is PRE_REVIEW_ONLY. GitHub/CI/tasks/research/scores never establish mathematical truth by themselves.
+**Specification authority:** Revision 4 integrated execution specification, source identity in `docs/REV4_SOURCE_INTEGRITY.json`.  
+**Canonical plan:** `0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa`.  
+**Protocol:** 2.5 — frozen.  
+**Specification:** Revision 4 — frozen.
 
-Current written design authority: `docs/PROJECT_SUPERNOVA_SPEC_REV4.md` (Specification Revision 4). Where older design guides or implementation documents conflict with Revision 4, Revision 4 controls. Frozen per-experiment manifests still control their exact run.
+## 1. Design freeze
 
-## Canonical plan
-`TASK_NETWORK_PLAN_ID=0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa`.
+No protocol 2.6 and no Revision 5 may become canonical until repository protection/source-bound admission is independently qualified and **two consecutive clean countable protocol-2.5 replay cohorts** close end-to-end. Pre-cohort defects are repaired as 2.5 hardening and frozen before countable cohort 1. Any authoritative change after cohort 1 begins resets the streak by default.
 
-## Design / protocol freeze
-Protocol **2.5** and Specification **Revision 4** are frozen for calibration. No protocol 2.6 and no Revision 5 may become canonical until repository protection/source policy is independently qualified and two consecutive countable replay-only v2.5 Branch-GitOps cohorts close end-to-end. Defects discovered before cohort 1 are repaired inside v2.5 and frozen before cohort 1 begins. Any authoritative control change after cohort 1 begins resets the streak by default.
+Allowed during the freeze: H0/H1 synthetic qualification, retrospective/non-admissible diagnostics, OCN-0A costing when source is available, theorem drafting, schema implementation and monotone rejection-only hardening. None changes scientific evidence status.
 
-## Canonical definition and dual goals
+## 2. Authority
+
+- **Math Foundry:** sole exact mathematical/runtime execution authority; exact legal actions, exact transformations, real probes, products and runtime receipts. It cannot self-admit a product.
+- **Mastermind:** `PRE_REVIEW_ONLY`; bounded proposals, adversarial designs, falsifiers and plans. It cannot execute, self-grade or promote.
+- **Tribunal / Librarian / Court:** scientific history/status, causal experiments, statement fidelity, M5 transfer, M7 revalidation, M8 interaction/locality challenge, M9 protected admission/lifetime risk, T3-RW and T5.
+- **General-rho / SN-HORIZON:** finite-horizon decision and reasoning-computation allocation over registered evidence. It does not create legal actions or mathematical truth.
+- **SN-CONSEQUENCE / SN-WORLD:** non-authoritative consequence estimates and optional calibrated bounds. They never execute, verify, admit or write scientific state.
+- **GitHub / Scheduled Tasks:** transport, branch-isolated evidence, independent verification/integration routing and guarded control transitions only.
+
+Binding state invariant:
+
+`State_Supernova_control INTERSECT State_Tribunal_scientific = EMPTY`
+
+Supernova control state may reference Tribunal scientific objects by immutable identity. It may not become a second Librarian.
+
+## 3. Canonical definition and goals
+
 Supernova is a frozen-authority controller that treats independently verified mathematical products as resources enabling further executable operations, gates continuation by certified value-of-computation, and admits improvements only through prospective matched-complete-cost tests.
 
-Goal 1: a finite, fresh, independently verified within-problem cascade beats strong controls at equal complete cost.
+- **Goal 1:** a finite, fresh, independently verified within-problem cascade beats strong controls at equal complete cost.
+- **Goal 2:** after Goal 1, establish three distinct causal claims in order: `T3-RW -> T5 -> DR27/E5B`. Policy change is not benefit; memory benefit is not improver improvement. The improver claim requires `F`, `M` and `I` separation, the same untouched `F*`, matched complete R&D budget and fresh independent evaluation.
+- **Ignition:** certified value-gated continuation, never `R>1` or another spectral criticality threshold.
 
-Goal 2: only after Goal 1, demonstrate improvement of the improver. Separate solver `F_t`, retained memory/products `M_t`, and improver `I_t`; compare later vs parent improver from identical untouched start under matched complete R&D budget, controlled `M`, identical allowed model/tools/environment/referee and fresh independent evaluation. Better descendants or more memory alone do not count.
+## 4. Trusted Supernova Core
 
-“Ignition” means **certified value-gated continuation**, not `R>1`, spectral criticality, a Perron-Frobenius threshold, or a branching-process kill gate.
+Ordered execution-control pipeline:
 
-## Trusted Core vs Frontier
-
-### Trusted Supernova Core
-Execution-control order:
-1. exact OperatorContract engine `E_Λ`;
+1. exact `OperatorContract` engine `E_Λ`;
 2. sound certified viability/deadness and cost lower bounds;
-3. verified-product enablement/direct-value priors;
-4. lawful class-aware real multi-fidelity probes with successive-halving allocation;
-5. SN-COMPARE sibling-fork preferences with `C_path` and `C_policy` kept separate;
-6. calibrated behavioural non-interference inside the indifference region;
-7. real Foundry execution -> independent verification -> StatementFidelityCertificate -> product admission.
+3. verified-product enablement and direct-value priors;
+4. lawful class-aware real multi-fidelity probes with successive halving;
+5. `SN-COMPARE` sibling/plan preference, with `C_path` and `C_policy` separate;
+6. calibrated behavioural non-interference;
+7. real Foundry execution -> independent verification -> `StatementFidelityCertificate` -> product admission.
 
-Only stages 1–2 may hard-prune unconditionally. Models never mutate Foundry state. A predicted lemma is hypothetical and cannot enter the product set without real execution, independent PASS and statement-fidelity admission.
+Only stages 1–2 may hard-prune unconditionally. If an exact deterministic transformation is available, execute it rather than training a model to mimic it. A predicted lemma is hypothetical and never a `VerifiedProduct`.
 
-### Supernova Frontier
-The Frontier has **no execution authority**. Its target is SN-HORIZON: typed lower/upper intervals on finite-horizon action value with a positive choice only when a lower bound for one action exceeds all competing upper bounds under the declared risk/drift rule.
+## 5. SN-HORIZON Frontier
 
-Evidence order is: `sound bounds -> real probes -> SN-COMPARE -> one-step value/outcome heads -> direct horizon/plan prediction -> short residual SN-WORLD rollouts`.
+The Frontier has no execution authority. For finite state/action/horizon/budget/semantics, maintain typed intervals
 
-SN-WORLD is Frontier-only. Use ORACLE-WORLD before building a world model. Core admission requires SNW-0 data feasibility, SNW-1 predictive validity/calibration, SNW-2 incremental decision value beyond simpler controls, SNW-3 complete-cost value, SNW-4 prospective transfer, and SNW-5 genuine multi-step value not reproducible by comparator/one-step/direct-horizon mechanisms.
+`L_H(S,a;b,Λ) <= Q*_H(S,a;b,Λ) <= U_H(S,a;b,Λ)`.
 
-## Global design invariants
-- **FINITE-HORIZON:** target quantities are finite-horizon `H`, budget `b`, conditional on frozen `Λ`; otherwise diagnostic only.
-- **ONE-SIDED STATIC SCREENS:** positive relaxed reachability is `NO_INFORMATION`; only sound terminal-relevant unreachability may hard-prune.
-- **COST-RELATIVE KILLS:** use residual-value UCB versus unavoidable-cost LCB + deployment margin, not percentage-of-headroom thresholds.
-- **THREE LEARNED-COMPONENT REPORTS:** predictive accuracy, calibration/risk coverage, usable intervention coverage. Near-total abstention is not successful calibration.
-- **CONTINUOUS EFFECT SIZES:** estimate, CI, MDE, `n`, achieved power, complete cost, family heterogeneity, zero/unknown counts.
-- **SYMMETRIC FIDELITY:** statement-fidelity and probe cost rules are symmetric across applicable arms.
-- **SEPARATE OBLIGATION LAYER:** kernel validity and statement fidelity are orthogonal statuses.
-- **TRIANGLE INEQUALITY DEFAULT:** do not assume learned-error cancellation; T4 remains an open target.
+Evidence kinds:
 
-## Transport
-`state/CURRENT.json` on `main` is the sole mutable canonical pointer. When `transport_mode=BRANCH_GITOPS`, `BRANCH_PROTOCOL.md` and `BRANCH_WORKER_PROTOCOL.md` govern in-flight transport. One immutable generation branch fans out to isolated worker branches, then verifier and integrator branches, then one consolidation PR. Main is never an in-flight worker workspace.
+- `SOUND` — certificates, exact witnesses/search or proved cost bounds; may support certified stops within frozen scope.
+- `ANYTIME_CALIBRATED(alpha)` — valid time-uniform sequential guarantee.
+- `FIXED_SAMPLE_CALIBRATED(alpha)` — valid only for its preregistered design/population/cutoff.
+- `HEURISTIC_ONLY` — may prioritize the next computation; **never** narrows a certifying interval or supports a stop.
 
-## Frozen generation
-Control binds the exact control-release commit/tree plus a closed required-control path set. Generation control+assignment are create-once. Final generation head is immutable. Main/control-release drift after generation freeze does not invalidate an in-flight cohort. The current non-countable pre-Revision-4 bootstrap remains immutable diagnostic history; Revision 4 is frozen into the next countable v2.5 control release.
+Intersection rules: SOUND/SOUND is unconditional; SOUND/calibrated inherits calibrated risk; calibrated/calibrated requires a valid joint certificate or conservative common alpha ledger. Overlapping sources are never treated as independent confirmations. Statistical intervals may widen after recalibration or shift detection. Persistence over updates is a stability heuristic, not a coverage theorem.
 
-## Authentication
-Branch cohorts use only `PS-HMAC-SHA256-CANONICAL-REPORT-2`, binding the complete report payload. MM06 independently reconstructs the proof using verifier-side secret copies. Raw secrets never enter GitHub.
+Stop classes:
 
-## Persistent sessions
-The 15 scheduled lanes reuse the same task/chat. Stable names and mandatory first-response header are in `SESSION_STANDARD.md`; dynamic phase/cohort/iteration/goal belongs in the header and receipt.
+1. certified: `L_SOUND(A) > max_B!=A U_SOUND(B) + delta`;
+2. risk-limited: simultaneously valid calibrated intervals separate the action under declared lifetime/family risk;
+3. no certifiable stop: compute again, fall back or exhaust the metalevel budget.
 
-## Model / execution binding — fifth TCB gate
-All lanes request GPT-5.6 Sol / EXTRA_HIGH, but the task surface cannot itself prove either binding. Every receipt reports `VERIFIED|PARTIAL_UNVERIFIED|UNVERIFIED|MISMATCH` from observed runtime evidence. Replay-only transport may proceed with partial/unverified model binding. **Model-sensitive fresh evidence is non-promotable unless a frozen execution manifest and runtime receipt prove the predeclared model, reasoning/runtime constraints, tools and environment.** G1/G8/Goal-2 arms use identical observed model/tools/environment unless that dimension is the preregistered treatment. A request string is not a binding receipt.
+Positive termination requires evidence that raises a lower bound; elimination alone is insufficient.
 
-## Public/private split
-Public-safe orchestration/evidence lives in `Kitahl/Project-supernova-`. Protected `FROZEN_PRE_OUTCOME` manifests/payloads live only in `Kitahl/thoma/vault/`. Public refs are opaque only.
+### Metalevel computation controls
 
-## Repository policy and three-context CI
-No calibration cohort counts and no fresh work is eligible until GitHub itself reports `main` protected and the required status-check/source policy is independently observed. A repository policy JSON file cannot self-attest protection.
+- `M0`: cheapest admissible probe;
+- `M1`: fixed computation order;
+- `M2`: myopic value of computation;
+- `M3`: learned computation selector;
+- `M*`: exact tiny-world oracle.
+
+Every choice emits a `ComputationSelectionTrace`; unequal evidence allocation is audited by Tribunal. Metalevel cost is hard-capped and included in complete cost.
+
+### Frontier evidence order
+
+`sound bounds -> real probes -> SN-COMPARE -> one-step SN-CONSEQUENCE -> direct horizon/plan prediction -> short residual SN-WORLD`.
+
+SN-WORLD is a consequence backend, not another executive. Run ORACLE-WORLD and HEADROOM-0 before serious world-model training. Core admission requires SNW-0 through SNW-5; only SNW-5 supports operationally useful multi-step modelling.
+
+## 6. Global design invariants
+
+- target quantities are finite horizon `H`, budget `b`, frozen `Λ`, or diagnostic only;
+- relaxed/static positive reachability is `NO_INFORMATION`; only sound negative certificates may hard-prune;
+- kill/defer learned mechanisms on residual-value UCB versus unavoidable-cost LCB + deployment margin;
+- report predictive accuracy, calibration/risk coverage and usable intervention coverage for every learned component; near-total abstention is failure;
+- every gate records point estimate, CI, MDE, n, achieved power, complete cost, family heterogeneity and zero/unknown counts;
+- fidelity/checker costs are symmetric across applicable arms;
+- `KERNEL_VALID` and `STATEMENT_FIDELITY_*` are orthogonal;
+- **no receipt is not a null result**; a no-finding run requires an explicit terminal zero-delta receipt;
+- multiple checkers are defence-in-depth, not statistical independence;
+- learn only residual uncertainty after exact Foundry semantics;
+- query before model: the `QuerySpec` determines witness class, policy family, horizon/risk and cheapest qualified backend.
+
+## 7. Branch-GitOps transport
+
+`main:state/CURRENT.json` is the sole mutable canonical pointer. An immutable generation fans out to 12 worker branches, then an MM06 verifier branch, MF06 integrator branch and one BIL00 consolidation/transition PR. Main is never an in-flight worker workspace.
+
+Workers write exactly one absent assigned report path. MM06 independently proves generation ancestry, one path-changing commit, exact blob-at-creation/current blob equality, schema/session/HMAC/public-safety/assignment/control/runtime binding and structural status. Safe/quarantined/missing partitions are unique, disjoint and exhaustive. Worker self-reread has no authority.
+
+Whole-report authentication is `PS-HMAC-SHA256-CANONICAL-REPORT-2` over the complete canonical report payload with `worker_auth_proof` removed.
+
+## 8. CI and TCB
 
 Three status contexts are non-substitutable:
+
 - `supernova/static-control` — frozen protocol/control/assignment/schema/dependency/action identities and generation invariants;
-- `supernova/report-admission` — MM06 verifier receipt and its Git/report partition/binding envelope after the receipt exists;
-- `supernova/transition-admission` — BIL00 consolidation/next-state CAS, allowed diff and stale-parent transition semantics.
+- `supernova/report-admission` — post-write MM06 verifier-head admission;
+- `supernova/transition-admission` — BIL00 transition/CAS/allowed-diff admission.
 
-Missing, pending, failing, unobservable, wrong-source or wrong-commit is not PASS. A status for one context never satisfies another context. CI is rejection authority only; it cannot establish mathematical truth.
+Missing, pending, failing, unobservable, wrong-source or wrong-commit is not PASS. MM06 cannot self-attest future CI; MF06 must later observe `report-admission=success` on the exact verifier head. Countable workflows pin Actions by full commit SHA and freeze direct/transitive dependencies by hashes or an equivalent immutable environment receipt.
 
-## Verification closure and temporal CI
-A safe worker reference binds worker, assigned branch/path, report blob, non-null 40-hex creation/path-changing commit identity, exactly one report-path-changing commit, generation ancestry, immutable history, schema, exact session, HMAC, public safety and assignment/control/runtime identities. Safe/quarantined/missing worker partitions are unique, disjoint and exhaustive. Quarantine objects are closed and typed.
+Every fresh/scientifically model-sensitive receipt records requested model/effort and observed binding status. A request string is not a binding receipt. Fresh G1/G8/Goal-2 evidence is non-promotable without the frozen model/tools/environment binding required by the manifest.
 
-MM06 cannot self-attest CI that runs after its verifier receipt exists. The verifier receipt records a pre-CI state only. MF06 later observes `supernova/report-admission=success` on the **exact verifier head** before integration can be countable. BIL00 analogously requires later exact-head transition admission for consolidation.
+Verifier assurance is typed: primary kernel, same-kernel fresh replay, external implementation, statement identity checker and statement-fidelity authority. Default independence status is `NO_INDEPENDENCE_CLAIM`. Exact versions, shared TCB, advisories, exploit regressions and mutation/fuzz evidence are recorded. Same-kernel replay is never labelled external verification.
 
-## Supply-chain freeze
-Every countable v2.5 control release freezes GitHub Actions by full commit SHA and freezes the complete validation environment with hashes or an equivalent immutable environment receipt. Mutable `@vN` action references are inadmissible in the countable evidence path.
+## 9. Liveness
 
-## Calibration
-After repository protection and required source-bound contexts are independently observed, require two consecutive complete replay-only v2.5 branch cohorts: immutable generation -> 12 isolated whole-report-HMAC worker branches -> MM06 independent verification -> exact-head report admission -> MF06 integration -> integration structural admission -> one CAS-protected consolidation PR -> exact-head transition admission -> merge. Failure resets the streak. The current non-countable bootstrap diagnoses transport but cannot increment the streak.
+`LIVENESS-0` is a transition gate. Normal no-finding runs emit terminal zero-delta receipts. Missing receipts remain transport/liveness incidents. The lane registry records lane/task/chat references and expected windows; JOINT-A01 emits typed `LaneLivenessObservation`; an out-of-band GitHub deadline monitor is outside the Scheduled Tasks failure domain. Transition admission fails when required terminal receipts are absent. A missing run's cause is `UNKNOWN` unless authoritative task state was actually inspected.
 
-## Fresh/protected work
-`FRESH_ENABLED` is transport eligibility only. Fresh work also requires exact assignment ownership and a private frozen pre-outcome manifest binding plan/cohort/checkpoint/runtime, task/evaluator/checker, observed model/tools/environment, complete budget, randomization/repeats, cache/context/retention, accounting, contamination exclusions and disjoint ownership.
+## 10. Current scheduled-task scope
 
-## Benchmark pools and succession
-Mastermind and Math Foundry suites each have an explicit Stage -1 evidence disposition: `TRAIN_TUNING`, `CALIBRATION`, `G1_PROSPECTIVE`, `G8_CASCADE`, `GOAL2_E5B`, or `RESEARCH_FROZEN`. A development/calibration suite can never later become G1/G8/Goal-2 promotion evidence. Canonical dispositions are in `benchmark/pool_disposition.json` and are frozen before fresh-task sealing.
+The 15 existing scheduled lanes remain on their frozen protocol-2.5 T0/replay assignment while `t0_qualified=false`. **Do not repurpose their active prompts to H0/H1, OCN, RETRO, CID, Frontier model building or TRAIN-loop work.** Those workstreams run in a separate non-admissible engineering session/environment until the relevant gate opens.
 
-Program cursors advance independently. Suite completion requires every frozen unit terminal, evaluator/checker receipts present, complete costs closed and contamination/adjudication resolved. Terminal is not success. Verified completion + eligible successor -> preflight/private freeze and advance that program only. No eligible successor -> `BENCHMARK_DISCOVERY_WAIT` with no fresh consumption.
+BIL00 is the only scheduled deep-research executor at 00:58 and 12:58 America/Vancouver. While T0 is unqualified, only `T0-TRANSPORT-CLOSURE` may be open. No sixteenth task is added.
 
-## Immediate non-admissible work allowed in parallel
-While T0 closes, and only when a frozen assignment/data boundary permits it, the project may use existing development/consumed evidence for:
-- Stage -1 pool governance and relation-coverage sizing;
-- OCN-0A five-operator contract-costing pilot;
-- CID-0 fingerprint/contract-identifiability audit;
-- RETRO-0 waste bracket;
-- Cascade Soundness parts (1)–(2).
+## 11. Scientific and engineering stage sequence
 
-These do not become prospective promotion evidence and must not consume G1/G8/Goal-2 pools.
+Immediate parallel non-admissible work: H0/H1, Cascade/Horizon soundness, OCN-0A costing if source is available, RETRO-0/CID-0 on consumed data, typed-event extraction and liveness/TCB hardening.
 
-## Scientific stage sequence
-Stage -1 governance -> 0A OCN/CID -> 0B inherited relaxed reachability -> 0C cost-bounded reachability -> 0D RETRO/MF-0R -> 0E synthetic qualification -> 0F MF-0X + COMPARE-0 + ORACLE-WORLD -> 0G targeted causal census -> **T0/E1 first admissible programme evidence** -> G1 -> C1 -> E3 -> selector/VoC -> G8 finite Goal-1 cascade -> E5B Goal 2 -> E6.
+Programme ladder:
 
-Stages -1 through 0G are diagnostic/non-admissible and may proceed only within their frozen data/pool boundaries. T0 transport qualification is still a hard gate on admissible prospective programme evidence.
+`T0/FRESH-0/OCN-0A/STATEMENT-0 -> decision-event/Frontier corpus -> RETRO-0/CID-0/MF-0X -> ORACLE-WORLD/HEADROOM-0 -> SN-COMPARE -> one-step/direct-horizon SN-CONSEQUENCE -> FACTOR-0 -> SN-HORIZON -> short residual SN-WORLD -> SNW-0..5 -> DR26/G1 -> T3-RW -> T5 -> DR27/E5B`.
 
-## Enablement semantics
-Use generation-specific positive and inhibitory causal enablement objects separately. Primary finite objects are deduplicated unique causally enabled opportunities and matched-budget value. Pairwise branching projection `rho(K+)` is diagnostic only after adequacy tests and is never a kill gate. Nilpotent useful chains are allowed. Keep transport placebo vs coarse-type semantic placebo and path-conditioned knockout vs free-replanning estimands separate.
+M7, M8 and M9 surround every relevant promotion; they are not late serial stages.
 
-## Control ladder
-`B0` current Foundry; `B1` exact structural controller; `B2` B1 + real successive-halving multi-fidelity probes; `B3` B2 + SN-COMPARE; `B4` B3 + one-step predictive heads; `B5` B4 + multi-step SN-WORLD. Report incremental deltas and compare B5 to the strongest simpler mechanism. Preserve product controls `C0/C2/C2_STATIC_PRODUCTS` and `VBS_schedule` headroom.
+### Stage 0-LOOP
 
-## Roles
-Workers execute frozen roles only. MM06 verifies branch ancestry/path/blob/schema/session/HMAC/safety/cost/ownership. MF06 integrates only MM06-safe refs and reconciles by evidence tier. BIL00 alone owns consolidation PRs, network-state/benchmark cursor transitions and scheduled deep research. Runtime changes require an independently validated `RUNTIME_UPDATE_RECEIPT`.
+After T0 and a sealed TRAIN pool, run a non-admissible bounded component-improvement loop for at most four frozen generations with a predeclared stopping rule. Foundry executes; Mastermind proposes/attacks; independent verification and fidelity review govern evidence; `rho_improve` is descriptive only. TRAIN evidence never becomes CALIBRATION/G1/G8/GOAL2 evidence.
 
-## Typed pathway corpus
-Revision 4 permits `typed_events[]` **inside an existing worker report**, never a new competing authority path. The field is public-safe evidence/provenance only and does not itself create products, causal claims or runtime truth. Its schema is frozen before countable use.
+## 12. Benchmark pools and succession
 
-## Deep-research gate
-BIL00 is the only scheduled deep-research executor and research slots remain 00:58 and 12:58 America/Vancouver, but a slot executes deep research **only when an accepted open research lane exists**. While T0 is unqualified, the only admissible research lane is T0 transport/repository/admission closure. SN-HORIZON, SN-WORLD, E1, reaction, selector and Goal-2 literature expansion stay queued. Inputs are MM06-safe + MF06-integrated questions and unresolved accepted research only. No raw worker bypass or sealed-holdout access. Research cannot promote runtime/science by itself.
+Six pools: `TRAIN`, `CALIBRATION`, `G1`, `G8`, `GOAL2`, `RESEARCH_FROZEN`. Every existing suite receives an explicit disposition before sealing. A development/calibration suite can never later be promotion evidence.
 
-## Fail closed
-Any missing, stale, mismatched, superseded, unknown, partial, timed-out, unexplained or contradictory admission evidence is not PASS. Correctness and clean evidence dominate score.
+Mastermind and Foundry cursors advance independently only after every frozen unit is terminal, evaluator/checker/cost receipts are closed, contamination/adjudication holds are resolved, an immutable independently verified completion receipt exists, the successor is preflighted and its private pre-outcome manifest is frozen. Terminal is not success. No eligible successor enters `BENCHMARK_DISCOVERY_WAIT` without consuming fresh evidence.
+
+## 13. Complete cost
+
+`C_complete = instrumentation + data + training_amortized + inference + probe + execution + verification + fidelity + revalidation + failure/recovery + metalevel_selection`.
+
+Exchange rates and calibration/recalibration lifetime are frozen before comparison. Fidelity/checker cost is symmetric across product-producing arms. Calibration cost is amortized over eligible decisions before invalidation, not merely elapsed time.
+
+## 14. Enablement and control semantics
+
+Generation-specific causal `K+` and `K-` remain separate; multi-parent effects are hyperedges. Primary finite objects are deduplicated unique causally enabled opportunities and matched-budget value. `rho(K+)` is a pairwise diagnostic after adequacy tests, never a kill gate. Transport vs coarse-type placebo and path-conditioned vs free-replanning estimands remain separate.
+
+Control ladder: `B0` current Foundry; `B1` exact structural controller; `B2` real multi-fidelity racing; `B3` +SN-COMPARE; `B4` +one-step SN-CONSEQUENCE; `B5` +genuine multi-step residual model. Report incremental deltas and compare B5 against the strongest simpler mechanism.
+
+## 15. Fresh work
+
+`FRESH_ENABLED` is transport eligibility only. Fresh work additionally requires exact assignment ownership and a private `FROZEN_PRE_OUTCOME` manifest binding plan/cohort/checkpoint/runtime, task/evaluator/checker, observed model/tools/environment, complete budget, randomization/repeats, cache/context/retention, accounting, contamination exclusions and ownership.
+
+## 16. Fail closed
+
+Any missing, stale, mismatched, superseded, unknown, partial, timed-out, unexplained or contradictory admission evidence is not PASS. Scientific status, active cohort, benchmark evidence and runtime authority do not change merely because Revision 4 is implemented as documentation, code, schema or non-admissible qualification infrastructure.
