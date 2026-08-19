@@ -37,6 +37,7 @@ if state and state.get('task_network_plan_id')!=PLAN:err('state plan ID mismatch
 if state and state.get('protocol_version')!='2.5':err('state protocol != 2.5')
 if state and state.get('transport_mode')!='BRANCH_GITOPS':err('state transport != BRANCH_GITOPS')
 if set((auth or {}).get('commitments',{}))!=WORKERS:err('worker commitment set mismatch')
+if (auth or {}).get('scheme')!='PS-HMAC-SHA256-CANONICAL-REPORT-2':err('worker auth metadata scheme mismatch')
 if (cfg or {}).get('task_network_plan_id')!=PLAN or (cfg or {}).get('worker_auth_scheme')!='PS-HMAC-SHA256-CANONICAL-REPORT-2':err('branch config plan/auth mismatch')
 if freeze:
  if freeze.get('frozen_protocol_version')!='2.5':err('protocol freeze != 2.5')
@@ -59,8 +60,8 @@ for wf in (ROOT/'.github/workflows').glob('*.yml'):
    ref=line.split('@',1)[1].split()[0] if '@' in line else ''
    if not re.fullmatch(r'[0-9a-f]{40}',ref):err(f'{wf.relative_to(ROOT)} mutable action ref: {line.strip()}')
 if state:
- if state.get('fresh_allowed_globally') and state.get('repo_policy_status')!='VERIFIED_PROTECTED':err('fresh enabled while repo policy unverified')
- if state.get('calibration_countable_current') and state.get('repo_policy_status')!='VERIFIED_PROTECTED':err('countable calibration while repo policy unverified')
+ if state.get('fresh_allowed_globally') and state.get('repo_policy_status')!='VERIFIED_PROTECTED_SOURCE_BOUND':err('fresh enabled while source-bound repo policy unverified')
+ if state.get('calibration_countable_current') and state.get('repo_policy_status')!='VERIFIED_PROTECTED_SOURCE_BOUND':err('countable calibration while source-bound repo policy unverified')
  if state.get('benchmark_registry_git_identity')!=blob(ROOT/'benchmark/registry.json'):err('benchmark registry blob mismatch')
  if state.get('worker_auth_scheme')!='PS-HMAC-SHA256-CANONICAL-REPORT-2':err('state worker auth scheme mismatch')
 if E:
