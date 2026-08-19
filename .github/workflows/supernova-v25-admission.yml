@@ -2,6 +2,12 @@ name: Supernova v2.5 Frozen Admission
 on:
   pull_request:
     branches: [main]
+  push:
+    branches:
+      - 'hardening/**'
+      - 'rev4/**'
+      - 'transition/**'
+      - 'ps/consolidate/**'
   merge_group:
   workflow_dispatch:
 permissions:
@@ -42,7 +48,7 @@ jobs:
                       ref=line.split('@',1)[1].split()[0] if '@' in line else ''
                       assert re.fullmatch(r'[0-9a-f]{40}',ref), f'unpinned action in {wf}: {line}'
           PY
-          python -m unittest discover -s tests -p 'test_*guard.py'
+          python -m unittest discover -s tests -p 'test_*.py'
       - name: Report admission
         id: report
         continue-on-error: true
@@ -53,6 +59,7 @@ jobs:
           import json, os, pathlib, subprocess
           base=os.environ.get('BASE_SHA','')
           if not base:
+              print('push/non-transition validation: report admission N/A')
               raise SystemExit(0)
           changed=subprocess.check_output(['git','diff','--name-only',base+'...HEAD'],text=True).splitlines()
           if 'state/CURRENT.json' not in changed:
@@ -79,7 +86,7 @@ jobs:
           SUPERNOVA_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha || github.sha }}
         run: |
           if [ -z "$SUPERNOVA_BASE_SHA" ] || ! git diff --name-only "$SUPERNOVA_BASE_SHA...HEAD" | grep -qx 'state/CURRENT.json'; then
-            echo 'non-transition PR: transition admission N/A'
+            echo 'non-transition validation: transition admission N/A'
           else
             python scripts/parent_lineage_guard.py
             python scripts/transition_guard.py
