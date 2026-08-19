@@ -1,0 +1,67 @@
+name: Supernova PR Target Admission Bridge
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+
+concurrency:
+  group: supernova-pr-target-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.event.pull_request.user.login == github.repository_owner)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish trusted-trigger heartbeat before setup
+        if: github.event_name == 'pull_request_target'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          TARGET_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          repo=os.environ['GITHUB_REPOSITORY']; sha=os.environ['TARGET_SHA']; token=os.environ['GITHUB_TOKEN']
+          body={'state':'success','context':'supernova/actions-pr-target-heartbeat','description':'Trusted pull_request_target runner started; diagnostic only'}
+          req=urllib.request.Request(f'https://api.github.com/repos/{repo}/statuses/{sha}',data=json.dumps(body).encode(),method='POST')
+          req.add_header('Authorization',f'Bearer {token}'); req.add_header('Accept','application/vnd.github+json'); req.add_header('X-GitHub-Api-Version','2022-11-28')
+          with urllib.request.urlopen(req,timeout=30) as r: print('heartbeat',sha,r.status)
+          PY
+      - name: Clone trusted default-branch control plane
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          git clone --filter=blob:none "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" trusted
+          cd trusted
+          git fetch --no-tags origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
+      - name: Install frozen validation environment
+        run: python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock
+      - name: Validate exact owner-authored PR head with trusted reconciler
+        if: github.event_name == 'pull_request_target'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          cd trusted
+          python3 - <<'PY'
+          import os, pathlib
+          import scripts.reconcile_open_prs as r
+          pr=r.api('/pulls/'+os.environ['PR_NUMBER'])
+          if pr['head']['repo']['full_name'] != os.environ['GITHUB_REPOSITORY']:
+              raise SystemExit('cross-repository PR refused')
+          if pr['user']['login'] != os.environ['GITHUB_REPOSITORY'].split('/',1)[0]:
+              raise SystemExit('non-owner PR refused')
+          r.validate_pr(pathlib.Path.cwd(), pr)
+          PY

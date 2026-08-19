@@ -50,6 +50,7 @@
     ".github/workflows/supernova-open-pr-reconciler.yml",
     ".github/workflows/supernova-actions-heartbeat.yml",
     ".github/workflows/supernova-comment-admission.yml",
+    ".github/workflows/supernova-pr-target-admission.yml",
     ".github/workflows/supernova-liveness-monitor.yml",
     "requirements-validation.lock"
   ],
