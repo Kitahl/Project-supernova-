@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-import hashlib,json,pathlib,re,sys
+import hashlib,json,os,pathlib,re,sys
 from jsonschema import Draft202012Validator
-ROOT=pathlib.Path(__file__).resolve().parents[1]
+
+TRUSTED_ROOT=pathlib.Path(__file__).resolve().parents[1]
+ROOT=pathlib.Path(os.environ.get('SUPERNOVA_VALIDATE_ROOT',str(TRUSTED_ROOT))).resolve()
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 WORKERS={'MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01'}
 REQ_CTX=['supernova/static-control','supernova/report-admission','supernova/transition-admission']
@@ -10,7 +12,10 @@ E=[]
 def err(x):E.append(x)
 def load(p):
  try:return json.loads(p.read_text(encoding='utf-8'))
- except Exception as e:err(f'{p.relative_to(ROOT)} invalid JSON: {e}');return None
+ except Exception as e:
+  try: label=str(p.relative_to(ROOT))
+  except Exception: label=str(p)
+  err(f'{label} invalid JSON: {e}');return None
 def blob(p):
  b=p.read_bytes();return hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest()
 def walk(o,p):
@@ -20,10 +25,13 @@ def walk(o,p):
    walk(v,p)
  elif isinstance(o,list):
   for v in o:walk(v,p)
-for p in ROOT.rglob('*.json'):
- if '.git' in p.parts:continue
- o=load(p)
- if o is not None:walk(o,str(p.relative_to(ROOT)))
+if not ROOT.is_dir():
+ err(f'validation root is not a directory: {ROOT}')
+else:
+ for p in ROOT.rglob('*.json'):
+  if '.git' in p.parts:continue
+  o=load(p)
+  if o is not None:walk(o,str(p.relative_to(ROOT)))
 state=load(ROOT/'state/CURRENT.json');plan=load(ROOT/'plan/PLAN.json');auth=load(ROOT/'config/worker_auth.json');reg=load(ROOT/'benchmark/registry.json');policy=load(ROOT/'config/repo_policy.json');cfg=load(ROOT/'branch/CONFIG.json');freeze=load(ROOT/'config/protocol_freeze.json');pools=load(ROOT/'benchmark/pool_disposition.json');lanes=load(ROOT/'research/open_lanes.json')
 if not all([state,plan,auth,reg,policy,cfg,freeze,pools,lanes]):err('missing canonical v2.5 state/plan/auth/registry/policy/freeze/pools/research gate/branch config')
 if state:
