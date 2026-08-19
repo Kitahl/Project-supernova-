@@ -57,6 +57,17 @@ def source_bound_pass(sha,ctx,allowed):
 def compare(base,head):return req('/compare/'+base+'...'+head)
 def changed(base,head):return [f['filename'] for f in compare(base,head).get('files',[]) if f.get('status')!='unchanged']
 
+def required_countable_paths(contract):
+    if not isinstance(contract,dict):raise ValueError('countable control contract is not an object')
+    if contract.get('protocol_version')!='2.5':raise ValueError('countable control contract protocol != 2.5')
+    if contract.get('task_network_plan_id')!=PLAN:raise ValueError('countable control contract plan mismatch')
+    paths=contract.get('required_control_paths')
+    if not isinstance(paths,list) or not paths or any(not isinstance(x,str) or not x for x in paths):raise ValueError('countable control required paths invalid')
+    required=set(paths)
+    missing_legacy=sorted(FULL_HARDENED_CONTROL-required)
+    if missing_legacy:raise ValueError('canonical countable contract drops hardened minimum: '+','.join(missing_legacy[:4]))
+    return required
+
 def result_state(errors,waiting=False):
     if waiting:return 'pending'
     return 'failure' if errors else 'success'
@@ -81,8 +92,14 @@ def generation_check(state):
         required=set(c.get('required_control_paths',[]))
         countable=bool(c.get('calibration_countable') is True or a.get('calibration_countable') is True or state.get('calibration_countable_current') is True)
         if countable:
-            missing=sorted(FULL_HARDENED_CONTROL-required)
-            if missing:e.append('countable control missing hardened paths: '+','.join(missing[:4])+('...' if len(missing)>4 else ''))
+            _,accepted_contract=content('config/countable_control_set_v25.json','main')
+            required_contract=required_countable_paths(accepted_contract)
+            missing=sorted(required_contract-required)
+            if missing:e.append('countable control missing canonical hardened paths: '+','.join(missing[:4])+('...' if len(missing)>4 else ''))
+            try:
+                _,frozen_contract=content('config/countable_control_set_v25.json',root)
+                if frozen_contract!=accepted_contract:e.append('frozen countable-control contract differs from accepted main contract')
+            except Exception as x:e.append('frozen countable-control contract '+str(x))
             if state.get('repo_policy_status')!='VERIFIED_PROTECTED_SOURCE_BOUND':e.append('countable cohort repo policy not source-bound verified')
             _,auth=content('config/worker_auth.json',root)
             if auth.get('scheme')!=HMAC2:e.append('frozen worker auth metadata != HMAC-2')
