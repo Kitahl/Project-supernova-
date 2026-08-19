@@ -1,0 +1,13 @@
+{
+  "execution_class": "SYNTHETIC_NON_ADMISSIBLE",
+  "incorrect_certified_stops": [],
+  "oracle_status": "PASS",
+  "protocol_changed": false,
+  "revision_changed": false,
+  "schema_version": "PS-H0-H1-QUALIFICATION-1",
+  "scientific_status_changed": false,
+  "sound_bound_count": 21,
+  "sound_containment_violations": [],
+  "status": "PASS",
+  "world_count": 10
+}
