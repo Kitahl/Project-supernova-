@@ -1,22 +1,37 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import base64, json, os, re, urllib.parse, urllib.request, urllib.error
+import base64,json,os,re,urllib.error,urllib.parse,urllib.request
 
 TOKEN=os.environ.get('GITHUB_TOKEN','')
 REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-')
 API='https://api.github.com/repos/'+REPO
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
+ACTIONS_CREATOR='github-actions[bot]'
 WORKERS={'MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01'}
 HEX40=re.compile(r'^[0-9a-f]{40}$')
-FULL_HARDENED_CONTROL={
+MINIMUM_HARDENED_CONTROL={
     'PROTOCOL.md','BRANCH_PROTOCOL.md','BRANCH_WORKER_PROTOCOL.md','SESSION_STANDARD.md','plan/PLAN.json',
-    'config/protocol_freeze.json','config/repo_policy.json','config/roles.json','config/worker_auth.json','config/task_registry_v25.json','config/checker_pins.json',
+    'config/protocol_freeze.json','config/repo_policy.json','config/roles.json','config/worker_auth.json',
+    'config/task_registry_v25.json','config/checker_pins.json','config/countable_control_set_v25.json',
+    'config/admission_authority.json','branch/CONFIG.json','research/open_lanes.json',
     'benchmark/registry.json','benchmark/pool_disposition.json',
-    'schemas/control.schema.json','schemas/assignment.schema.json','schemas/branch_report.schema.json','schemas/branch_verification.schema.json','schemas/branch_integration.schema.json','schemas/branch_director.schema.json','schemas/branch_consolidation.schema.json','schemas/lane_liveness_observation.schema.json','schemas/cohort_liveness_contract.schema.json','schemas/verifier_assurance.schema.json','schemas/runtime_update.schema.json','schemas/private_manifest_contract.schema.json',
-    'scripts/validate_bus.py','scripts/validate_branch_bus_v251.py','scripts/reconcile_branch_rest.py','scripts/reconcile_v25_admission.py','scripts/check_lane_liveness.py',
-    'tests/test_v25_report_contracts.py','tests/liveness/test_liveness_monitor.py','tests/verifier_assurance/test_verifier_assurance_schema.py',
-    '.github/workflows/supernova-v25-admission.yml','.github/workflows/supernova-rest-branch-reconciler.yml','requirements-validation.lock'
+    'schemas/state.schema.json','schemas/control.schema.json','schemas/assignment.schema.json',
+    'schemas/branch_report.schema.json','schemas/branch_verification.schema.json','schemas/branch_integration.schema.json',
+    'schemas/branch_director.schema.json','schemas/branch_consolidation.schema.json',
+    'schemas/lane_liveness_observation.schema.json','schemas/cohort_liveness_contract.schema.json',
+    'schemas/verifier_assurance.schema.json','schemas/runtime_update.schema.json','schemas/private_manifest_contract.schema.json',
+    'scripts/validate_bus.py','scripts/validate_branch_bus_v251.py','scripts/parent_lineage_guard.py',
+    'scripts/transition_guard.py','scripts/reconcile_branch_rest.py','scripts/reconcile_v25_admission.py',
+    'scripts/reconcile_open_prs.py','scripts/check_lane_liveness.py',
+    'tests/test_v25_report_contracts.py','tests/test_source_bound_repo_policy.py','tests/test_countable_control_freeze.py',
+    'tests/test_actions_trigger_bridge.py','tests/test_open_pr_admission_trust.py',
+    'tests/test_countable_control_gate_consistency.py','tests/test_privileged_admission_workflows.py',
+    'tests/liveness/test_liveness_monitor.py','tests/verifier_assurance/test_verifier_assurance_schema.py',
+    '.github/workflows/supernova-v25-admission.yml','.github/workflows/supernova-rest-branch-reconciler.yml',
+    '.github/workflows/supernova-open-pr-reconciler.yml','.github/workflows/supernova-actions-heartbeat.yml',
+    '.github/workflows/supernova-comment-admission.yml','.github/workflows/supernova-pr-target-admission.yml',
+    '.github/workflows/supernova-liveness-monitor.yml','requirements-validation.lock'
 }
 
 def req(path,method='GET',data=None):
@@ -47,15 +62,27 @@ def status_observation(sha,ctx):
             return {'state':row.get('state'),'creator':(row.get('creator') or {}).get('login'),'id':row.get('id'),'created_at':row.get('created_at')}
     return None
 
-def source_bound_pass(sha,ctx,allowed):
+def source_bound_pass(sha,ctx):
     o=status_observation(sha,ctx)
     if not o:return False,f'{ctx} missing'
     if o.get('state')!='success':return False,f'{ctx} state={o.get("state")}'
-    if o.get('creator') not in allowed:return False,f'{ctx} creator={o.get("creator")} not allowed'
+    if o.get('creator')!=ACTIONS_CREATOR:return False,f'{ctx} creator={o.get("creator")} != {ACTIONS_CREATOR}'
     return True,''
 
 def compare(base,head):return req('/compare/'+base+'...'+head)
 def changed(base,head):return [f['filename'] for f in compare(base,head).get('files',[]) if f.get('status')!='unchanged']
+
+def required_countable_paths(contract):
+    if not isinstance(contract,dict):raise ValueError('countable control contract is not an object')
+    if contract.get('protocol_version')!='2.5':raise ValueError('countable control contract protocol != 2.5')
+    if contract.get('task_network_plan_id')!=PLAN:raise ValueError('countable control contract plan mismatch')
+    paths=contract.get('required_control_paths')
+    if not isinstance(paths,list) or not paths or any(not isinstance(x,str) or not x for x in paths):
+        raise ValueError('countable control required paths invalid')
+    required=set(paths)
+    missing=sorted(MINIMUM_HARDENED_CONTROL-required)
+    if missing:raise ValueError('canonical countable contract drops hardened minimum: '+','.join(missing[:6]))
+    return required
 
 def result_state(errors,waiting=False):
     if waiting:return 'pending'
@@ -81,13 +108,21 @@ def generation_check(state):
         required=set(c.get('required_control_paths',[]))
         countable=bool(c.get('calibration_countable') is True or a.get('calibration_countable') is True or state.get('calibration_countable_current') is True)
         if countable:
-            missing=sorted(FULL_HARDENED_CONTROL-required)
-            if missing:e.append('countable control missing hardened paths: '+','.join(missing[:4])+('...' if len(missing)>4 else ''))
+            _,accepted_contract=content('config/countable_control_set_v25.json','main')
+            required_contract=required_countable_paths(accepted_contract)
+            missing=sorted(required_contract-required)
+            if missing:e.append('countable control missing canonical hardened paths: '+','.join(missing[:6]))
+            try:
+                _,frozen_contract=content('config/countable_control_set_v25.json',root)
+                if frozen_contract!=accepted_contract:e.append('frozen countable-control contract differs from accepted main contract')
+            except Exception as x:e.append('frozen countable-control contract '+str(x))
             if state.get('repo_policy_status')!='VERIFIED_PROTECTED_SOURCE_BOUND':e.append('countable cohort repo policy not source-bound verified')
             _,auth=content('config/worker_auth.json',root)
             if auth.get('scheme')!=HMAC2:e.append('frozen worker auth metadata != HMAC-2')
             _,pins=content('config/checker_pins.json',root)
             if pins.get('protocol_version')!='2.5':e.append('checker pins protocol mismatch')
+            _,authority=content('config/admission_authority.json',root)
+            if authority.get('candidate_code_execution_with_status_write_token')!='FORBIDDEN':e.append('frozen admission authority permits privileged candidate code')
     except Exception as x:e.append('generation '+str(x))
     return e
 
@@ -131,8 +166,8 @@ def integration_check(state,verifier_head):
         if i.get('task_network_plan_id')!=PLAN or i.get('cohort_id')!=cohort or i.get('generation_head_sha')!=G:e.append('integration identity mismatch')
         if i.get('verification_head_sha')!=verifier_head:e.append('verification head mismatch')
         if i.get('verification_external_ci_context')!='supernova/report-admission' or i.get('verification_external_ci_status')!='PASS' or i.get('verification_external_ci_observed_after_receipt') is not True:e.append('later verifier CI not bound in receipt')
-        allowed=set(i.get('verification_external_ci_source') and [i.get('verification_external_ci_source')] or ['github-actions[bot]'])
-        ok,msg=source_bound_pass(verifier_head,'supernova/report-admission',allowed)
+        if i.get('verification_external_ci_source')!=ACTIONS_CREATOR:e.append('integration CI source field is not github-actions[bot]')
+        ok,msg=source_bound_pass(verifier_head,'supernova/report-admission')
         if not ok:e.append('later verifier CI source check '+msg)
         if state.get('calibration_countable_current') is True:
             if i.get('verification_verdict')!='VERIFIED_COMPLETE' or i.get('verification_partition_exhaustive') is not True or i.get('verification_liveness_complete') is not True:e.append('integration does not bind complete verifier+liveness')
@@ -186,4 +221,6 @@ def main():
         tdesc='awaiting consolidation receipt' if c_wait else (('FAIL '+ce[0]) if ce else 'consolidation CAS/allowed-diff PASS')
         status(ch,'supernova/transition-admission',ts,tdesc)
     return 1 if ge else 0
-if __name__=='__main__':raise SystemExit(main())
+
+if __name__=='__main__':
+    raise SystemExit(main())
