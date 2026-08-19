@@ -1,68 +1,101 @@
-# Project Supernova — Scheduled Research Bus
+# Project Supernova
 
-This repository is the canonical persistent orchestration/evidence bus for the scheduled Math Foundry + Mastermind experiment network.
+Canonical public orchestration/evidence repository for the frozen Project Supernova programme.
 
-## Current design authority
+## Current written authority
 
-**Project Supernova Construction & Operations Specification — Revision 4 (Consolidated Update)** is the current written design authority where it conflicts with older design guides or implementation specifications. Repository transcription: [`docs/PROJECT_SUPERNOVA_SPEC_REV4.md`](docs/PROJECT_SUPERNOVA_SPEC_REV4.md).
+**Project Supernova — Construction, Operations, Integration & Execution Specification — Revision 4 (Fully Integrated Update), 19 August 2026.**
 
-### DESIGN FREEZE
+- Protocol: **2.5 — frozen**
+- Specification revision: **4 — frozen**
+- Plan ID: `0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa`
+- Source identity: [`docs/REV4_SOURCE_INTEGRITY.json`](docs/REV4_SOURCE_INTEGRITY.json)
+- Repository operating transcription: [`docs/PROJECT_SUPERNOVA_SPEC_REV4.md`](docs/PROJECT_SUPERNOVA_SPEC_REV4.md)
+- Structured execution authority: [`config/rev4_execution.json`](config/rev4_execution.json)
 
-**Protocol 2.5 and Specification Revision 4 are frozen. No protocol 2.6 and no Revision 5 until the calibration streak reaches 2.**
+Where older design guides, the 29-page protocol-2.5 construction specification, or earlier Revision-4 drafts conflict, the integrated Revision 4 controls. A frozen experiment manifest still controls its exact run.
 
-The active pre-Revision-4 generation remains immutable historical/diagnostic evidence. Revision 4 must be frozen into the next countable protocol-2.5 control release before cohort 1 begins. Any authoritative control change after countable cohort 1 starts resets the streak.
+## DESIGN FREEZE
+
+**No protocol 2.6 and no Revision 5 until the calibration streak reaches two consecutive clean countable protocol-2.5 cohorts.**
+
+The current generation-6 bootstrap remains immutable replay-only diagnostic history. Revision 4 does not retroactively create calibration credit, enable fresh evidence, alter benchmark outcomes, or mutate the active cohort.
 
 ## Canonical definition
 
 Supernova is a frozen-authority controller that treats independently verified mathematical products as resources enabling further executable operations, gates continuation by certified value-of-computation, and admits improvements only through prospective matched-complete-cost tests.
 
-- **Goal 1:** a finite, fresh, independently verified within-problem cascade beats strong controls at equal complete cost.
-- **Goal 2:** only after Goal 1, test whether the improver itself improved by separating solver `F`, memory/products `M`, and improver `I` under the same untouched start and matched complete R&D budget.
-- **Ignition:** certified value-gated continuation, **not** a spectral/criticality threshold.
+- **Goal 1:** finite fresh independently verified cascade beats strong controls at equal complete cost.
+- **Goal 2:** `T3-RW -> T5 -> DR27/E5B`; policy change, memory benefit and improvement of the improver are separate causal claims. The final claim requires `F/M/I` separation, the same untouched start and matched complete R&D budget.
+- **Ignition:** certified value-gated continuation, not spectral criticality.
 
-## Trusted Core vs Frontier
+## Authority
 
-The **Trusted Supernova Core** controls execution through exact OperatorContracts, sound viability/deadness certificates, verified-product enablement, lawful real multi-fidelity probes, SN-COMPARE, calibrated behavioural non-interference, and real Foundry execution + independent verification + statement fidelity.
+- **Math Foundry:** exact execution/runtime semantics, legal actions, real probes/products.
+- **Mastermind:** `PRE_REVIEW_ONLY` proposals, adversarial review and falsifiers.
+- **Tribunal / Librarian / Court:** scientific state, causal adjudication, statement fidelity and M5/M7/M8/M9 protection.
+- **General-rho / SN-HORIZON:** finite-horizon decision and reasoning-computation allocation.
+- **SN-CONSEQUENCE / SN-WORLD:** non-authoritative consequence services only.
+- **GitHub / Scheduled Tasks:** transport and guarded evidence/control transitions only.
 
-The **Supernova Frontier** has no execution authority. Its target is SN-HORIZON, a typed-interval long-horizon metaplanner. SN-WORLD is Frontier-only; ORACLE-WORLD and one-step/direct-horizon mechanisms come first, with SNW-0..5 prospective gates before any Core admission.
+Binding invariant: `State_Supernova_control INTERSECT State_Tribunal_scientific = EMPTY`.
 
-## Boundary
+## Trusted Core
 
-- **Math Foundry is execution/mathematical authority. Mastermind is PRE_REVIEW_ONLY.** This scheduled network is external experiment/research/referee infrastructure, not Supernova runtime capability by itself.
-- GitHub receipts, votes, summaries, research results, or task consensus cannot create canonical Foundry `ReactionRecord`, `VerifiedProduct`, selectors/controllers, or a runtime upgrade.
-- Models never mutate Foundry state. A predicted lemma is hypothetical until real execution, independent PASS and StatementFidelityCertificate admission.
-- Runtime identity changes only after an independently validated `RUNTIME_UPDATE_RECEIPT` with artifact hashes, validators, lineage/accounting, diagnostics, prospective evidence and the observed frozen model/tools/environment binding when scientifically relevant.
+Ordered pipeline:
 
-## Public-safe repository
+`exact OperatorContracts -> sound viability/deadness/cost bounds -> verified-product/direct-value priors -> real class-aware multi-fidelity probes -> SN-COMPARE -> calibrated non-interference -> Foundry execution -> independent verification -> statement fidelity -> product admission`
 
-This repository is public. Do **not** place hidden benchmark contents, protected item names/IDs, private source payloads, credentials, secrets, or confidential runtime artifacts here.
+Only exact contract legality and sound certificates may hard-prune unconditionally.
 
-Protected/fresh evidence is referenced here only by opaque manifest IDs. The manifest payload itself lives in `Kitahl/thoma/vault/`; never mirror private payloads here.
+## Frontier
 
-## Branch-GitOps flow
+SN-HORIZON maintains typed finite-horizon intervals. Evidence kinds are `SOUND`, `ANYTIME_CALIBRATED`, `FIXED_SAMPLE_CALIBRATED`, and `HEURISTIC_ONLY`. Heuristics may schedule computation but never narrow a certifying interval.
 
-`main:state/CURRENT.json` is the sole mutable canonical pointer.
+Frontier order:
 
-`immutable generation -> 12 isolated worker branches -> MM06 verifier branch -> exact-head report admission -> MF06 integrator branch -> one BIL00 consolidation PR -> exact-head transition admission -> main`
+`sound bounds -> real probes -> SN-COMPARE -> one-step SN-CONSEQUENCE -> direct horizon/plan prediction -> short residual SN-WORLD`
 
-Workers write only their assigned report path. MM06 independently rereads Git ancestry/path/blob/schema/session/HMAC/safety/cost. MF06 integrates only MM06-safe evidence. BIL00 alone may advance canonical network state through the guarded consolidation PR.
+SN-WORLD is not another planner and has no Core authority without SNW-0..5 admission.
 
-## Three non-substitutable admission contexts
+## Branch-GitOps transport
+
+`main:state/CURRENT.json` is the sole mutable network pointer.
+
+`immutable generation -> 12 isolated workers -> MM06 -> exact-head report admission -> MF06 -> BIL00 consolidation PR -> exact-head transition admission -> main`
+
+Three non-substitutable contexts:
 
 - `supernova/static-control`
 - `supernova/report-admission`
 - `supernova/transition-admission`
 
-Missing, pending, failing, unobservable, wrong-source or wrong-commit is not PASS. A context cannot substitute for another.
+No receipt is not a null result. A normal no-finding run emits a zero-delta receipt. Missing receipts are liveness/transport failures until explained.
 
-## Calibration / fresh work
+## Current scheduled-task scope
 
-Fresh/protected evidence stays disabled until repository policy is independently qualified and **two consecutive countable replay-only protocol-2.5 cohorts** complete the full branch-GitOps round trip cleanly. A development/calibration benchmark can never later be relabelled as G1/G8/Goal-2 promotion evidence.
+The existing 15 scheduled lanes remain on their frozen T0/replay assignments while T0 is unqualified. **Do not repurpose their active prompts for H0/H1, OCN, RETRO, CID, Stage-0 TRAIN work or Frontier modelling.** Those run in a separate non-admissible engineering environment.
 
-## Immediate scientific work under Revision 4
+BIL00 remains the only scheduled deep-research executor. While T0 is open, only `T0-TRANSPORT-CLOSURE` may be researched by the scheduled lane.
 
-While T0 closes, non-admissible work may proceed on existing development/consumed data where explicitly assigned and pool-safe: Stage -1 pool governance, the OCN-0A five-operator contract-costing pilot, CID-0, RETRO-0, and Cascade Soundness parts (1)–(2). None may consume later prospective pools.
+## Work allowed now without scientific promotion
 
-## Deep research
+- H0 exact synthetic/oracle worlds;
+- H1 SOUND-only interval kernel;
+- Cascade/Horizon soundness drafts;
+- OCN-0A five-operator costing after actual Foundry source inspection;
+- RETRO-0/CID-0 on consumed development evidence;
+- typed-event extractor and decision-event contracts;
+- liveness/verifier-assurance/security hardening.
 
-BIL00 is the only scheduled deep-research executor, at 00:58 and 12:58 America/Vancouver, and only when an accepted research lane is open. While T0 is unqualified, the only open lane is T0 transport/repository/admission closure. SN-HORIZON/SN-WORLD/E1/reaction/selector/Goal-2 research stays queued.
+These are engineering/qualification/diagnostic outputs. They do not consume fresh G1/G8/Goal-2 pools and do not change scientific status.
+
+## Stage sequence
+
+`T0/FRESH-0/OCN-0A/STATEMENT-0 -> corpus -> RETRO/CID/MF -> ORACLE-WORLD/HEADROOM -> SN-COMPARE -> SN-CONSEQUENCE -> FACTOR -> SN-HORIZON -> short SN-WORLD -> SNW-0..5 -> G1/DR26 -> T3-RW -> T5 -> DR27/E5B`
+
+M7, M8 and M9 wrap every relevant promotion rather than appearing only at the end.
+
+## Public/private split
+
+This repository is public-safe. Never store hidden benchmark payloads, protected item names/IDs, private manifests, credentials, task auth secrets or confidential runtime artifacts here. Protected pre-outcome payloads remain in `Kitahl/thoma/vault/`; public references are opaque.
