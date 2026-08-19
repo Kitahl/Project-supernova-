@@ -1,0 +1,184 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W04 | Senior SWE Architecture",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "role_id": "MM04",
+    "goal": "Validate branch-isolated transport and preserve evaluator-execution validity/nonvacuity gates.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "worker_id": "MM04",
+  "report_id": "CAL-BR-006-v251-433ad83a-MM04",
+  "generation_seq": 6,
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MM04",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-v251-433ad83a",
+  "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+  "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "control_manifest_id": "CTRL-CAL-BR-006-v251-433ad83a",
+  "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "8ed24592b65a5cb0cc27a7571f0c65dd",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "836768b1672cc8639cfeb3fe06ebd8ce1667cdb0dc5ce1c7a6cd6c263f1521d0",
+  "worker_auth_proof": "0f8029e876f1b70b32d7090553884749921a46320928c6513b92bdcf37dd46f1",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_REPLAY_TRANSPORT_ONLY_NONCOUNTABLE",
+  "executive_status": "PASS_TRANSPORT_RECEIPT_NONCOUNTABLE_ARCHITECTURE_NOT_MEASURED",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task": "branch_isolation",
+      "status": "PASS",
+      "detail": "Generation branch and assigned MM04 worker branch were both identical to frozen generation head before first receipt."
+    },
+    {
+      "task": "evaluator_execution_validity",
+      "status": "NOT_MEASURED",
+      "detail": "No Senior SWE evaluator or benchmark executed; no architecture score or candidate effect is admissible."
+    },
+    {
+      "task": "architecture_surface_closure",
+      "status": "PRESERVED_AS_GATE_ONLY",
+      "detail": "Architecture-surface closure remains a required future fresh-evidence gate; no closure claim is made from replay-only transport evidence."
+    },
+    {
+      "task": "nonvacuity",
+      "status": "PRESERVED_AS_GATE_ONLY",
+      "detail": "Nonvacuity remains required; no N/A, exclusion, unreachable-path, or zero-execution outcome is treated as success."
+    },
+    {
+      "task": "omission_ablation",
+      "status": "PRESERVED_AS_GATE_ONLY",
+      "detail": "Omitted surfaces and mutation/ablation checks remain mandatory before any mechanism promotion."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue": "repository_protection_gate",
+      "status": "UNVERIFIED_BLOCKING",
+      "impact": "This bootstrap is non-countable and cannot unlock fresh work or calibration credit."
+    },
+    {
+      "issue": "structural_ci",
+      "status": "CI_NOT_OBSERVED_AT_WORKER_WRITE",
+      "impact": "Worker does not reinterpret absent/pending structural status as PASS; MM06 must verify exact-head status."
+    },
+    {
+      "issue": "worker_auth_metadata_legacy_label",
+      "status": "NONAUTHORITATIVE_METADATA_DRIFT_NOTED",
+      "impact": "config/worker_auth.json retains a legacy scheme label/description, while BRANCH_WORKER_PROTOCOL.md, BRANCH_PROTOCOL.md, PROTOCOL.md, branch/CONFIG.json, control manifest and report schema define HMAC-2 for BRANCH_GITOPS. The commitment value was used only as the public SHA-256 secret commitment."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test": "canonical_pointer_binding",
+      "result": "PASS",
+      "detail": "Main CURRENT points to protocol 2.5, expected plan, BRANCH_GITOPS, active cohort, exact control/assignment identities and frozen generation head."
+    },
+    {
+      "test": "frozen_generation_immutability",
+      "result": "PASS",
+      "detail": "Generation branch equals the recorded generation head."
+    },
+    {
+      "test": "required_control_freeze",
+      "result": "PASS",
+      "detail": "Control-release root/tree matched the manifest; comparison from control-release commit to final generation head changed only the new control and assignment, so all required control paths remained byte-identical to the frozen control release."
+    },
+    {
+      "test": "assignment_binding",
+      "result": "PASS",
+      "detail": "MM04 branch, role, goal, target, visibility token, replay-only constraints, runtime/checkpoint and zero-fresh settings matched frozen assignment."
+    },
+    {
+      "test": "public_auth_commitment",
+      "result": "PASS",
+      "detail": "SHA-256 of the prompt-private capability secret matched the frozen MM04 public commitment; raw secret was not emitted or persisted."
+    },
+    {
+      "test": "report_schema_prewrite",
+      "result": "PASS",
+      "detail": "Report constructed against frozen Draft 2020-12 branch_report schema with strict session fields and HMAC-2 binding."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "plan_item": "T0 trustworthy branch bus",
+      "status": "SUPPORTED_TRANSPORT_ONLY",
+      "detail": "This receipt exercises one isolated worker write path without claiming countable calibration."
+    },
+    {
+      "plan_item": "Mastermind PRE_REVIEW_ONLY",
+      "status": "PRESERVED",
+      "detail": "No runtime truth, mechanism promotion, benchmark cursor change, or scientific success is claimed."
+    },
+    {
+      "plan_item": "Goal 1 before Goal 2",
+      "status": "PRESERVED",
+      "detail": "No Goal-2 improver claim or runtime transition is attempted."
+    }
+  ],
+  "evidence_and_provenance": {
+    "canonical_state_source": "main:state/CURRENT.json",
+    "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+    "control_release_commit_sha": "a673507d01a8664f54fe3ee4ad262fdb7785121a",
+    "control_release_tree_sha": "86516a42d6862d1b6f5adf6b3c3dc0b8a32fed6a",
+    "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+    "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+    "worker_branch_prewrite_relation": "IDENTICAL_TO_GENERATION_HEAD",
+    "fresh_evidence": "NONE",
+    "protected_evidence": "NONE",
+    "benchmark_execution": "NONE",
+    "deep_research": "NONE",
+    "scientific_result": "NOT_MEASURED",
+    "self_reread_authority": "NONE_MM06_REQUIRED"
+  },
+  "claim_scope": "Transport-only, replay-only MM04 receipt. Architecture/mechanism performance is NOT_MEASURED; evaluator execution, architecture-surface closure, nonvacuity, omission/exclusion and mutation/ablation remain admission gates for future explicitly fresh-authorized evidence.",
+  "runtime_implementation_implication": "NONE. This worker receipt does not alter Mastermind, Math Foundry, runtime state, benchmark registry, mechanism state, calibration streak, or scientific authority.",
+  "negative_zero_outcomes": [
+    "No benchmark/evaluator execution occurred.",
+    "No fresh evidence was consumed.",
+    "No private manifest or protected payload was read.",
+    "No deep research was performed.",
+    "No calibration credit is earned.",
+    "No architecture success/failure score is inferable from transport-only execution."
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "architecture_surface_closure_gate": "REQUIRED_NOT_MEASURED",
+    "evaluator_execution_validity_gate": "REQUIRED_NOT_MEASURED",
+    "nonvacuity_gate": "REQUIRED_NOT_MEASURED",
+    "omission_exclusion_gate": "REQUIRED_NOT_MEASURED",
+    "mutation_ablation_gate": "REQUIRED_NOT_MEASURED",
+    "dynamic_registration_gate": "REQUIRED_NOT_MEASURED",
+    "reachability_terminal_semantics_gate": "REQUIRED_NOT_MEASURED",
+    "preservation_universe_gate": "REQUIRED_NOT_MEASURED",
+    "origin_task_promotion": "PROHIBITED",
+    "architecture_result": "NOT_MEASURED"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only bootstrap; zero scientific/protected/research cost. GitHub control/branch reads are transport verification, not fresh scientific evidence."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently rereads the exact MM04 branch head/report blob, verifies branch ancestry/path allowlist, Draft 2020-12 schema, strict session equality, public safety, zero-cost semantics, SHA-256 commitment, canonical whole-report HMAC-2 and structural CI status; quarantine on any mismatch."
+}
