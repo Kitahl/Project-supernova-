@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import base64, json, os, re, urllib.parse, urllib.request, urllib.error
+from v25_countable_freeze import missing_countable_control_paths
 
 TOKEN=os.environ.get('GITHUB_TOKEN','')
 REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-')
@@ -55,9 +56,11 @@ def generation_check(state):
         if not isinstance(root,str) or not HEX40.fullmatch(root):e.append('bad control root')
         if a.get('generation_root_sha')!=root:e.append('assignment root mismatch')
         required=set(c.get('required_control_paths',[]))
-        future_required={'PROTOCOL.md','BRANCH_PROTOCOL.md','BRANCH_WORKER_PROTOCOL.md','config/protocol_freeze.json','config/repo_policy.json','config/task_registry_v25.json','benchmark/pool_disposition.json','schemas/branch_verification.schema.json','schemas/branch_integration.schema.json','scripts/reconcile_v25_admission.py','.github/workflows/supernova-v25-admission.yml'}
-        # The current non-countable bootstrap may predate this hardening. Countable future cohorts must freeze it.
-        if c.get('calibration_countable') is True and not future_required.issubset(required):e.append('countable control missing v2.5 frozen carried-defect set')
+        # The current non-countable bootstrap may predate this hardening. Every
+        # future countable cohort must carry the complete frozen v2.5 T0 surface.
+        if c.get('calibration_countable') is True:
+            missing=missing_countable_control_paths(required)
+            if missing:e.append('countable control missing required v2.5 frozen paths: '+','.join(missing))
     except Exception as x:e.append('generation '+str(x))
     return e
 
@@ -92,7 +95,7 @@ def integration_check(state,verifier_head):
         if i.get('task_network_plan_id')!=PLAN or i.get('cohort_id')!=cohort or i.get('generation_head_sha')!=G:e.append('integration identity mismatch')
         if i.get('verification_head_sha')!=verifier_head:e.append('verification head mismatch')
         if i.get('verification_external_ci_context')!='supernova/report-admission' or i.get('verification_external_ci_status')!='PASS' or i.get('verification_external_ci_observed_after_receipt') is not True:e.append('later verifier CI not bound')
-    except Exception as x:e.append('integration '+str(x))
+    except Exception as x:e.append('integrator '+str(x))
     return H,e
 
 def consolidation_check(state,vh,ih):
