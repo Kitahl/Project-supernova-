@@ -2,8 +2,8 @@
 """Out-of-band receipt-deadline monitor for Revision-4 cohorts.
 
 Consumes an explicit frozen cohort liveness contract. It never guesses whether a
-Scheduled Task ran. Missing GitHub receipt after the declared deadline is
-NO_RECEIPT; task cause remains TASK_STATE_UNKNOWN unless inspected separately.
+Scheduled Task ran. Missing GitHub receipt is NO_RECEIPT; it blocks only after the
+declared deadline. Task cause remains TASK_STATE_UNKNOWN unless inspected separately.
 """
 from __future__ import annotations
 import argparse, datetime as dt, json, os, pathlib, urllib.error, urllib.parse, urllib.request
@@ -26,7 +26,7 @@ def evaluate(contract: dict, now: dt.datetime, exists_fn: Callable[[str,str], bo
         elif now>deadline:
             receipt_status='NO_RECEIPT'; late=int((now-deadline).total_seconds()); blocking.append(lane['lane_id'])
         else:
-            receipt_status='RUN_LATE' if lane.get('eligible_before_deadline',False) else 'RUN_OBSERVED'; late=0
+            receipt_status='NO_RECEIPT'; late=0
         observations.append({
             'lane_id':lane['lane_id'],'task_id':None,'associated_chat_ref':None,
             'expected_window_start':lane['expected_window_start_utc'],'expected_window_end':lane['deadline_utc'],
