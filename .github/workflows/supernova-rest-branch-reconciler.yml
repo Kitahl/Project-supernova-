@@ -1,4 +1,4 @@
-name: Supernova v2.5 REST Branch + Admission Reconciler
+name: Supernova REST Branch Reconciler
 
 on:
   push:
@@ -12,27 +12,24 @@ permissions:
   statuses: write
 
 concurrency:
-  group: supernova-v25-rest-reconciler
+  group: supernova-rest-branch-reconciler
   cancel-in-progress: false
 
 jobs:
   reconcile:
     runs-on: ubuntu-latest
     steps:
-      - name: Run exact-main no-dependency reconcilers
+      - name: Run no-dependency REST reconciler
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts
+          SCRIPT_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/scripts/reconcile_branch_rest.py
         run: |
           python3 - <<'PY'
           import os, urllib.request
-          token=os.environ['GITHUB_TOKEN'];base=os.environ['BASE_URL']
-          for name in ('reconcile_branch_rest.py','reconcile_v25_admission.py'):
-              req=urllib.request.Request(f'{base}/{name}')
-              req.add_header('Authorization',f'Bearer {token}')
-              with urllib.request.urlopen(req,timeout=30) as r:
-                  open('/tmp/'+name,'wb').write(r.read())
+          req=urllib.request.Request(os.environ['SCRIPT_URL'])
+          req.add_header('Authorization',f"Bearer {os.environ['GITHUB_TOKEN']}")
+          with urllib.request.urlopen(req,timeout=30) as r:
+              open('/tmp/reconcile_branch_rest.py','wb').write(r.read())
           PY
           python3 /tmp/reconcile_branch_rest.py
-          python3 /tmp/reconcile_v25_admission.py
