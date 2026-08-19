@@ -1,0 +1,109 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-JOINT-V01 | Evidence Verifier",
+    "target_program": "JOINT",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "role_id": "MM06",
+    "goal": "Independently verify the complete active cohort",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "verification_id": "PS-MM06-CAL-BR-006-v251-433ad83a-DIAGNOSTIC",
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "verifier_branch": "ps/verify/CAL-BR-006-v251-433ad83a",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "executive_status": "DIAGNOSTIC_COMPLETE_ALL_12_QUARANTINED_STRUCTURAL_CI_NOT_SUCCESS; CALIBRATION_NONCOUNTABLE; NO_PROMOTION",
+  "safe_report_refs": [],
+  "quarantined_report_refs": [
+    {"worker_id":"MF01","branch":"ps/work/CAL-BR-006-v251-433ad83a/MF01","observed_head_sha":"d6782b9e39b8f0bffc5317b4d2a0da793608a5af","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"d6782b9e39b8f0bffc5317b4d2a0da793608a5af"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MF01.json"},{"path_changing_commit_sha":"d6782b9e39b8f0bffc5317b4d2a0da793608a5af"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MF02","branch":"ps/work/CAL-BR-006-v251-433ad83a/MF02","observed_head_sha":"79b892e638bef9cfa7523c6e938f5c42d5aaca43","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"79b892e638bef9cfa7523c6e938f5c42d5aaca43"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MF02.json"},{"path_changing_commit_sha":"79b892e638bef9cfa7523c6e938f5c42d5aaca43"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MF03","branch":"ps/work/CAL-BR-006-v251-433ad83a/MF03","observed_head_sha":"482ea7e125fc8e6a7d108a85d98d4cad8538226a","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"482ea7e125fc8e6a7d108a85d98d4cad8538226a"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MF03.json"},{"path_changing_commit_sha":"482ea7e125fc8e6a7d108a85d98d4cad8538226a"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MF04","branch":"ps/work/CAL-BR-006-v251-433ad83a/MF04","observed_head_sha":"919ea7a2edfda37dc578bb6ccdda5012c2d34278","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"919ea7a2edfda37dc578bb6ccdda5012c2d34278"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MF04.json"},{"path_changing_commit_sha":"919ea7a2edfda37dc578bb6ccdda5012c2d34278"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MF05","branch":"ps/work/CAL-BR-006-v251-433ad83a/MF05","observed_head_sha":"1d8a3b44beb5fc3ab286390829d5984ae3ca10bb","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"1d8a3b44beb5fc3ab286390829d5984ae3ca10bb"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MF05.json"},{"path_changing_commit_sha":"1d8a3b44beb5fc3ab286390829d5984ae3ca10bb"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MM01","branch":"ps/work/CAL-BR-006-v251-433ad83a/MM01","observed_head_sha":"bbfa5bae05128d170925b797ccd8681e555f24cd","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"bbfa5bae05128d170925b797ccd8681e555f24cd"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MM01.json"},{"path_changing_commit_sha":"bbfa5bae05128d170925b797ccd8681e555f24cd"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MM02","branch":"ps/work/CAL-BR-006-v251-433ad83a/MM02","observed_head_sha":"9e1ef90b63bb8a46906d8134ac205447b27b0b10","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"9e1ef90b63bb8a46906d8134ac205447b27b0b10"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MM02.json"},{"path_changing_commit_sha":"9e1ef90b63bb8a46906d8134ac205447b27b0b10"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MM03","branch":"ps/work/CAL-BR-006-v251-433ad83a/MM03","observed_head_sha":"ef5c71eae939705bf368245b372a276989dc6cf5","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"ef5c71eae939705bf368245b372a276989dc6cf5"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MM03.json"},{"path_changing_commit_sha":"ef5c71eae939705bf368245b372a276989dc6cf5"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MM04","branch":"ps/work/CAL-BR-006-v251-433ad83a/MM04","observed_head_sha":"49894cfbdd14348b170980035464e303c42b34df","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"49894cfbdd14348b170980035464e303c42b34df"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MM04.json"},{"path_changing_commit_sha":"49894cfbdd14348b170980035464e303c42b34df"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MM05","branch":"ps/work/CAL-BR-006-v251-433ad83a/MM05","observed_head_sha":"13a66375f6b22923e8c93b2202d234f7f23202dc","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"13a66375f6b22923e8c93b2202d234f7f23202dc"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MM05.json"},{"path_changing_commit_sha":"13a66375f6b22923e8c93b2202d234f7f23202dc"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"MM07","branch":"ps/work/CAL-BR-006-v251-433ad83a/MM07","observed_head_sha":"b4f6e67c520f3d6d12de0751bdfccfc2296f05bb","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"b4f6e67c520f3d6d12de0751bdfccfc2296f05bb"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/MM07.json"},{"path_changing_commit_sha":"b4f6e67c520f3d6d12de0751bdfccfc2296f05bb"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"},
+    {"worker_id":"EXT01","branch":"ps/work/CAL-BR-006-v251-433ad83a/EXT01","observed_head_sha":"9a75a1793a996fdad327d801ad7ab7e43c133417","reason_code":"STRUCTURAL_CI_NOT_SUCCESS","summary":"Exact worker head descends from G by exactly one commit changing only its assigned report path, but supernova/branch-worker=success is absent on the exact head. The cohort generation itself has supernova/branch-generation=failure. Report cannot enter safe set.","evidence_refs":[{"generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"},{"worker_head_sha":"9a75a1793a996fdad327d801ad7ab7e43c133417"},{"report_path":"reports/CAL-BR-006-v251-433ad83a/EXT01.json"},{"path_changing_commit_sha":"9a75a1793a996fdad327d801ad7ab7e43c133417"},{"post_generation_commit_count":1},{"worker_structural_status":"NOT_OBSERVED"},{"generation_structural_status":"FAILURE"}],"disposition":"QUARANTINE_DIAGNOSTIC_NONCOUNTABLE_NO_PROMOTION"}
+  ],
+  "missing_workers": [],
+  "worker_auth_verification": {
+    "scheme_required": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+    "public_commitment_secret_sha256_checks": {
+      "passed": 12,
+      "failed": 0,
+      "workers": {"MF01":true,"MF02":true,"MF03":true,"MF04":true,"MF05":true,"MM01":true,"MM02":true,"MM03":true,"MM04":true,"MM05":true,"MM07":true,"EXT01":true}
+    },
+    "actual_report_hmac_admission_checks": {
+      "status": "SHORT_CIRCUITED_AFTER_MANDATORY_STRUCTURAL_CI_REJECTION",
+      "safe_auth_claims_made": 0,
+      "note": "No quarantined report is marked auth_valid or safe. Structural CI is a mandatory prerequisite and failed/was absent for every exact worker head. The verifier did not promote worker-origin HMAC claims as independent evidence."
+    },
+    "negative_hmac_mutation_probe": "PASS_REJECT_STALE_PROOF",
+    "frozen_worker_auth_metadata_note": "config/worker_auth.json retains a legacy scheme label, while BRANCH_PROTOCOL.md, BRANCH_WORKER_PROTOCOL.md, branch/CONFIG.json and the frozen report schema require CANONICAL-REPORT-2."
+  },
+  "task_ledger": [
+    {"task":"canonical_pointer","status":"PASS","detail":"main:state/CURRENT.json resolves exact protocol 2.5, expected plan, BRANCH_GITOPS, generation 6 and active non-superseded cohort."},
+    {"task":"frozen_control_release","status":"PASS","detail":"Control-release commit/tree match; release-to-G changes only this cohort control and assignment, so all 30 required frozen control paths retain release blobs."},
+    {"task":"verifier_branch_prewrite","status":"PASS","detail":"Verifier branch existed at exact G and verification path was absent."},
+    {"task":"worker_branch_presence","status":"PASS","detail":"All 12 assigned worker branches exist."},
+    {"task":"worker_branch_ancestry_and_diff","status":"PASS","detail":"12/12 are exactly one commit ahead of G, behind_by=0, changing exactly reports/<cohort>/<worker>.json."},
+    {"task":"report_path_history","status":"PASS","detail":"12/12 have exactly one post-G/path-changing commit; each exact worker head is that non-null 40-hex creation commit, so there is no later report mutation in branch history."},
+    {"task":"worker_structural_ci","status":"FAIL","detail":"0/12 exact worker heads expose required supernova/branch-worker=success; all returned no classic statuses."},
+    {"task":"generation_structural_ci","status":"FAIL","detail":"Exact G has supernova/branch-generation=failure."},
+    {"task":"public_auth_commitments","status":"PASS","detail":"12/12 prompt-private secret SHA-256 values match frozen public commitments; no secret persisted or emitted."},
+    {"task":"actual_report_hmac_safe_admission","status":"NOT_REACHED","detail":"Mandatory structural CI rejection precedes safe admission; no actual report receives auth_valid=true or enters safe set."},
+    {"task":"negative_probe_suite","status":"PASS","detail":"All required in-memory malformed-report/history probes rejected under pinned jsonschema 4.26.0 plus MM06 strict identity/session/HMAC/history checks."},
+    {"task":"calibration_credit","status":"FORCED_FALSE","detail":"Frozen control and assignment set calibration_countable=false and repository source policy remains unverified/blocking."}
+  ],
+  "issue_ledger": [
+    {"issue_id":"O-T0-GENERATION-STRUCTURAL-CI","severity":"BLOCKING","status":"FAILURE_OBSERVED","detail":"supernova/branch-generation=failure on exact frozen G."},
+    {"issue_id":"O-T0-WORKER-STRUCTURAL-CI","severity":"BLOCKING","status":"0_OF_12_SUCCESS","detail":"No exact worker head has the mandatory supernova/branch-worker=success status."},
+    {"issue_id":"O-T0-REPO-SOURCE-POLICY","severity":"BLOCKING","status":"UNVERIFIED","detail":"Current GitHub metadata reports main protected=true but branch protection status-check enforcement is off/empty; intended source-bound required status policy is not independently established."},
+    {"issue_id":"O-T0-NONCOUNTABLE-BOOTSTRAP","severity":"BLOCKING_FOR_CREDIT","status":"BY_DESIGN","detail":"Frozen control and assignment explicitly set calibration_countable=false."},
+    {"issue_id":"O-T0-AUTH-METADATA-DRIFT","severity":"CONTROL_HYGIENE","status":"OPEN","detail":"Frozen config/worker_auth.json labels legacy WORKER-PROOF-1 while authoritative BRANCH_GITOPS protocol/config/report schema require CANONICAL-REPORT-2."},
+    {"issue_id":"O-T0-STRICT-SESSION-MODE-GAP","severity":"HIGH","status":"CONFIRMED","detail":"Frozen scripts/validate_branch_bus_v251.py omits session_header.execution_mode from its exact session map and checks only top-level mode. MM06 strict checking rejects this contradiction; successor frozen structural validator must close it before countable cohort 1."},
+    {"issue_id":"O-T0-OLDER-VERIFIER-SCHEMA","severity":"BLOCKING_FOR_COUNTABLE_CALIBRATION","status":"DIAGNOSTIC_ONLY","detail":"Frozen generation carries the older v2.5 branch verification schema without PRE_CI/report-admission temporal fields; per frozen verifier policy this receipt remains diagnostic/non-countable."}
+  ],
+  "test_ledger": [
+    {"test":"all_assigned_worker_branches_present","result":"PASS","observed":"12/12"},
+    {"test":"generation_ancestry","result":"PASS","observed":"12/12 ahead_by=1, behind_by=0 from G"},
+    {"test":"single_allowed_path_diff","result":"PASS","observed":"12/12"},
+    {"test":"single_path_changing_commit","result":"PASS","observed":"12/12 exactly one post-G commit; exact head is creation/path-changing commit"},
+    {"test":"required_worker_ci_context","result":"FAIL","observed":"0/12 supernova/branch-worker=success"},
+    {"test":"required_generation_ci_context","result":"FAIL","observed":"supernova/branch-generation=failure"},
+    {"test":"secret_to_public_commitment","result":"PASS","observed":"12/12"},
+    {"test":"pinned_validation_runtime","result":"PASS","observed":"CPython 3.13; jsonschema 4.26.0 matches frozen requirements-validation.lock"},
+    {"test":"NEG_missing_required_field","result":"PASS_REJECTED"},
+    {"test":"NEG_extra_top_level_field","result":"PASS_REJECTED"},
+    {"test":"NEG_wrong_phase_goal","result":"PASS_REJECTED"},
+    {"test":"NEG_wrong_identity","result":"PASS_REJECTED"},
+    {"test":"NEG_changed_evidence_cost_with_stale_proof","result":"PASS_REJECTED"},
+    {"test":"NEG_multiple_report_path_changing_commits","result":"PASS_REJECTED"},
+    {"test":"NEG_session_execution_mode_contradiction","result":"PASS_REJECTED"}
+  ],
+  "plan_alignment": [
+    "Protocol remains exactly 2.5; no 2.6 adoption.",
+    "Branch GitOps isolation is preserved.",
+    "All worker branches are single-report branches descended from immutable G.",
+    "SAFE_REPLAY_ONLY and zero fresh/protected/benchmark/deep-research work are preserved by the cohort reports inspected.",
+    "No scientific/runtime/benchmark/state promotion is made.",
+    "No calibration credit can be earned because the bootstrap is frozen non-countable and repository/source policy is not independently qualified.",
+    "Mastermind and Math Foundry benchmark cursors are unchanged by MM06."
+  ],
+  "research_questions": [],
+  "calibration_pass": false,
+  "verdict": "VERIFIED_WITH_QUARANTINES",
+  "next_action": "Treat this verification as diagnostic only. Do not integrate or count any worker report. External reconciliation must establish source-bound repository protection and exact-head structural contexts; the first countable v2.5 generation must freeze the hardened admission set, including strict session execution_mode equality and temporal post-write report-admission semantics. Two clean countable v2.5 cohorts are still required before any 2.6 or fresh scientific transition."
+}
