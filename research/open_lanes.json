@@ -1,16 +1,39 @@
 {
-  "schema_version": "PS-RESEARCH-LANE-GATE-1",
+  "schema_version": "PS-RESEARCH-LANE-GATE-2",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "protocol_version": "2.5",
+  "specification_revision": 4,
   "t0_qualified": false,
   "open_lanes": [
     {
       "lane_id": "T0-TRANSPORT-CLOSURE",
       "status": "OPEN",
       "allowed_at_research_slots": true,
-      "scope": "Repository protection/source-bound admission verification, three-context CI, verifier/integrator/consolidation transport closure, and cheapest falsifiers that can unblock two clean v2.5 cohorts."
+      "scope": "Repository protection/source-bound admission verification, three-context CI, MM06/MF06/BIL00 end-to-end closure, liveness/deadline failure analysis, and cheapest transport falsifiers needed for two clean countable v2.5 cohorts."
     }
   ],
-  "queued_until_t0": ["STAGE_MINUS_1_NON_T0_EXPANSION","OCN_0A_0B_LITERATURE_EXPANSION","E1_ROUTE_SCHEDULE_RESEARCH","REACTION_DR03_EXPANSION","SELECTOR_VOC_RESEARCH","GOAL2_E5B_RESEARCH"],
-  "rule": "BIL00 performs deep research at 00:58/12:58 only when at least one accepted open lane has allowed_at_research_slots=true. While t0_qualified=false, only T0-TRANSPORT-CLOSURE may be open."
+  "queued_until_t0": [
+    "STAGE_MINUS_1_NON_T0_RESEARCH_EXPANSION",
+    "OCN_0A_0B_LITERATURE_EXPANSION",
+    "E1_ROUTE_SCHEDULE_RESEARCH",
+    "SN_COMPARE_RESEARCH",
+    "SN_CONSEQUENCE_GAMMA_RESEARCH",
+    "FACTOR_0_RESEARCH",
+    "SN_HORIZON_RESEARCH",
+    "SN_WORLD_RESEARCH",
+    "REACTION_DR03_EXPANSION",
+    "SELECTOR_VOC_RESEARCH",
+    "T3_RW_T5_RESEARCH",
+    "GOAL2_DR27_E5B_RESEARCH"
+  ],
+  "nonresearch_engineering_allowed_while_t0_open": [
+    "H0_SYNTHETIC_WORLDS",
+    "H1_SOUND_INTERVAL_KERNEL",
+    "CASCADE_HORIZON_THEOREM_DRAFTING",
+    "OCN_0A_SOURCE_AWARE_COSTING",
+    "RETRO_0_CID_0_ON_CONSUMED_DATA",
+    "TYPED_EVENT_EXTRACTOR",
+    "LIVENESS_AND_VERIFIER_ASSURANCE_HARDENING"
+  ],
+  "rule": "BIL00 deep research runs only at 00:58/12:58 America/Vancouver and only when an accepted open lane allows it. While t0_qualified=false, only T0-TRANSPORT-CLOSURE may be open. Nonresearch engineering listed above does not create a new scheduled research lane or scientific promotion."
 }
