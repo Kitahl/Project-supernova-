@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import json,os,pathlib,subprocess,sys
-ROOT=pathlib.Path(__file__).resolve().parents[1]
+TRUSTED_ROOT=pathlib.Path(__file__).resolve().parents[1]
+ROOT=pathlib.Path(os.environ.get("SUPERNOVA_VALIDATE_ROOT",str(TRUSTED_ROOT))).resolve()
 CONTROL_PREFIXES=("state/","control/","assignments/","superseded/","benchmark/registry.json","plan/PLAN.json","PROTOCOL.md","WORKER_PROTOCOL.md","SESSION_STANDARD.md","config/","schemas/","scripts/","tests/",".github/workflows/")
 def git(*args):
  p=subprocess.run(["git","-C",str(ROOT),*args],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False);return p.returncode,p.stdout.strip(),p.stderr.strip()

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import json,pathlib,re,subprocess,sys
-ROOT=pathlib.Path(__file__).resolve().parents[1];HEX40=re.compile(r"^[0-9a-f]{40}$")
+import json,os,pathlib,re,subprocess,sys
+TRUSTED_ROOT=pathlib.Path(__file__).resolve().parents[1]
+ROOT=pathlib.Path(os.environ.get("SUPERNOVA_VALIDATE_ROOT",str(TRUSTED_ROOT))).resolve()
+HEX40=re.compile(r"^[0-9a-f]{40}$")
 RUNTIME=("base_runtime_state_id","runtime_state_id","foundry_sha256","mastermind_sha256","actual_runtime_plan_id","canonical_bus_repo","private_vault_repo")
 def git(root,*args):
  p=subprocess.run(["git","-C",str(root),*args],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False);return p.returncode,p.stdout.strip(),p.stderr.strip()

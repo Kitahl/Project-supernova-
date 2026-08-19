@@ -1,0 +1,30 @@
+{
+  "schema_version": "PS-ADMISSION-AUTHORITY-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "required_status_creator": "github-actions[bot]",
+  "candidate_code_execution_with_status_write_token": "FORBIDDEN",
+  "candidate_bytes_treatment": "DATA_ONLY_UNDER_TRUSTED_MAIN_VALIDATORS",
+  "trusted_reconciler": "scripts/reconcile_open_prs.py",
+  "trusted_validator_entrypoints": [
+    "scripts/validate_bus.py",
+    "scripts/parent_lineage_guard.py",
+    "scripts/transition_guard.py"
+  ],
+  "authoritative_status_workflows": [
+    ".github/workflows/supernova-pr-target-admission.yml",
+    ".github/workflows/supernova-comment-admission.yml",
+    ".github/workflows/supernova-open-pr-reconciler.yml"
+  ],
+  "candidate_diagnostic_workflow": ".github/workflows/supernova-v25-admission.yml",
+  "authority_change_rule": "A PR changing admission-authority bytes cannot self-admit. Before countable cohort 1 it may be installed only as an explicitly non-countable owner bootstrap; after a streak begins it resets the streak and requires a new trusted bootstrap before new countable cohorts.",
+  "same_repository_required": true,
+  "owner_authored_required_for_privileged_reconciliation": true,
+  "exact_current_main_ancestor_required": true,
+  "non_regular_git_objects_for_candidate_changes": "REJECT",
+  "required_contexts": [
+    "supernova/static-control",
+    "supernova/report-admission",
+    "supernova/transition-admission"
+  ]
+}
