@@ -1,0 +1,20 @@
+{
+  "schema_version": "PS-REV4-SOURCE-INTEGRITY-1",
+  "canonical_source_name": "PROJECT_SUPERNOVA_REV4_INTEGRATED_EXECUTION_AND_SESSION_LAUNCH_2026-08-19.md",
+  "source_sha256": "8f84cce784507b2beb300fedc1362f36f5e82fa2b4d9d7f586cbcb8eecb415d3",
+  "source_bytes": 139992,
+  "protocol": "2.5",
+  "specification_revision": 4,
+  "date": "2026-08-19",
+  "timezone": "America/Vancouver",
+  "supersedes_where_conflicting": [
+    "Design Guide V3 (2026-08-18)",
+    "29-page Construction & Operations Specification (2026-08-18)",
+    "earlier Revision 4 drafts"
+  ],
+  "change_class": "ARCHITECTURAL_RECONCILIATION + OPERATIONAL_HARDENING + SESSION_HANDOFF",
+  "protocol_changed": false,
+  "scientific_evidence_status_changed": false,
+  "new_research_lanes": false,
+  "design_freeze_preserved": true
+}
