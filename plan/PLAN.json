@@ -1,15 +1,150 @@
 {
-  "protocol_version":"2.5",
-  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
-  "authority_model":"External scheduled experiment/referee/research network only; Math Foundry owns mathematical/runtime truth; Mastermind is PRE_REVIEW_ONLY.",
-  "current_stage":"T0_BRANCH_GITOPS_REPOSITORY_PROTECTION_THEN_TWO_CLEAN_COHORTS",
-  "dual_goals":{"goal_1":{"name":"FINITE_VERIFIED_REACTION_CASCADE","success":"Finite fresh verified cascade beats ordinary/static/random controls at equal complete resource cost."},"goal_2":{"name":"IMPROVER_OF_IMPROVER","opens_after":"goal_1_pass","separation":["solver_F","memory_M","improver_I"],"success":"I_(t+1) beats I_t from identical untouched start with matched complete R&D budget, controlled memory, identical allowed model/tools/environment and fresh independent evaluation."}},
-  "runtime_priority":["T0 protected branch-GitOps bus + two clean cohorts","E1 stable problem/arm/action/schedule/verifier/cost truth and BASE/SBS/VBS_single/AUTO/VBS_schedule","G1 fresh one-generation gain","C1 VerifiedProduct/ProductUseCertificate","ReactionRecord + DR03 causal semantics","E3 learned/random/no-change","collision selector","ignition/value-of-computation","finite Goal-1 cascade","Goal-2 improver-of-improver","E6 independent capability admission"],
-  "workers":["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],"verifier":"MM06","integrator":"MF06","director":"BIL00",
-  "persistent_task_sessions":true,"standardized_session_naming":"SESSION_STANDARD.md",
-  "model_execution_target":{"model":"GPT-5.6 Sol","reasoning_effort":"EXTRA_HIGH","automation_api_can_enforce":false,"rule":"Request target and report observed binding honestly; fresh model-sensitive promotion requires frozen binding evidence."},
-  "deep_research":{"owner":"BIL00","times_vancouver":["00:58","12:58"],"other_tasks_prohibited":true,"input_rule":"MM06-safe + MF06-integrated questions and unresolved accepted research only","promotion_authority":false},
-  "transport":{"mode":"BRANCH_GITOPS","canonical_state":"main:state/CURRENT.json","public_bus_repo":"Kitahl/Project-supernova-","private_vault_repo":"Kitahl/thoma","generation_immutable":true,"worker_branch_isolation":true,"verifier_branch_isolation":true,"integrator_branch_isolation":true,"single_consolidation_pr":true,"whole_report_hmac":"PS-HMAC-SHA256-CANONICAL-REPORT-2","scheduled_ci_reconciler":true,"default_branch_protection_required":true,"two_clean_calibration_cohorts_required":true,"fresh_fail_closed":true},
-  "benchmark_succession":{"registry":"benchmark/registry.json","program_lanes_advance_independently":true,"completion_requires_all_frozen_units_terminal":true,"terminal_is_not_success":true,"successor_requires_preflight_and_private_preoutcome_freeze":true,"registry_exhaustion_enters":"BENCHMARK_DISCOVERY_WAIT"},
-  "goal2_control":{"requires_same_start":true,"matched_complete_rd_budget":true,"memory_carryover_control":true,"fresh_independent_evaluation":true,"better_solver_or_more_memory_is_not_sufficient":true}
+  "protocol_version": "2.5",
+  "specification_revision": 4,
+  "design_freeze": {
+    "no_protocol_2_6_until_calibration_streak": 2,
+    "no_spec_revision_5_until_calibration_streak": 2,
+    "mid_streak_authoritative_change_resets_streak": true
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "authority_model": "Frozen-authority controller. Math Foundry is sole execution/mathematical authority; Mastermind is PRE_REVIEW_ONLY; Tribunal/Court owns scientific promotion; GitHub/tasks are transport and evidence infrastructure only.",
+  "canonical_definition": "Treat independently verified mathematical products as resources enabling further executable operations; gate continuation by certified value-of-computation; admit improvements only through prospective matched-complete-cost tests. Finite cascade soundness is mandatory; amplification is measured rather than assumed; improver improvement is empirical.",
+  "ignition_semantics": "CERTIFIED_VALUE_GATED_CONTINUATION_NOT_CRITICALITY",
+  "current_stage": "T0_BRANCH_GITOPS_TWO_CLEAN_COUNTABLE_COHORTS_WITH_PARALLEL_NONADMISSIBLE_DIAGNOSTICS",
+  "dual_goals": {
+    "goal_1": {
+      "name": "FINITE_VERIFIED_REACTION_CASCADE",
+      "success": "Finite fresh independently verified within-problem cascade beats strong controls at equal complete cost."
+    },
+    "goal_2": {
+      "name": "IMPROVER_OF_IMPROVER",
+      "opens_after": "GOAL1_G8_PASS",
+      "separation": ["solver_F", "memory_M", "improver_I"],
+      "success": "I_(t+1) beats I_t from identical untouched F* with matched complete R&D budget, controlled memory, identical allowed model/tools/sandbox/referee and fresh independent evaluation."
+    }
+  },
+  "architecture": {
+    "trusted_core": [
+      "EXACT_OPERATOR_CONTRACT_ENGINE_E_LAMBDA",
+      "SOUND_VIABILITY_DEADNESS_AND_COST_LOWER_BOUNDS",
+      "VERIFIED_PRODUCT_ENABLEMENT_AND_DIRECT_VALUE_PRIORS",
+      "CLASS_AWARE_REAL_MULTIFIDELITY_SUCCESSIVE_HALVING",
+      "SN_COMPARE_UNBLENDED_PATH_AND_POLICY_ESTIMANDS",
+      "CALIBRATED_BEHAVIOURAL_NONINTERFERENCE",
+      "REAL_FOUNDRY_EXECUTION_INDEPENDENT_VERIFICATION_STATEMENT_FIDELITY_PRODUCT_ADMISSION"
+    ],
+    "hard_prune_authority": ["EXACT_OPERATOR_CONTRACT_ENGINE_E_LAMBDA", "SOUND_VIABILITY_DEADNESS_AND_COST_LOWER_BOUNDS"],
+    "frontier": {
+      "execution_authority": false,
+      "target": "SN_HORIZON_TYPED_INTERVAL_METAPLANNER",
+      "evidence_order": ["SOUND_BOUNDS", "REAL_PROBES", "SN_COMPARE", "ONE_STEP_VALUE_OUTCOME_HEADS", "DIRECT_HORIZON_PLAN_PREDICTION", "SHORT_RESIDUAL_SN_WORLD_ROLLOUTS"],
+      "sn_world_ruling": "FRONTIER_ONLY_ORACLE_WORLD_FIRST",
+      "core_admission_gates": ["SNW_0", "SNW_1", "SNW_2", "SNW_3", "SNW_4", "SNW_5"]
+    }
+  },
+  "design_invariants": [
+    "FINITE_HORIZON_H_B_LAMBDA_OR_DIAGNOSTIC_ONLY",
+    "POSITIVE_RELAXED_REACHABILITY_IS_NO_INFORMATION",
+    "COST_RELATIVE_KILL_RULES_ONLY",
+    "REPORT_PREDICTIVE_ACCURACY_CALIBRATION_AND_USABLE_INTERVENTION_COVERAGE",
+    "CONTINUOUS_EFFECT_SIZES_AND_COMPLETE_COST",
+    "SYMMETRIC_FIDELITY_REGIME",
+    "KERNEL_VALID_ORTHOGONAL_TO_STATEMENT_FIDELITY",
+    "TRIANGLE_INEQUALITY_DEFAULT_FOR_LEARNED_ERROR"
+  ],
+  "immediate_parallel_work": [
+    "T0_SOURCE_BOUND_RULESET_AND_TWO_CLEAN_COHORTS",
+    "STAGE_MINUS_1_POOL_GOVERNANCE_AND_RESERVOIR_SIZING",
+    "OCN_0A_FIVE_OPERATOR_COSTING_PILOT_ON_EXISTING_DATA",
+    "CID_0_CONTRACT_IDENTIFIABILITY_ON_EXISTING_DATA",
+    "RETRO_0_WASTE_BRACKET_ON_EXISTING_FAILURES",
+    "CASCADE_SOUNDNESS_PARTS_1_2"
+  ],
+  "stage_sequence": [
+    {"stage": "-1", "name": "GOVERNANCE", "admissibility": "PREREQUISITE_NON_PROMOTION", "content": "Seal TRAIN_TUNING/CALIBRATION/G1_PROSPECTIVE/G8_CASCADE/GOAL2_E5B/RESEARCH_FROZEN, commit-reveal/procedural generation, size FRESH-0/POWER-0."},
+    {"stage": "0A", "name": "OCN_CID", "admissibility": "NON_ADMISSIBLE_DIAGNOSTIC"},
+    {"stage": "0B", "name": "INHERITED_RELAXED_REACHABILITY", "admissibility": "NON_ADMISSIBLE_DIAGNOSTIC"},
+    {"stage": "0C", "name": "COST_BOUNDED_REACHABILITY", "admissibility": "NON_ADMISSIBLE_DIAGNOSTIC"},
+    {"stage": "0D", "name": "RETRO_MF_0R", "admissibility": "NON_ADMISSIBLE_DIAGNOSTIC"},
+    {"stage": "0E", "name": "SYNTHETIC_QUALIFICATION", "admissibility": "NON_ADMISSIBLE_DIAGNOSTIC"},
+    {"stage": "0F", "name": "MF_0X_COMPARE_0_ORACLE_WORLD", "admissibility": "NON_ADMISSIBLE_DIAGNOSTIC"},
+    {"stage": "0G", "name": "TARGETED_CAUSAL_CENSUS", "admissibility": "NON_ADMISSIBLE_DIAGNOSTIC"},
+    {"stage": "T0_E1", "name": "BUS_QUALIFICATION_AND_ORACLE_MATRIX", "admissibility": "FIRST_ADMISSIBLE_PROGRAMME_EVIDENCE"},
+    {"stage": "G1", "name": "ONE_GENERATION_PROSPECTIVE_GAIN", "admissibility": "ADMISSIBLE"},
+    {"stage": "C1", "name": "VERIFIED_PRODUCT_CLOSURE", "admissibility": "ADMISSIBLE"},
+    {"stage": "E3", "name": "MASTERMINDED_MECHANISM_CONTROLS", "admissibility": "ADMISSIBLE"},
+    {"stage": "SELECT_VOC", "name": "SELECTOR_AND_VALUE_OF_COMPUTATION", "admissibility": "ADMISSIBLE"},
+    {"stage": "G8", "name": "FINITE_GOAL1_CASCADE", "admissibility": "ADMISSIBLE"},
+    {"stage": "E5B", "name": "IMPROVER_OF_IMPROVER", "admissibility": "ADMISSIBLE_AFTER_G8"},
+    {"stage": "E6", "name": "INDEPENDENT_CAPABILITY_ADMISSION", "admissibility": "FUTURE"}
+  ],
+  "control_ladder": {
+    "B0": "CURRENT_FOUNDRY",
+    "B1": "EXACT_STRUCTURAL_CONTROLLER",
+    "B2": "B1_PLUS_REAL_MULTIFIDELITY_RACING",
+    "B3": "B2_PLUS_SN_COMPARE",
+    "B4": "B3_PLUS_ONE_STEP_PREDICTIVE_HEADS",
+    "B5": "B4_PLUS_MULTISTEP_SN_WORLD",
+    "required_incremental_reports": ["B2_MINUS_B0", "B3_MINUS_B2", "B4_MINUS_B3", "B5_MINUS_MAX_B2_B3_B4"]
+  },
+  "enablement": {
+    "primary": ["GENERATION_SPECIFIC_CAUSAL_K_PLUS_AND_K_MINUS_SEPARATE", "G_H_UNIQ", "DELTA_U_H_AT_MATCHED_BUDGET"],
+    "pairwise_rho": "DIAGNOSTIC_ONLY_AFTER_ADEQUACY_NO_KILL_GATE",
+    "multitype_resolvent": "I_MINUS_K_INVERSE_ONLY_UNDER_MODEL_ASSUMPTIONS",
+    "placebos_separate": ["TRANSPORT_PLACEBO", "COARSE_TYPE_SEMANTIC_PLACEBO"],
+    "replay_estimands_separate": ["PATH_CONDITIONED_KNOCKOUT", "FREE_REPLANNING_REGIME"]
+  },
+  "workers": ["MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"],
+  "verifier": "MM06",
+  "integrator": "MF06",
+  "director": "BIL00",
+  "persistent_task_sessions": true,
+  "standardized_session_naming": "SESSION_STANDARD.md",
+  "model_execution_target": {
+    "model": "GPT-5.6 Sol",
+    "reasoning_effort": "EXTRA_HIGH",
+    "automation_api_can_enforce": false,
+    "rule": "Request target and report observed binding honestly; fresh model-sensitive promotion requires frozen observed binding evidence."
+  },
+  "deep_research": {
+    "owner": "BIL00",
+    "times_vancouver": ["00:58", "12:58"],
+    "other_tasks_prohibited": true,
+    "open_lane_required": true,
+    "while_t0_unqualified_only_lane": "T0_TRANSPORT_CLOSURE",
+    "queued": ["SN_HORIZON", "SN_WORLD", "E1", "REACTION_DR03", "SELECTOR_VOC", "GOAL2_E5B"],
+    "promotion_authority": false
+  },
+  "transport": {
+    "mode": "BRANCH_GITOPS",
+    "canonical_state": "main:state/CURRENT.json",
+    "public_bus_repo": "Kitahl/Project-supernova-",
+    "private_vault_repo": "Kitahl/thoma",
+    "generation_immutable": true,
+    "worker_branch_isolation": true,
+    "verifier_branch_isolation": true,
+    "integrator_branch_isolation": true,
+    "single_consolidation_pr": true,
+    "whole_report_hmac": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+    "required_admission_contexts": ["supernova/static-control", "supernova/report-admission", "supernova/transition-admission"],
+    "two_clean_calibration_cohorts_required": true,
+    "fresh_fail_closed": true
+  },
+  "benchmark_succession": {
+    "registry": "benchmark/registry.json",
+    "pool_disposition": "benchmark/pool_disposition.json",
+    "program_lanes_advance_independently": true,
+    "development_or_calibration_never_recycled_into_promotion": true,
+    "completion_requires_all_frozen_units_terminal": true,
+    "terminal_is_not_success": true,
+    "successor_requires_preflight_and_private_preoutcome_freeze": true,
+    "registry_exhaustion_enters": "BENCHMARK_DISCOVERY_WAIT"
+  },
+  "goal2_control": {
+    "requires_same_start": true,
+    "matched_complete_rd_budget": true,
+    "memory_policy_2x2_control": true,
+    "fresh_independent_evaluation": true,
+    "better_solver_or_more_memory_is_not_sufficient": true
+  }
 }
