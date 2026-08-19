@@ -10,12 +10,21 @@ def post(sha,context,state,description):
  body=json.dumps({'state':state,'context':context,'description':description[:140]}).encode();req=urllib.request.Request(f'https://api.github.com/repos/{REPO}/statuses/{sha}',data=body,method='POST');req.add_header('Authorization',f'Bearer {TOKEN}');req.add_header('Accept','application/vnd.github+json');req.add_header('X-GitHub-Api-Version','2022-11-28');urllib.request.urlopen(req).read()
 def remote_head(branch):
  rc,out,_=git('rev-parse',f'refs/remotes/origin/{branch}');return out if rc==0 else None
+def summarize_validator_output(output:str)->str:
+ lines=[x.strip() for x in output.splitlines() if x.strip()]
+ for line in lines:
+  if line.startswith('- '):return line[2:]
+ if lines:return lines[-1]
+ return 'validator failed with no output'
 def validate(branch,generation_head):
  rc,out,err=git('checkout','--detach',remote_head(branch) or generation_head)
- if rc:return False,'checkout failed'
+ if rc:return False,f'checkout failed: {err or out}'
  p=subprocess.run([sys.executable,'scripts/validate_branch_bus_v251.py','--branch',branch,'--generation-head',generation_head],cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
- line=(p.stdout.strip().splitlines()[-1] if p.stdout.strip() else 'validator failed')
- return p.returncode==0,line
+ raw=p.stdout.strip()
+ print(f'::group::Supernova validator {branch} @ {generation_head}')
+ print(raw or '<no validator output>')
+ print('::endgroup::')
+ return p.returncode==0,summarize_validator_output(raw)
 def main():
  git('fetch','--prune','origin','+refs/heads/ps/*:refs/remotes/origin/ps/*')
  git('checkout','--detach','origin/main')
@@ -24,9 +33,11 @@ def main():
   print('No active branch-GitOps state; nothing to reconcile.');return 0
  cohort=state['active_cohort_id'];G=state['generation_head_sha'];gen=state['generation_branch']
  h=remote_head(gen)
- if h!=G:post(G,'supernova/branch-generation','failure','generation branch missing or moved')
+ if h!=G:
+  msg=f'generation branch missing or moved: observed={h} expected={G}'
+  print(msg);post(G,'supernova/branch-generation','failure',msg)
  else:
-  ok,msg=validate(gen,G);post(G,'supernova/branch-generation','success' if ok else 'failure',msg)
+  ok,msg=validate(gen,G);print(f'branch-generation {"PASS" if ok else "FAIL"}: {msg}');post(G,'supernova/branch-generation','success' if ok else 'failure',msg)
  for worker,branch in state['worker_branches'].items():
   h=remote_head(branch)
   if h is None:continue
