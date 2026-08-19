@@ -1,0 +1,183 @@
+{
+  "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-v251-433ad83a",
+  "claim_scope": "Transport/report-contract evidence only. No scientific, benchmark-performance, calibration-credit, or Goal-2 improver claim is made.",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+  "control_manifest_id": "CTRL-CAL-BR-006-v251-433ad83a",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay-only transport receipt; no fresh/private/benchmark/research work and no calibration credit.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "benchmark_executed": false,
+    "canonical_pointer": "main:state/CURRENT.json",
+    "control_release_commit_sha": "a673507d01a8664f54fe3ee4ad262fdb7785121a",
+    "control_release_tree_sha": "86516a42d6862d1b6f5adf6b3c3dc0b8a32fed6a",
+    "control_source": "exact frozen generation head c86c091c3be840559a46670218705be1277acd8f",
+    "deep_research_performed": false,
+    "generation_diff_from_control_release": [
+      "control/CAL-BR-006-v251-433ad83a.json",
+      "assignments/CAL-BR-006-v251-433ad83a.json"
+    ],
+    "prewrite_generation_status": {
+      "context": "supernova/branch-generation",
+      "state": "failure"
+    },
+    "protected_sources_read": false
+  },
+  "evidence_tier": "T0_REPLAY_TRANSPORT_ONLY",
+  "executive_status": "VALID_ASSIGNED_REPLAY_RECEIPT_NON_COUNTABLE; BEFORE_AFTER_NOT_MEASURED; NO_PROMOTION; GENERATION_STRUCTURAL_CI_FAILURE_OBSERVED",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "generation_seq": 6,
+  "issue_ledger": [
+    {
+      "detail": "The required supernova/branch-generation status was failure on exact G before the MM07 write. This receipt does not reinterpret that status as PASS.",
+      "issue": "STRUCTURAL_GENERATION_CI",
+      "status": "FAILURE_OBSERVED"
+    },
+    {
+      "detail": "The frozen public commitment file retains a legacy WORKER-PROOF-1 scheme label/description, while BRANCH_WORKER_PROTOCOL.md, BRANCH_PROTOCOL.md and branch_report.schema.json require CANONICAL-REPORT-2. The MM07 public commitment itself matches the prompt-private secret.",
+      "issue": "PUBLIC_AUTH_METADATA_LEGACY_LABEL",
+      "status": "NONBLOCKING_METADATA_DRIFT"
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "BEFORE_AFTER=NOT_MEASURED",
+    "NEXT_SELF_CANDIDATE=NONE",
+    "SELF_PROMOTION=NONE",
+    "FRESH_EVIDENCE_UNITS=0",
+    "PROTECTED_MANIFEST_READS=0",
+    "BENCHMARK_EXECUTIONS=0",
+    "DEEP_RESEARCH_RUNS=0",
+    "CALIBRATION_CREDIT=0"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads the MM07 branch head/blob, verifies strict session/schema/public-safety and canonical HMAC-2, and requires successful structural worker status. The observed generation structural-CI failure remains a cohort-level blocker unless corrected by the authorized control path or the cohort is superseded.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "plan_alignment": [
+    "SAFE_REPLAY_ONLY",
+    "Non-countable bootstrap: no calibration credit.",
+    "Same-suite before/after remains diagnostic only.",
+    "Goal 2 requires solver_F, memory_M and improver_I separation plus identical untouched start and matched complete R&D budget.",
+    "No self-promotion and no benchmark/runtime/state mutation."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "RPT-CAL-BR-006-v251-433ad83a-MM07",
+  "research_questions": [],
+  "role_payload": {
+    "before_after": "NOT_MEASURED",
+    "goal2_fmi_separation": "PRESERVED",
+    "matched_complete_rd_budget_tested": false,
+    "next_self_candidate": null,
+    "same_untouched_start_tested": false,
+    "self_promotion": false
+  },
+  "runtime_implementation_implication": "None. This worker receipt does not modify runtime, benchmark registry, canonical main, generation, verifier, integrator, consolidation, or another worker branch.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Validate branch-isolated transport without running/promoting a before-after benchmark or confusing solver/memory gain with improver gain.",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM07",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W07 | Before/After Self-Bench",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "detail": "Canonical main pointer matched plan 2.5 BRANCH_GITOPS, active non-superseded cohort, frozen generation identity, assignment/control identities, and MM07 branch.",
+      "status": "PASS",
+      "task": "transport_preflight"
+    },
+    {
+      "detail": "Generation and MM07 worker branch were both exactly at frozen G before the first receipt. G is two commits ahead of the frozen control-release commit and changes only the active control and assignment files.",
+      "status": "PASS",
+      "task": "generation_freeze"
+    },
+    {
+      "detail": "No before/after benchmark was run because fresh_allowed=false, short_test=true, and no benchmark program or suite is assigned.",
+      "status": "NOT_MEASURED",
+      "task": "before_after_diagnostic"
+    },
+    {
+      "detail": "No solver F, memory M, or improver I gain is claimed. Same-start, matched complete R&D budget, controlled-memory Goal-2 criteria were not invoked.",
+      "status": "PRESERVED",
+      "task": "goal2_separation"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "PASS",
+      "test": "main_pointer_plan_protocol_transport"
+    },
+    {
+      "result": "PASS",
+      "test": "cohort_not_superseded"
+    },
+    {
+      "result": "PASS",
+      "test": "generation_branch_exact_G"
+    },
+    {
+      "result": "PASS",
+      "test": "worker_branch_prewrite_exact_G"
+    },
+    {
+      "result": "PASS",
+      "test": "control_assignment_blob_identities"
+    },
+    {
+      "result": "PASS",
+      "test": "control_release_tree_identity"
+    },
+    {
+      "detail": "The control-release-to-G compare changes only the active control and assignment files, so no declared required control path drifted.",
+      "result": "PASS_BY_GENERATION_DIFF",
+      "test": "required_control_path_drift"
+    },
+    {
+      "result": "PASS",
+      "test": "worker_secret_public_commitment"
+    },
+    {
+      "result": "ABSENT",
+      "test": "existing_MM07_report_prewrite"
+    },
+    {
+      "result": "NOT_MEASURED",
+      "test": "before_after_benchmark"
+    },
+    {
+      "result": "NONE",
+      "test": "self_promotion"
+    },
+    {
+      "result": "ZERO",
+      "test": "fresh_private_benchmark_research_cost"
+    }
+  ],
+  "visibility_token": "4691e71cef4c1f3484b13fcba5bee036",
+  "worker_auth_commitment": "8381570a96782767ac210b67645196c3b7018059f9e0aae5aa104e10d70098d2",
+  "worker_auth_proof": "d7b004611a989d3df8fe3a2e2766aa77f5cd0a92156e8f6f2a3a38e42f44fae2",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MM07",
+  "worker_id": "MM07"
+}
