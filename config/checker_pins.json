@@ -1,0 +1,25 @@
+{
+  "schema_version": "PS-CHECKER-PINS-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "transport_calibration": {
+    "mathematical_proof_execution": false,
+    "lean_primary": "NOT_APPLICABLE_TRANSPORT_ONLY",
+    "leanchecker_replay": "NOT_APPLICABLE_TRANSPORT_ONLY",
+    "statement_fidelity": "NOT_APPLICABLE_TRANSPORT_ONLY",
+    "json_schema_standard": "DRAFT_2020_12",
+    "validator_environment_lock": "requirements-validation.lock",
+    "assurance_rule": "No transport-only cohort may imply mathematical checker qualification."
+  },
+  "future_scientific_cohort_rule": {
+    "exact_primary_checker_version_required": true,
+    "exact_primary_checker_commit_required": true,
+    "exact_exporter_version_commit_required": true,
+    "exact_parser_version_commit_required": true,
+    "same_kernel_replay_class": "SAME_KERNEL_FRESH_REPLAY",
+    "external_checker_class": "EXTERNAL_KERNEL_IMPLEMENTATION",
+    "independence_default": "NO_INDEPENDENCE_CLAIM",
+    "silent_auto_upgrade_forbidden": true,
+    "security_update_effect": "M7_REVALIDATION_OR_SUPERSESSION_REQUIRED"
+  }
+}

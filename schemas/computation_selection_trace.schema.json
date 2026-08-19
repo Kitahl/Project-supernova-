@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ComputationSelectionTrace v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state_id", "candidate_set", "current_intervals", "candidate_computations", "selected_computation_id", "rejected_computation_ids", "selector_version", "expected_bound_effect", "actual_bound_effect", "actual_cost", "cumulative_effort_by_candidate", "dependency_source_set"],
+  "properties": {
+    "state_id": {"type": "string"},
+    "candidate_set": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "current_intervals": {"type": "object"},
+    "candidate_computations": {"type": "array", "items": {"type": "object"}},
+    "selected_computation_id": {"type": ["string", "null"]},
+    "rejected_computation_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "selector_version": {"type": "string"},
+    "expected_bound_effect": {"type": "object"},
+    "actual_bound_effect": {"type": "object"},
+    "actual_cost": {"type": "number", "minimum": 0},
+    "cumulative_effort_by_candidate": {"type": "object"},
+    "dependency_source_set": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "authority": {"const": false}
+  }
+}

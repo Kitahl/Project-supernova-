@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorldlineSNForkRecord v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "parent_state_identity", "fork_identity", "intervention_or_action", "semantic_version_bundle", "replay_qualification", "provenance_identity", "predictive_equivalence_status", "causal_comparability_status", "evidence_refs", "authority"],
+  "properties": {
+    "record_id": {"type": "string"},
+    "parent_state_identity": {"type": "string"},
+    "fork_identity": {"type": "string"},
+    "intervention_or_action": {"type": "object"},
+    "semantic_version_bundle": {"type": "object"},
+    "event_keyed_randomness_ref": {"type": ["string", "null"]},
+    "replay_qualification": {"enum": ["QUALIFIED", "UNQUALIFIED", "PARTIAL", "NOT_MEASURED"]},
+    "provenance_identity": {"type": "string"},
+    "predictive_equivalence_status": {"enum": ["EQUIVALENT", "NOT_EQUIVALENT", "NOT_MEASURED"]},
+    "causal_comparability_status": {"enum": ["COMPARABLE", "NOT_COMPARABLE", "PARTIALLY_COMPARABLE", "NOT_MEASURED"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "authority": {"const": "TRIBUNAL_REFERENCE_ONLY"}
+  }
+}

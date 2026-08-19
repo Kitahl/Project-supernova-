@@ -4,6 +4,7 @@ import argparse, hashlib, json, pathlib, subprocess, sys
 from jsonschema import Draft202012Validator
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
+HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
 SESS={'MF01':'PS-MF-W01 | Representation Lab','MF02':'PS-MF-W02 | E1 Solver Routing','MF03':'PS-MF-W03 | Lemma & Operator Lab','MF04':'PS-MF-W04 | Adversarial Falsifier','MF05':'PS-MF-W05 | Product Closure','MM01':'PS-MM-W01 | React Mechanisms','MM02':'PS-MM-W02 | DeepSWE Mechanisms','MM03':'PS-MM-W03 | SlopCode Contracts','MM04':'PS-MM-W04 | Senior SWE Architecture','MM05':'PS-MM-W05 | E3 Mechanism Controls','MM07':'PS-MM-W07 | Before/After Self-Bench','EXT01':'PS-JOINT-A01 | Runtime & Transport Audit'}
 def git(*a):
  p=subprocess.run(['git','-C',str(ROOT),*a],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False);return p.returncode,p.stdout.strip(),p.stderr.strip()
@@ -18,6 +19,13 @@ def kind(branch):
   if parts[1] in ('verify','integrate','consolidate'):return parts[1],parts[2],None
  return None,None,None
 def sch(p):return load(ROOT/p)
+def execution_mode_errors(report,assignment):
+ e=[];h=report.get('session_header',{});hm=h.get('execution_mode');rm=report.get('mode')
+ if hm!=rm:e.append('session_header.execution_mode != report.mode')
+ if assignment.get('network_mode')=='GITHUB_BRANCH_CALIBRATION':
+  if hm!='SAFE_REPLAY_ONLY':e.append('calibration session execution_mode != SAFE_REPLAY_ONLY')
+  if rm!='SAFE_REPLAY_ONLY':e.append('calibration report mode != SAFE_REPLAY_ONLY')
+ return e
 def validate(branch,G):
  e=[];k,c,w=kind(branch)
  if not k:return [f'unsupported branch {branch}']
@@ -27,6 +35,9 @@ def validate(branch,G):
  for obj,path in [(co,'schemas/control.schema.json'),(a,'schemas/assignment.schema.json')]:
   for x in Draft202012Validator(sch(path)).iter_errors(obj):e.append(f'{path}: {x.message}')
  if co.get('task_network_plan_id')!=PLAN or a.get('task_network_plan_id')!=PLAN:e.append('plan mismatch')
+ auth=sch('config/worker_auth.json')
+ if auth.get('scheme')!=HMAC2:e.append('worker auth metadata scheme != PS-HMAC-SHA256-CANONICAL-REPORT-2')
+ if co.get('worker_auth_scheme')!=HMAC2:e.append('control worker_auth_scheme mismatch')
  root=co.get('control_release_commit_sha')
  if a.get('generation_root_sha')!=root:e.append('assignment generation root != frozen control-release commit')
  rc,tree,_=git('rev-parse',f'{root}^{{tree}}')
@@ -52,12 +63,13 @@ def validate(branch,G):
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')
-   bindings={'task_network_plan_id':PLAN,'cohort_id':c,'worker_id':w,'generation_seq':a.get('generation_seq'),'generation_head_sha':G,'worker_branch':branch,'assignment_id':a.get('assignment_id'),'assignment_git_identity':blob(ap),'parent_state_git_identity':a.get('parent_state_git_identity'),'control_manifest_id':a.get('control_manifest_id'),'control_manifest_git_identity':blob(cp),'network_checkpoint_id':a.get('network_checkpoint_id'),'runtime_state_id':a.get('runtime_state_id'),'visibility_token':aw.get('visibility_token'),'worker_auth_scheme':'PS-HMAC-SHA256-CANONICAL-REPORT-2','status':'VALID_ASSIGNED_REPORT','public_safety_status':'PASS','origin_reread_claim':False}
+   e.extend(execution_mode_errors(r,a))
+   bindings={'task_network_plan_id':PLAN,'cohort_id':c,'worker_id':w,'generation_seq':a.get('generation_seq'),'generation_head_sha':G,'worker_branch':branch,'assignment_id':a.get('assignment_id'),'assignment_git_identity':blob(ap),'parent_state_git_identity':a.get('parent_state_git_identity'),'control_manifest_id':a.get('control_manifest_id'),'control_manifest_git_identity':blob(cp),'network_checkpoint_id':a.get('network_checkpoint_id'),'runtime_state_id':a.get('runtime_state_id'),'visibility_token':aw.get('visibility_token'),'worker_auth_scheme':HMAC2,'status':'VALID_ASSIGNED_REPORT','public_safety_status':'PASS','origin_reread_claim':False}
    for key,val in bindings.items():
     if r.get(key)!=val:e.append(f'report binding mismatch {key}')
    if a.get('network_mode')=='GITHUB_BRANCH_CALIBRATION':
     led=r.get('cost_ledger',{})
-    if r.get('mode')!='SAFE_REPLAY_ONLY' or r.get('fresh_evidence_ids')!=[] or r.get('private_manifest_id') is not None:e.append('fresh/private calibration data')
+    if r.get('fresh_evidence_ids')!=[] or r.get('private_manifest_id') is not None:e.append('fresh/private calibration data')
     for key in ('fresh_evidence_units_consumed','protected_manifest_reads','benchmark_executions','deep_research_runs'):
      if led.get(key)!=0:e.append(f'nonzero calibration cost {key}')
  if k=='verify':

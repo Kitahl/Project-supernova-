@@ -39,9 +39,11 @@ jobs:
           state=json.loads(pathlib.Path('state/CURRENT.json').read_text())
           freeze=json.loads(pathlib.Path('config/protocol_freeze.json').read_text())
           pools=json.loads(pathlib.Path('benchmark/pool_disposition.json').read_text())
+          auth=json.loads(pathlib.Path('config/worker_auth.json').read_text())
           assert state['task_network_plan_id']==P and state['protocol_version']=='2.5'
           assert freeze['frozen_protocol_version']=='2.5'
           assert pools['task_network_plan_id']==P
+          assert auth['scheme']=='PS-HMAC-SHA256-CANONICAL-REPORT-2'
           for wf in pathlib.Path('.github/workflows').glob('*.yml'):
               for line in wf.read_text().splitlines():
                   if re.search(r'^\s*-\s+uses:',line):

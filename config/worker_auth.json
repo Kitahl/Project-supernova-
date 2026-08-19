@@ -1,6 +1,13 @@
 {
-  "scheme": "PS-HMAC-SHA256-WORKER-PROOF-1",
-  "description": "Public commitments only. Each worker raw 256-bit secret exists only in that worker scheduled-task bootstrap; MM06 holds verifier copies. Proof=HMAC-SHA256(secret, task_network_plan_id|cohort_id|assignment_git_identity|control_manifest_git_identity|worker_id).",
+  "scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "description": "Public commitments only. Each worker raw 256-bit secret exists only in that worker Scheduled Task bootstrap; MM06 holds verifier copies. Proof = HMAC-SHA256(secret, canonical JSON encoding of the entire report with worker_auth_proof removed; sorted keys; compact separators; UTF-8; ensure_ascii=false). Any mutation of any signed report field invalidates the proof.",
+  "canonicalization": {
+    "remove_field": "worker_auth_proof",
+    "sort_keys": true,
+    "compact_separators": true,
+    "encoding": "UTF-8",
+    "ensure_ascii": false
+  },
   "commitments": {"MF01":"74ae88fc0a346a423d7fe0e0dcd3787ab0b29fbe455ae4e8b17f30b96923d74f","MF02":"6bb082c9eca80a34c622079e099aa9fee90350220c60b6e336172d7c92c053bc","MF03":"060c3457b8ad4895f1f980a51bdea1a3d9ceca7eec2908c9a270b076bb4b8fb0","MF04":"13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213","MF05":"473363d1e1fc0aae9e9df22da0cbd5f8695491863ff6cf82f2bc0a6ba86326f4","MM01":"0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6","MM02":"7b9b613a2030974f31a9f33e258c8fc47ffb70def450fc498e144f30d72c4f3a","MM03":"d5d29c40c01d773210aa8bcd880ad7db3d56d79d4552c58c9183410c79dda197","MM04":"836768b1672cc8639cfeb3fe06ebd8ce1667cdb0dc5ce1c7a6cd6c263f1521d0","MM05":"9cb54215a604da9aea1570e7ccfc757435aed4643e2a94931a51cdf877c75739","MM07":"8381570a96782767ac210b67645196c3b7018059f9e0aae5aa104e10d70098d2","EXT01":"74216d4e0414c15b747b329e4de2133dd2c9528fdf99d3e9a709136533f9d87b"},
   "raw_secrets_forbidden_in_repo": true
 }

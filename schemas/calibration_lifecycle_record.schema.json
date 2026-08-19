@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CalibrationLifecycleRecord v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "semantic_version", "model_version", "calibration_version", "policy_family", "query_definition", "calibration_population", "data_cutoff", "valid_from", "invalidating_changes", "recalibration_trigger", "recalibration_cost", "decisions_served", "eligible_decisions_before_expiry", "status"],
+  "properties": {
+    "record_id": {"type": "string"},
+    "semantic_version": {"type": "string"},
+    "model_version": {"type": "string"},
+    "calibration_version": {"type": "string"},
+    "policy_family": {"type": "string"},
+    "query_definition": {"type": "string"},
+    "calibration_population": {"type": "string"},
+    "data_cutoff": {"type": "string"},
+    "valid_from": {"type": "string"},
+    "valid_until": {"type": ["string", "null"]},
+    "invalidating_changes": {"type": "array", "items": {"type": "string"}},
+    "recalibration_trigger": {"type": "array", "items": {"type": "string"}},
+    "recalibration_cost": {"type": "number", "minimum": 0},
+    "decisions_served": {"type": "integer", "minimum": 0},
+    "eligible_decisions_before_expiry": {"type": ["integer", "null"], "minimum": 0},
+    "expiry_reason": {"type": ["string", "null"]},
+    "status": {"enum": ["ACTIVE", "STALE", "UNSUPPORTED", "EXPIRED", "RECALIBRATION_REQUIRED"]}
+  }
+}

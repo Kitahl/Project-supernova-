@@ -1,18 +1,31 @@
 {
-  "schema_version":"PS-SCHEDULED-TASK-REGISTRY-2.5-FROZEN",
-  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
-  "protocol_version":"2.5",
-  "protocol_freeze":"NO_2_6_BEFORE_PROTECTION_AND_TWO_CLEAN_COUNTABLE_V25_COHORTS",
-  "transport_mode":"BRANCH_GITOPS",
-  "canonical_state":"main:state/CURRENT.json",
-  "same_task_session_each_run":true,
-  "timezone":"America/Vancouver",
-  "model_target":"GPT-5.6 Sol",
-  "reasoning_effort_target":"EXTRA_HIGH",
-  "model_binding_enforceable_by_task_surface":false,
-  "model_binding_rule":"Replay may report PARTIAL_UNVERIFIED/UNVERIFIED. Model-sensitive fresh evidence is non-promotable unless the private frozen execution manifest plus runtime receipt prove the predeclared observed model/reasoning/tools/environment binding; requested model text is not proof.",
-  "schedule_hours_local":[0,6,12,18],
-  "tasks":[
+  "schema_version": "PS-SCHEDULED-TASK-REGISTRY-2.5-FROZEN",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "protocol_version": "2.5",
+  "protocol_freeze": "NO_2_6_BEFORE_PROTECTION_AND_TWO_CLEAN_COUNTABLE_V25_COHORTS",
+  "transport_mode": "BRANCH_GITOPS",
+  "canonical_state": "main:state/CURRENT.json",
+  "same_task_session_each_run": true,
+  "timezone": "America/Vancouver",
+  "model_target": "GPT-5.6 Sol",
+  "reasoning_effort_target": "EXTRA_HIGH",
+  "model_binding_enforceable_by_task_surface": false,
+  "model_binding_rule": "Replay may report PARTIAL_UNVERIFIED/UNVERIFIED. Model-sensitive fresh evidence is non-promotable unless the private frozen execution manifest plus runtime receipt prove the predeclared observed model/reasoning/tools/environment binding; requested model text is not proof.",
+  "schedule_mode": "HOURLY_STAGGERED_FAN_IN",
+  "schedule_hours_local": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+  "minimum_recurrence_per_task": "PT1H",
+  "active_task_count": 15,
+  "no_sixteenth_lane": true,
+  "project_binding": {
+    "preferred_project_name": "Project Supernova",
+    "persistent_associated_chat_required": true,
+    "project_files_available_to_task": false,
+    "canonical_material_source": "GITHUB_APPROVED_CONNECTOR_ONLY",
+    "machine_verification_status": "NATIVE_TASK_API_DOES_NOT_EXPOSE_PROJECT_PARENT",
+    "operational_fallback": "OUTSIDE_PROJECT_ALLOWED_IF_GITHUB_IS_CANONICAL_AND_LIVENESS_IS_PROVEN",
+    "scientific_authority_effect": "NONE"
+  },
+  "tasks": [
     {"role_id":"MF01","title":"PS-MF-W01 | Representation Lab","minute":5,"target_program":"MATH_FOUNDRY"},
     {"role_id":"MF02","title":"PS-MF-W02 | E1 Solver Routing","minute":6,"target_program":"MATH_FOUNDRY"},
     {"role_id":"MF03","title":"PS-MF-W03 | Lemma & Operator Lab","minute":7,"target_program":"MATH_FOUNDRY"},
@@ -29,10 +42,16 @@
     {"role_id":"MF06","title":"PS-JOINT-I01 | Evidence Integrator","minute":45,"target_program":"JOINT"},
     {"role_id":"BIL00","title":"PS-JOINT-D01 | Director + 12h Research","minute":58,"target_program":"JOINT","research_hours_local":[0,12]}
   ],
-  "worker_write_rule":"Read main pointer, then frozen generation G; write exactly reports/<cohort>/<role>.json on assigned ps/work/<cohort>/<role> branch. Whole-report HMAC-2. No main writes.",
-  "verifier_write_rule":"Read all exact worker branches from G; write verification/<cohort>.json on ps/verify/<cohort> only. Record PRE_CI only; later exact-head supernova/report-admission is external evidence.",
-  "integrator_write_rule":"Require MM06 safe refs and later supernova/report-admission=success on the exact verifier head; write ps/integrate/<cohort> only.",
-  "director_write_rule":"Create one ps/consolidate/<cohort> PR from exact current main head only after verified integration. Require exact-head static-control/report-admission/transition-admission and CAS; no force/rebase/bypass.",
-  "research_rule":"BIL00 only at 00:58 and 12:58, and only when an accepted open research lane exists. While T0 is unqualified, T0 transport/repository/admission closure is the only admissible research lane; downstream questions remain queued.",
-  "admission_contexts":["supernova/static-control","supernova/report-admission","supernova/transition-admission"]
+  "worker_write_rule": "Read main pointer, then frozen generation G; write exactly reports/<cohort>/<role>.json on assigned ps/work/<cohort>/<role> branch. Whole-report HMAC-2. No main writes.",
+  "verifier_write_rule": "Read all exact worker branches from G; write verification/<cohort>.json on ps/verify/<cohort> only. Record PRE_CI only; later exact-head supernova/report-admission is external evidence.",
+  "integrator_write_rule": "Require MM06 safe refs and later supernova/report-admission=success on the exact verifier head; write ps/integrate/<cohort> only.",
+  "director_write_rule": "Create one ps/consolidate/<cohort> PR from exact current main head only after verified integration. Require exact-head static-control/report-admission/transition-admission and CAS; no force/rebase/bypass.",
+  "research_rule": "BIL00 only at 00:58 and 12:58, and only when an accepted open research lane exists. While T0 is unqualified, T0 transport/repository/admission closure is the only admissible research lane; all other hourly BIL00 runs are director, liveness, issue-consolidation and guarded-repair runs.",
+  "admission_contexts": ["supernova/static-control","supernova/report-admission","supernova/transition-admission"],
+  "activation_status": {
+    "canonical_hourly_registry": "READY_ON_HARDENING_BRANCH",
+    "native_task_schedule": "OBSERVED_HOURLY_15_OF_15",
+    "project_chat_placement": "UNVERIFIED_NONBLOCKING_OPERATIONAL_FALLBACK_GITHUB_CANONICAL",
+    "countable_cohort_eligible": false
+  }
 }

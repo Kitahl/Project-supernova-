@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "required": ["event_id", "event_type", "source_report_ref", "problem_id", "family_id", "pre_outcome_frozen"],
+  "title": "Project Supernova Typed Event v1",
+  "type": "object",
+  "properties": {
+    "event_id": {"type": "string", "minLength": 1},
+    "event_type": {"enum": ["STATE_DELTA", "METHOD_CALL", "TOOL_RESULT", "PRODUCT_CANDIDATE", "VERIFIER_RESULT", "OBSTRUCTION", "COST_EVENT", "FORK", "VERIFICATION_OBLIGATION"]},
+    "source_report_ref": {"type": "string", "minLength": 1},
+    "problem_id": {"type": "string", "minLength": 1},
+    "family_id": {"type": "string", "minLength": 1},
+    "pre_outcome_frozen": {"type": "boolean"},
+    "payload": {"type": "object"},
+    "pre_action": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "decision_id": {"type": "string"},
+        "authority_state_hash": {"type": "string"},
+        "provenance_head": {"type": "string"},
+        "semantic_version": {"type": "string"},
+        "policy_version": {"type": "string"},
+        "legal_actions": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "unavailability_reasons": {"type": "object"},
+        "propensities": {"type": "object"},
+        "assignment_seed": {"type": ["string", "integer"]},
+        "selected_treatment": {"type": ["string", "null"]},
+        "continuation_estimand": {"enum": ["PATH", "POLICY", null]},
+        "prediction_envelopes": {"type": "array"}
+      }
+    }
+  },
+  "allOf": [
+    {"if":{"properties":{"event_type":{"const":"STATE_DELTA"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["before_ref","after_ref","obligations_delta","products_delta","legal_ops_delta"]}}}},
+    {"if":{"properties":{"event_type":{"const":"METHOD_CALL"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["operator_id","contract_version","inputs","fidelity","budget"]}}}},
+    {"if":{"properties":{"event_type":{"const":"TOOL_RESULT"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["tool","outcome_class","cost","exogenous_input_ref"]}}}},
+    {"if":{"properties":{"event_type":{"const":"PRODUCT_CANDIDATE"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["product_id","type","producing_op","certificate_ref"]}}}},
+    {"if":{"properties":{"event_type":{"const":"VERIFIER_RESULT"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["checker_id","status","statement_fidelity_status"]}}}},
+    {"if":{"properties":{"event_type":{"const":"OBSTRUCTION"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["kind","certificate_ref","depth"]}}}},
+    {"if":{"properties":{"event_type":{"const":"COST_EVENT"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["category","units","exchange_rate_ref"]}}}},
+    {"if":{"properties":{"event_type":{"const":"FORK"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["parent_ref","sibling_ids","coupling_semantics","placebo_class"]}}}},
+    {"if":{"properties":{"event_type":{"const":"VERIFICATION_OBLIGATION"}}},"then":{"required":["payload"],"properties":{"payload":{"type":"object","required":["obligation_id","kind","discharged_by"]}}}}
+  ]
+}
