@@ -1,0 +1,79 @@
+name: Supernova Receipt Liveness Monitor
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: supernova-receipt-liveness
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # immutable v4.2.2 SHA
+        with:
+          fetch-depth: 1
+      - name: Resolve frozen active liveness contract
+        id: contract
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import base64,json,os,pathlib,urllib.error,urllib.parse,urllib.request
+          repo=os.environ['GITHUB_REPOSITORY'];token=os.environ['GITHUB_TOKEN'];api='https://api.github.com/repos/'+repo
+          def get(path,ref):
+              url=api+'/contents/'+urllib.parse.quote(path,safe='/')+'?ref='+urllib.parse.quote(ref,safe='')
+              r=urllib.request.Request(url);r.add_header('Authorization','Bearer '+token);r.add_header('Accept','application/vnd.github+json');r.add_header('X-GitHub-Api-Version','2022-11-28')
+              try:
+                  with urllib.request.urlopen(r,timeout=20) as z:return json.loads(z.read())
+              except urllib.error.HTTPError as e:
+                  if e.code==404:return None
+                  raise
+          s=get('state/CURRENT.json','main')
+          state=json.loads(base64.b64decode(s['content']))
+          cohort=state['active_cohort_id'];G=state['generation_head_sha'];path=f'liveness/{cohort}.json'
+          c=get(path,G)
+          out=pathlib.Path(os.environ['GITHUB_OUTPUT'])
+          if c is None:
+              with out.open('a') as f:f.write('present=false\n')
+              print('No frozen liveness contract for active generation; diagnostic no-op.')
+              raise SystemExit(0)
+          pathlib.Path('/tmp/liveness-contract.json').write_bytes(base64.b64decode(c['content']))
+          with out.open('a') as f:
+              f.write('present=true\n');f.write('generation='+G+'\n')
+          PY
+      - name: Evaluate exact GitHub receipt deadlines
+        if: steps.contract.outputs.present == 'true'
+        id: eval
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python3 scripts/check_lane_liveness.py --contract /tmp/liveness-contract.json --out /tmp/liveness-result.json
+      - name: Publish exact-generation liveness status
+        if: steps.contract.outputs.present == 'true' && always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          TARGET_SHA: ${{ steps.contract.outputs.generation }}
+          EVAL_OUTCOME: ${{ steps.eval.outcome }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request
+          state='success' if os.environ['EVAL_OUTCOME']=='success' else 'failure'
+          body={'state':state,'context':'supernova/liveness','description':'Receipt-deadline liveness '+('PASS' if state=='success' else 'FAIL')}
+          url=f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/statuses/{os.environ['TARGET_SHA']}"
+          r=urllib.request.Request(url,data=json.dumps(body).encode(),method='POST');r.add_header('Authorization','Bearer '+os.environ['GITHUB_TOKEN']);r.add_header('Accept','application/vnd.github+json');r.add_header('X-GitHub-Api-Version','2022-11-28')
+          with urllib.request.urlopen(r,timeout=20) as z: print(z.status)
+          PY
+      - name: Enforce monitor failure when contract is active
+        if: steps.contract.outputs.present == 'true' && steps.eval.outcome != 'success'
+        run: exit 1
