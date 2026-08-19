@@ -1,0 +1,45 @@
+{
+  "schema_version": "PS-BENCHMARK-POOL-DISPOSITION-1",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "protocol_version": "2.5",
+  "authority": "STAGE_MINUS_1_FRESHNESS_GOVERNANCE",
+  "pool_classes": {
+    "TRAIN_TUNING": "Reusable development evidence. Never eligible for G1, G8 or Goal-2 promotion.",
+    "CALIBRATION": "May tune thresholds, variance, MDE/power, estimator or mechanism qualification. Never eligible for G1, G8 or Goal-2 promotion.",
+    "G1_PROSPECTIVE": "Fresh sealed one-generation parent-vs-candidate pool. Consumed after use; no tuning.",
+    "G8_CASCADE": "Fresh sealed final Goal-1 cascade pool. Never used for tuning, relation selection or prior choice.",
+    "GOAL2_E5B": "Fresh pool disjoint from Goal-1 tuning and lineage development; same-start improver comparison only.",
+    "RESEARCH_FROZEN": "Future capability/research pool; no use until exact lane/verifier/budget/contamination contract is frozen."
+  },
+  "reuse_rule": "A suite/task instance ever used for TRAIN_TUNING or CALIBRATION cannot later be relabeled G1_PROSPECTIVE, G8_CASCADE, GOAL2_E5B or RESEARCH_FROZEN promotion evidence.",
+  "programs": {
+    "MASTERMIND": {
+      "MM-ORACLE-PHASE1-REACT": {"pool":"CALIBRATION","promotion_eligible_for_supernova":false,"reason":"Existing active Mastermind oracle/diagnostic suite; may qualify mechanisms but cannot be recycled as Supernova G1/G8/Goal2 evidence."},
+      "MM-DESIGN2CODE-HARD-STATEFUL": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Named successor is part of Mastermind development/generalization programme; reserve separate fresh Supernova pools."},
+      "MM-DESIGNBENCH-WEBPAI": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development/generalization lane."},
+      "MM-DEEPSWE": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development mechanism lane."},
+      "MM-SLOPCODE": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development contract/mechanism lane."},
+      "MM-SENIOR-SWE": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development architecture lane."},
+      "MM-WEBCOMPASS-HARD": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development/generalization lane."},
+      "MM-LIVEEVAL-L3": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development/generalization lane; live naming alone does not make it a sealed Supernova promotion pool."},
+      "MM-MINEBENCH": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development long-horizon lane."},
+      "MM-SWE-REVIEW": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Development/review lane."}
+    },
+    "MATH_FOUNDRY": {
+      "MF-DEV-QUALIFICATION": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Historical/internal development qualification."},
+      "MF-E1-CLEAN-ROUTE-TRUTH": {"pool":"CALIBRATION","promotion_eligible_for_supernova":false,"reason":"E1 measures route/schedule headroom before G1; it may determine design but cannot itself be G1/G8 promotion evidence."},
+      "MF-G1-CLEAN-PROSPECTIVE": {"pool":"G1_PROSPECTIVE","promotion_eligible_for_supernova":true,"reason":"Reserved one-generation fresh parent-vs-candidate capability gate. Exact task instances remain sealed until private freeze."},
+      "MF-C1-PRODUCT-CLOSURE": {"pool":"CALIBRATION","promotion_eligible_for_supernova":false,"reason":"Component closure experiment; results may qualify C1 but final G8 uses a disjoint pool."},
+      "MF-E3-MECHANISM-CONTROL": {"pool":"CALIBRATION","promotion_eligible_for_supernova":false,"reason":"Component mechanism experiment; not G8 evidence."},
+      "MF-C2-TRANSFER": {"pool":"CALIBRATION","promotion_eligible_for_supernova":false,"reason":"Transfer/mechanism qualification; not G8 evidence."},
+      "MF-E5-MULTIGEN": {"pool":"TRAIN_TUNING","promotion_eligible_for_supernova":false,"reason":"Optional post-Goal1 multi-generation development; not the Goal-2 same-start improver test."},
+      "MF-E5B-IMPROVER": {"pool":"GOAL2_E5B","promotion_eligible_for_supernova":true,"reason":"Reserved Goal-2 same-start matched-budget improver-of-improver evaluation; opens only after Goal1 G8 pass."},
+      "MF-E6-INDEPENDENT": {"pool":"RESEARCH_FROZEN","promotion_eligible_for_supernova":false,"reason":"Future independent capability lane requires its own exact contract before admission."}
+    }
+  },
+  "reserved_future_pools": {
+    "G8_CASCADE": {"status":"EMPTY_UNSEALED","required_action":"Create a disjoint fresh G8 pool and problem-by-relation eligibility registry before final Goal-1 freeze."},
+    "RESEARCH_FROZEN": {"status":"NOT_YET_ADMITTED","required_action":"Create only after capability-lane contract is accepted."}
+  },
+  "fresh0_consequence": "FRESH-0 remains OPEN until sealed G1/G8/Goal2 pools and the problem x relation eligibility matrix establish relation-level coverage without exposing outcomes."
+}
