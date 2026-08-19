@@ -29,6 +29,15 @@ class PrAdmissionWatchdogGuardTests(unittest.TestCase):
         complete = [{"context": c, "state": "success"} for c in mod.REQUIRED_CONTEXTS]
         self.assertEqual(mod.admission_context_state(complete), "COMPLETE")
 
+    def test_latest_status_selection_is_order_independent(self):
+        mod = load_dispatcher()
+        statuses = [
+            {"context": "supernova/static-control", "state": "failure", "created_at": "2026-08-19T08:00:00Z"},
+            {"context": "supernova/static-control", "state": "success", "created_at": "2026-08-19T09:00:00Z"},
+        ]
+        self.assertEqual(mod.latest_by_context(statuses)["supernova/static-control"]["state"], "success")
+        self.assertEqual(mod.latest_by_context(list(reversed(statuses)))["supernova/static-control"]["state"], "success")
+
     def test_recent_marker_suppresses_duplicate_dispatch(self):
         mod = load_dispatcher()
         now = dt.datetime(2026, 8, 19, 9, 0, tzinfo=dt.timezone.utc)
