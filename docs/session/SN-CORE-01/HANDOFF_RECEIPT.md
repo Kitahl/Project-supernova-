@@ -12,8 +12,9 @@
 - H0/H1 qualification: PASS.
 - SOUND containment violations: 0.
 - Incorrect certified stops: 0.
-- Unit/schema/extractor/liveness/verifier tests: 18/18 PASS in the implementation worktree.
+- Unit/schema/extractor/liveness/verifier tests: 21/21 PASS in the implementation worktree.
 - Proposed JSON schemas were checked as valid Draft 2020-12 schemas.
+- Out-of-band liveness monitor consumes an explicit frozen cohort receipt-deadline contract; a missing receipt is observed as `NO_RECEIPT`, becomes transition-blocking only after its deadline, and never invents a task pause cause.
 
 ## Unresolved / NOT_MEASURED
 
