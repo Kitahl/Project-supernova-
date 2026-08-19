@@ -2,7 +2,7 @@
 
 **Purpose:** define the files that belong in the ChatGPT Project named `Project Supernova` for human/session context.
 
-**Authority rule:** Project files are reference context only. They are not the Scheduled Task bus and must never outrank current GitHub state. Scheduled Tasks must retrieve canonical control material through GitHub/approved connectors because Scheduled Tasks cannot read Project files at execution time.
+**Authority rule:** Project files are reference context only. They are not the Scheduled Task bus and must never outrank current GitHub state. Scheduled Tasks retrieve canonical control material through GitHub/approved connectors; they must not assume Project-file visibility at execution time.
 
 ## Core files to keep in the Project
 
@@ -35,49 +35,55 @@
    - No protocol 2.6 / Revision 5 before two clean countable v2.5 cohorts.
 
 10. `config/repo_policy.json`
-    - Required main protection and exact-source admission contexts.
+    - Required main protection and source-bound admission contexts.
 
-11. `config/worker_auth.json`
+11. `config/countable_control_set_v25.json`
+    - Complete control/workflow/schema/test set that every new countable v2.5 generation must freeze.
+
+12. `config/worker_auth.json`
     - **Public commitments and HMAC-2 metadata only. Never raw secrets.**
 
-12. `config/checker_pins.json`
+13. `config/checker_pins.json`
     - Checker/version/replay/independence and M7 revalidation policy.
 
-13. `benchmark/pool_disposition.json`
+14. `benchmark/pool_disposition.json`
     - TRAIN/CALIBRATION/G1/G8/GOAL2/RESEARCH-FROZEN contamination/freshness boundaries.
 
-14. `schemas/branch_report.schema.json`
-15. `schemas/branch_verification.schema.json`
-16. `schemas/branch_integration.schema.json`
-17. `schemas/branch_director.schema.json`
-18. `schemas/branch_consolidation.schema.json`
+15. `schemas/state.schema.json`
+    - Canonical state vocabulary, including source-bound repository-policy status.
+
+16. `schemas/branch_report.schema.json`
+17. `schemas/branch_verification.schema.json`
+18. `schemas/branch_integration.schema.json`
+19. `schemas/branch_director.schema.json`
+20. `schemas/branch_consolidation.schema.json`
     - Closed transport evidence contracts.
 
-19. `schemas/lane_liveness_observation.schema.json`
-20. `schemas/cohort_liveness_contract.schema.json`
-21. `schemas/verifier_assurance.schema.json`
+21. `schemas/lane_liveness_observation.schema.json`
+22. `schemas/cohort_liveness_contract.schema.json`
+23. `schemas/verifier_assurance.schema.json`
     - No-receipt/liveness and verifier-TCB assurance contracts.
 
-22. `docs/session/SESSION_STATUS.md`
-23. `docs/session/IMPLEMENTATION_PLAN.md`
-24. `docs/session/HANDOFF_RECEIPT.json`
+24. `docs/session/SESSION_STATUS.md`
+25. `docs/session/IMPLEMENTATION_PLAN.md`
+26. `docs/session/HANDOFF_RECEIPT.json`
     - Latest engineering-session context and exact unresolved gaps.
 
-25. `theorems/cascade-soundness.md`
-26. `theorems/horizon-decision-soundness.md`
+27. `theorems/cascade-soundness.md`
+28. `theorems/horizon-decision-soundness.md`
     - Current theorem obligations/qualified soundness work.
 
-27. `MATH_FOUNDRY_v3.0.1_EXECUTION_CLOSURE_FINAL.zip`
-    - Add only if the exact source package is available and hash matches the frozen project record.
+29. `MATH_FOUNDRY_v3.0.1_EXECUTION_CLOSURE_FINAL.zip`
+    - Add only if the exact source package is available and its SHA-256 matches the frozen project record.
 
-28. `MASTERMIND_v4.4.8_TARGETED_COLLAB_WLCRS3_CANDIDATE_1_FULL.zip`
-    - Add only if exact package is available and hash matches the frozen project record.
+30. `MASTERMIND_v4.4.8_TARGETED_COLLAB_WLCRS3_CANDIDATE_1_FULL.zip`
+    - Add only if the exact source package is available and its SHA-256 matches the frozen project record.
 
 ## Files that should NOT be used as live Project authority
 
 Do not upload a mutable `state/CURRENT.json` snapshot as if it were current truth. It becomes stale immediately. Project chats should fetch the live file from GitHub whenever current state matters.
 
-Do not place any of the following in public Project reference files unless access and privacy are explicitly appropriate:
+Do not place any of the following in Project reference files:
 
 - raw worker HMAC secrets;
 - protected benchmark prompts/items/outcomes;
