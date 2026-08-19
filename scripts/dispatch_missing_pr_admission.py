@@ -32,11 +32,22 @@ def req(path: str, method: str = "GET", data=None):
         return json.loads(raw) if raw else None
 
 
+def parse_utc(value: str | None):
+    if not value:
+        return None
+    return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
 def latest_by_context(statuses):
     latest = {}
     for item in statuses:
         context = item.get("context")
-        if context and context not in latest:
+        if not context:
+            continue
+        previous = latest.get(context)
+        current_time = parse_utc(item.get("created_at") or item.get("updated_at"))
+        previous_time = parse_utc((previous or {}).get("created_at") or (previous or {}).get("updated_at"))
+        if previous is None or (current_time and (not previous_time or current_time >= previous_time)):
             latest[context] = item
     return latest
 
@@ -49,12 +60,6 @@ def admission_context_state(statuses):
     if seen == REQUIRED_CONTEXTS:
         return "COMPLETE"
     return "PARTIAL"
-
-
-def parse_utc(value: str | None):
-    if not value:
-        return None
-    return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
 def marker_is_recent(statuses, now=None):
