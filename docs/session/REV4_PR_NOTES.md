@@ -13,3 +13,7 @@ Required review focus:
 7. Goal-2 ladder is T3-RW -> T5 -> DR27/E5B;
 8. SN-WORLD remains a non-authoritative Frontier backend;
 9. no scientific status or active cohort changes.
+
+## PR #18 admission expectation
+
+This update intentionally creates a normal `pull_request/synchronize` event after PR #18 was opened. The branch must not be bypass-merged. The post-PR head should be admitted or blocked by the repository's configured ruleset/workflow behavior. Absence of expected checks remains an observed T0 transport/configuration defect, not permission to bypass them.
