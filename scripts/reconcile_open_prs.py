@@ -22,6 +22,26 @@ CONTEXTS = (
 )
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
+# The scheduled fallback is trusted only while the adjudicator bytes it executes
+# are byte-identical to the exact accepted main checkout that launched it.
+# Authority-changing PRs must use an independently trusted admission path and
+# can never bootstrap themselves through this fallback.
+AUTHORITY_PREFIXES = (
+    "scripts/",
+    "tests/",
+    "schemas/",
+    "config/",
+    ".github/workflows/",
+)
+AUTHORITY_PATHS = {
+    "PROTOCOL.md",
+    "BRANCH_PROTOCOL.md",
+    "BRANCH_WORKER_PROTOCOL.md",
+    "SESSION_STANDARD.md",
+    "plan/PLAN.json",
+    "requirements-validation.lock",
+}
+
 
 def api(path: str, method: str = "GET", data=None):
     req = urllib.request.Request(
@@ -50,6 +70,11 @@ def post_status(sha: str, context: str, state: str, description: str):
     )
 
 
+def fail_contexts(sha: str, description: str):
+    for ctx in CONTEXTS:
+        post_status(sha, ctx, "failure", description)
+
+
 def run(cmd, cwd: pathlib.Path, env=None):
     p = subprocess.run(
         cmd,
@@ -68,6 +93,45 @@ def changed_files(repo: pathlib.Path, base: str, head: str):
     if rc:
         raise RuntimeError("git diff failed: " + out[-1000:])
     return [x for x in out.splitlines() if x]
+
+
+def authority_path_changes(changed: list[str]):
+    return sorted(
+        path
+        for path in changed
+        if path in AUTHORITY_PATHS or path.startswith(AUTHORITY_PREFIXES)
+    )
+
+
+def pr_metadata_errors(pr: dict):
+    errors = []
+    head = pr.get("head") or {}
+    base = pr.get("base") or {}
+    head_ref = head.get("ref")
+    head_sha = head.get("sha")
+    head_repo = (head.get("repo") or {}).get("full_name")
+    if base.get("ref") != "main":
+        errors.append("PR base is not main")
+    if head_repo != REPO:
+        errors.append("PR head repository is not canonical repository")
+    if not isinstance(head_ref, str) or not head_ref.startswith(ALLOWED_HEAD_PREFIXES):
+        errors.append("PR head prefix is not admitted")
+    if not isinstance(head_sha, str) or not HEX40.fullmatch(head_sha):
+        errors.append("PR head SHA is invalid")
+    return errors
+
+
+def trusted_main_sha(repo: pathlib.Path):
+    rc, out = run(["git", "rev-parse", "HEAD"], repo)
+    sha = out.strip()
+    if rc or not HEX40.fullmatch(sha):
+        raise RuntimeError("cannot resolve exact trusted main HEAD")
+    return sha
+
+
+def is_ancestor(repo: pathlib.Path, ancestor: str, descendant: str):
+    rc, _ = run(["git", "merge-base", "--is-ancestor", ancestor, descendant], repo)
+    return rc == 0
 
 
 def static_control(worktree: pathlib.Path):
@@ -142,26 +206,36 @@ def transition_admission(worktree: pathlib.Path, base_sha: str, head_sha: str, c
 
 
 def validate_pr(repo_root: pathlib.Path, pr: dict):
+    head = pr.get("head") or {}
+    head_sha = head.get("sha")
+    metadata_errors = pr_metadata_errors(pr)
+    if metadata_errors:
+        if isinstance(head_sha, str) and HEX40.fullmatch(head_sha):
+            fail_contexts(head_sha, "trusted fallback refused: " + metadata_errors[0])
+        return
+
     number = pr["number"]
-    head_ref = pr["head"]["ref"]
-    head_sha = pr["head"]["sha"]
-    base_sha = pr["base"]["sha"]
-    if not head_ref.startswith(ALLOWED_HEAD_PREFIXES):
-        return
-    if not HEX40.fullmatch(head_sha) or not HEX40.fullmatch(base_sha):
-        return
+    trusted = trusted_main_sha(repo_root)
     run(["git", "fetch", "--no-tags", "origin", f"pull/{number}/head"], repo_root)
+    if not is_ancestor(repo_root, trusted, head_sha):
+        fail_contexts(head_sha, "trusted fallback refused: PR head does not descend from exact current main")
+        return
+
+    changed = changed_files(repo_root, trusted, head_sha)
+    authority_drift = authority_path_changes(changed)
+    if authority_drift:
+        fail_contexts(head_sha, "trusted fallback refused: admission-authority bytes changed: " + authority_drift[0])
+        return
+
     tmp = pathlib.Path(tempfile.mkdtemp(prefix=f"supernova-pr-{number}-"))
     try:
         rc, out = run(["git", "worktree", "add", "--detach", str(tmp), head_sha], repo_root)
         if rc:
-            for ctx in CONTEXTS:
-                post_status(head_sha, ctx, "failure", "scheduled PR reconciler could not create worktree")
+            fail_contexts(head_sha, "scheduled PR reconciler could not create worktree")
             return
-        changed = changed_files(repo_root, base_sha, head_sha)
         static_errors = static_control(tmp)
-        report_errors = report_admission(tmp, base_sha, changed)
-        transition_errors = transition_admission(tmp, base_sha, head_sha, changed)
+        report_errors = report_admission(tmp, trusted, changed)
+        transition_errors = transition_admission(tmp, trusted, head_sha, changed)
         results = {
             "supernova/static-control": static_errors,
             "supernova/report-admission": report_errors,
@@ -172,7 +246,7 @@ def validate_pr(repo_root: pathlib.Path, pr: dict):
                 post_status(head_sha, ctx, "failure", "FAIL " + errors[0])
             else:
                 label = "PASS" if "state/CURRENT.json" in changed else "PASS/N-A non-transition"
-                post_status(head_sha, ctx, "success", "scheduled GitHub Actions exact-head " + label)
+                post_status(head_sha, ctx, "success", "trusted-main GitHub Actions exact-head " + label)
     finally:
         run(["git", "worktree", "remove", "--force", str(tmp)], repo_root)
         shutil.rmtree(tmp, ignore_errors=True)
@@ -189,8 +263,7 @@ def main():
         except Exception as exc:
             sha = (pr.get("head") or {}).get("sha")
             if sha and HEX40.fullmatch(sha):
-                for ctx in CONTEXTS:
-                    post_status(sha, ctx, "failure", "scheduled PR reconciler exception: " + repr(exc))
+                fail_contexts(sha, "scheduled PR reconciler exception: " + repr(exc))
     return 0
 
 
