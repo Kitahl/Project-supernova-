@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LaneLivenessObservation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["lane_id", "expected_window_start", "expected_window_end", "observation_time", "receipt_status", "task_state", "observation_source"],
+  "properties": {
+    "lane_id": {"type": "string"},
+    "task_id": {"type": ["string", "null"]},
+    "associated_chat_ref": {"type": ["string", "null"]},
+    "expected_window_start": {"type": "string"},
+    "expected_window_end": {"type": "string"},
+    "observation_time": {"type": "string"},
+    "receipt_status": {"enum": ["RUN_OBSERVED", "ZERO_DELTA_RECEIPT_OBSERVED", "RUN_LATE", "NO_RECEIPT"]},
+    "task_state": {"enum": ["ACTIVE", "TASK_PAUSED_INACTIVITY", "TASK_PAUSED_CHAT_DELETED", "TASK_PAUSED_MANUAL", "TASK_STATE_UNKNOWN"]},
+    "observation_source": {"enum": ["GITHUB_RECEIPT_MONITOR", "AUTHORITATIVE_TASK_STATE", "MANUAL_AUDIT"]},
+    "receipt_ref": {"type": ["string", "null"]},
+    "lateness_seconds": {"type": "integer", "minimum": 0},
+    "notes": {"type": "string"}
+  }
+}
