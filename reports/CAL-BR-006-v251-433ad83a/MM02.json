@@ -1,0 +1,110 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W02 | DeepSWE Mechanisms",
+    "target_program": "MASTERMIND",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "role_id": "MM02",
+    "goal": "Validate branch-isolated transport and preserve TASK CONTRACT != PRIMARY TECHNICAL AUTHORITY != EVALUATOR.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "worker_id": "MM02",
+  "report_id": "MM02-CAL-BR-006-v251-433ad83a",
+  "generation_seq": 6,
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MM02",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-v251-433ad83a",
+  "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+  "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "control_manifest_id": "CTRL-CAL-BR-006-v251-433ad83a",
+  "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "04cfa7df4eb57656c9d64209d9b5dc94",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "7b9b613a2030974f31a9f33e258c8fc47ffb70def450fc498e144f30d72c4f3a",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_BRANCH_TRANSPORT_REPLAY_NON_COUNTABLE",
+  "executive_status": "PASS_NON_COUNTABLE: immutable generation, isolated MM02 branch, public commitment authentication and authority separation checks passed; no calibration credit because repository protection remains unverified.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {"id":"T-MM02-01","status":"PASS","task":"Resolve canonical main pointer then exact immutable generation G."},
+    {"id":"T-MM02-02","status":"PASS","task":"Verify frozen control/assignment lineage and branch isolation before first receipt."},
+    {"id":"T-MM02-03","status":"PASS","task":"Verify prompt-private capability against frozen public MM02 commitment without exposing it."},
+    {"id":"T-MM02-04","status":"PASS","task":"Preserve TASK CONTRACT != PRIMARY TECHNICAL AUTHORITY != EVALUATOR without opening fresh DeepSWE evidence."},
+    {"id":"T-MM02-05","status":"PASS_ON_CREATE","task":"Write exactly one immutable MM02 report on the assigned worker branch only."}
+  ],
+  "issue_ledger": [
+    {"id":"O-T0-MAIN-PROTECTION","severity":"BLOCKING_FOR_CALIBRATION","status":"OPEN","detail":"Canonical state records repo_policy_status=UNVERIFIED_BLOCKING; this cohort is explicitly calibration_countable=false."},
+    {"id":"O-AUTH-METADATA-LABEL","severity":"LOW","status":"OPEN_NONBLOCKING","detail":"Frozen config/worker_auth.json retains the legacy WORKER-PROOF-1 scheme label/description, while authoritative branch protocol, branch worker protocol and branch report schema require CANONICAL-REPORT-2. Public MM02 commitment itself matches the prompt-private capability; this worker follows the branch-specific authoritative contract."},
+    {"id":"O-MODEL-BINDING","severity":"BLOCKING_FOR_MODEL_SENSITIVE_FRESH_PROMOTION","status":"OPEN","detail":"Model family is available as GPT-5.6 Sol, but the requested EXTRA_HIGH reasoning-effort setting is not independently runtime-attested here; binding remains PARTIAL_UNVERIFIED."}
+  ],
+  "test_ledger": [
+    {"id":"T0-POINTER","status":"PASS","result":"main state matches expected plan 0aa341..., protocol 2.5, BRANCH_GITOPS and active non-superseded cohort."},
+    {"id":"T0-GENERATION-HEAD","status":"PASS","result":"ps/gen/CAL-BR-006-v251-433ad83a is identical to recorded G c86c091c3be840559a46670218705be1277acd8f."},
+    {"id":"T0-CONTROL-CLOSURE","status":"PASS","result":"control-release -> G is exactly two commits adding only this cohort control and assignment; none of 30 frozen required control paths changed after the frozen control-release root."},
+    {"id":"T0-WORKER-BASELINE","status":"PASS","result":"MM02 worker branch was identical to G before report creation; assigned report path was absent."},
+    {"id":"T0-AUTH-COMMITMENT","status":"PASS","result":"SHA-256(prompt-private capability bytes) equals the frozen MM02 public commitment."},
+    {"id":"T0-AUTHORITY-SEPARATION","status":"PASS","result":"No task-contract, primary-authority or evaluator semantic surface was opened or collapsed; all three remain distinct by contract."},
+    {"id":"T0-ZERO-CONSUMPTION","status":"PASS","result":"fresh=0, private/protected reads=0, benchmark executions=0, deep research=0."},
+    {"id":"T0-CALIBRATION-CREDIT","status":"NOT_COUNTABLE_BY_DESIGN","result":"control manifest and assignment both set calibration_countable=false pending independently observed main protection."}
+  ],
+  "plan_alignment": [
+    {"plan_item":"T0 branch bootstrap","status":"ALIGNED","detail":"Replay-only branch transport evidence only; no protected or benchmark work."},
+    {"plan_item":"Mastermind authority separation","status":"ALIGNED","detail":"TASK CONTRACT, PRIMARY TECHNICAL AUTHORITY and EVALUATOR remain distinct."},
+    {"plan_item":"Worker isolation","status":"ALIGNED","detail":"Only reports/<cohort>/MM02.json is eligible to change on this worker branch."},
+    {"plan_item":"Promotion authority","status":"ALIGNED","detail":"No self-promotion, state mutation, benchmark mutation or runtime mutation."}
+  ],
+  "evidence_and_provenance": {
+    "canonical_pointer": {"path":"state/CURRENT.json","branch":"main","blob_sha":"b08c9ae01be715ad25059d3dfcb72febb4794c38"},
+    "generation": {"branch":"ps/gen/CAL-BR-006-v251-433ad83a","head_sha":"c86c091c3be840559a46670218705be1277acd8f"},
+    "control": {"path":"control/CAL-BR-006-v251-433ad83a.json","blob_sha":"d18e640729d9099a62774826993276971ed8e586","control_release_commit_sha":"a673507d01a8664f54fe3ee4ad262fdb7785121a","required_control_path_count":30},
+    "assignment": {"path":"assignments/CAL-BR-006-v251-433ad83a.json","blob_sha":"07f21675007c3ec085ec79b95a6fd71171324967"},
+    "worker_branch_prewrite": {"branch":"ps/work/CAL-BR-006-v251-433ad83a/MM02","comparison_to_generation":"IDENTICAL","report_preexisted":false},
+    "auth": {"commitment_verified":true,"scheme":"PS-HMAC-SHA256-CANONICAL-REPORT-2","raw_secret_persisted":false},
+    "scientific_inputs": {"fresh_evidence_opened":false,"private_manifest_opened":false,"benchmark_opened":false,"deep_research_performed":false}
+  },
+  "claim_scope": "T0 non-countable branch-transport/authentication replay only. No fresh DeepSWE evidence, evaluator payload, protected/private manifest, benchmark execution, scientific mechanism update, runtime update or calibration credit.",
+  "runtime_implementation_implication": "NONE",
+  "negative_zero_outcomes": [
+    "No fresh evidence consumed.",
+    "No private/protected manifest read.",
+    "No benchmark executed.",
+    "No deep research performed.",
+    "No new DeepSWE mechanism claim or promotion.",
+    "No calibration credit; repository protection gate remains unverified."
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "authority_separation": {
+      "task_contract": "PRESERVED_NOT_OPENED",
+      "primary_technical_authority": "PRESERVED_NOT_OPENED",
+      "evaluator": "PRESERVED_NOT_OPENED",
+      "collapsed_authority": false,
+      "mechanism_update": "NONE"
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only T0 transport/authentication check; no scientific or research consumption."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the exact MM02 worker branch/head/blob, validates the frozen schema/session/lineage/public safety and recomputes the canonical whole-report HMAC. MM02 performs no further work on this cohort.",
+  "worker_auth_proof": "20ebbc237a32b4a3488284c75ca6e28268c55d6d17657c802bd94d257f97dcab"
+}
