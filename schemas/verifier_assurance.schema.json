@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VerifierAssuranceRecord v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["checker_id", "exact_version_or_commit", "assurance_type", "implementation_family", "shared_tcb", "statement_identity_scope", "independence_status", "known_advisories", "exploit_regression_digest", "mutation_fuzz_digest", "last_security_review", "scope"],
+  "properties": {
+    "checker_id": {"type": "string"},
+    "exact_version_or_commit": {"type": "string"},
+    "assurance_type": {"enum": ["PRIMARY_KERNEL", "SAME_KERNEL_FRESH_REPLAY", "EXTERNAL_KERNEL_IMPLEMENTATION", "STATEMENT_IDENTITY_CHECKER", "STATEMENT_FIDELITY_AUTHORITY"]},
+    "implementation_family": {"type": "string"},
+    "language": {"type": ["string", "null"]},
+    "export_format": {"type": ["string", "null"]},
+    "shared_tcb": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "shared_algorithmic_lineage": {"type": ["string", "null"]},
+    "statement_identity_scope": {"type": "string"},
+    "known_advisories": {"type": "array", "items": {"type": "string"}},
+    "exploit_regression_digest": {"type": "string"},
+    "mutation_fuzz_digest": {"type": "string"},
+    "last_security_review": {"type": "string"},
+    "scope": {"type": "string"},
+    "independence_status": {"enum": ["NOT_ASSESSED", "SHARED_KERNEL", "SHARED_EXPORT_PIPELINE", "DIVERSE_IMPLEMENTATION_SHARED_SPEC", "JOINTLY_EXPLOITABLE_HISTORY", "NO_INDEPENDENCE_CLAIM"]}
+  }
+}
