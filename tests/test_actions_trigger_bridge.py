@@ -13,14 +13,14 @@ class ActionsCommentBridgeTests(unittest.TestCase):
         self.assertIn("workflow_dispatch:", text)
         self.assertIn("/supernova-admit", text)
         self.assertIn("statuses: write", text)
-        self.assertIn("python scripts/reconcile_open_prs.py", text)
+        self.assertIn("scripts/reconcile_open_prs.py", text)
+        self.assertIn("supernova/actions-comment-heartbeat", text)
 
-    def test_actions_are_full_sha_pinned(self):
+    def test_bridge_has_no_marketplace_action_dependency(self):
         text = WF.read_text(encoding="utf-8")
-        self.assertIn("actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683", text)
-        self.assertIn("actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065", text)
-        self.assertNotIn("@v4", text)
-        self.assertNotIn("@v5", text)
+        self.assertNotIn("uses:", text)
+        self.assertIn("git clone --filter=blob:none", text)
+        self.assertIn("python3 -m pip install", text)
 
     def test_bridge_does_not_mutate_state(self):
         text = WF.read_text(encoding="utf-8")
