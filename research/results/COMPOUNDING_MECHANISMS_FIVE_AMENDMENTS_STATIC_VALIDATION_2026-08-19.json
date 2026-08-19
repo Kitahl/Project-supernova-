@@ -1,0 +1,54 @@
+{
+  "schema_version": "PS-SUPERNOVA-RESEARCH-VALIDATION-1",
+  "run_id": "SN-COMP-5A-STATIC-2026-08-19",
+  "amendment_id": "SN-COMP-5A-2026-08-19",
+  "run_class": "NONADMISSIBLE_STATIC_VALIDATION",
+  "scientific_evidence_credit": false,
+  "status": "PASS_STATIC_VALIDATION_SCIENTIFIC_RUN_BLOCKED_T0",
+  "preregistration_path": "research/preregistrations/COMPOUNDING_MECHANISMS_FIVE_AMENDMENTS_2026-08-19.json",
+  "preregistration_canonical_sha256": "bcef20f06a557a1ae4ae7e02ae838068d9b652e0432039eb8d602e491002f5f1",
+  "checks": {
+    "json_structure": "PASS",
+    "five_amendments_present": "PASS",
+    "new_arm_set": ["H0_SAMPLE"],
+    "only_one_new_arm": "PASS",
+    "familywise_alpha": 0.05,
+    "alpha_components": [0.025, 0.025],
+    "alpha_sum": 0.05,
+    "alpha_sum_check": "PASS",
+    "target_n_paired_problems": 240,
+    "target_power": 0.8,
+    "target_two_sided_alpha_per_confirmatory_contrast": 0.025,
+    "solved_paired_t_effect_size_for_80pct_power": 0.20006122458761758,
+    "declared_mde_d": 0.2,
+    "mde_consistency": "PASS_APPROXIMATION",
+    "cost_accuracy_budget_fractions": [0.25, 0.5, 0.75, 1.0],
+    "budget_curve_check": "PASS",
+    "H3_H4_only_intended_difference": "enablement_signal_information_content",
+    "H3_H4_ablation_constraint": "PASS_SPECIFICATION",
+    "direct_reuse_instrumentation_present": "PASS",
+    "outcome_based_early_stopping": false,
+    "authority_no_bypass": "PASS"
+  },
+  "resource_use": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "scientific_arm_executions": 0
+  },
+  "authority_observation": {
+    "t0_qualified": false,
+    "fresh_allowed_globally": false,
+    "goal1_status": "BLOCKED_T0",
+    "current_blocker": "O-T0-MAIN_PROTECTION_THEN_TWO_CLEAN_BRANCH_COHORTS",
+    "ruling": "DO_NOT_EXECUTE_G8_OR_ANY_ADMISSIBLE_COMPOUNDING_ARM"
+  },
+  "transport_validation": {
+    "pr_number": 47,
+    "pr_target_workflow_declares_triggers": ["opened", "reopened", "synchronize", "ready_for_review"],
+    "workflow_run_observed_before_this_synchronize": false,
+    "commit_status_observed_before_this_synchronize": false,
+    "this_receipt_commit_purpose": "record the valid static run and emit a synchronize event for repository validation without modifying scientific/control state"
+  },
+  "final_ruling": "FIVE_AMENDMENT_SPEC_STATICALLY_VALID; ADMISSIBLE SCIENTIFIC RUN NOT EXECUTED BECAUSE EXISTING T0 AUTHORITY GATE IS CLOSED"
+}
