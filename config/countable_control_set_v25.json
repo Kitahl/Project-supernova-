@@ -40,6 +40,7 @@
     "tests/test_v25_report_contracts.py",
     "tests/test_source_bound_repo_policy.py",
     "tests/test_countable_control_freeze.py",
+    "tests/test_countable_control_gate_consistency.py",
     "tests/liveness/test_liveness_monitor.py",
     "tests/verifier_assurance/test_verifier_assurance_schema.py",
     ".github/workflows/supernova-v25-admission.yml",
