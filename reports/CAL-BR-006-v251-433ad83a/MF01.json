@@ -1,0 +1,183 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W01 | Representation Lab",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_BRANCH_BOOTSTRAP",
+    "iteration_id": "CAL-BR-006-v251-433ad83a",
+    "iteration_number": 6,
+    "role_id": "MF01",
+    "goal": "Validate branch-isolated transport and represent the active T0 blocker without scientific benchmark work.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-006-v251-433ad83a",
+  "worker_id": "MF01",
+  "report_id": "PS-MF01-CAL-BR-006-v251-433ad83a",
+  "generation_seq": 6,
+  "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+  "worker_branch": "ps/work/CAL-BR-006-v251-433ad83a/MF01",
+  "assignment_id": "PS-BRANCH-CAL-BR-006-v251-433ad83a",
+  "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+  "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+  "control_manifest_id": "CTRL-CAL-BR-006-v251-433ad83a",
+  "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "256953766a247e52ee7da40d6527b3b5",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "74ae88fc0a346a423d7fe0e0dcd3787ab0b29fbe455ae4e8b17f30b96923d74f",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_TRANSPORT_REPLAY_ONLY",
+  "executive_status": "MF01_TRANSPORT_CONTRACT_PASS_PENDING_MM06_AND_STRUCTURAL_CI",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task": "canonical_pointer",
+      "status": "PASS",
+      "detail": "main:state/CURRENT.json bound protocol 2.5, BRANCH_GITOPS, active non-superseded cohort and MF01 branch."
+    },
+    {
+      "task": "frozen_generation",
+      "status": "PASS",
+      "detail": "Generation branch equals frozen head c86c091c3be840559a46670218705be1277acd8f."
+    },
+    {
+      "task": "control_release",
+      "status": "PASS",
+      "detail": "Control release commit/tree matched and all 30 required control paths were present at the release; release-to-generation diff changed only cohort control and assignment files."
+    },
+    {
+      "task": "assignment_binding",
+      "status": "PASS",
+      "detail": "Plan, cohort, generation, parent-state identity, runtime state, checkpoint, assignment/control blobs, MF01 token, goal, target, fresh flag and constraints matched."
+    },
+    {
+      "task": "worker_branch_prewrite",
+      "status": "PASS",
+      "detail": "Assigned MF01 worker branch was identical to frozen generation head and report path was absent before creation."
+    },
+    {
+      "task": "worker_auth_commitment",
+      "status": "PASS",
+      "detail": "Prompt-private secret SHA-256 matched the frozen public MF01 commitment; raw secret was not persisted or exposed."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "O-T0-MAIN_PROTECTION_THEN_TWO_CLEAN_BRANCH_COHORTS",
+      "severity": "BLOCKING",
+      "status": "OPEN",
+      "detail": "Canonical state reports repository policy UNVERIFIED_BLOCKING, calibration streak 0, and calibration_countable_current=false."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test": "state_protocol_transport",
+      "result": "PASS"
+    },
+    {
+      "test": "active_cohort_not_superseded",
+      "result": "PASS"
+    },
+    {
+      "test": "control_and_assignment_blob_identity",
+      "result": "PASS"
+    },
+    {
+      "test": "control_release_commit_tree_identity",
+      "result": "PASS"
+    },
+    {
+      "test": "required_control_paths",
+      "result": "PASS",
+      "observed": "30/30"
+    },
+    {
+      "test": "generation_branch_immutability_prewrite",
+      "result": "PASS"
+    },
+    {
+      "test": "worker_branch_exact_G_prewrite",
+      "result": "PASS"
+    },
+    {
+      "test": "existing_report_guard",
+      "result": "PASS",
+      "observed": "report absent"
+    },
+    {
+      "test": "public_secret_commitment",
+      "result": "PASS"
+    },
+    {
+      "test": "protected_work_gate",
+      "result": "PASS",
+      "observed": "zero protected/fresh/benchmark/deep-research work"
+    },
+    {
+      "test": "structural_worker_CI",
+      "result": "NOT_OBSERVED_AT_SIGNING"
+    }
+  ],
+  "plan_alignment": [
+    "T0 branch bootstrap only.",
+    "SAFE_REPLAY_ONLY preserved.",
+    "No calibration credit claimed.",
+    "No scientific benchmark, private manifest, deep research, runtime mutation or promotion performed."
+  ],
+  "evidence_and_provenance": {
+    "canonical_pointer": "main:state/CURRENT.json",
+    "generation_branch": "ps/gen/CAL-BR-006-v251-433ad83a",
+    "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
+    "control_release_commit_sha": "a673507d01a8664f54fe3ee4ad262fdb7785121a",
+    "control_release_tree_sha": "86516a42d6862d1b6f5adf6b3c3dc0b8a32fed6a",
+    "control_manifest_path": "control/CAL-BR-006-v251-433ad83a.json",
+    "control_manifest_git_identity": "d18e640729d9099a62774826993276971ed8e586",
+    "assignment_path": "assignments/CAL-BR-006-v251-433ad83a.json",
+    "assignment_git_identity": "07f21675007c3ec085ec79b95a6fd71171324967",
+    "parent_state_git_identity": "433ad83ac8a197038bab3a6889c47cbc606cd34b",
+    "required_control_paths_verified": 30,
+    "mutable_control_reads_after_pointer": 0,
+    "origin_independent_reread": false
+  },
+  "claim_scope": "Transport/bootstrap evidence only. No mathematical, scientific benchmark, calibration-credit, runtime-promotion or repository-protection claim.",
+  "runtime_implementation_implication": "None. MF01 performed no runtime implementation change and has no promotion authority.",
+  "negative_zero_outcomes": [
+    "fresh evidence units consumed: 0",
+    "protected manifest reads: 0",
+    "benchmark executions: 0",
+    "deep research runs: 0",
+    "calibration credit: 0",
+    "runtime promotions: 0"
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "role": "Representation/blocker evidence",
+    "active_t0_blocker": "O-T0-MAIN_PROTECTION_THEN_TWO_CLEAN_BRANCH_COHORTS",
+    "repo_policy_status": "UNVERIFIED_BLOCKING",
+    "calibration_streak": 0,
+    "calibration_required_clean_cohorts": 2,
+    "calibration_countable_current": false,
+    "fresh_allowed_globally": false
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only transport validation; no protected evidence, private manifest, benchmark execution, deep research, calibration credit or promotion."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 must independently reread the MF01 branch/head/blob, verify canonical-report HMAC, strict session equality, schema, public safety, branch diff and successful structural worker CI before MF06 integration.",
+  "worker_auth_proof": "be2bfc762230bf75f7e5aba82f92395d0adb821f2d68fb040beb8abb75bb504b"
+}
