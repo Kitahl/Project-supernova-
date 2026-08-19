@@ -68,6 +68,7 @@ COUNTABLE_REQUIRED_CONTROL_PATHS = frozenset({
     'tests/test_reconcile_branch_rest_guard.py',
     'tests/test_reconcile_v25_admission_states.py',
     'tests/test_v25_countable_freeze_gate.py',
+    'tests/test_v25_auth_session_guard.py',
     'tests/test_pr_admission_watchdog_guard.py',
     'tests/liveness/test_liveness_monitor.py',
     'tests/liveness/test_liveness_schema.py',
