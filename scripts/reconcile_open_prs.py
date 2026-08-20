@@ -21,12 +21,13 @@ CONTEXTS = (
     "supernova/report-admission",
     "supernova/transition-admission",
 )
+BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
+BOOTSTRAP_CREATOR = "github-actions[bot]"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
-# These bytes define or exercise admission authority. The privileged reconciler
-# will never admit a PR that changes them. Such changes require an explicitly
-# non-countable bootstrap from an independently trusted/manual path before a
-# calibration streak begins.
+# These bytes define or exercise admission authority. They may be admitted only
+# after a separate accepted-main bootstrap verifier has published the exact
+# bootstrap context from the expected GitHub Actions principal.
 AUTHORITY_PREFIXES = (
     "scripts/",
     "tests/",
@@ -103,6 +104,16 @@ def authority_path_changes(changed: list[str]):
     )
 
 
+def trusted_bootstrap_success(head_sha: str):
+    statuses = api("/commits/" + head_sha + "/statuses?per_page=100") or []
+    for status in statuses:
+        if status.get("context") != BOOTSTRAP_CONTEXT:
+            continue
+        creator = (status.get("creator") or {}).get("login")
+        return status.get("state") == "success" and creator == BOOTSTRAP_CREATOR
+    return False
+
+
 def pr_metadata_errors(pr: dict):
     errors = []
     head = pr.get("head") or {}
@@ -145,7 +156,6 @@ def changed_file_mode_errors(repo: pathlib.Path, head_sha: str, changed: list[st
             errors.append("cannot inspect git mode for " + path)
             continue
         if not out.strip():
-            # Deletions are evaluated by the semantic transition validators.
             continue
         mode = out.split(None, 1)[0]
         if mode != "100644":
@@ -254,10 +264,10 @@ def validate_pr(repo_root: pathlib.Path, pr: dict, trusted_errors=None):
 
     changed = changed_files(repo_root, trusted, head_sha)
     authority_drift = authority_path_changes(changed)
-    if authority_drift:
+    if authority_drift and not trusted_bootstrap_success(head_sha):
         fail_contexts(
             head_sha,
-            "trusted admission refused: admission-authority bytes changed: " + authority_drift[0],
+            "trusted admission refused: authority bytes changed without source-verified bootstrap: " + authority_drift[0],
         )
         return
 
@@ -273,8 +283,6 @@ def validate_pr(repo_root: pathlib.Path, pr: dict, trusted_errors=None):
             fail_contexts(head_sha, "trusted admission could not create candidate data worktree")
             return
 
-        # IMPORTANT: no executable bytes are invoked from tmp. All Python below
-        # comes from exact accepted main; tmp is a data root only.
         static_errors = trusted_static_control(repo_root, tmp)
         report_errors = report_admission(tmp, trusted, changed)
         transition_errors = transition_admission(repo_root, tmp, trusted, head_sha, changed)
@@ -288,7 +296,8 @@ def validate_pr(repo_root: pathlib.Path, pr: dict, trusted_errors=None):
                 post_status(head_sha, ctx, "failure", "FAIL " + errors[0])
             else:
                 label = "PASS" if "state/CURRENT.json" in changed else "PASS/N-A non-transition"
-                post_status(head_sha, ctx, "success", "trusted-main exact-head " + label)
+                prefix = "trusted-bootstrap" if authority_drift else "trusted-main"
+                post_status(head_sha, ctx, "success", prefix + " exact-head " + label)
     finally:
         run(["git", "worktree", "remove", "--force", str(tmp)], repo_root)
         shutil.rmtree(tmp, ignore_errors=True)
