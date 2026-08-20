@@ -5,6 +5,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 WF = ROOT / ".github" / "workflows"
+SETUP_PYTHON = "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
 
 
 class PrivilegedAdmissionWorkflowTests(unittest.TestCase):
@@ -48,20 +49,24 @@ class PrivilegedAdmissionWorkflowTests(unittest.TestCase):
         self.assertNotIn("supernova/report-admission", text)
         self.assertNotIn("supernova/transition-admission", text)
 
-    def test_pr_target_writer_runs_trusted_reconciler(self):
+    def test_pr_target_writer_runs_trusted_reconciler_with_pinned_python(self):
         text = self.text("supernova-pr-target-admission.yml")
         self.assertIn("pull_request_target:", text)
         self.assertIn("statuses: write", text)
         self.assertIn("git clone --filter=blob:none", text)
-        self.assertIn("cd trusted && python3 scripts/reconcile_open_prs.py", text)
+        self.assertIn("cd trusted && python scripts/reconcile_open_prs.py", text)
+        self.assertIn(SETUP_PYTHON, text)
+        self.assertIn("python-version: '3.13'", text)
         self.assertNotIn("actions/checkout@", text)
 
-    def test_comment_writer_runs_trusted_reconciler(self):
+    def test_comment_writer_runs_trusted_reconciler_with_pinned_python(self):
         text = self.text("supernova-comment-admission.yml")
         self.assertIn("issue_comment:", text)
         self.assertIn("statuses: write", text)
         self.assertIn("git clone --filter=blob:none", text)
-        self.assertIn("cd repo && python3 scripts/reconcile_open_prs.py", text)
+        self.assertIn("cd repo && python scripts/reconcile_open_prs.py", text)
+        self.assertIn(SETUP_PYTHON, text)
+        self.assertIn("python-version: '3.13'", text)
         self.assertNotIn("actions/checkout@", text)
 
     def test_authority_contract_forbids_privileged_candidate_code(self):
