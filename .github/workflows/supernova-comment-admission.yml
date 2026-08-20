@@ -3,7 +3,8 @@ name: Supernova Comment Admission Bridge
 on:
   issue_comment:
     types: [created]
-  workflow_dispatch:
+  repository_dispatch:
+    types: [supernova-comment-admission]
 
 permissions:
   contents: read
@@ -18,7 +19,7 @@ concurrency:
 jobs:
   reconcile:
     if: >-
-      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'repository_dispatch' ||
       (github.event.issue.pull_request && startsWith(github.event.comment.body, '/supernova-admit'))
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +33,7 @@ jobs:
           import json, os, urllib.request
           repo=os.environ['GITHUB_REPOSITORY']; token=os.environ['GITHUB_TOKEN']; n=int(os.environ.get('PR_NUMBER','0') or '0')
           if not n:
-              print('workflow_dispatch heartbeat: no PR target'); raise SystemExit(0)
+              print('repository_dispatch heartbeat: no PR target'); raise SystemExit(0)
           req=urllib.request.Request(f'https://api.github.com/repos/{repo}/pulls/{n}')
           req.add_header('Authorization',f'Bearer {token}'); req.add_header('Accept','application/vnd.github+json'); req.add_header('X-GitHub-Api-Version','2022-11-28')
           with urllib.request.urlopen(req, timeout=30) as r: pr=json.load(r)
@@ -51,7 +52,7 @@ jobs:
           cd repo
           git fetch --no-tags origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
       - name: Install frozen validation environment
-        run: python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r repo/requirements-validation.lock
+        run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r repo/requirements-validation.lock"
       - name: Reconcile all open Supernova PR heads
         env:
           GITHUB_TOKEN: ${{ github.token }}
