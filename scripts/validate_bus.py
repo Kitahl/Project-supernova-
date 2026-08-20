@@ -33,6 +33,8 @@ else:
   o=load(p)
   if o is not None:walk(o,str(p.relative_to(ROOT)))
 state=load(ROOT/'state/CURRENT.json');plan=load(ROOT/'plan/PLAN.json');auth=load(ROOT/'config/worker_auth.json');reg=load(ROOT/'benchmark/registry.json');policy=load(ROOT/'config/repo_policy.json');cfg=load(ROOT/'branch/CONFIG.json');freeze=load(ROOT/'config/protocol_freeze.json');pools=load(ROOT/'benchmark/pool_disposition.json');lanes=load(ROOT/'research/open_lanes.json')
+substrate=load(ROOT/'config/substrate_epoch_v25.json') if (ROOT/'config/substrate_epoch_v25.json').is_file() else None
+parallel=load(ROOT/'config/read_only_probe_parallelism_v25.json') if (ROOT/'config/read_only_probe_parallelism_v25.json').is_file() else None
 if not all([state,plan,auth,reg,policy,cfg,freeze,pools,lanes]):err('missing canonical v2.5 state/plan/auth/registry/policy/freeze/pools/research gate/branch config')
 if state:
  try:
@@ -62,6 +64,13 @@ if lanes:
  if lanes.get('t0_qualified') is False:
   bad=[x for x in lanes.get('open_lanes',[]) if x.get('lane_id')!='T0-TRANSPORT-CLOSURE' and x.get('allowed_at_research_slots')]
   if bad:err('non-T0 research lane open while T0 unqualified')
+if substrate:
+ if substrate.get('task_network_plan_id')!=PLAN or substrate.get('protocol_version')!='2.5':err('substrate epoch identity mismatch')
+ if substrate.get('status')!='FROZEN_FOR_COUNTABLE_CALIBRATION':err('substrate epoch is not frozen for countable calibration')
+ if not (substrate.get('countable_freeze') or {}).get('ready'):err('substrate epoch countable freeze not ready')
+if parallel:
+ if parallel.get('task_network_plan_id')!=PLAN or parallel.get('protocol_version')!='2.5':err('read-only parallelism identity mismatch')
+ if parallel.get('currently_enabled') is not False:err('read-only probe parallelism must remain disabled during T0 calibration')
 for wf in (ROOT/'.github/workflows').glob('*.yml'):
  for line in wf.read_text(encoding='utf-8').splitlines():
   if re.search(r'^\s*-\s+uses:',line):
@@ -72,6 +81,14 @@ if state:
  if state.get('calibration_countable_current') and state.get('repo_policy_status')!='VERIFIED_PROTECTED_SOURCE_BOUND':err('countable calibration while source-bound repo policy unverified')
  if state.get('benchmark_registry_git_identity')!=blob(ROOT/'benchmark/registry.json'):err('benchmark registry blob mismatch')
  if state.get('worker_auth_scheme')!='PS-HMAC-SHA256-CANONICAL-REPORT-2':err('state worker auth scheme mismatch')
+ if state.get('calibration_countable_current'):
+  if not substrate:err('countable calibration missing frozen substrate epoch')
+  else:
+   mf=(substrate.get('math_foundry') or {}).get('source_archive_sha256')
+   mm=(substrate.get('mastermind') or {}).get('sha256')
+   if state.get('foundry_sha256')!=mf:err('countable state Foundry hash does not match frozen substrate epoch')
+   if state.get('mastermind_sha256')!=mm:err('countable state Mastermind hash does not match frozen substrate epoch')
+  if not parallel:err('countable calibration missing read-only parallelism policy')
 if E:
  print('CANONICAL BUS VALIDATION FAILED');[print('-',e) for e in E];sys.exit(1)
 print('CANONICAL BUS VALIDATION PASS')
