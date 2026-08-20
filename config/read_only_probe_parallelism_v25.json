@@ -1,0 +1,33 @@
+{
+  "schema_version": "PS-READ-ONLY-PROBE-PARALLELISM-2.5-1",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "protocol_version": "2.5",
+  "status": "FUTURE_OPTIMIZATION_DISABLED_BY_DEFAULT",
+  "currently_enabled": false,
+  "scope": "Independent read-only probes only; never worker writes, admission writes, product admission, scientific promotion, state transition, or benchmark mutation.",
+  "required_preconditions": [
+    "ALL_PROBES_BIND_THE_SAME_FROZEN_CAPABILITY_EPOCH_SHA256",
+    "ALL_PROVIDER_AND_TOOL_FINGERPRINTS_ARE_FROZEN_BEFORE_DISPATCH",
+    "EVERY_PROBE_EFFECT_CLASS_IS_READ_ONLY",
+    "NO_PAIR_HAS_AN_EFFECT_CONFLICT",
+    "NO_PROBE_DEPENDS_ON_ANOTHER_PROBES_OUTPUT",
+    "NO_SHARED_MUTABLE_CACHE_OR_EXTERNAL_STATE_IS_AUTHORITATIVE",
+    "COMPLETE_COST_AND_RATE_LIMIT_ACCOUNTING_REMAINS_DETERMINISTIC",
+    "EACH_CALL_EMITS_AN_EPOCH_BOUND_RECEIPT",
+    "AGGREGATION_ORDER_IS_DETERMINISTIC_OR_PROVEN_ORDER_INDEPENDENT"
+  ],
+  "fail_closed_conditions": [
+    "CAPABILITY_EPOCH_DRIFT",
+    "UNKNOWN_EFFECT_CLASS",
+    "WRITE_OR_OPEN_WORLD_EFFECT",
+    "MISSING_PROVIDER_OR_TOOL_FINGERPRINT",
+    "DEPENDENCY_EDGE_PRESENT",
+    "EFFECT_CONFLICT_UNKNOWN_OR_PRESENT",
+    "SHARED_BUDGET_ACCOUNTING_AMBIGUOUS",
+    "MISSING_RECEIPT"
+  ],
+  "fallback": "SERIAL_EXECUTION",
+  "authority": "SEARCH_ONLY_SCHEDULING_OPTIMIZATION",
+  "promotion_effect": "NONE",
+  "mastermind_minimum_version": "4.4.10-execution-closure-candidate.1"
+}
