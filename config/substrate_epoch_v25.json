@@ -1,0 +1,50 @@
+{
+  "schema_version": "PS-SUBSTRATE-EPOCH-2.5-1",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "protocol_version": "2.5",
+  "specification_revision": 4,
+  "status": "PRE_COUNTABLE_STAGING_WAITING_FOR_FOUNDRY_SUCCESSOR",
+  "mastermind": {
+    "version": "4.4.10-execution-closure-candidate.1",
+    "package": "MASTERMIND_v4.4.10_EXECUTION_CLOSURE_CANDIDATE_1_FULL.zip",
+    "sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+    "archive_bytes": 595605,
+    "manifest_entries": 210,
+    "python_files": 81,
+    "authority": "PRE_REVIEW_ONLY",
+    "local_qualification": {
+      "manifest_integrity": "PASS_210_OF_210",
+      "python_source_validation": "PASS_81_FILES",
+      "python_compile": "PASS",
+      "v449_capability_broker_validation": "PASS",
+      "mastermind_selftest": "PASS",
+      "package_verification": "PASS_SOURCE_ONLY_NO_UNEXPECTED_FILES",
+      "execution_closure_selftest": {
+        "catalog_complete": true,
+        "epoch_stable": true,
+        "python_project_write_blocked": true,
+        "python_calculation": true,
+        "foundry_ready_only": true
+      }
+    },
+    "capability_epoch_binding_required": true,
+    "effect_policy_required": true,
+    "runtime_mount_status": "ARTIFACT_VERIFIED_IN_STAGING_SESSION_NOT_YET_PROVEN_IN_SCHEDULED_RUNTIME"
+  },
+  "math_foundry": {
+    "current_baseline_version": "3.0.1",
+    "current_baseline_sha256": "a9f220078a0c087a1c80a4bc6255951225734f7e73b50660138c20372257a0e8",
+    "successor_version": null,
+    "successor_sha256": null,
+    "status": "AWAITING_NEW_USER_SUPPLIED_RELEASE",
+    "countable_cohort_1_must_freeze_successor": true
+  },
+  "countable_freeze": {
+    "ready": false,
+    "blocking_reason": "FOUNDRY_SUCCESSOR_NOT_YET_BOUND",
+    "rule": "Freeze exact final Foundry and Mastermind substrate identities before countable cohort 1; no substrate swap is permitted mid-cohort.",
+    "mid_streak_substrate_change": "RESETS_CALIBRATION_STREAK_TO_ZERO"
+  },
+  "scientific_status_changed": false,
+  "fresh_evidence_enabled": false
+}
