@@ -19,6 +19,9 @@
   "worker_auth_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "state_or_scientific_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "normal_required_contexts_may_be_republished_only_after_bootstrap_success": true,
+  "merge_authority": "EXISTING_GITHUB_RULESET_ONLY",
+  "bootstrap_verifier_may_bypass_ruleset": false,
+  "bootstrap_verifier_may_merge": false,
   "failure_semantics": "FAIL_CLOSED",
   "monitor_owner": "EXT01",
   "remediation_owner": "BIL00"
