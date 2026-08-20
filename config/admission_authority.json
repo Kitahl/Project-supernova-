@@ -1,9 +1,11 @@
 {
-  "schema_version": "PS-ADMISSION-AUTHORITY-2.5-1",
+  "schema_version": "PS-ADMISSION-AUTHORITY-2.5-2",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "required_status_creator": "github-actions[bot]",
   "candidate_code_execution_with_status_write_token": "FORBIDDEN",
+  "ref_selectable_dispatch_with_status_write_token": "FORBIDDEN",
+  "privileged_external_dispatch_event": "repository_dispatch",
   "candidate_bytes_treatment": "DATA_ONLY_UNDER_TRUSTED_MAIN_VALIDATORS",
   "trusted_reconciler": "scripts/reconcile_open_prs.py",
   "trusted_validator_entrypoints": [

@@ -3,7 +3,8 @@ name: Supernova PR Target Admission Bridge
 on:
   pull_request_target:
     types: [opened, reopened, synchronize, ready_for_review]
-  workflow_dispatch:
+  repository_dispatch:
+    types: [supernova-pr-target-admission]
 
 permissions:
   contents: read
@@ -17,7 +18,7 @@ concurrency:
 jobs:
   reconcile:
     if: >-
-      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'repository_dispatch' ||
       (github.event.pull_request.head.repo.full_name == github.repository &&
        github.event.pull_request.user.login == github.repository_owner)
     runs-on: ubuntu-latest
@@ -46,7 +47,7 @@ jobs:
           cd trusted
           git fetch --no-tags origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
       - name: Install frozen trusted validation environment
-        run: python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock
+        run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock"
       - name: Reconcile open PRs using trusted-main executable bytes only
         env:
           GITHUB_TOKEN: ${{ github.token }}

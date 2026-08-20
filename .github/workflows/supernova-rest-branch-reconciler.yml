@@ -5,7 +5,8 @@ on:
     branches: [main]
   schedule:
     - cron: '*/5 * * * *'
-  workflow_dispatch:
+  repository_dispatch:
+    types: [supernova-rest-branch-reconcile]
 
 permissions:
   contents: read

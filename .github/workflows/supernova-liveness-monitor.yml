@@ -3,7 +3,8 @@ name: Supernova Receipt Liveness Monitor
 on:
   schedule:
     - cron: '*/15 * * * *'
-  workflow_dispatch:
+  repository_dispatch:
+    types: [supernova-liveness-monitor]
 
 permissions:
   contents: read

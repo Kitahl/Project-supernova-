@@ -16,7 +16,8 @@ class ActionsTriggerBridgeTests(unittest.TestCase):
     def test_comment_bridge_is_action_free(self):
         text = COMMENT_WF.read_text(encoding="utf-8")
         self.assertIn("issue_comment:", text)
-        self.assertIn("workflow_dispatch:", text)
+        self.assertIn("repository_dispatch:", text)
+        self.assertIn("types: [supernova-comment-admission]", text)
         self.assertIn("/supernova-admit", text)
         self.assertIn("statuses: write", text)
         self.assertIn("scripts/reconcile_open_prs.py", text)
@@ -30,7 +31,8 @@ class ActionsTriggerBridgeTests(unittest.TestCase):
         self.assertIn("github.event.pull_request.user.login == github.repository_owner", text)
         self.assertIn("statuses: write", text)
         self.assertIn("supernova/actions-pr-target-heartbeat", text)
-        self.assertIn("r.validate_pr", text)
+        self.assertIn("types: [supernova-pr-target-admission]", text)
+        self.assertIn("cd trusted && python3 scripts/reconcile_open_prs.py", text)
         self.assertEqual(uses_lines(text), [])
 
     def test_bridges_do_not_mutate_canonical_state(self):

@@ -3,7 +3,8 @@ name: Supernova Open PR Admission Reconciler
 on:
   schedule:
     - cron: '*/5 * * * *'
-  workflow_dispatch:
+  repository_dispatch:
+    types: [supernova-open-pr-reconcile]
   push:
     branches: [main]
 
@@ -27,7 +28,7 @@ jobs:
         with:
           python-version: '3.13'
       - name: Install frozen validation environment
-        run: python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements-validation.lock
+        run: "python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements-validation.lock"
       - name: Reconcile exact open PR heads
         env:
           GITHUB_TOKEN: ${{ github.token }}
