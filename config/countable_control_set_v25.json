@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-2",
+  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-3",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "purpose": "Every NEW countable protocol-2.5 calibration generation must freeze this entire control set before cohort 1. Generation 6 is historical/non-countable and is not retrofitted.",
@@ -17,6 +17,8 @@
     "config/checker_pins.json",
     "config/countable_control_set_v25.json",
     "config/admission_authority.json",
+    "config/substrate_epoch_v25.json",
+    "config/read_only_probe_parallelism_v25.json",
     "branch/CONFIG.json",
     "research/open_lanes.json",
     "benchmark/registry.json",
