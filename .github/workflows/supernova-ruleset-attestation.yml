@@ -1,0 +1,85 @@
+name: Supernova Ruleset Attestation
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
+concurrency:
+  group: supernova-ruleset-attestation-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  attest:
+    if: >-
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Publish effective main ruleset attestation from GitHub API
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.parse, urllib.request
+
+          token = os.environ['GITHUB_TOKEN']
+          repo = os.environ['GITHUB_REPOSITORY']
+          pr = int(os.environ['PR_NUMBER'])
+
+          def api(url, method='GET', payload=None):
+              req = urllib.request.Request(
+                  url,
+                  data=(json.dumps(payload).encode('utf-8') if payload is not None else None),
+                  method=method,
+              )
+              req.add_header('Accept', 'application/vnd.github+json')
+              req.add_header('X-GitHub-Api-Version', '2022-11-28')
+              req.add_header('Authorization', 'Bearer ' + token)
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  raw = r.read()
+                  return json.loads(raw) if raw else None
+
+          base = 'https://api.github.com/repos/' + repo
+          effective = api(base + '/rules/branches/main')
+          summaries = api(base + '/rulesets') or []
+          details = []
+          for item in summaries:
+              rid = item.get('id')
+              if isinstance(rid, int):
+                  details.append(api(base + '/rulesets/' + str(rid)))
+          branch = api(base + '/branches/main')
+          actions_app = api('https://api.github.com/apps/github-actions')
+
+          attestation = {
+              'schema_version': 'PS-RULESET-ATTESTATION-1',
+              'repository': repo,
+              'branch': 'main',
+              'main_sha': ((branch or {}).get('commit') or {}).get('sha'),
+              'effective_branch_rules': effective,
+              'repository_rulesets': details,
+              'github_actions_app': {
+                  'id': (actions_app or {}).get('id'),
+                  'slug': (actions_app or {}).get('slug'),
+                  'name': (actions_app or {}).get('name'),
+                  'owner_login': (((actions_app or {}).get('owner') or {}).get('login')),
+              },
+          }
+          body = (
+              'SUPERNOVA_RULESET_ATTESTATION_V25_BEGIN\n```json\n'
+              + json.dumps(attestation, sort_keys=True, indent=2)
+              + '\n```\nSUPERNOVA_RULESET_ATTESTATION_V25_END'
+          )
+          if len(body) > 64000:
+              raise RuntimeError('ruleset attestation exceeds safe GitHub comment size')
+          api(base + '/issues/' + str(pr) + '/comments', 'POST', {'body': body})
+          print(json.dumps(attestation, sort_keys=True))
+          PY

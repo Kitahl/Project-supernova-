@@ -58,6 +58,7 @@
     "tests/test_transition_expected_base_head.py",
     "tests/test_substrate_epoch_v25.py",
     "tests/test_authority_bootstrap.py",
+    "tests/test_ruleset_attestation_workflow.py",
     "tests/liveness/test_liveness_monitor.py",
     "tests/verifier_assurance/test_verifier_assurance_schema.py",
     ".github/workflows/supernova-v25-admission.yml",
@@ -68,6 +69,7 @@
     ".github/workflows/supernova-comment-admission.yml",
     ".github/workflows/supernova-pr-target-admission.yml",
     ".github/workflows/supernova-authority-bootstrap.yml",
+    ".github/workflows/supernova-ruleset-attestation.yml",
     ".github/workflows/supernova-liveness-monitor.yml",
     "requirements-validation.lock"
   ],
