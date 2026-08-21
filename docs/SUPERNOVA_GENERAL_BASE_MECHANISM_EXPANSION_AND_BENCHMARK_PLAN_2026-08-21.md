@@ -127,9 +127,14 @@ validity_status in {
   FORMAL_CANDIDATE,
   COMPILES,
   KERNEL_ACCEPTED,
-  COMPARATOR_ACCEPTED,
-  EXACT_FORMAL_PROOF
+  COMPARATOR_ACCEPTED
 }
+
+EXACT_FORMAL_PROOF :=
+  validity_status = COMPARATOR_ACCEPTED
+  AND statement_fidelity_status satisfies the frozen policy
+  AND axiom_policy_status = VERIFIED
+  AND source_toolchain_status = VERIFIED
 
 verifier_assurance_status in {
   PRIMARY_KERNEL_ONLY,
@@ -139,7 +144,7 @@ verifier_assurance_status in {
 }
 ```
 
-`COMPILES` is not proof admission. `EXACT_FORMAL_PROOF` requires the declared exact validity, statement-fidelity, axiom-policy and source/toolchain predicates. Same-kernel replay is defence-in-depth and must not be described as external independence. Different-implementation replay is an orthogonal assurance property, not a mandatory final rung for every exact result.
+`COMPILES` is not proof admission. `EXACT_FORMAL_PROOF` is a derived predicate over the typed assurance tuple, not another rung in `validity_status`. Same-kernel replay is defence-in-depth and must not be described as external independence. Different-implementation replay is an orthogonal assurance property, not a mandatory final rung for every exact result.
 
 The verification Court must also record its trusted computing base: exact Lean/Mathlib, Comparator and `lean4export` revisions; the operating system and hardware; the sandbox and kernel features; privilege level; cache provenance; and network/filesystem policy. Follow the exact pinned Lean Eval security recipe. Comparator currently documents sandbox/OS assumptions and a required `systemd-run` mitigation for a landrun issue; do not describe the Court as qualified until the frozen deployment reproduces those protections and adversarial escape tests.
 
@@ -226,6 +231,7 @@ Compilation alone is not semantic fidelity.
 
 - HiGHS primary and SCIP secondary;
 - independently check feasibility, objective, primal/dual bounds and any optimality claim;
+- distinguish `NUMERIC_FEASIBLE`, `EXACT_FEASIBLE`, `NUMERIC_BOUND`, `CERTIFIED_BOUND` and `EXACT_OPTIMAL`; numerical tolerances alone never create exact authority;
 - keep incumbent, proved bound, optimality, timeout and unknown distinct.
 
 ### 3.7 Controlled evolution
@@ -312,10 +318,10 @@ Public benchmarks provide external comparability, not automatic Supernova freshn
 | --- | --- |
 | **Lean Eval** | primary external acceptance framework; Comparator, statement identity, axiom policy and complete cost |
 | **miniF2F Lean 4** | historical continuity and fast regression at an exact corrected fork/toolchain |
-| **PutnamBench** | pinned Lean split: 672 statements at the report date; obey its request not to publish proofs publicly and record contamination risk |
+| **PutnamBench** | pinned Lean split: 672 statements at the report date; separate direct-proof tasks from factored answer-plus-proof tasks, obey its request not to publish proofs publicly and record contamination risk |
 | **FATE-M/H/X** | report M/H/X separately: 150/100/100 at the report date; do not combine tiers |
 | **ProofNet-Verified** | 367 audited statements/pairs at the report date; Comparator and semantic-fidelity analysis |
-| **CombiBench** | 100 combinatorial problems at the report date |
+| **CombiBench** | 100 combinatorial problems at the report date; stratify proof-synthesis and answer/fill-in-the-blank tasks and never use a 100-item denominator for a proof-only claim unless all 100 are eligible |
 | **MA-ProofBench** | 200 analysis problems: 100 undergraduate and 100 PhD-level at the report date |
 | **LeanCat** | 100 category-theory statement problems at the report date, after exact preflight |
 | **Formal Conjectures** | `RESEARCH_FROZEN`; immutable benchmark tag required; unproved/potentially misformalized statements are not automatic truth authority |
