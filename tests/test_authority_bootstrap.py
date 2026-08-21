@@ -39,6 +39,27 @@ def copy_invariant_inputs(dst: pathlib.Path):
 
 
 class AuthorityBootstrapTests(unittest.TestCase):
+    def _assert_json_mutation_rejected(self, rel, keys, value, expected, changed=None):
+        mod = load_bootstrap_module()
+        with tempfile.TemporaryDirectory() as d:
+            base = pathlib.Path(d)
+            trusted, candidate = base / "trusted", base / "candidate"
+            copy_invariant_inputs(trusted)
+            copy_invariant_inputs(candidate)
+            path = candidate / rel
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            target = payload
+            for key in keys[:-1]:
+                target = target[key]
+            target[keys[-1]] = value
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            errors = mod.bootstrap_invariant_errors(
+                trusted,
+                candidate,
+                [rel] if changed is None else changed,
+            )
+            self.assertIn(expected, errors)
+
     def test_policy_is_fail_closed_and_pre_streak_only(self):
         p = json.loads(POLICY.read_text(encoding="utf-8"))
         self.assertEqual(p["trusted_executable_source"], "EXACT_ACCEPTED_MAIN")
@@ -121,6 +142,114 @@ class AuthorityBootstrapTests(unittest.TestCase):
             copy_invariant_inputs(candidate)
             self.assertEqual(mod.bootstrap_invariant_errors(trusted, candidate, []), [])
 
+    def test_every_repo_policy_security_field_is_fail_closed(self):
+        cases = [
+            ("required_pull_request_for_consolidation", False),
+            ("forbid_force_push", False),
+            ("forbid_branch_deletion", False),
+            ("required_main_status_contexts", ["supernova/static-control"]),
+            ("required_status_source_creator_logins", ["other-app[bot]"]),
+            ("operational_source_binding_proof_required", False),
+            ("candidate_code_execution_with_status_write_token", "ALLOWED"),
+            ("fresh_gate", "OPEN"),
+        ]
+        for key, value in cases:
+            with self.subTest(key=key):
+                self._assert_json_mutation_rejected(
+                    "config/repo_policy.json",
+                    [key],
+                    value,
+                    f"repo policy invariant weakened: {key}",
+                )
+
+    def test_every_admission_authority_security_field_is_fail_closed(self):
+        cases = [
+            ("protocol_version", "2.6"),
+            ("task_network_plan_id", "0" * 64),
+            ("candidate_code_execution_with_status_write_token", "ALLOWED"),
+            ("ref_selectable_dispatch_with_status_write_token", "ALLOWED"),
+            ("candidate_bytes_treatment", "EXECUTABLE"),
+            ("trusted_reconciler", "scripts/candidate_reconciler.py"),
+            ("trusted_authority_bootstrap_reconciler", "scripts/candidate_bootstrap.py"),
+            ("authority_bootstrap_context", "supernova/spoofed-bootstrap"),
+            ("same_repository_required", False),
+            ("owner_authored_required_for_privileged_reconciliation", False),
+            ("exact_current_main_ancestor_required", False),
+            ("required_contexts", ["supernova/static-control"]),
+        ]
+        for key, value in cases:
+            with self.subTest(key=key):
+                self._assert_json_mutation_rejected(
+                    "config/admission_authority.json",
+                    [key],
+                    value,
+                    f"admission authority invariant weakened: {key}",
+                )
+
+    def test_bootstrap_policy_content_is_checked_even_if_changed_list_is_incomplete(self):
+        cases = [
+            ("required_status_creator", "other-app[bot]"),
+            ("trusted_executable_source", "CANDIDATE_HEAD"),
+            ("candidate_bytes_in_privileged_phase", "EXECUTABLE"),
+            ("candidate_diagnostics", "OPTIONAL"),
+            ("same_repository_required", False),
+            ("owner_authored_required", False),
+            ("base_branch_required", "candidate"),
+            ("exact_current_main_ancestor_required", False),
+            ("calibration_streak_required", 1),
+            ("fresh_allowed_globally_required", True),
+            ("worker_auth_change", "ALLOWED"),
+            ("state_or_scientific_change", "ALLOWED"),
+            ("merge_authority", "BOOTSTRAP_VERIFIER"),
+            ("bootstrap_verifier_may_bypass_ruleset", True),
+            ("bootstrap_verifier_may_merge", True),
+            ("failure_semantics", "FAIL_OPEN"),
+        ]
+        for key, value in cases:
+            with self.subTest(key=key):
+                self._assert_json_mutation_rejected(
+                    "config/authority_bootstrap_v25.json",
+                    [key],
+                    value,
+                    f"bootstrap policy invariant weakened: {key}",
+                    changed=[],
+                )
+
+    def test_protocol_source_and_epoch_gates_are_fail_closed(self):
+        cases = [
+            (["frozen_protocol_version"], "2.6", "protocol freeze weakened: frozen_protocol_version"),
+            (["frozen_specification_revision"], 5, "protocol freeze weakened: frozen_specification_revision"),
+            (["status"], "OPEN", "protocol freeze weakened: status"),
+            (["no_successor_before", "repository_policy_independently_verified"], False, "protocol freeze weakened: repository policy gate"),
+            (["no_successor_before", "required_source_bound_contexts"], ["supernova/static-control"], "protocol freeze weakened: source-bound contexts"),
+            (["mid_streak_change_rule"], "PRESERVE_STREAK", "protocol freeze weakened: mid-streak reset rule"),
+        ]
+        for keys, value, expected in cases:
+            with self.subTest(keys=keys):
+                self._assert_json_mutation_rejected(
+                    "config/protocol_freeze.json",
+                    keys,
+                    value,
+                    expected,
+                )
+
+    def test_countable_control_identity_and_privilege_gates_are_fail_closed(self):
+        cases = [
+            ("protocol_version", "2.6", "countable control identity weakened"),
+            ("task_network_plan_id", "0" * 64, "countable control identity weakened"),
+            ("authoritative_change_after_cohort1", "PRESERVE_STREAK", "countable control mid-streak reset invariant weakened"),
+            ("candidate_code_with_status_write_token", "ALLOWED", "countable control candidate privilege invariant weakened"),
+            ("fresh_science", "ALLOWED", "countable control fresh-science invariant weakened"),
+        ]
+        for key, value, expected in cases:
+            with self.subTest(key=key):
+                self._assert_json_mutation_rejected(
+                    "config/countable_control_set_v25.json",
+                    [key],
+                    value,
+                    expected,
+                )
+
     def test_repo_policy_weakening_rejected(self):
         mod = load_bootstrap_module()
         with tempfile.TemporaryDirectory() as d:
@@ -181,3 +310,4 @@ class AuthorityBootstrapTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
