@@ -1,0 +1,406 @@
+{
+  "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-fe539297-r2",
+  "claim_scope": "T0 countable replay-control semantics only. No fresh theorem/operator/intermediate-object claim was made. Any future MF03 candidate remains hypothetical/external and non-promoted until exact Math Foundry execution, independent verification and statement-fidelity checks.",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-fe539297-r2",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "SAFE_REPLAY_ONLY countable T0 worker execution. No private-manifest read, fresh evidence, benchmark execution, deep research, mathematical promotion, ProductStore mutation or runtime-state mutation.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment": {
+      "blob_sha": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+      "path": "assignments/CAL-BR-010-v25-fe539297-r2.json"
+    },
+    "branch_prewrite": {
+      "relation_to_generation": "IDENTICAL",
+      "report_path_preexisting": false,
+      "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF03"
+    },
+    "canonical_main_pointer": {
+      "blob_sha": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+      "path": "state/CURRENT.json"
+    },
+    "control_manifest": {
+      "blob_sha": "08848388882c48062668624d615208ab5d7ec59f",
+      "path": "control/CAL-BR-010-v25-fe539297-r2.json"
+    },
+    "control_release": {
+      "commit_sha": "fe539297bdf6b769140c9970326f3e1de116f276",
+      "relation_to_generation": "AHEAD_BY_1_ONLY_COHORT_CONTROL_ASSIGNMENT_LIVENESS_ADDED",
+      "tree_sha": "ae42b5fc437963c51434e0dbacef18542fef0b1c"
+    },
+    "frozen_generation": {
+      "branch": "ps/gen/CAL-BR-010-v25-fe539297-r2",
+      "head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+      "recursive_tree_truncated": false,
+      "relation_to_branch": "IDENTICAL"
+    },
+    "frozen_key_blobs": {
+      "BRANCH_WORKER_PROTOCOL.md": "312d7f6e8d23821dc4739fedcb80bfab08cad0df",
+      "PROTOCOL.md": "1f7c97947c2d732e99f228fd539a0057b3861aee",
+      "SESSION_STANDARD.md": "3ac507a31438c8eba5497c72a61a7979ab1a3a52",
+      "config/countable_control_set_v25.json": "92b30a828d08752d38ca4c3abf2e7dfcb5fd2528",
+      "config/roles.json": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "config/substrate_epoch_v25.json": "e86f527ce49d5b6169d9ee12c3a264ef421aa747",
+      "config/worker_auth.json": "9498d1d49b8636a3a313dc63be89f4433330c230",
+      "plan/PLAN.json": "69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+      "schemas/branch_report.schema.json": "8372632e48df1d9fcb28133cdea4788adfd658fc",
+      "schemas/cohort_liveness_contract.schema.json": "2bffe22b12c2efee31c8b43f2e7a79842e814dd7",
+      "scripts/check_lane_liveness.py": "a9f089d4ddbf50680b7ca8b855cca7b870dbe263",
+      "scripts/liveness_contract_guard.py": "c0ec53139ee0736a7213dece47ff976858af64b5",
+      "scripts/reconcile_branch_rest.py": "9488244cea6f4fd81f72950565f65830a17e0279",
+      "scripts/reconcile_branch_statuses.py": "b0a83f12ae236ccacee1c545f1a1745f3ec89359",
+      "tests/liveness/test_liveness_monitor.py": "7d8009174d3244153ec2209264e342cdd7f78dc3",
+      "tests/test_structural_status_single_writer.py": "45c4b30fe3e794c5415d20049f3742727a687df4"
+    },
+    "liveness_contract": {
+      "blob_sha": "8bd88d895df508e6807588239dea1f8047b73f13",
+      "eligible_before_deadline": true,
+      "mf03_deadline_utc": "2026-08-21T22:55:00Z",
+      "mf03_expected_window_start_utc": "2026-08-21T22:07:00Z",
+      "path": "liveness/CAL-BR-010-v25-fe539297-r2.json",
+      "schema_version": "PS-COHORT-LIVENESS-2.5-2"
+    },
+    "origin_reread_authority": "MM06",
+    "parent_state": {
+      "blob_sha": "31071464144bde197aca0e3f13153be2d85208d7",
+      "calibration_streak": 0,
+      "cohort_id": "CAL-BR-009-v25-b53ab205",
+      "generation_seq": 9,
+      "path": "state/CURRENT.json"
+    },
+    "repaired_control_audit": {
+      "countable_generation_expected_paths": "CONTROL_ASSIGNMENT_LIVENESS",
+      "late_receipt_policy": "RUN_LATE_AND_RUN_TIMING_UNKNOWN_BLOCK_TRANSITION",
+      "regression_tests": "FROZEN_TESTS_PRESENT",
+      "rest_diagnostic_authority": "READ_ONLY_NON_AUTHORITATIVE",
+      "structural_status_writer": "SINGLE_AUTHORITATIVE_WRITER_CONFIRMED"
+    },
+    "required_control_resolution": {
+      "method": "EXACT_CONTROL_RELEASE_TREE_PLUS_RELEASE_TO_G_DIFF_PLUS_UNTRUNCATED_FROZEN_GENERATION_TREE",
+      "note": "The release-to-G diff is exactly the cohort control, assignment and liveness files; all declared required control paths are therefore release-identical and visible in the untruncated frozen generation tree.",
+      "result": "PASS"
+    },
+    "runtime_update_receipt": {
+      "blob_sha": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "fresh_evidence_consumed": false,
+      "path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+      "qualification_class": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+      "scientific_status_changed": false,
+      "status": "VALIDATED"
+    },
+    "structural_ci_prewrite": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "substrate": {
+      "foundry_sha256": "57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+      "foundry_version": "3.1.1",
+      "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+      "scheduled_runtime_mount_status": "IDENTITY_BOUND_FOR_REPLAY_CALIBRATION; EXECUTABLE_MOUNT_REQUIRED_SEPARATELY_BEFORE_FRESH_EXECUTION"
+    }
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL_ONLY",
+  "executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT; COUNTABILITY_PENDING_MM06_MF06_BIL00; NO_PROMOTION",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "generation_seq": 10,
+  "issue_ledger": [],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "fresh_evidence_units_consumed=0",
+    "protected_manifest_reads=0",
+    "private_manifest_reads=0",
+    "benchmark_executions=0",
+    "deep_research_runs=0",
+    "new_mathematical_claims=0",
+    "new_operator_claims=0",
+    "new_intermediate_object_claims=0",
+    "runtime_promotions=0",
+    "productstore_mutations=0",
+    "issue_ledger_findings=0"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads the exact MF03 branch/report, verifies deterministic transport, schema, whole-report HMAC-2, creation history and liveness timing, public safety, assignment/control/runtime bindings and exact-head structural status. Only MM06 -> MF06 -> BIL00 may determine clean-cohort credit.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "31071464144bde197aca0e3f13153be2d85208d7",
+  "plan_alignment": [
+    {
+      "obligation": "T0 replacement countable cohort remains replay-only",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "header execution_mode equals report.mode",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "zero fresh/private/benchmark/deep-research cost",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "MF03 performs only frozen operator/intermediate-object control replay",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "candidate or mathematical truth cannot be promoted from worker emission",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "no Foundry path or five-operator contract is invented without source availability and fresh authorization",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "known Gen9 single-writer and late-receipt defects are checked against frozen Gen10 repair controls",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "NO_RECEIPT is not used as a null result",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "model binding is reported from observation rather than request text",
+      "status": "SATISFIED"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "RPT-CAL-BR-010-v25-fe539297-r2-MF03",
+  "research_questions": [],
+  "role_payload": {
+    "candidate_disposition": "NONE_EMITTED",
+    "candidate_emitted": false,
+    "fresh_execution_authorized": false,
+    "future_candidate_authority": "EXTERNAL_NOT_PROMOTED_UNTIL_EXACT_FOUNDRY_EXECUTION_PLUS_INDEPENDENT_VERIFICATION_PLUS_STATEMENT_FIDELITY",
+    "future_gated_ownership": [
+      "OCN_0A",
+      "FIVE_OPERATOR_CONTRACT_PILOT",
+      "PRODUCT_OUTPUT_SCHEMAS",
+      "ACTION_ONTOLOGY",
+      "C1_PREP"
+    ],
+    "note": "No Foundry source path, five-operator contract, lemma, operator or intermediate object was invented during this T0 replay cohort. The frozen substrate identity is qualified for replay only; executable source/mount authority is separately required before fresh execution.",
+    "replay_semantics_status": "PASS"
+  },
+  "runtime_implementation_implication": "NONE. This receipt does not alter Math Foundry runtime truth, ProductStore content, VerifiedProduct status, benchmark state, Tribunal scientific state, protocol state or promotion state.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay operator/intermediate-object control semantics under Math Foundry 3.1.1, report implementation or lineage defects, and produce one countable T0 calibration report without theorem promotion.",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF03",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W03 | Lemma & Operator Lab",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "detail": "main:state/CURRENT.json selects protocol 2.5 / BRANCH_GITOPS, generation 10, active cohort CAL-BR-010-v25-fe539297-r2, immutable generation 25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f, parent 31071464144bde197aca0e3f13153be2d85208d7, checkpoint 59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905, runtime 9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf, countable replay status and source-bound repository policy. Gen10 is not superseded.",
+      "status": "PASS",
+      "task": "Resolve canonical state and immutable Gen10 lineage"
+    },
+    {
+      "detail": "Frozen control and assignment blobs match CURRENT. Control release fe539297bdf6b769140c9970326f3e1de116f276 has frozen tree ae42b5fc437963c51434e0dbacef18542fef0b1c. Release-to-G is one commit adding only the Gen10 control, assignment and liveness contract, so all required pre-existing control paths remain release-identical. Generation and MF03 branches were identical to G before creation; assigned report path was absent.",
+      "status": "PASS",
+      "task": "Verify control-release closure and branch isolation"
+    },
+    {
+      "detail": "Frozen reconcile_branch_rest.py is GET-only and non-authoritative under distinct diagnostic contexts; reconcile_branch_statuses.py is the sole authoritative branch status writer. The REST generation diagnostic expects the exact countable generation shape control+assignment+liveness. Frozen regression tests enforce single-writer cardinality.",
+      "status": "PASS",
+      "task": "Verify repaired single-writer structural-status semantics"
+    },
+    {
+      "detail": "Frozen check_lane_liveness.py blocks RUN_LATE and RUN_TIMING_UNKNOWN after deadline and accepts delayed polling only when immutable GitHub commit time proves creation at/before deadline. Frozen regression tests cover late, unknown-timing, missing and delayed-poll cases. The Gen10 liveness contract binds MF03 to the assigned branch/path with deadline 2026-08-21T22:55:00Z.",
+      "status": "PASS",
+      "task": "Verify repaired immutable receipt-timing semantics"
+    },
+    {
+      "detail": "No theorem, operator result, intermediate-object truth claim, Foundry path, ProductStore mutation, VerifiedProduct promotion, benchmark result or scientific-state claim was created. Any future candidate remains external/hypothetical until exact Foundry execution, independent verification and statement fidelity.",
+      "status": "PASS",
+      "task": "Replay MF03 operator/intermediate-object authority boundary"
+    },
+    {
+      "detail": "Pre-write exact-G statuses observed supernova/liveness=success, supernova/static-control=success and supernova/branch-generation=success. report-admission, transition-admission, branch-worker, branch-verify, branch-integrate and branch-consolidate were pending and were not reinterpreted as PASS.",
+      "status": "PASS_WITH_PENDING_DOWNSTREAM",
+      "task": "Observe structural CI without self-attestation"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "PASS",
+      "test": "expected_plan_id"
+    },
+    {
+      "result": "PASS",
+      "test": "protocol_2_5"
+    },
+    {
+      "result": "PASS",
+      "test": "transport_mode_BRANCH_GITOPS"
+    },
+    {
+      "result": "PASS",
+      "test": "active_cohort_not_superseded"
+    },
+    {
+      "result": "PASS",
+      "test": "generation_seq_10"
+    },
+    {
+      "blob_sha": "31071464144bde197aca0e3f13153be2d85208d7",
+      "result": "PASS",
+      "test": "parent_state_blob_matches_frozen_lineage"
+    },
+    {
+      "result": "PASS",
+      "test": "network_checkpoint_id"
+    },
+    {
+      "result": "PASS",
+      "test": "runtime_state_id"
+    },
+    {
+      "blob_sha": "08848388882c48062668624d615208ab5d7ec59f",
+      "result": "PASS",
+      "test": "control_blob_identity"
+    },
+    {
+      "blob_sha": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+      "result": "PASS",
+      "test": "assignment_blob_identity"
+    },
+    {
+      "result": "PASS",
+      "test": "control_release_commit_and_tree_identity"
+    },
+    {
+      "result": "PASS",
+      "test": "required_control_release_to_generation_diff_exact_control_assignment_liveness"
+    },
+    {
+      "result": "PASS",
+      "test": "required_control_tree_untruncated"
+    },
+    {
+      "blob_sha": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "result": "PASS",
+      "test": "roles_blob_identity"
+    },
+    {
+      "blob_sha": "9498d1d49b8636a3a313dc63be89f4433330c230",
+      "result": "PASS",
+      "test": "worker_auth_blob_identity"
+    },
+    {
+      "blob_sha": "3ac507a31438c8eba5497c72a61a7979ab1a3a52",
+      "result": "PASS",
+      "test": "session_standard_blob_identity"
+    },
+    {
+      "blob_sha": "312d7f6e8d23821dc4739fedcb80bfab08cad0df",
+      "result": "PASS",
+      "test": "branch_worker_protocol_blob_identity"
+    },
+    {
+      "blob_sha": "8372632e48df1d9fcb28133cdea4788adfd658fc",
+      "result": "PASS",
+      "test": "report_schema_blob_identity"
+    },
+    {
+      "blob_sha": "8bd88d895df508e6807588239dea1f8047b73f13",
+      "result": "PASS",
+      "test": "liveness_contract_blob_identity"
+    },
+    {
+      "blob_sha": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "result": "PASS",
+      "test": "runtime_update_receipt_blob_identity"
+    },
+    {
+      "result": "PASS",
+      "test": "generation_branch_equals_frozen_head"
+    },
+    {
+      "result": "PASS",
+      "test": "worker_branch_equals_frozen_head_prewrite"
+    },
+    {
+      "result": "PASS",
+      "test": "assigned_report_absent_prewrite"
+    },
+    {
+      "result": "PASS",
+      "test": "MF03_secret_commitment"
+    },
+    {
+      "result": "PASS",
+      "test": "HMAC2_signed_field_mutation_rejection"
+    },
+    {
+      "result": "PASS",
+      "test": "header_execution_mode_equals_report_mode"
+    },
+    {
+      "result": "PASS",
+      "test": "single_authoritative_structural_status_writer_repair"
+    },
+    {
+      "result": "PASS",
+      "test": "countable_generation_shape_includes_liveness_repair"
+    },
+    {
+      "result": "PASS",
+      "test": "late_receipt_transition_blocking_repair"
+    },
+    {
+      "result": "PASS",
+      "test": "structural_ci_supernova_liveness"
+    },
+    {
+      "result": "PASS",
+      "test": "structural_ci_supernova_static_control"
+    },
+    {
+      "result": "PASS",
+      "test": "structural_ci_supernova_branch_generation"
+    },
+    {
+      "result": "PENDING_EXPECTED",
+      "test": "structural_ci_worker_and_downstream_prewrite"
+    },
+    {
+      "detail": "Model identity is observed as GPT-5.6 Sol in this execution surface; requested EXTRA_HIGH reasoning effort is not independently runtime-attested. The bound Foundry 3.1.1 software-replay receipt explicitly makes no model-binding claim.",
+      "result": "PARTIAL_UNVERIFIED",
+      "test": "model_and_reasoning_runtime_binding"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "e3a7ba04dfe2469ab75d9669d2b6da95",
+  "worker_auth_commitment": "060c3457b8ad4895f1f980a51bdea1a3d9ceca7eec2908c9a270b076bb4b8fb0",
+  "worker_auth_proof": "4d0f0910889c62a0d8a029236dc44267d32f61dea51aabfdfe383384dff33a07",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF03",
+  "worker_id": "MF03"
+}
