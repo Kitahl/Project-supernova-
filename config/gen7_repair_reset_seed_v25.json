@@ -1,0 +1,35 @@
+{
+  "schema_version": "PS-GEN7-REPAIR-RESET-SEED-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "seed_context": "supernova/gen7-repair-reset-seed",
+  "head_prefix_required": "repair-reset/",
+  "exact_invalidated_state_blob": "856481759722e23ff9a652ce140f304efe13b023",
+  "exact_invalidated_cohort": "CAL-BR-007-v25-c13b6ee4",
+  "exact_invalidated_generation_head": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "streak_required": 0,
+  "fresh_required": false,
+  "one_shot_marker_path": "config/gen7_repair_reset_epoch_v25.json",
+  "one_shot_rule": "SEED_REFUSES_AFTER_REPAIR_RESET_MARKER_IS_ACCEPTED",
+  "seed_self_modification": "FORBIDDEN",
+  "seed_paths": [
+    "config/gen7_repair_reset_seed_v25.json",
+    "scripts/reconcile_gen7_repair_reset_seed.py",
+    ".github/workflows/supernova-gen7-repair-reset-seed.yml",
+    "tests/test_gen7_repair_reset_seed.py"
+  ],
+  "required_candidate_paths": [
+    "config/countable_control_set_v25.json",
+    "config/gen7_repair_reset_epoch_v25.json",
+    "scripts/reconcile_open_prs.py",
+    "tests/test_gen7_repair_reset.py"
+  ],
+  "forbidden_candidate_prefixes": [
+    "state/", "control/", "assignments/", "reports/", "verification/", "integration/",
+    "history/", "transitions/", "superseded/", "runtime/", "benchmark/", "research/"
+  ],
+  "required_normal_contexts": [
+    "supernova/static-control", "supernova/report-admission", "supernova/transition-admission"
+  ],
+  "failure_semantics": "FAIL_CLOSED"
+}
