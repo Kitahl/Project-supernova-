@@ -3,6 +3,7 @@ import pathlib
 import unittest
 from jsonschema import Draft202012Validator
 
+# Authority-bootstrap transport proof only: semantic no-op; close this PR unmerged.
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SCHEMAS = [
     ROOT / "schemas" / "state.schema.json",
