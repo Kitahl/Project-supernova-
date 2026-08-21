@@ -19,12 +19,29 @@ def kind(branch):
   if parts[1] in ('verify','integrate','consolidate'):return parts[1],parts[2],None
  return None,None,None
 def sch(p):return load(ROOT/p)
+def schema_errors(obj,path,prefix):
+ schema=sch(path);Draft202012Validator.check_schema(schema)
+ return [f'{prefix}: {x.message}' for x in Draft202012Validator(schema).iter_errors(obj)]
 def execution_mode_errors(report,assignment):
  e=[];h=report.get('session_header',{});hm=h.get('execution_mode');rm=report.get('mode')
  if hm!=rm:e.append('session_header.execution_mode != report.mode')
  if assignment.get('network_mode')=='GITHUB_BRANCH_CALIBRATION':
   if hm!='SAFE_REPLAY_ONLY':e.append('calibration session execution_mode != SAFE_REPLAY_ONLY')
   if rm!='SAFE_REPLAY_ONLY':e.append('calibration report mode != SAFE_REPLAY_ONLY')
+ return e
+def issue_ledger_errors(report):
+ e=[];rows=report.get('issue_ledger') or []
+ ids=[r.get('issue_id') for r in rows if isinstance(r,dict)]
+ if len(ids)!=len(rows):e.append('issue_ledger contains non-object item')
+ if len(ids)!=len(set(ids)):e.append('issue_ledger duplicate issue_id')
+ return e
+def role_contract_errors(report,worker):
+ e=[]
+ if worker=='MM01' and report.get('mode')=='FRESH_EXECUTION':
+  payload=report.get('role_payload')
+  proposal=payload.get('react_proposal') if isinstance(payload,dict) else None
+  if proposal is None:e.append('MM01 fresh execution missing role_payload.react_proposal')
+  else:e.extend(schema_errors(proposal,'schemas/mastermind_react_proposal.schema.json','MM01 React proposal schema'))
  return e
 def validate(branch,G):
  e=[];k,c,w=kind(branch)
@@ -33,7 +50,7 @@ def validate(branch,G):
  if not cp.exists() or not ap.exists():return ['missing control/assignment']
  co=load(cp);a=load(ap)
  for obj,path in [(co,'schemas/control.schema.json'),(a,'schemas/assignment.schema.json')]:
-  for x in Draft202012Validator(sch(path)).iter_errors(obj):e.append(f'{path}: {x.message}')
+  e.extend(schema_errors(obj,path,path))
  if co.get('task_network_plan_id')!=PLAN or a.get('task_network_plan_id')!=PLAN:e.append('plan mismatch')
  auth=sch('config/worker_auth.json')
  if auth.get('scheme')!=HMAC2:e.append('worker auth metadata scheme != PS-HMAC-SHA256-CANONICAL-REPORT-2')
@@ -59,11 +76,11 @@ def validate(branch,G):
   if not rp.exists():e.append('report missing')
   else:
    r=load(rp)
-   for x in Draft202012Validator(sch('schemas/branch_report.schema.json')).iter_errors(r):e.append(f'report schema: {x.message}')
+   e.extend(schema_errors(r,'schemas/branch_report.schema.json','report schema'))
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')
-   e.extend(execution_mode_errors(r,a))
+   e.extend(execution_mode_errors(r,a));e.extend(issue_ledger_errors(r));e.extend(role_contract_errors(r,w))
    bindings={'task_network_plan_id':PLAN,'cohort_id':c,'worker_id':w,'generation_seq':a.get('generation_seq'),'generation_head_sha':G,'worker_branch':branch,'assignment_id':a.get('assignment_id'),'assignment_git_identity':blob(ap),'parent_state_git_identity':a.get('parent_state_git_identity'),'control_manifest_id':a.get('control_manifest_id'),'control_manifest_git_identity':blob(cp),'network_checkpoint_id':a.get('network_checkpoint_id'),'runtime_state_id':a.get('runtime_state_id'),'visibility_token':aw.get('visibility_token'),'worker_auth_scheme':HMAC2,'status':'VALID_ASSIGNED_REPORT','public_safety_status':'PASS','origin_reread_claim':False}
    for key,val in bindings.items():
     if r.get(key)!=val:e.append(f'report binding mismatch {key}')
@@ -76,12 +93,15 @@ def validate(branch,G):
   rc,out,_=git('diff','--name-only',G,'HEAD');p=f'verification/{c}.json';changed=[x for x in out.splitlines() if x]
   if changed!=[p]:e.append(f'verifier diff invalid {changed}')
   elif (ROOT/p).exists():
-   for x in Draft202012Validator(sch('schemas/branch_verification.schema.json')).iter_errors(load(ROOT/p)):e.append(f'verification schema: {x.message}')
+   v=load(ROOT/p);e.extend(schema_errors(v,'schemas/branch_verification.schema.json','verification schema'))
+   assurance_schema='schemas/verifier_assurance.schema.json'
+   for idx,record in enumerate(v.get('verifier_assurance_records') or []):
+    e.extend(schema_errors(record,assurance_schema,f'verifier assurance[{idx}]'))
  if k=='integrate':
   rc,out,_=git('diff','--name-only',G,'HEAD');p=f'integration/{c}.json';changed=[x for x in out.splitlines() if x]
   if changed!=[p]:e.append(f'integrator diff invalid {changed}')
   elif (ROOT/p).exists():
-   for x in Draft202012Validator(sch('schemas/branch_integration.schema.json')).iter_errors(load(ROOT/p)):e.append(f'integration schema: {x.message}')
+   e.extend(schema_errors(load(ROOT/p),'schemas/branch_integration.schema.json','integration schema'))
  return e
 if __name__=='__main__':
  q=argparse.ArgumentParser();q.add_argument('--branch',required=True);q.add_argument('--generation-head',required=True);z=q.parse_args();E=validate(z.branch,z.generation_head)
