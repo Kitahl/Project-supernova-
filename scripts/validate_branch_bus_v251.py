@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, hashlib, json, pathlib, subprocess, sys
+import argparse, datetime as dt, hashlib, json, pathlib, subprocess, sys
 from jsonschema import Draft202012Validator
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
+WORKERS=('MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01')
 SESS={'MF01':'PS-MF-W01 | Representation Lab','MF02':'PS-MF-W02 | E1 Solver Routing','MF03':'PS-MF-W03 | Lemma & Operator Lab','MF04':'PS-MF-W04 | Adversarial Falsifier','MF05':'PS-MF-W05 | Product Closure','MM01':'PS-MM-W01 | React Mechanisms','MM02':'PS-MM-W02 | DeepSWE Mechanisms','MM03':'PS-MM-W03 | SlopCode Contracts','MM04':'PS-MM-W04 | Senior SWE Architecture','MM05':'PS-MM-W05 | E3 Mechanism Controls','MM07':'PS-MM-W07 | Before/After Self-Bench','EXT01':'PS-JOINT-A01 | Runtime & Transport Audit'}
 def git(*a):
  p=subprocess.run(['git','-C',str(ROOT),*a],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False);return p.returncode,p.stdout.strip(),p.stderr.strip()
@@ -19,6 +20,10 @@ def kind(branch):
   if parts[1] in ('verify','integrate','consolidate'):return parts[1],parts[2],None
  return None,None,None
 def sch(p):return load(ROOT/p)
+def parse_utc(s):
+ x=dt.datetime.fromisoformat(s.replace('Z','+00:00'))
+ if x.tzinfo is None:raise ValueError('time is not timezone-aware')
+ return x.astimezone(dt.timezone.utc)
 def execution_mode_errors(report,assignment):
  e=[];h=report.get('session_header',{});hm=h.get('execution_mode');rm=report.get('mode')
  if hm!=rm:e.append('session_header.execution_mode != report.mode')
@@ -35,6 +40,46 @@ def mm01_role_payload_errors(report):
   schema=sch('schemas/mastermind_react_proposal.schema.json');Draft202012Validator.check_schema(schema)
   for x in Draft202012Validator(schema).iter_errors(payload):e.append('MM01 React proposal schema: '+x.message)
  except Exception as x:e.append('MM01 React proposal schema execution failed: '+repr(x))
+ return e
+def issue_ledger_errors(report):
+ e=[];ledger=report.get('issue_ledger')
+ if not isinstance(ledger,list):return ['issue_ledger is not an array']
+ ids=[]
+ for row in ledger:
+  if isinstance(row,dict) and isinstance(row.get('issue_id'),str):ids.append(row['issue_id'])
+ if len(ids)!=len(set(ids)):e.append('duplicate issue_id in issue_ledger')
+ if not ledger and report.get('executive_status')!='ZERO_DELTA':e.append('empty issue_ledger requires executive_status ZERO_DELTA')
+ return e
+def liveness_contract_errors(c,co,a,cp,ap,root):
+ e=[]
+ if co.get('calibration_countable') is not True:return e
+ p=ROOT/f'liveness/{c}.json'
+ if not p.exists():return ['countable generation missing frozen liveness contract']
+ try:
+  contract=load(p);schema=sch('schemas/cohort_liveness_contract.schema.json');Draft202012Validator.check_schema(schema)
+  for x in Draft202012Validator(schema).iter_errors(contract):e.append('liveness schema: '+x.message)
+ except Exception as x:return ['liveness contract parse/schema failure: '+repr(x)]
+ expected={
+  'protocol_version':'2.5','task_network_plan_id':PLAN,'cohort_id':c,'generation_seq':a.get('generation_seq'),
+  'generation_root_sha':root,'control_manifest_id':co.get('control_manifest_id'),'control_manifest_git_identity':blob(cp),
+  'assignment_id':a.get('assignment_id'),'assignment_git_identity':blob(ap),
+ }
+ for key,val in expected.items():
+  if contract.get(key)!=val:e.append('liveness binding mismatch '+key)
+ lanes=contract.get('lanes') if isinstance(contract.get('lanes'),list) else []
+ ids=[x.get('lane_id') for x in lanes if isinstance(x,dict)]
+ if len(ids)!=len(set(ids)):e.append('duplicate liveness lane_id')
+ if set(ids)!=set(WORKERS):e.append('liveness lane set != exact 12 workers')
+ workers=a.get('workers') or {}
+ for lane in lanes:
+  if not isinstance(lane,dict):continue
+  wid=lane.get('lane_id');aw=workers.get(wid,{})
+  if lane.get('branch')!=aw.get('worker_branch'):e.append(f'liveness branch mismatch {wid}')
+  if lane.get('path')!=f'reports/{c}/{wid}.json':e.append(f'liveness report path mismatch {wid}')
+  try:
+   start=parse_utc(lane.get('expected_window_start_utc',''));deadline=parse_utc(lane.get('deadline_utc',''))
+   if deadline<=start:e.append(f'liveness deadline not after start {wid}')
+  except Exception:e.append(f'invalid liveness time interval {wid}')
  return e
 def validate(branch,G):
  e=[];k,c,w=kind(branch)
@@ -60,6 +105,11 @@ def validate(branch,G):
  if k=='generation':
   rc,h,_=git('rev-parse','HEAD')
   if h!=G:e.append('generation moved after freeze')
+  e.extend(liveness_contract_errors(c,co,a,cp,ap,root))
+  if co.get('calibration_countable') is True:
+   rc,out,_=git('diff','--name-only',root,'HEAD');changed=set(out.splitlines()) if rc==0 else set()
+   expected={f'control/{c}.json',f'assignments/{c}.json',f'liveness/{c}.json'}
+   if rc or changed!=expected:e.append(f'countable generation diff {sorted(changed)} != {sorted(expected)}')
  if k=='worker':
   aw=a.get('workers',{}).get(w,{})
   if aw.get('worker_branch')!=branch:e.append('assigned worker branch mismatch')
@@ -70,7 +120,7 @@ def validate(branch,G):
   else:
    r=load(rp)
    for x in Draft202012Validator(sch('schemas/branch_report.schema.json')).iter_errors(r):e.append(f'report schema: {x.message}')
-   e.extend(mm01_role_payload_errors(r))
+   e.extend(mm01_role_payload_errors(r));e.extend(issue_ledger_errors(r))
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')
