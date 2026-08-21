@@ -56,3 +56,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: cd trusted && python scripts/reconcile_open_prs.py
+      - name: Attest effective main rules using trusted-main executable bytes only
+        if: github.event_name == 'pull_request_target'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: cd trusted && python scripts/reconcile_ruleset_attestation.py
