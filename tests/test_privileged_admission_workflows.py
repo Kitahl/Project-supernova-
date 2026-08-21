@@ -69,6 +69,21 @@ class PrivilegedAdmissionWorkflowTests(unittest.TestCase):
         self.assertIn("python-version: '3.13'", text)
         self.assertNotIn("actions/checkout@", text)
 
+    def test_authority_bootstrap_separates_candidate_and_privileged_jobs(self):
+        text = self.text("supernova-authority-bootstrap.yml")
+        candidate, trusted = text.split("  trusted-bootstrap:", 1)
+        self.assertIn("pull_request_target:", text)
+        self.assertNotIn("workflow_dispatch:", text)
+        self.assertNotIn("statuses: write", candidate)
+        self.assertNotIn("contents: write", candidate)
+        self.assertIn("persist-credentials: false", candidate)
+        self.assertIn('GITHUB_TOKEN: ""', candidate)
+        self.assertIn("needs: candidate-diagnostics", trusted)
+        self.assertIn("statuses: write", trusted)
+        self.assertNotIn("contents: write", trusted)
+        self.assertIn("scripts/reconcile_authority_bootstrap.py", trusted)
+        self.assertIn("scripts/reconcile_open_prs.py", trusted)
+
     def test_authority_contract_forbids_privileged_candidate_code(self):
         authority = json.loads((ROOT / "config" / "admission_authority.json").read_text(encoding="utf-8"))
         self.assertEqual(authority["candidate_code_execution_with_status_write_token"], "FORBIDDEN")
@@ -76,6 +91,7 @@ class PrivilegedAdmissionWorkflowTests(unittest.TestCase):
         self.assertEqual(authority["privileged_external_dispatch_event"], "repository_dispatch")
         self.assertEqual(authority["candidate_bytes_treatment"], "DATA_ONLY_UNDER_TRUSTED_MAIN_VALIDATORS")
         self.assertEqual(authority["required_status_creator"], "github-actions[bot]")
+        self.assertEqual(authority["authority_bootstrap_context"], "supernova/bootstrap-admission")
 
 
 if __name__ == "__main__":
