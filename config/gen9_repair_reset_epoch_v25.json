@@ -1,0 +1,21 @@
+{
+  "schema_version": "PS-GEN9-REPAIR-RESET-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "status": "AUTHORIZED_ONE_SUCCESSOR_ONLY",
+  "old_state_blob": "31071464144bde197aca0e3f13153be2d85208d7",
+  "old_cohort_id": "CAL-BR-009-v25-b53ab205",
+  "old_generation_head_sha": "67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f",
+  "allowed_successor_generation_seq": 10,
+  "calibration_credit": 0,
+  "fresh_evidence_consumed": false,
+  "foundry_sha256": "57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+  "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "required_successor_countable": true,
+  "required_successor_streak": 0,
+  "required_successor_fresh": false,
+  "required_supersession_disposition": "INVALIDATED_ZERO_CREDIT_GEN9_CONTROL_DEFECTS",
+  "authority_source": "config/structural_status_rotation_epoch_v25.json",
+  "failure_semantics": "FAIL_CLOSED"
+}
