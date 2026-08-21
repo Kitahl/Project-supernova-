@@ -131,9 +131,14 @@ def exact_gen9_zero_credit_reset_parent(root,base,old,changed):
     if set(branches)!=WORKERS or any(branches[w]!=f"ps/work/{cohort}/{w}" for w in WORKERS):return False
     try:control=_load_json(root,cp); assignment=_load_json(root,ap); live=_load_json(root,lp)
     except Exception:return False
+    rc_cb,control_blob=run(["git","rev-parse","HEAD:"+cp],root); rc_ab,assignment_blob=run(["git","rev-parse","HEAD:"+ap],root)
+    control_blob=control_blob.strip(); assignment_blob=assignment_blob.strip()
+    if rc_cb or rc_ab or not HEX40.fullmatch(control_blob) or not HEX40.fullmatch(assignment_blob):return False
+    if new.get("active_control_manifest_git_identity")!=control_blob or new.get("active_assignment_git_identity")!=assignment_blob:return False
     common={"task_network_plan_id":PLAN,"cohort_id":cohort,"generation_seq":10,"parent_state_git_identity":GEN9_STATE_BLOB,"expected_base_head":base,"calibration_countable":True}
     root_sha=control.get("control_release_commit_sha")
-    return _matches(control,common) and _matches(assignment,common) and assignment.get("generation_branch")==new.get("generation_branch") and assignment.get("generation_root_sha")==root_sha and _matches(live,{"cohort_id":cohort,"generation_root_sha":root_sha,"control_manifest_path":cp,"assignment_path":ap}) and receipt==_receipt(GEN9_COHORT,GEN9_G,GEN9_STATE_BLOB,GEN9_SUPERSESSION_DISPOSITION,10,True)
+    live_expected={"cohort_id":cohort,"generation_seq":10,"generation_root_sha":root_sha,"control_manifest_id":control.get("control_manifest_id"),"control_manifest_git_identity":control_blob,"assignment_id":assignment.get("assignment_id"),"assignment_git_identity":assignment_blob}
+    return _matches(control,common) and _matches(assignment,common) and assignment.get("generation_branch")==new.get("generation_branch") and assignment.get("generation_root_sha")==root_sha and assignment.get("control_manifest_git_identity")==control_blob and _matches(live,live_expected) and receipt==_receipt(GEN9_COHORT,GEN9_G,GEN9_STATE_BLOB,GEN9_SUPERSESSION_DISPOSITION,10,True)
 
 def report_admission(root,base,changed):
     if "state/CURRENT.json" not in changed:return []
