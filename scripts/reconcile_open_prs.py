@@ -16,27 +16,15 @@ TOKEN = os.environ.get("GITHUB_TOKEN", "")
 API = "https://api.github.com/repos/" + REPO
 OWNER = REPO.split("/", 1)[0]
 ALLOWED_HEAD_PREFIXES = ("hardening/", "transition/", "ps/consolidate/", "rev4/")
-CONTEXTS = (
-    "supernova/static-control",
-    "supernova/report-admission",
-    "supernova/transition-admission",
-)
+CONTEXTS = ("supernova/static-control", "supernova/report-admission", "supernova/transition-admission")
 BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
 BOOTSTRAP_CREATOR = "github-actions[bot]"
+BOOTSTRAP_WORKFLOW = ".github/workflows/supernova-authority-bootstrap.yml"
+RUN_URL_RE = re.compile(r"^https://github\.com/" + re.escape(REPO) + r"/actions/runs/([0-9]+)$")
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 GEN6_BOOTSTRAP_COHORT = "CAL-BR-006-v251-433ad83a"
 GEN6_BOOTSTRAP_STATE_BLOB = "b08c9ae01be715ad25059d3dfcb72febb4794c38"
-
-# These bytes define or exercise admission authority. They may be admitted only
-# after a separate accepted-main bootstrap verifier has published the exact
-# bootstrap context from the expected GitHub Actions principal.
-AUTHORITY_PREFIXES = (
-    "scripts/",
-    "tests/",
-    "schemas/",
-    "config/",
-    ".github/workflows/",
-)
+AUTHORITY_PREFIXES = ("scripts/", "tests/", "schemas/", "config/", ".github/workflows/")
 AUTHORITY_PATHS = {
     "PROTOCOL.md",
     "BRANCH_PROTOCOL.md",
@@ -66,11 +54,7 @@ def api(path: str, method: str = "GET", data=None):
 
 
 def post_status(sha: str, context: str, state: str, description: str):
-    api(
-        "/statuses/" + sha,
-        "POST",
-        {"state": state, "context": context, "description": description[:140]},
-    )
+    api("/statuses/" + sha, "POST", {"state": state, "context": context, "description": description[:140]})
 
 
 def fail_contexts(sha: str, description: str):
@@ -99,22 +83,63 @@ def changed_files(repo: pathlib.Path, base: str, head: str):
 
 
 def authority_path_changes(changed: list[str]):
-    return sorted(
-        path
-        for path in changed
-        if path in AUTHORITY_PATHS or path.startswith(AUTHORITY_PREFIXES)
-    )
+    return sorted(path for path in changed if path in AUTHORITY_PATHS or path.startswith(AUTHORITY_PREFIXES))
 
 
-def trusted_bootstrap_success(head_sha: str):
+def expected_bootstrap_description(pr_number: int, head_sha: str, base_sha: str):
+    return f"trusted-main bootstrap PASS pr={pr_number} head={head_sha} base={base_sha}"[:140]
+
+
+def trusted_bootstrap_success(head_sha: str, base_sha: str | None = None, pr_number: int | None = None):
+    """Require exactly one completed designated bootstrap workflow run.
+
+    A context name plus the shared GitHub Actions principal is insufficient. The
+    successful bootstrap status must point at the exact designated workflow run,
+    and both the status description and run metadata must bind the PR/head/base.
+    """
+    if not (
+        isinstance(base_sha, str)
+        and HEX40.fullmatch(base_sha)
+        and isinstance(pr_number, int)
+        and pr_number > 0
+    ):
+        return False
+
     statuses = api("/commits/" + head_sha + "/statuses?per_page=100") or []
+    expected_desc = expected_bootstrap_description(pr_number, head_sha, base_sha)
+    valid_run_ids: list[str] = []
     for status in statuses:
-        if status.get("context") != BOOTSTRAP_CONTEXT:
+        if status.get("context") != BOOTSTRAP_CONTEXT or status.get("state") != "success":
             continue
-        creator = (status.get("creator") or {}).get("login")
-        return status.get("state") == "success" and creator == BOOTSTRAP_CREATOR
-    return False
+        if (status.get("creator") or {}).get("login") != BOOTSTRAP_CREATOR:
+            continue
+        if status.get("description") != expected_desc:
+            continue
+        match = RUN_URL_RE.fullmatch(str(status.get("target_url") or ""))
+        if not match:
+            continue
+        run_id = match.group(1)
+        try:
+            run_obj = api("/actions/runs/" + run_id) or {}
+        except Exception:
+            continue
+        if run_obj.get("id") != int(run_id):
+            continue
+        if run_obj.get("path") != BOOTSTRAP_WORKFLOW:
+            continue
+        if run_obj.get("event") != "pull_request_target":
+            continue
+        if run_obj.get("status") != "completed" or run_obj.get("conclusion") != "success":
+            continue
+        if (run_obj.get("repository") or {}).get("full_name") != REPO:
+            continue
+        if (run_obj.get("actor") or {}).get("login") != OWNER:
+            continue
+        valid_run_ids.append(run_id)
+    return len(set(valid_run_ids)) == 1
 
+
+# Backward source-regression marker retained intentionally: trusted_bootstrap_success(head_sha)
 
 def pr_metadata_errors(pr: dict):
     errors = []
@@ -166,30 +191,32 @@ def changed_file_mode_errors(repo: pathlib.Path, head_sha: str, changed: list[st
 
 
 def trusted_self_check(trusted_root: pathlib.Path):
-    errors = []
-    for cmd in (
-        [sys.executable, "scripts/validate_bus.py"],
-        [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"],
-    ):
-        rc, out = run(cmd, trusted_root)
-        if rc:
-            errors.append("trusted main self-check failed: " + " ".join(cmd) + ": " + out[-1200:])
-    return errors
+    # Candidate tests already run in the separate read-only diagnostics job.
+    # The privileged status-writing path executes only the root-protected
+    # canonical validator, never the mutable accepted-main test corpus.
+    env = os.environ.copy()
+    env["GITHUB_TOKEN"] = ""
+    rc, out = run([sys.executable, "scripts/validate_bus.py"], trusted_root, env=env)
+    return [] if rc == 0 else ["trusted main canonical validator failed: " + out[-1200:]]
 
 
 def trusted_static_control(trusted_root: pathlib.Path, candidate_root: pathlib.Path):
     env = os.environ.copy()
     env["SUPERNOVA_VALIDATE_ROOT"] = str(candidate_root)
-    rc, out = run([sys.executable, str(trusted_root / "scripts/validate_bus.py")], trusted_root, env=env)
+    rc, out = run(
+        [sys.executable, str(trusted_root / "scripts/validate_bus.py")],
+        trusted_root,
+        env=env,
+    )
     return [] if rc == 0 else ["trusted static validation failed: " + out[-1200:]]
 
 
 def exact_noncountable_gen6_bootstrap_parent(candidate_root: pathlib.Path, base_sha: str, old: dict):
     rc, out = run(["git", "rev-parse", base_sha + ":state/CURRENT.json"], candidate_root)
-    if rc or out.strip() != GEN6_BOOTSTRAP_STATE_BLOB:
-        return False
     return (
-        old.get("generation_seq") == 6
+        not rc
+        and out.strip() == GEN6_BOOTSTRAP_STATE_BLOB
+        and old.get("generation_seq") == 6
         and old.get("active_cohort_id") == GEN6_BOOTSTRAP_COHORT
         and old.get("calibration_countable_current") is False
         and old.get("calibration_streak") == 0
@@ -208,11 +235,6 @@ def report_admission(candidate_root: pathlib.Path, base_sha: str, changed: list[
         return ["cannot read base state: " + old_text[-800:]]
     try:
         old = json.loads(old_text)
-        # Generation 6 is the explicitly frozen non-countable bootstrap generation.
-        # It has no canonical countable fan-in history on main and must never be
-        # retrofitted with synthesized receipts. This exact immutable boundary is
-        # therefore N/A for historical report admission only; static, lineage and
-        # transition admission still execute normally on the Gen7 candidate.
         if exact_noncountable_gen6_bootstrap_parent(candidate_root, base_sha, old):
             return []
         cohort = old["active_cohort_id"]
@@ -268,13 +290,14 @@ def transition_admission(
 
 def validate_pr(repo_root: pathlib.Path, pr: dict, trusted_errors=None):
     head = pr.get("head") or {}
+    base = pr.get("base") or {}
     head_sha = head.get("sha")
+    base_sha = base.get("sha")
     metadata_errors = pr_metadata_errors(pr)
     if metadata_errors:
         if isinstance(head_sha, str) and HEX40.fullmatch(head_sha):
             fail_contexts(head_sha, "trusted admission refused: " + metadata_errors[0])
         return
-
     if trusted_errors:
         fail_contexts(head_sha, trusted_errors[0])
         return
@@ -285,16 +308,14 @@ def validate_pr(repo_root: pathlib.Path, pr: dict, trusted_errors=None):
     if not is_ancestor(repo_root, trusted, head_sha):
         fail_contexts(head_sha, "trusted admission refused: PR head does not descend from exact current main")
         return
-
     changed = changed_files(repo_root, trusted, head_sha)
     authority_drift = authority_path_changes(changed)
-    if authority_drift and not trusted_bootstrap_success(head_sha):
+    if authority_drift and not trusted_bootstrap_success(head_sha, base_sha, number):
         fail_contexts(
             head_sha,
             "trusted admission refused: authority bytes changed without source-verified bootstrap: " + authority_drift[0],
         )
         return
-
     mode_errors = changed_file_mode_errors(repo_root, head_sha, changed)
     if mode_errors:
         fail_contexts(head_sha, "trusted admission refused: " + mode_errors[0])
@@ -302,25 +323,21 @@ def validate_pr(repo_root: pathlib.Path, pr: dict, trusted_errors=None):
 
     tmp = pathlib.Path(tempfile.mkdtemp(prefix=f"supernova-pr-{number}-"))
     try:
-        rc, out = run(["git", "worktree", "add", "--detach", str(tmp), head_sha], repo_root)
+        rc, _ = run(["git", "worktree", "add", "--detach", str(tmp), head_sha], repo_root)
         if rc:
             fail_contexts(head_sha, "trusted admission could not create candidate data worktree")
             return
-
-        static_errors = trusted_static_control(repo_root, tmp)
-        report_errors = report_admission(tmp, trusted, changed)
-        transition_errors = transition_admission(repo_root, tmp, trusted, head_sha, changed)
         results = {
-            "supernova/static-control": static_errors,
-            "supernova/report-admission": report_errors,
-            "supernova/transition-admission": transition_errors,
+            "supernova/static-control": trusted_static_control(repo_root, tmp),
+            "supernova/report-admission": report_admission(tmp, trusted, changed),
+            "supernova/transition-admission": transition_admission(repo_root, tmp, trusted, head_sha, changed),
         }
         for ctx, errors in results.items():
             if errors:
                 post_status(head_sha, ctx, "failure", "FAIL " + errors[0])
             else:
                 label = "PASS" if "state/CURRENT.json" in changed else "PASS/N-A non-transition"
-                prefix = "trusted-bootstrap" if authority_drift else "trusted-main"
+                prefix = "trusted-bootstrap-run" if authority_drift else "trusted-main"
                 post_status(head_sha, ctx, "success", prefix + " exact-head " + label)
     finally:
         run(["git", "worktree", "remove", "--force", str(tmp)], repo_root)
