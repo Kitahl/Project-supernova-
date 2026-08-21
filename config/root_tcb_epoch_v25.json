@@ -1,0 +1,17 @@
+{
+  "schema_version": "PS-ROOT-TCB-EPOCH-2.5-2",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "epoch": 2,
+  "status": "ACTIVE_AFTER_ROOT_ROTATION",
+  "root_rotation_seed_merge_commit_sha": "088139cca3fa308058dca72e2c67eb3f758624bc",
+  "seed_policy_blob": "9698216426dba4121de444d1800936e196e64163",
+  "seed_reconciler_blob": "7a7b1dc4cd88d98642f2ba933f004b09b36a1933",
+  "seed_workflow_blob": "10cf188aa27a8d799d48052cef8347238be43385",
+  "seed_one_shot_disposition": "PERMANENTLY_INERT_AFTER_THIS_MARKER_IS_ACCEPTED",
+  "root_tcb_source": "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS",
+  "bootstrap_provenance": "DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_REQUIRED",
+  "root_change_rule": "NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED",
+  "fresh_science_effect": "NONE",
+  "calibration_credit_effect": "NONE; REPLACEMENT COUNTABLE COHORT STARTS_AT_STREAK_ZERO"
+}
