@@ -1,0 +1,150 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "iteration_id": "CAL-BR-009-v25-b53ab205",
+    "iteration_number": 9,
+    "role_id": "MF04",
+    "goal": "Attack one repaired control/auth/lineage/liveness/branch-isolation assumption using replay-only evidence and report every evidence-backed defect.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-009-v25-b53ab205",
+  "worker_id": "MF04",
+  "report_id": "RPT-CAL-BR-009-v25-b53ab205-MF04",
+  "generation_seq": 9,
+  "generation_head_sha": "67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f",
+  "worker_branch": "ps/work/CAL-BR-009-v25-b53ab205/MF04",
+  "assignment_id": "PS-BRANCH-CAL-BR-009-v25-b53ab205",
+  "assignment_git_identity": "a467f2b50d08bc3ae36d7490dab3d118a9af1f9b",
+  "parent_state_git_identity": "1b2f5bacbe70eabb1828ee3f643a6959fad83284",
+  "control_manifest_id": "CTRL-CAL-BR-009-v25-b53ab205",
+  "control_manifest_git_identity": "df7d03a4e92fe410960779be90497313fdc23448",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "7615f996ad34af6522383f101c32c19f",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "94d359e05142f46e51fc6e2b102afd439f54aa12f0582552645d84d7a346d3e7",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_COUNTABLE_TRANSPORT_REPLAY_ONLY",
+  "executive_status": "ZERO_DELTA_AUTH_HMAC2_MUTATION_REJECTED",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF04-TRANSPORT-VERIFY",
+      "status": "COMPLETE",
+      "result": "Canonical main pointer was stable on reread; generation and MF04 worker branches were identical to frozen G before write; control and assignment blob identities matched the pointer; control-release commit/tree matched; release-root to G changed only cohort assignment, control, and liveness paths, none in required_control_paths; parent state blob resolved; MF04 role, branch, visibility token, goal and replay-only constraints matched; liveness window was frozen and eligible; public HMAC commitment matched the private worker capability."
+    },
+    {
+      "task_id": "MF04-FALSIFIER",
+      "status": "COMPLETE",
+      "result": "One deterministic authentication falsifier was applied to the complete candidate receipt: retain the original HMAC-2 proof while mutating the still-schema-valid signed executive_status value. Recomputed canonical HMAC changed, so the retained proof is invalid after mutation."
+    }
+  ],
+  "issue_ledger": [],
+  "test_ledger": [
+    {
+      "test_id": "MF04-T0-HMAC2",
+      "kind": "DETERMINISTIC_WHOLE_REPORT_AUTH_MUTATION",
+      "target": "PS-HMAC-SHA256-CANONICAL-REPORT-2 complete-report binding",
+      "mutation": "After proof generation, change executive_status from ZERO_DELTA_AUTH_HMAC2_MUTATION_REJECTED to ZERO_DELTA_AUTH_HMAC2_MUTATION_REJECTED_ALT while retaining the original worker_auth_proof.",
+      "expected": "The recomputed canonical HMAC differs from the retained proof; the mutation is rejected by independent HMAC verification.",
+      "observed": "PASS: recomputing HMAC after the schema-valid executive_status mutation produced a different digest from the retained original proof.",
+      "result": "PASS"
+    }
+  ],
+  "plan_alignment": [
+    {
+      "check": "ROLE_SCOPE",
+      "detail": "Only replay-safe GitHub control/auth/lineage/liveness evidence and one deterministic authentication falsifier were used.",
+      "result": "PASS"
+    },
+    {
+      "check": "SAFE_REPLAY_ONLY",
+      "detail": "session_header.execution_mode equals report.mode and both equal SAFE_REPLAY_ONLY; no fresh/private/benchmark/deep-research execution occurred.",
+      "result": "PASS"
+    },
+    {
+      "check": "COUNTABLE_COHORT_STATUS",
+      "detail": "State marks Gen9 as countable; this worker makes no calibration-pass or promotion claim. Cohort credit remains conditional on complete 12-worker liveness, MM06 verification, MF06 integration, BIL00 consolidation and admission.",
+      "result": "CONDITIONAL"
+    },
+    {
+      "check": "MODEL_BINDING",
+      "detail": "Requested/model-visible identity is GPT-5.6 Sol, but no frozen independent reasoning-effort attestation is available to this worker. Binding remains PARTIAL_UNVERIFIED.",
+      "result": "PARTIAL_UNVERIFIED"
+    }
+  ],
+  "evidence_and_provenance": {
+    "canonical_state_source": "main:state/CURRENT.json",
+    "canonical_state_blob": "31071464144bde197aca0e3f13153be2d85208d7",
+    "canonical_state_reread": "STABLE_PREWRITE",
+    "active_cohort_supersession_check": "PASS_NOT_SUPERSEDED",
+    "generation_branch_prewrite": "IDENTICAL_TO_G",
+    "worker_branch_prewrite": "IDENTICAL_TO_G",
+    "generation_root_sha": "b53ab205a68dd0346fc33e75655bdc781c02eda3",
+    "control_release_tree_sha": "399432daeae28777f3bd0604a12ef64aafb5e9ff",
+    "frozen_path_verification": "Release-root to G whole-repository compare changed only assignments/CAL-BR-009-v25-b53ab205.json, control/CAL-BR-009-v25-b53ab205.json and liveness/CAL-BR-009-v25-b53ab205.json. None is in required_control_paths, so every required frozen control path retains its release-root Git identity at G.",
+    "assignment_blob": "a467f2b50d08bc3ae36d7490dab3d118a9af1f9b",
+    "control_manifest_blob": "df7d03a4e92fe410960779be90497313fdc23448",
+    "parent_state_resolution": "PASS_TO_GENERATION_8_STATE",
+    "auth_commitment_match": "PASS",
+    "liveness_contract_blob": "c91ee15f0e66f0297ea5ea5f31f8f8a9969f9b86",
+    "mf04_liveness_window": {
+      "expected_window_start_utc": "2026-08-21T16:08:00Z",
+      "deadline_utc": "2026-08-21T16:55:00Z",
+      "eligible_before_deadline": true
+    },
+    "runtime_receipt_ref": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "runtime_receipt_blob": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_receipt_status": "VALIDATED_REPLAY_CALIBRATION_ONLY_MODEL_BINDING_NOT_CLAIMED",
+    "observed_model_binding": "Model target/runtime-visible model family is GPT-5.6 Sol, but reasoning-effort identity is not independently frozen/attested for this receipt; model_binding_status is PARTIAL_UNVERIFIED.",
+    "prewrite_ci_observation": {
+      "supernova/liveness": "success",
+      "supernova/branch-generation": "success",
+      "supernova/branch-worker": "pending_on_G_before_MF04_receipt",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-consolidate": "pending"
+    },
+    "ci_observation": "CI_NOT_OBSERVED_FOR_POSTWRITE_MF04_HEAD"
+  },
+  "claim_scope": "Transport/authentication falsifier only. No mathematical, benchmark, runtime-capability, statement-fidelity, calibration-pass or promotion claim is made. KERNEL_VALID != STATEMENT_FIDELITY_CONFIRMED. The failed defect search on this one auth discriminator is not proof of overall correctness.",
+  "runtime_implementation_implication": "No protocol-2.5 HMAC-2 whole-report binding defect was found by the single signed-field mutation. Controls should remain unchanged on this evidence; MM06 must still independently reread branch history, schema/session/execution-mode/cost bindings and recompute HMAC from its verifier copy.",
+  "negative_zero_outcomes": [
+    "Fresh evidence consumed: 0.",
+    "Protected/private manifest reads: 0.",
+    "Benchmark executions: 0.",
+    "Deep-research runs: 0.",
+    "No scientific or statement-fidelity evidence was generated.",
+    "No defect was found by the single HMAC-2 signed-field mutation; this is ZERO_DELTA, not proof."
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "falsifier_target": "canonical whole-report HMAC-2 signed-field integrity",
+    "falsifier_count": 1,
+    "finding_count": 0,
+    "finding_severity_max": "NONE"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only GitHub control/auth/lineage/liveness inspection and local deterministic HMAC mutation. No private vault read and no scientific execution."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently reread the exact MF04 branch/report creation history, verify schema and strict session/execution-mode equality, recompute the canonical HMAC-2 from its verifier secret copy, and preserve this ZERO_DELTA result. No control change or promotion is authorized."
+}
