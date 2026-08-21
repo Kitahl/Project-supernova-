@@ -1,3 +1,4 @@
+# Retrigger nonce: exact-scope repair-reset seed retry 2; semantics unchanged.
 import importlib.util
 import json
 import pathlib
