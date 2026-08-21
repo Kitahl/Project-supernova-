@@ -1,0 +1,161 @@
+{
+  "schema_version": "PS-CONTROL-WORKFLOW-MAP-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "authority_rule": "ONE_SUCCESS_AUTHORITY_PER_SHARED_CONTEXT",
+  "canonical_pointer": "main:state/CURRENT.json",
+  "immutable_generation_rule": "Every lane resolves the exact generation G and frozen control/assignment/liveness identities before acting.",
+  "shared_status_contexts": {
+    "supernova/branch-generation": {
+      "success_writer_workflow": ".github/workflows/supernova-branch-reconciler.yml",
+      "success_writer_script": "scripts/reconcile_branch_statuses.py",
+      "validator": "scripts/validate_branch_bus_v252.py",
+      "writer_count": 1
+    },
+    "supernova/branch-worker": {
+      "success_writer_workflow": ".github/workflows/supernova-branch-reconciler.yml",
+      "success_writer_script": "scripts/reconcile_branch_statuses.py",
+      "validator": "scripts/validate_branch_bus_v252.py",
+      "writer_count": 1
+    },
+    "supernova/branch-verify": {
+      "success_writer_workflow": ".github/workflows/supernova-branch-reconciler.yml",
+      "success_writer_script": "scripts/reconcile_branch_statuses.py",
+      "validator": "scripts/validate_branch_bus_v252.py",
+      "writer_count": 1
+    },
+    "supernova/branch-integrate": {
+      "success_writer_workflow": ".github/workflows/supernova-branch-reconciler.yml",
+      "success_writer_script": "scripts/reconcile_branch_statuses.py",
+      "validator": "scripts/validate_branch_bus_v252.py",
+      "writer_count": 1
+    },
+    "supernova/branch-consolidate": {
+      "success_writer_workflow": ".github/workflows/supernova-branch-reconciler.yml",
+      "success_writer_script": "scripts/reconcile_branch_statuses.py",
+      "validator": "scripts/reconcile_branch_statuses.py",
+      "writer_count": 1
+    },
+    "supernova/liveness": {
+      "success_writer_workflow": ".github/workflows/supernova-liveness-monitor.yml",
+      "success_writer_script": "scripts/check_lane_liveness.py",
+      "validator": "IMMUTABLE_RECEIPT_AND_EXACT_HEAD_STATUS_TIMESTAMPS",
+      "writer_count": 1
+    }
+  },
+  "diagnostic_contexts": {
+    "supernova/rest-generation-audit": {
+      "workflow": ".github/workflows/supernova-rest-branch-reconciler.yml",
+      "script": "scripts/reconcile_branch_rest.py",
+      "authority": "DIAGNOSTIC_ONLY_NO_SHARED_CONTEXT_WRITE"
+    }
+  },
+  "main_admission_contexts": {
+    "supernova/static-control": "TRUSTED_ACCEPTED_MAIN_VALIDATORS",
+    "supernova/report-admission": "TRUSTED_ACCEPTED_MAIN_REPORT_AND_HISTORY_GATE",
+    "supernova/transition-admission": "TRUSTED_ACCEPTED_MAIN_LINEAGE_AND_CAS_GATE"
+  },
+  "execution_pipeline": [
+    {
+      "stage": 0,
+      "name": "CANONICAL_RESOLUTION",
+      "input": "main:state/CURRENT.json",
+      "output": "exact G + frozen control/assignment/liveness",
+      "owner": "ALL_LANES",
+      "failure": "STOP_FAIL_CLOSED"
+    },
+    {
+      "stage": 1,
+      "name": "WORKER_FAN_OUT",
+      "input": "12 isolated assignments",
+      "output": "reports/<cohort>/<worker>.json",
+      "owner": "MF01-05, MM01-05, MM07, EXT01",
+      "failure": "MISSING_OR_QUARANTINED_NEVER_ZERO_DELTA"
+    },
+    {
+      "stage": 2,
+      "name": "STRUCTURAL_AND_DEADLINE_ADMISSION",
+      "input": "exact worker head + create-once report + source-bound status timestamps",
+      "output": "branch-worker PASS and on-time liveness observation",
+      "owner": "GITHUB_CI_PLUS_A01",
+      "failure": "BLOCK_COHORT"
+    },
+    {
+      "stage": 3,
+      "name": "INDEPENDENT_VERIFICATION",
+      "input": "all 12 worker heads and receipts",
+      "output": "verification/<cohort>.json with SAFE/QUARANTINED/MISSING partition",
+      "owner": "MM06",
+      "failure": "NO_COMPLETE_VERDICT"
+    },
+    {
+      "stage": 4,
+      "name": "POST_WRITE_REPORT_ADMISSION",
+      "input": "exact MM06 receipt head",
+      "output": "source-bound supernova/report-admission",
+      "owner": "TRUSTED_GITHUB_ADMISSION",
+      "failure": "MF06_MUST_WAIT"
+    },
+    {
+      "stage": 5,
+      "name": "EVIDENCE_INTEGRATION",
+      "input": "MM06 SAFE refs + later report-admission PASS",
+      "output": "integration/<cohort>.json",
+      "owner": "MF06",
+      "failure": "NO_CONSOLIDATION"
+    },
+    {
+      "stage": 6,
+      "name": "ISSUE_CONSOLIDATION_AND_REPAIR",
+      "input": "worker/MM06/MF06/A01 issue ledgers",
+      "output": "deduplicated GitHub issues and bounded hardening PRs",
+      "owner": "BIL00",
+      "failure": "ISSUE_REMAINS_OPEN_NO_CREDIT"
+    },
+    {
+      "stage": 7,
+      "name": "COHORT_CONSOLIDATION_AND_CAS_TRANSITION",
+      "input": "clean verification + integration + exact main head",
+      "output": "history receipt and guarded state transition",
+      "owner": "BIL00",
+      "failure": "STREAK_UNCHANGED"
+    }
+  ],
+  "issue_lifecycle": [
+    "DISCOVER_IN_ROLE_BOUNDED_LEDGER",
+    "INDEPENDENTLY_VERIFY_OR_QUARANTINE",
+    "DEDUPLICATE_BY_STABLE_ID_AND_EXACT_FAILURE",
+    "CREATE_OR_UPDATE_PUBLIC_SAFE_GITHUB_ISSUE",
+    "CLASSIFY_T0_BLOCKING_FIX_NOW_DEFERRED_OR_NOT_MEASURED",
+    "CREATE_SMALLEST_EXACT_MAIN_REPAIR_PR_WITH_POSITIVE_AND_NEGATIVE_TESTS",
+    "PASS_READ_ONLY_CANDIDATE_DIAGNOSTICS",
+    "PASS_TRUSTED_BOOTSTRAP_WHEN_AUTHORITY_BYTES_CHANGE",
+    "PASS_THREE_SOURCE_BOUND_MAIN_ADMISSION_CONTEXTS",
+    "MERGE_WITHOUT_BYPASS",
+    "RERUN_ORIGINAL_FALSIFIER",
+    "CLOSE_ONLY_WITH_OBJECTIVE_EVIDENCE",
+    "FREEZE_REPLACEMENT_GENERATION_IF_AUTHORITATIVE_CONTROL_CHANGED"
+  ],
+  "private_manifest_boundary": {
+    "public_control_proves": [
+      "frozen assignment ownership",
+      "opaque manifest ID",
+      "private manifest Git blob identity",
+      "network mode and fresh permission",
+      "cohort/checkpoint/runtime cross-binding"
+    ],
+    "private_vault_proves": [
+      "FROZEN_PRE_OUTCOME payload validity",
+      "protected task/evaluator/budget identities",
+      "contamination and ownership contract"
+    ],
+    "public_repository_forbidden": [
+      "hidden prompts",
+      "protected item identities",
+      "private manifest payloads",
+      "raw worker secrets"
+    ]
+  },
+  "calibration_rule": "Any accepted authoritative control change invalidates the active countable cohort and requires a new frozen cohort at streak zero.",
+  "fresh_rule": "Fresh remains disabled until two consecutive clean countable protocol-2.5 cohorts plus the relevant private FROZEN_PRE_OUTCOME manifest and scientific lane gates."
+}
