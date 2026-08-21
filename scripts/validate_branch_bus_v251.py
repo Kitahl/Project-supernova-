@@ -86,6 +86,26 @@ def liveness_contract_errors(contract,control,assignment,control_blob,assignment
   if start is None or deadline is None:e.append('liveness timestamp invalid '+w)
   elif deadline<start:e.append('liveness deadline precedes start '+w)
  return e
+def verification_liveness_errors(v,c,G):
+ e=[];lp=ROOT/f'liveness/{c}.json'
+ if not lp.exists():return ['verification missing frozen liveness contract at generation']
+ if v.get('liveness_contract_path')!=f'liveness/{c}.json':e.append('verification liveness_contract_path mismatch')
+ if v.get('liveness_contract_git_identity')!=blob(lp):e.append('verification liveness contract blob mismatch')
+ if v.get('liveness_contract_binding_verified') is not True:e.append('verification liveness contract binding not verified')
+ contract=load(lp);lanes={x['lane_id']:x for x in contract.get('lanes',[]) if isinstance(x,dict) and 'lane_id' in x}
+ obs=v.get('lane_liveness_observations')
+ if not isinstance(obs,list) or len(obs)!=12:return e+['verification liveness observations != 12']
+ seen=set()
+ for o in obs:
+  wid=o.get('lane_id');seen.add(wid);lane=lanes.get(wid)
+  if lane is None:e.append('verification unknown liveness lane '+str(wid));continue
+  if o.get('expected_window_start')!=lane.get('expected_window_start_utc'):e.append('verification liveness start mismatch '+wid)
+  if o.get('expected_window_end')!=lane.get('deadline_utc'):e.append('verification liveness deadline mismatch '+wid)
+  if o.get('receipt_status') in ('RUN_OBSERVED','ZERO_DELTA_RECEIPT_OBSERVED','RUN_LATE'):
+   expected=f"{lane.get('branch')}:{lane.get('path')}"
+   if o.get('receipt_ref')!=expected:e.append('verification liveness receipt ref mismatch '+wid)
+ if seen!=WORKERS:e.append('verification liveness observation lane set mismatch')
+ return e
 def validate(branch,G):
  e=[];k,c,w=kind(branch)
  if not k:return [f'unsupported branch {branch}']
@@ -144,7 +164,9 @@ def validate(branch,G):
   rc,out,_=git('diff','--name-only',G,'HEAD');p=f'verification/{c}.json';changed=[x for x in out.splitlines() if x]
   if changed!=[p]:e.append(f'verifier diff invalid {changed}')
   elif (ROOT/p).exists():
-   for x in Draft202012Validator(sch('schemas/branch_verification.schema.json')).iter_errors(load(ROOT/p)):e.append(f'verification schema: {x.message}')
+   v=load(ROOT/p)
+   for x in Draft202012Validator(sch('schemas/branch_verification.schema.json')).iter_errors(v):e.append(f'verification schema: {x.message}')
+   e.extend(verification_liveness_errors(v,c,G))
  if k=='integrate':
   rc,out,_=git('diff','--name-only',G,'HEAD');p=f'integration/{c}.json';changed=[x for x in out.splitlines() if x]
   if changed!=[p]:e.append(f'integrator diff invalid {changed}')
