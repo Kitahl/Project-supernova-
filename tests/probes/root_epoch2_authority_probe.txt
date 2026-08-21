@@ -1,0 +1,5 @@
+ROOT_EPOCH_2_AUTHORITY_PROBE
+
+Non-authoritative, intentionally unmerged proof artifact.
+Purpose: trigger authority-drift admission and prove that normal required contexts are published only after an exact completed designated Supernova Authority Bootstrap workflow run is independently verified.
+No runtime, state, scientific, protocol, Revision, benchmark, or fresh-evidence effect.
