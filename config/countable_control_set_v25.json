@@ -1,8 +1,8 @@
 {
-  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-6",
+  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-7",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
-  "purpose": "Every NEW countable protocol-2.5 calibration generation must freeze this entire control set before cohort 1. Historical generations are not retrofitted. MM01 fresh proposal typing, exact session-phase semantics, and explicit non-authoritative task-registry countability semantics are part of the frozen control surface.",
+  "purpose": "Every NEW countable protocol-2.5 calibration generation must freeze this entire control set before cohort 1. Historical generations are not retrofitted. The frozen control surface includes MM01 proposal typing, exact assignment-phase semantics, explicit non-authoritative task-registry countability semantics, closed issue-ledger and MM03 typed-missingness semantics, and non-self-referential root/control/assignment-bound cohort liveness admission.",
   "required_control_paths": [
     "PROTOCOL.md",
     "BRANCH_PROTOCOL.md",
@@ -69,6 +69,7 @@
     "tests/test_mm01_react_contract.py",
     "tests/test_t0_control_consistency.py",
     "tests/liveness/test_liveness_monitor.py",
+    "tests/liveness/test_liveness_contract_binding.py",
     "tests/verifier_assurance/test_verifier_assurance_schema.py",
     ".github/workflows/supernova-v25-admission.yml",
     ".github/workflows/supernova-branch-reconciler.yml",
