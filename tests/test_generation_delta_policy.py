@@ -3,6 +3,9 @@ from scripts.generation_delta_guard import expected_paths, validate_names
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 
+# Touch note: this test file intentionally participates in the authority-change
+# regression surface so a fresh pull_request synchronize event re-runs the
+# accepted-main bootstrap against the final consolidated repair head.
 class GenerationDeltaPolicyTests(unittest.TestCase):
     def setUp(self):
         self.policy=json.loads((ROOT/'config/generation_delta_policy_v25.json').read_text())
