@@ -1,0 +1,275 @@
+{
+  "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-fe539297-r2",
+  "claim_scope": "Countable T0 replay-control and transport evidence only. This report verifies MF02's frozen generation/branch/auth bindings, confirms repair of the prior missing typed E1 fresh payload contract, identifies one remaining E1 semantic nonvacuity gap, and does not claim any E1 scientific outcome.",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-fe539297-r2",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay/control audit only. GitHub reads and one assigned worker-report write are transport operations, not fresh scientific evidence.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "canonical_pointer": {
+      "blob": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+      "calibration_countable_current": true,
+      "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+      "current_runtime_blocker": "O-T0-TWO_CLEAN_COUNTABLE_V25_COHORTS",
+      "fresh_allowed_globally": false,
+      "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+      "generation_seq": 10,
+      "path": "main:state/CURRENT.json",
+      "protocol_version": "2.5",
+      "repo_policy_status": "VERIFIED_PROTECTED_SOURCE_BOUND"
+    },
+    "control_repair_observations": {
+      "gen7_phase_vocabulary_gap": "REPAIRED: SESSION_STANDARD now makes frozen assignment phase authoritative.",
+      "gen7_task_registry_countability_gap": "REPAIRED BY SEMANTICS: task-registry activation_status is explicitly historical/non-authoritative; state/control/assignment are current countability authority.",
+      "gen9_missing_mf02_typed_fresh_payload": "REPAIRED: report schema + trusted validator + future-fresh contract tests now cover MF02 E1.",
+      "remaining_gap": "E1 typed arm presence is enforced but impossible availability/execution/outcome combinations are not rejected."
+    },
+    "frozen_generation": {
+      "control_release_commit_sha": "fe539297bdf6b769140c9970326f3e1de116f276",
+      "control_release_tree_sha": "ae42b5fc437963c51434e0dbacef18542fef0b1c",
+      "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+      "release_to_generation_changed_paths": [
+        "assignments/CAL-BR-010-v25-fe539297-r2.json",
+        "control/CAL-BR-010-v25-fe539297-r2.json",
+        "liveness/CAL-BR-010-v25-fe539297-r2.json"
+      ],
+      "required_control_paths_inherited_unchanged": true
+    },
+    "frozen_key_blobs": {
+      "assignment": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+      "benchmark_pool_disposition": "1058d5bbc3aa63eee51d0757d6cdf2ff6f378ae1",
+      "benchmark_registry": "461c5bd695df5ac849e27df80799ed12871d281a",
+      "branch_config": "6e366efd9f401682265d8bea274b88655edb26a0",
+      "branch_report_schema": "8372632e48df1d9fcb28133cdea4788adfd658fc",
+      "branch_validator_v251": "3c2992d5a9239897de9a1130deba65015c24372d",
+      "control": "08848388882c48062668624d615208ab5d7ec59f",
+      "e1_payload_schema": "81f17858a4e06b65f99aa8e1f330896016582714",
+      "future_fresh_role_tests": "1ae6b64892bc7f789e85de6b59e87a1266c6892c",
+      "liveness": "8bd88d895df508e6807588239dea1f8047b73f13",
+      "plan": "69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+      "report_contract_tests": "f325eb806da470c81df47232555273a4768d5099",
+      "roles": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "runtime_update_receipt": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "session_standard": "3ac507a31438c8eba5497c72a61a7979ab1a3a52",
+      "task_registry": "c7d1e878ab1c72f73de32213a2589417583055f7",
+      "task_registry_semantics": "02550e45afa075e70de0cd6244f3c54ac9ee3e76",
+      "worker_auth": "9498d1d49b8636a3a313dc63be89f4433330c230"
+    },
+    "prewrite_structural_status": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "runtime_binding": {
+      "model_binding_attestation": null,
+      "observed_binding_status": "PARTIAL_UNVERIFIED",
+      "requested_model": "GPT-5.6 Sol",
+      "requested_reasoning_effort": "EXTRA_HIGH",
+      "runtime_update_claim": "Math Foundry 3.1.1 software replay-calibration binding only; no observed GPT model/reasoning binding claimed.",
+      "runtime_update_receipt_blob": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "runtime_update_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json"
+    }
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL",
+  "executive_status": "PASS_WITH_REPLAY_CONTROL_ISSUE",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "generation_seq": 10,
+  "issue_ledger": [
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "FUTURE_FRESH_E1_NONVACUITY",
+      "component": "MF02 future fresh E1 arm-state semantics / math_foundry_e1_payload schema",
+      "evidence_refs": [
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:schemas/math_foundry_e1_payload.schema.json@81f17858a4e06b65f99aa8e1f330896016582714",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:tests/test_future_fresh_role_model_contracts.py@1ae6b64892bc7f789e85de6b59e87a1266c6892c",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d"
+      ],
+      "exact_failure": "The E1 arm schema independently types route_availability, recommended_action, executed_action and raw_outcome_ref but imposes no conditional consistency. A payload with route_availability=UNAVAILABLE may still carry a non-null executed_action and raw_outcome_ref, while route_availability=AVAILABLE may carry null executed_action/raw_outcome_ref. validate_branch_bus_v251 delegates MF02 fresh semantics to this schema, and the frozen E1 contract test checks arm presence but does not reject these impossible/vacuous state combinations. Such a future fresh receipt can therefore pass trusted worker-level typing while misrepresenting actual route execution/outcome semantics.",
+      "issue_id": "MF02-G10-ISSUE-001",
+      "next_action": "Consolidate as an E1 pre-fresh blocker and repair only in a new frozen protocol-2.5 control release; do not mutate generation 10.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Before any fresh E1 private freeze, add conditional arm invariants to the frozen E1 payload schema (or an equally trusted validator): AVAILABLE requires a concrete executed_action and raw_outcome_ref when the arm is actually run; UNAVAILABLE requires executed_action/raw_outcome_ref to be null; UNKNOWN must not be represented as a measured execution. Add negative tests for each contradictory state and a positive test for an admissible unavailable schedule arm.",
+      "required_test": "Trusted MF02 FRESH_EXECUTION validation must reject UNAVAILABLE+executed_action/outcome, AVAILABLE+missing executed_action/outcome for executed arms, and UNKNOWN encoded as measured execution; valid AVAILABLE and valid unavailable-schedule payloads must pass.",
+      "severity": "MEDIUM",
+      "status": "OPEN_CONTROL_GAP",
+      "summary": "The repaired typed MF02 E1 payload can still admit internally inconsistent route-availability, execution, and outcome states."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "No E1 arm was executed.",
+    "No protected/private manifest was read.",
+    "No fresh evidence was consumed.",
+    "No benchmark execution occurred.",
+    "No deep research was run.",
+    "No scientific state, benchmark cursor, runtime identity, or canonical main state was changed by MF02."
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads exact MF02 branch/head/blob, verifies deterministic pretty transport, Draft-2020-12 schema/session equality/HMAC/public safety, observes exact-head structural CI, and adjudicates MF02-G10-ISSUE-001. BIL00 should treat the issue as a pre-fresh E1 control repair; MF02 must not modify generation 10.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "31071464144bde197aca0e3f13153be2d85208d7",
+  "plan_alignment": [
+    {
+      "evidence_ref": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:plan/PLAN.json@69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+      "requirement": "Current scheduled scope remains T0 replay-only and prohibits protected scientific execution.",
+      "status": "PASS"
+    },
+    {
+      "evidence_ref": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "requirement": "MF02 future E1 ownership measures executable BASE, SBS, single-route VBS, AUTO and admissible same-total-budget schedule/oracle truth with actual action, availability, raw outcome and complete cost.",
+      "status": "PASS_REPLAY_ONLY"
+    },
+    {
+      "evidence_ref": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:benchmark/registry.json@461c5bd695df5ac849e27df80799ed12871d281a",
+      "requirement": "E1 is the next Math Foundry clean suite but cannot run until transport calibration clears and a valid private pre-outcome freeze authorizes fresh execution.",
+      "status": "PASS_REPLAY_ONLY"
+    },
+    {
+      "evidence_ref": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:benchmark/pool_disposition.json@1058d5bbc3aa63eee51d0757d6cdf2ff6f378ae1",
+      "requirement": "E1 is CALIBRATION evidence and cannot be recycled into G1/G8/Goal-2 promotion evidence.",
+      "status": "PASS_REPLAY_ONLY"
+    },
+    {
+      "evidence_ref": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json@ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "requirement": "Math Foundry 3.1.1 remains a qualified replay-calibration software substrate only; no scientific status or runtime identity changes in this worker run.",
+      "status": "PASS_REPLAY_ONLY"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "CAL-BR-010-v25-fe539297-r2-MF02-COUNTABLE-T0-REPLAY",
+  "research_questions": [
+    "Before fresh E1, should the typed arm schema encode conditional availability/execution/outcome invariants directly in Draft-2020-12 or in the trusted branch validator, with negative tests covering contradictory states?"
+  ],
+  "runtime_implementation_implication": "No scientific/runtime promotion or mutation. Math Foundry 3.1.1 remains a qualified replay-calibration substrate identity; the identified control gap requires a future frozen protocol-2.5 control repair before fresh E1.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay E1 routing/schedule control semantics and transport bindings under Math Foundry 3.1.1, report defects, and produce one countable T0 calibration report without protected execution.",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF02",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W02 | E1 Solver Routing",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "evidence_refs": [
+        "main:state/CURRENT.json@72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:assignments/CAL-BR-010-v25-fe539297-r2.json@c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:control/CAL-BR-010-v25-fe539297-r2.json@08848388882c48062668624d615208ab5d7ec59f",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:liveness/CAL-BR-010-v25-fe539297-r2.json@8bd88d895df508e6807588239dea1f8047b73f13",
+        "control_release_commit=fe539297bdf6b769140c9970326f3e1de116f276",
+        "control_release_tree=ae42b5fc437963c51434e0dbacef18542fef0b1c",
+        "release_to_generation_changed_paths=assignments/CAL-BR-010-v25-fe539297-r2.json,control/CAL-BR-010-v25-fe539297-r2.json,liveness/CAL-BR-010-v25-fe539297-r2.json",
+        "prewrite_worker_branch_compare=identical_to_G"
+      ],
+      "status": "PASS",
+      "task": "Verify canonical pointer, exact immutable generation lineage, frozen control/assignment/liveness bindings, required-control inheritance, authentication commitment, and MF02 branch isolation.",
+      "task_id": "MF02-G10-T1"
+    },
+    {
+      "evidence_refs": [
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:benchmark/registry.json@461c5bd695df5ac849e27df80799ed12871d281a",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:schemas/math_foundry_e1_payload.schema.json@81f17858a4e06b65f99aa8e1f330896016582714",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:schemas/branch_report.schema.json@8372632e48df1d9fcb28133cdea4788adfd658fc",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:tests/test_future_fresh_role_model_contracts.py@1ae6b64892bc7f789e85de6b59e87a1266c6892c"
+      ],
+      "status": "PASS",
+      "task": "Replay E1 routing/schedule semantics and verify repair of the generation-9 missing typed MF02 fresh-admission contract without executing E1.",
+      "task_id": "MF02-G10-T2"
+    },
+    {
+      "evidence_refs": [
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:schemas/math_foundry_e1_payload.schema.json@81f17858a4e06b65f99aa8e1f330896016582714",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:tests/test_future_fresh_role_model_contracts.py@1ae6b64892bc7f789e85de6b59e87a1266c6892c"
+      ],
+      "status": "PASS_WITH_CONTROL_GAP",
+      "task": "Audit the repaired MF02 E1 fresh payload for semantic nonvacuity and impossible arm-state acceptance.",
+      "task_id": "MF02-G10-T3"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "Canonical state resolves protocol 2.5, generation 10, active non-superseded CAL-BR-010-v25-fe539297-r2, countable replay-only operation, verified repository policy, fresh disabled, and the expected plan/checkpoint/runtime lineage.",
+      "status": "PASS",
+      "test_id": "MF02-G10-CANONICAL-POINTER"
+    },
+    {
+      "result": "Frozen G is exactly one commit after the declared control-release commit and adds only cohort assignment, control and liveness files; every required-control path is therefore inherited unchanged from the frozen release.",
+      "status": "PASS",
+      "test_id": "MF02-G10-GENERATION-FREEZE"
+    },
+    {
+      "result": "Assigned MF02 worker branch is identical to exact G and the assigned report path is absent before creation.",
+      "status": "PASS",
+      "test_id": "MF02-G10-WORKER-ISOLATION-PREWRITE"
+    },
+    {
+      "result": "Frozen liveness binds MF02 to the exact assigned worker branch/report path and marks the lane eligible before its deadline.",
+      "status": "PASS",
+      "test_id": "MF02-G10-LIVENESS-BINDING"
+    },
+    {
+      "result": "SHA-256 of the prompt-private capability bytes equals the frozen public MF02 commitment; raw capability material is not published.",
+      "status": "PASS",
+      "test_id": "MF02-G10-WORKER-AUTH-COMMITMENT"
+    },
+    {
+      "result": "Exact G exposes supernova/liveness=success, supernova/static-control=success and supernova/branch-generation=success; worker/verify/integrate/consolidate and admission contexts are pending before the worker receipt exists.",
+      "status": "PARTIAL",
+      "test_id": "MF02-G10-STRUCTURAL-CI-PREWRITE"
+    },
+    {
+      "result": "Generation 10 now requires role_payload for MF02 FRESH_EXECUTION, maps MF02 to math_foundry_e1_payload.schema.json in the trusted validator, and includes a positive/negative arm-presence contract test.",
+      "status": "PASS",
+      "test_id": "MF02-G10-GEN9-TYPED-MF02-REPAIR"
+    },
+    {
+      "result": "Typed E1 arm presence is enforced, but route_availability is not conditionally constrained against executed_action/raw_outcome_ref; recorded as MF02-G10-ISSUE-001.",
+      "status": "CONTROL_GAP",
+      "test_id": "MF02-G10-E1-ARM-STATE-NONVACUITY"
+    },
+    {
+      "result": "No BASE, SBS, VBS_single, AUTO, VBS_schedule or ORACLE_SCHEDULE arm was executed and no protected manifest was read.",
+      "status": "NOT_EXECUTED_BY_CONTRACT",
+      "test_id": "MF02-G10-E1-EXECUTION"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "0d6ad466f48b475f9ac24491074add37",
+  "worker_auth_commitment": "6bb082c9eca80a34c622079e099aa9fee90350220c60b6e336172d7c92c053bc",
+  "worker_auth_proof": "2ec92214fc825c58b544396109f6de665326abd5451eeb374ba06117cf0f20da",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF02",
+  "worker_id": "MF02"
+}
