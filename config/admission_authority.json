@@ -39,7 +39,7 @@
   "authority_bootstrap_policy": "config/authority_bootstrap_v25.json",
   "authority_bootstrap_context": "supernova/bootstrap-admission",
   "bootstrap_completion_workflow": ".github/workflows/supernova-bootstrap-completion-reconcile.yml",
-  "bootstrap_status_provenance": "DESIGNATED_WORKFLOW_RUN_EXACT_PR_HEAD_BASE_ASSOCIATION_REQUIRED",
+  "bootstrap_status_provenance": "DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_REQUIRED",
   "root_tcb_epoch_path": "config/root_tcb_epoch_v25.json",
   "root_tcb_derivation": "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS",
   "structural_status_authority": {
@@ -48,7 +48,7 @@
     "rest_context_prefix": "supernova/rest-",
     "shared_structural_context_writers_forbidden": true
   },
-  "authority_change_rule": "Authority-changing PRs may not self-admit. Candidate tests execute only in a separate read-only job. Exact accepted-main bootstrap verifier bytes must bind the diagnostic result to the exact PR head/base and publish supernova/bootstrap-admission=success with a target_url naming the designated authority-bootstrap workflow run. Normal required contexts may be published only after that exact designated workflow run is completed successfully and the trusted reconciler verifies its workflow path, event, run state, exact PR association, exact head/base, GitHub Actions principal, and unique qualifying run. Every accepted-main write-capable admission validator/reconciler/workflow/helper and the validation dependency lock is in the non-self-amendable root TCB. Root-TCB changes require a separately trusted one-shot seed.",
+  "authority_change_rule": "Authority-changing PRs may not self-admit. Candidate tests execute only in a separate read-only job. Exact accepted-main bootstrap verifier bytes must bind the diagnostic result to the exact PR head/base and publish supernova/bootstrap-admission=success with a target_url naming the designated authority-bootstrap workflow run. Normal required contexts may be published only after that exact designated workflow run is completed successfully and the trusted reconciler verifies its workflow path, event, run state, exact PR/head/base description and GitHub Actions principal. Every accepted-main write-capable admission validator/reconciler/workflow/helper and the validation dependency lock is in the non-self-amendable root TCB. Root-TCB changes require a separately trusted root-rotation seed.",
   "same_repository_required": true,
   "owner_authored_required_for_privileged_reconciliation": true,
   "exact_current_main_ancestor_required": true,
