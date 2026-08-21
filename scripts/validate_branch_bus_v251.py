@@ -26,6 +26,16 @@ def execution_mode_errors(report,assignment):
   if hm!='SAFE_REPLAY_ONLY':e.append('calibration session execution_mode != SAFE_REPLAY_ONLY')
   if rm!='SAFE_REPLAY_ONLY':e.append('calibration report mode != SAFE_REPLAY_ONLY')
  return e
+def mm01_role_payload_errors(report):
+ e=[]
+ if report.get('worker_id')!='MM01' or report.get('mode')!='FRESH_EXECUTION':return e
+ payload=report.get('role_payload')
+ if not isinstance(payload,dict):return ['MM01 FRESH_EXECUTION requires typed role_payload']
+ try:
+  schema=sch('schemas/mastermind_react_proposal.schema.json');Draft202012Validator.check_schema(schema)
+  for x in Draft202012Validator(schema).iter_errors(payload):e.append('MM01 React proposal schema: '+x.message)
+ except Exception as x:e.append('MM01 React proposal schema execution failed: '+repr(x))
+ return e
 def validate(branch,G):
  e=[];k,c,w=kind(branch)
  if not k:return [f'unsupported branch {branch}']
@@ -60,6 +70,7 @@ def validate(branch,G):
   else:
    r=load(rp)
    for x in Draft202012Validator(sch('schemas/branch_report.schema.json')).iter_errors(r):e.append(f'report schema: {x.message}')
+   e.extend(mm01_role_payload_errors(r))
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')

@@ -1,0 +1,22 @@
+{
+  "schema_version": "PS-TASK-REGISTRY-SEMANTICS-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "registry_path": "config/task_registry_v25.json",
+  "registry_role": "FROZEN_SCHEDULE_AND_DEPLOYMENT_SNAPSHOT",
+  "registry_activation_status_authority": "HISTORICAL_INFORMATIONAL_ONLY",
+  "countability_authority": [
+    "state/CURRENT.json:calibration_countable_current",
+    "active control manifest:calibration_countable",
+    "active assignment:calibration_countable"
+  ],
+  "countability_resolution_rule": "All three canonical countability authorities must agree. A stale or contradictory task-registry activation_status field has zero authority and must not make a countable cohort non-countable or vice versa.",
+  "legacy_field_disposition": {
+    "path": "config/task_registry_v25.json:activation_status.countable_cohort_eligible",
+    "status": "HISTORICAL_SNAPSHOT_NON_AUTHORITATIVE",
+    "value_may_be_stale": true,
+    "must_not_be_used_for_current_eligibility": true
+  },
+  "task_registry_mutation_policy": "The frozen registry is not rewritten merely to refresh current cohort eligibility. Current eligibility is resolved from canonical state/control/assignment; schedule-registry changes require their own separately authorised lifecycle.",
+  "fail_closed_rule": "If canonical state, active control and active assignment disagree on countability, validation fails and no calibration credit is allowed."
+}
