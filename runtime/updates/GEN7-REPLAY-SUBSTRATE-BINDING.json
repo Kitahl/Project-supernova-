@@ -1,0 +1,87 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "runtime_update_id": "GEN7-REPLAY-SUBSTRATE-BINDING",
+  "runtime_before": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "runtime_after": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "artifact_hashes": {
+    "foundry_sha256": "5bfe4bf2cc7e8c4cb9751b831803e28eb45cebe22c0085310c8f00459caf994e",
+    "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+    "substrate_epoch_path": "config/substrate_epoch_v25.json",
+    "substrate_epoch_git_identity": "8f2cd07090202bb70467b43927defee95683137b"
+  },
+  "validator_results": [
+    {
+      "validator": "math-foundry-candidate7-clean-archive-replay",
+      "status": "PASS",
+      "evidence": "18/18 suites; 852/852 assertions; software qualification only"
+    },
+    {
+      "validator": "mastermind-4.4.10-package-qualification",
+      "status": "PASS",
+      "evidence": "manifest/source/compile/self-test/execution-closure qualification PASS"
+    },
+    {
+      "validator": "project-supernova-substrate-epoch-freeze",
+      "status": "PASS",
+      "evidence": "config/substrate_epoch_v25.json exact Git blob 8f2cd07090202bb70467b43927defee95683137b"
+    }
+  ],
+  "lineage_identity": "GEN6_TO_GEN7_SAME_RUNTIME_REPLAY_SUBSTRATE",
+  "accounting_identity": "ZERO_FRESH_ZERO_SCIENTIFIC_CREDIT",
+  "before_after_diagnostics": {
+    "update_class": "REPLAY_CALIBRATION_SUBSTRATE_BINDING",
+    "runtime_bound_before": {
+      "base_runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+      "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+      "foundry_sha256": "a9f220078a0c087a1c80a4bc6255951225734f7e73b50660138c20372257a0e8",
+      "mastermind_sha256": "e54f98cc9a1d527fda6626a01d6e8bf67ba71cc728b75263f3e88459436a9812",
+      "actual_runtime_plan_id": "f0031a07c1cfb23a8183e393b3ef26c92cd7cfa7b64e00af4466b52d90dc02d8",
+      "canonical_bus_repo": "Kitahl/Project-supernova-",
+      "private_vault_repo": "Kitahl/thoma"
+    },
+    "runtime_bound_after": {
+      "base_runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+      "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+      "foundry_sha256": "5bfe4bf2cc7e8c4cb9751b831803e28eb45cebe22c0085310c8f00459caf994e",
+      "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+      "actual_runtime_plan_id": "f0031a07c1cfb23a8183e393b3ef26c92cd7cfa7b64e00af4466b52d90dc02d8",
+      "canonical_bus_repo": "Kitahl/Project-supernova-",
+      "private_vault_repo": "Kitahl/thoma"
+    }
+  },
+  "fresh_prospective_evidence_refs": [],
+  "preservation_regression_checks": [
+    {
+      "check": "runtime_state_id_unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "base_runtime_state_id_unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "actual_runtime_plan_id_unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "network_checkpoint_semantics_unchanged",
+      "status": "PASS"
+    },
+    {
+      "check": "fresh_evidence_zero",
+      "status": "PASS"
+    },
+    {
+      "check": "scientific_status_unchanged",
+      "status": "PASS"
+    }
+  ],
+  "independent_verification": {
+    "status": "PASS",
+    "qualification_class": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+    "scientific_status_changed": false,
+    "fresh_evidence_consumed": false,
+    "authority_note": "This receipt binds qualified software substrates for replay-only countable calibration; it does not assert new mathematical truth, scientific improvement, or fresh-evidence validity."
+  },
+  "status": "VALIDATED"
+}
