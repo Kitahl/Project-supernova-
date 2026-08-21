@@ -12,14 +12,16 @@ Canonical public orchestration/evidence repository for the frozen Project Supern
 - Source identity: [`docs/REV4_SOURCE_INTEGRITY.json`](docs/REV4_SOURCE_INTEGRITY.json)
 - Repository operating transcription: [`docs/PROJECT_SUPERNOVA_SPEC_REV4.md`](docs/PROJECT_SUPERNOVA_SPEC_REV4.md)
 - Structured execution authority: [`config/rev4_execution.json`](config/rev4_execution.json)
+- Derived capability matrix: [`docs/SUPERNOVA_CAPABILITY_STATUS_MATRIX_REV4.md`](docs/SUPERNOVA_CAPABILITY_STATUS_MATRIX_REV4.md)
+- Derived formal disposition / Revision-5 queue: [`docs/SUPERNOVA_FORMAL_DISPOSITION_REV4_DERIVED_2026-08-20.md`](docs/SUPERNOVA_FORMAL_DISPOSITION_REV4_DERIVED_2026-08-20.md)
 
-Where older design guides, the 29-page protocol-2.5 construction specification, or earlier Revision-4 drafts conflict, the integrated Revision 4 controls. A frozen experiment manifest still controls its exact run.
+Where older design guides, the 29-page protocol-2.5 construction specification, or earlier Revision-4 drafts conflict, the integrated Revision 4 controls. A frozen experiment manifest still controls its exact run. Derived status/planning documents are non-authoritative and cannot override frozen control.
 
 ## DESIGN FREEZE
 
 **No protocol 2.6 and no Revision 5 until the calibration streak reaches two consecutive clean countable protocol-2.5 cohorts.**
 
-The current generation-6 bootstrap remains immutable replay-only diagnostic history. Revision 4 does not retroactively create calibration credit, enable fresh evidence, alter benchmark outcomes, or mutate the active cohort.
+`main:state/CURRENT.json` is the sole live status pointer. Generation 6 remains immutable replay-only diagnostic history. The live programme is now Gen7, the first countable protocol-2.5 replay-only calibration cohort, under source-bound repository protection. Fresh scientific work remains disabled and the calibration streak remains subject to complete clean-cohort admission; documentation updates do not create calibration credit.
 
 ## Canonical definition
 
@@ -33,7 +35,7 @@ Supernova is a frozen-authority controller that treats independently verified ma
 
 - **Math Foundry:** exact execution/runtime semantics, legal actions, real probes/products.
 - **Mastermind:** `PRE_REVIEW_ONLY` proposals, adversarial review and falsifiers.
-- **Tribunal / Librarian / Court:** scientific state, causal adjudication, statement fidelity and M5/M7/M8/M9 protection.
+- **Tribunal / Librarian / Court:** autonomous scientific state, causal adjudication, statement fidelity and M5/M7/M8/M9 protection.
 - **General-rho / SN-HORIZON:** finite-horizon decision and reasoning-computation allocation.
 - **SN-CONSEQUENCE / SN-WORLD:** non-authoritative consequence services only.
 - **GitHub / Scheduled Tasks:** transport and guarded evidence/control transitions only.
@@ -74,27 +76,34 @@ No receipt is not a null result. A normal no-finding run emits a zero-delta rece
 
 ## Current scheduled-task scope
 
-The existing 15 scheduled lanes remain on their frozen T0/replay assignments while T0 is unqualified. **Do not repurpose their active prompts for H0/H1, OCN, RETRO, CID, Stage-0 TRAIN work or Frontier modelling.** Those run in a separate non-admissible engineering environment.
+The frozen 15-lane network is active for the Gen7 countable replay-calibration cohort. Workers remain on their exact frozen assignments; do not repurpose active prompts for H0/H1, OCN, RETRO, CID, Stage-0 TRAIN work or Frontier modelling unless a future frozen assignment explicitly authorizes it.
 
-BIL00 remains the only scheduled deep-research executor. While T0 is open, only `T0-TRANSPORT-CLOSURE` may be researched by the scheduled lane.
+All Gen7 calibration work remains `SAFE_REPLAY_ONLY`: no fresh/protected benchmark consumption, no scientific promotion, and no inference from a missing receipt. The active operational qualification is persistent 15/15 liveness plus the complete `12 workers -> MM06 -> MF06 -> BIL00` cohort path.
+
+Broad foundational Deep Research should not be restarted merely because transport qualification completes. Targeted research should answer concrete implementation-contract, inherited-machinery, baseline or empirical-design questions. The current derived formal disposition is recorded separately and is not protocol authority.
 
 ## Work allowed now without scientific promotion
 
-- H0 exact synthetic/oracle worlds;
-- H1 SOUND-only interval kernel;
-- Cascade/Horizon soundness drafts;
+- Gen7 replay-only countable calibration and liveness qualification;
+- H0 exact synthetic/oracle worlds in a separately authorized non-admissible environment;
+- H1 SOUND-only interval kernel in a separately authorized non-admissible environment;
+- Cascade/Horizon soundness drafts and mechanisation;
 - OCN-0A five-operator costing after actual Foundry source inspection;
 - RETRO-0/CID-0 on consumed development evidence;
 - typed-event extractor and decision-event contracts;
 - liveness/verifier-assurance/security hardening.
 
-These are engineering/qualification/diagnostic outputs. They do not consume fresh G1/G8/Goal-2 pools and do not change scientific status.
+These are engineering/qualification/diagnostic outputs unless and until a later frozen admissible experiment says otherwise. They do not consume fresh G1/G8/Goal-2 pools or change scientific status.
 
 ## Stage sequence
+
+Frozen Revision-4 authority remains:
 
 `T0/FRESH-0/OCN-0A/STATEMENT-0 -> corpus -> RETRO/CID/MF -> ORACLE-WORLD/HEADROOM -> SN-COMPARE -> SN-CONSEQUENCE -> FACTOR -> SN-HORIZON -> short SN-WORLD -> SNW-0..5 -> G1/DR26 -> T3-RW -> T5 -> DR27/E5B`
 
 M7, M8 and M9 wrap every relevant promotion rather than appearing only at the end.
+
+A derived Revision-5 queue records a future research-order correction around verified-product closure, runtime reactions and DR03 before learned selection. That queue is intentionally **not** applied to the frozen Revision-4 machine plan during the current calibration streak.
 
 ## Public/private split
 
