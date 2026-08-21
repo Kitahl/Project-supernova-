@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-STRUCTURAL-STATUS-ROTATION-SEED-2.5-1",
+  "schema_version": "PS-STRUCTURAL-STATUS-ROTATION-SEED-2.5-2",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "seed_context": "supernova/structural-status-rotation-seed",
@@ -23,18 +23,24 @@
     "config/countable_control_set_v25.json",
     "config/root_tcb_epoch_v25.json",
     "config/structural_status_rotation_epoch_v25.json",
+    "config/gen9_repair_reset_epoch_v25.json",
     "scripts/reconcile_branch_rest.py",
+    "scripts/reconcile_open_prs.py",
     ".github/workflows/supernova-rest-branch-reconciler.yml",
-    "tests/test_structural_status_single_writer.py"
+    "tests/test_structural_status_single_writer.py",
+    "tests/test_gen9_zero_credit_reset.py"
   ],
   "required_root_candidate_paths": [
     "config/admission_authority.json",
     "config/countable_control_set_v25.json",
     "config/root_tcb_epoch_v25.json",
     "config/structural_status_rotation_epoch_v25.json",
+    "config/gen9_repair_reset_epoch_v25.json",
     "scripts/reconcile_branch_rest.py",
+    "scripts/reconcile_open_prs.py",
     ".github/workflows/supernova-rest-branch-reconciler.yml",
-    "tests/test_structural_status_single_writer.py"
+    "tests/test_structural_status_single_writer.py",
+    "tests/test_gen9_zero_credit_reset.py"
   ],
   "forbidden_candidate_prefixes": ["state/", "control/", "assignments/", "reports/", "verification/", "integration/", "history/", "transitions/", "superseded/", "runtime/", "benchmark/", "research/"],
   "failure_semantics": "FAIL_CLOSED"
