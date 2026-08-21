@@ -1,0 +1,110 @@
+{
+  "schema_version": "PS-COHORT-LIVENESS-2.5-2",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-010-v25-0441a3ac",
+  "generation_seq": 10,
+  "generation_root_sha": "0441a3aca37196390ab9976db62ecf866539e511",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-0441a3ac",
+  "control_manifest_git_identity": "4d757fb4cdfe7162071fee96579c70f634449248",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-0441a3ac",
+  "assignment_git_identity": "cf6c3eb453c4b3df1a66531d2ee4b53285791a50",
+  "lanes": [
+    {
+      "lane_id": "MF01",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MF01",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MF01.json",
+      "expected_window_start_utc": "2026-08-21T22:05:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MF02",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MF02",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MF02.json",
+      "expected_window_start_utc": "2026-08-21T22:06:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MF03",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MF03",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MF03.json",
+      "expected_window_start_utc": "2026-08-21T22:07:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MF04",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MF04",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MF04.json",
+      "expected_window_start_utc": "2026-08-21T22:08:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MF05",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MF05",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MF05.json",
+      "expected_window_start_utc": "2026-08-21T22:09:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MM01",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MM01",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MM01.json",
+      "expected_window_start_utc": "2026-08-21T22:10:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MM02",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MM02",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MM02.json",
+      "expected_window_start_utc": "2026-08-21T22:11:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MM03",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MM03",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MM03.json",
+      "expected_window_start_utc": "2026-08-21T22:12:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MM04",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MM04",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MM04.json",
+      "expected_window_start_utc": "2026-08-21T22:13:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MM05",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MM05",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MM05.json",
+      "expected_window_start_utc": "2026-08-21T22:14:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "MM07",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/MM07",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/MM07.json",
+      "expected_window_start_utc": "2026-08-21T22:15:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    },
+    {
+      "lane_id": "EXT01",
+      "branch": "ps/work/CAL-BR-010-v25-0441a3ac/EXT01",
+      "path": "reports/CAL-BR-010-v25-0441a3ac/EXT01.json",
+      "expected_window_start_utc": "2026-08-21T22:16:00Z",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true
+    }
+  ]
+}
