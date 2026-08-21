@@ -26,6 +26,14 @@ class RulesetAttestationWorkflowTests(unittest.TestCase):
         self.assertIn("SUPERNOVA_RULESET_ATTESTATION_V25_BEGIN", text)
         self.assertIn("PS-RULESET-ATTESTATION-1", text)
 
+    def test_attestation_is_fail_soft_and_observable_before_queries(self):
+        text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("SUPERNOVA_RULESET_ATTESTATION_V25_STARTED", text)
+        self.assertIn("except urllib.error.HTTPError", text)
+        self.assertIn("auth=False", text)
+        self.assertIn("'http_status': exc.code", text)
+        self.assertIn("OMITTED_COMMENT_SIZE", text)
+
     def test_attestation_assets_are_frozen_for_countable_cohorts(self):
         control = json.loads(CONTROL.read_text(encoding="utf-8"))
         paths = set(control["required_control_paths"])
