@@ -10,17 +10,13 @@ from scripts.validate_branch_bus_v251 import execution_mode_errors, issue_ledger
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 HMAC2 = "PS-HMAC-SHA256-CANONICAL-REPORT-2"
+PLAN = "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"
 
 
 def canonical_payload(report):
     signed = copy.deepcopy(report)
     signed.pop("worker_auth_proof", None)
-    return json.dumps(
-        signed,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-    ).encode("utf-8")
+    return json.dumps(signed, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
 def proof(secret, report):
@@ -42,7 +38,88 @@ def complete_issue(issue_id="ISSUE-1"):
     }
 
 
+def mm03_report(result=None):
+    if result is None:
+        result = {
+            "result_type": "SCIENTIFIC_METRIC",
+            "status": "NOT_MEASURED",
+            "value": None,
+            "reason": "T0 replay has no authorized fresh SlopCode metric",
+            "evidence_refs": [],
+            "unit": None,
+        }
+    return {
+        "session_header": {
+            "schema_version": "PS-SESSION-2",
+            "session_name": "PS-MM-W03 | SlopCode Contracts",
+            "target_program": "MASTERMIND",
+            "phase": "T0_COUNTABLE_REPLAY_COHORT_TEST",
+            "iteration_id": "CAL-TEST",
+            "iteration_number": 8,
+            "role_id": "MM03",
+            "goal": "typed missingness test",
+            "plan_id": PLAN,
+            "runtime_state_id": "runtime-test",
+            "model_target": "GPT-5.6 Sol",
+            "reasoning_effort_target": "EXTRA_HIGH",
+            "model_binding_status": "PARTIAL_UNVERIFIED",
+            "execution_mode": "SAFE_REPLAY_ONLY",
+        },
+        "task_network_plan_id": PLAN,
+        "cohort_id": "CAL-TEST",
+        "worker_id": "MM03",
+        "report_id": "RPT-TEST-MM03",
+        "generation_seq": 8,
+        "generation_head_sha": "a" * 40,
+        "worker_branch": "ps/work/CAL-TEST/MM03",
+        "assignment_id": "ASSIGN-TEST",
+        "assignment_git_identity": "b" * 40,
+        "parent_state_git_identity": "c" * 40,
+        "control_manifest_id": "CTRL-TEST",
+        "control_manifest_git_identity": "d" * 40,
+        "network_checkpoint_id": "checkpoint-test",
+        "runtime_state_id": "runtime-test",
+        "visibility_token": "visibility-test",
+        "worker_auth_scheme": HMAC2,
+        "worker_auth_commitment": "e" * 64,
+        "worker_auth_proof": "f" * 64,
+        "status": "VALID_ASSIGNED_REPORT",
+        "mode": "SAFE_REPLAY_ONLY",
+        "evidence_tier": "T0_TEST",
+        "executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT",
+        "fresh_evidence_ids": [],
+        "private_manifest_id": None,
+        "private_manifest_git_identity": None,
+        "task_ledger": [],
+        "issue_ledger": [],
+        "test_ledger": [],
+        "plan_alignment": [],
+        "evidence_and_provenance": {},
+        "claim_scope": "transport only",
+        "runtime_implementation_implication": "none",
+        "negative_zero_outcomes": [],
+        "research_questions": [],
+        "role_payload": {"slopcode_result": result},
+        "cost_ledger": {
+            "fresh_evidence_units_consumed": 0,
+            "protected_manifest_reads": 0,
+            "benchmark_executions": 0,
+            "deep_research_runs": 0,
+            "notes": "test",
+        },
+        "public_safety_status": "PASS",
+        "origin_reread_claim": False,
+        "next_action": "MM06",
+    }
+
+
 class V25ReportContractTests(unittest.TestCase):
+    def report_schema(self):
+        return json.loads((ROOT / "schemas" / "branch_report.schema.json").read_text(encoding="utf-8"))
+
+    def report_errors(self, report):
+        return list(Draft202012Validator(self.report_schema()).iter_errors(report))
+
     def test_auth_metadata_matches_hmac2(self):
         auth = json.loads((ROOT / "config" / "worker_auth.json").read_text(encoding="utf-8"))
         self.assertEqual(auth["scheme"], HMAC2)
@@ -68,7 +145,6 @@ class V25ReportContractTests(unittest.TestCase):
         expected = proof(secret, base)
         base["worker_auth_proof"] = expected
         self.assertTrue(hmac.compare_digest(proof(secret, base), expected))
-
         mutations = []
         m = copy.deepcopy(base); m["cohort_id"] = "other"; mutations.append(m)
         m = copy.deepcopy(base); m["mode"] = "FRESH"; mutations.append(m)
@@ -76,12 +152,8 @@ class V25ReportContractTests(unittest.TestCase):
         m = copy.deepcopy(base); m["evidence_ledger"][0]["status"] = "PASS"; mutations.append(m)
         m = copy.deepcopy(base); m["issue_ledger"][0]["status"] = "CLOSED"; mutations.append(m)
         m = copy.deepcopy(base); m["cost_ledger"]["benchmark_executions"] = 1; mutations.append(m)
-
         for mutated in mutations:
-            self.assertFalse(
-                hmac.compare_digest(proof(secret, mutated), expected),
-                msg=f"stale HMAC accepted mutation: {mutated}",
-            )
+            self.assertFalse(hmac.compare_digest(proof(secret, mutated), expected), msg=f"stale HMAC accepted mutation: {mutated}")
 
     def test_execution_mode_positive(self):
         report = {"mode": "SAFE_REPLAY_ONLY", "session_header": {"execution_mode": "SAFE_REPLAY_ONLY"}}
@@ -103,8 +175,7 @@ class V25ReportContractTests(unittest.TestCase):
         self.assertIn("calibration report mode != SAFE_REPLAY_ONLY", errors)
 
     def test_issue_record_is_closed_and_complete(self):
-        schema = json.loads((ROOT / "schemas" / "branch_report.schema.json").read_text(encoding="utf-8"))
-        issue_schema = schema["$defs"]["issue_record"]
+        issue_schema = self.report_schema()["$defs"]["issue_record"]
         self.assertEqual(list(Draft202012Validator(issue_schema).iter_errors(complete_issue())), [])
         for field in issue_schema["required"]:
             bad = complete_issue(); bad.pop(field)
@@ -114,21 +185,33 @@ class V25ReportContractTests(unittest.TestCase):
 
     def test_duplicate_issue_ids_fail_trusted_validation(self):
         report = {"executive_status": "FINDINGS", "issue_ledger": [complete_issue("DUP"), complete_issue("DUP")]}
-        errors = issue_ledger_errors(report)
-        self.assertIn("duplicate issue_ledger issue_id DUP", errors)
+        self.assertIn("duplicate issue_ledger issue_id DUP", issue_ledger_errors(report))
 
     def test_empty_issue_ledger_requires_explicit_zero_delta(self):
         self.assertEqual(issue_ledger_errors({"executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT", "issue_ledger": []}), [])
-        self.assertIn(
-            "empty issue_ledger requires explicit ZERO_DELTA executive_status",
-            issue_ledger_errors({"executive_status": "PASS", "issue_ledger": []}),
-        )
+        self.assertIn("empty issue_ledger requires explicit ZERO_DELTA executive_status", issue_ledger_errors({"executive_status": "PASS", "issue_ledger": []}))
 
     def test_zero_delta_cannot_hide_findings(self):
-        self.assertIn(
-            "ZERO_DELTA executive_status requires empty issue_ledger",
-            issue_ledger_errors({"executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT", "issue_ledger": [complete_issue()]}),
-        )
+        self.assertIn("ZERO_DELTA executive_status requires empty issue_ledger", issue_ledger_errors({"executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT", "issue_ledger": [complete_issue()]}))
+
+    def test_mm03_valid_not_measured_null_passes(self):
+        self.assertEqual(self.report_errors(mm03_report()), [])
+
+    def test_mm03_role_payload_is_required(self):
+        report = mm03_report(); report.pop("role_payload")
+        self.assertTrue(self.report_errors(report))
+
+    def test_mm03_not_measured_numeric_zero_fails(self):
+        report = mm03_report(); report["role_payload"]["slopcode_result"]["value"] = 0
+        self.assertTrue(self.report_errors(report))
+
+    def test_mm03_unknown_numeric_value_fails(self):
+        result = {"result_type": "SCIENTIFIC_METRIC", "status": "UNKNOWN", "value": 1.0, "reason": "unknown", "evidence_refs": [], "unit": None}
+        self.assertTrue(self.report_errors(mm03_report(result)))
+
+    def test_mm03_measured_without_numeric_value_fails(self):
+        result = {"result_type": "SCIENTIFIC_METRIC", "status": "MEASURED", "value": None, "reason": "missing value", "evidence_refs": [], "unit": None}
+        self.assertTrue(self.report_errors(mm03_report(result)))
 
     def test_hourly_registry_has_exact_fifteen_staggered_lanes(self):
         reg = json.loads((ROOT / "config" / "task_registry_v25.json").read_text(encoding="utf-8"))
