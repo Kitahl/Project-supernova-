@@ -14,6 +14,7 @@ Canonical public orchestration/evidence repository for the frozen Project Supern
 - Structured execution authority: [`config/rev4_execution.json`](config/rev4_execution.json)
 - Derived capability matrix: [`docs/SUPERNOVA_CAPABILITY_STATUS_MATRIX_REV4.md`](docs/SUPERNOVA_CAPABILITY_STATUS_MATRIX_REV4.md)
 - Derived formal disposition / Revision-5 queue: [`docs/SUPERNOVA_FORMAL_DISPOSITION_REV4_DERIVED_2026-08-20.md`](docs/SUPERNOVA_FORMAL_DISPOSITION_REV4_DERIVED_2026-08-20.md)
+- Derived general-base mechanism expansion and benchmark plan: [`docs/SUPERNOVA_GENERAL_BASE_MECHANISM_EXPANSION_AND_BENCHMARK_PLAN_2026-08-21.md`](docs/SUPERNOVA_GENERAL_BASE_MECHANISM_EXPANSION_AND_BENCHMARK_PLAN_2026-08-21.md)
 
 Where older design guides, the 29-page protocol-2.5 construction specification, or earlier Revision-4 drafts conflict, the integrated Revision 4 controls. A frozen experiment manifest still controls its exact run. Derived status/planning documents are non-authoritative and cannot override frozen control.
 
@@ -21,7 +22,7 @@ Where older design guides, the 29-page protocol-2.5 construction specification, 
 
 **No protocol 2.6 and no Revision 5 until the calibration streak reaches two consecutive clean countable protocol-2.5 cohorts.**
 
-`main:state/CURRENT.json` is the sole live status pointer. Generation 6 remains immutable replay-only diagnostic history. The live programme is now Gen7, the first countable protocol-2.5 replay-only calibration cohort, under source-bound repository protection. Fresh scientific work remains disabled and the calibration streak remains subject to complete clean-cohort admission; documentation updates do not create calibration credit.
+`main:state/CURRENT.json` is the sole live status pointer. Immutable invalidated Gen7 and zero-credit Gen8 staging are superseded history. The live programme is now Gen9 cohort `CAL-BR-009-v25-b53ab205`: the first repaired countable Protocol-2.5 replay cohort under qualified Math Foundry 3.1.1, frozen control/assignment/liveness, and source-bound repository protection. Fresh scientific work remains disabled, the calibration streak is 0, and cohort credit requires the complete `12 workers -> MM06 -> MF06 -> BIL00` path. Documentation updates do not create calibration credit.
 
 ## Canonical definition
 
@@ -76,17 +77,18 @@ No receipt is not a null result. A normal no-finding run emits a zero-delta rece
 
 ## Current scheduled-task scope
 
-The frozen 15-lane network is active for the Gen7 countable replay-calibration cohort. Workers remain on their exact frozen assignments; do not repurpose active prompts for H0/H1, OCN, RETRO, CID, Stage-0 TRAIN work or Frontier modelling unless a future frozen assignment explicitly authorizes it.
+The frozen 15-lane network is active for Gen9 replay-only countable calibration. Workers remain on their exact frozen assignments; do not repurpose active/scheduled prompts for H0/H1, OCN, RETRO, CID, Stage-0 TRAIN work, formal-math integration or Frontier modelling unless a future frozen assignment explicitly authorizes it.
 
-All Gen7 calibration work remains `SAFE_REPLAY_ONLY`: no fresh/protected benchmark consumption, no scientific promotion, and no inference from a missing receipt. The active operational qualification is persistent 15/15 liveness plus the complete `12 workers -> MM06 -> MF06 -> BIL00` cohort path.
+All Gen9 work remains `SAFE_REPLAY_ONLY`: no fresh/protected benchmark consumption, no scientific promotion, and no inference from a missing receipt. The active operational qualification is persistent 15/15 liveness plus the complete `12 workers -> MM06 -> MF06 -> BIL00` cohort path. The programme still requires two consecutive clean countable cohorts before the freeze opens.
 
-Broad foundational Deep Research should not be restarted merely because transport qualification completes. Targeted research should answer concrete implementation-contract, inherited-machinery, baseline or empirical-design questions. The current derived formal disposition is recorded separately and is not protocol authority.
+Broad foundational Deep Research should not be restarted merely because transport qualification completes. Targeted research should answer concrete implementation-contract, inherited-machinery, baseline or empirical-design questions. Current derived planning documents are not protocol authority.
 
 ## Work allowed now without scientific promotion
 
-- Gen7 replay-only countable calibration and liveness qualification;
+- Gen9 replay-only countable calibration and liveness qualification;
 - H0 exact synthetic/oracle worlds in a separately authorized non-admissible environment;
 - H1 SOUND-only interval kernel in a separately authorized non-admissible environment;
+- non-admissible formal-runtime, verifier, retrieval, solver-adapter and benchmark-harness engineering;
 - Cascade/Horizon soundness drafts and mechanisation;
 - OCN-0A five-operator costing after actual Foundry source inspection;
 - RETRO-0/CID-0 on consumed development evidence;
@@ -103,7 +105,7 @@ Frozen Revision-4 authority remains:
 
 M7, M8 and M9 wrap every relevant promotion rather than appearing only at the end.
 
-A derived Revision-5 queue records a future research-order correction around verified-product closure, runtime reactions and DR03 before learned selection. That queue is intentionally **not** applied to the frozen Revision-4 machine plan during the current calibration streak.
+A derived Revision-5 queue records a future research-order correction around verified-product closure, runtime reactions and DR03 before learned selection. That queue is intentionally **not** applied to the frozen Revision-4 machine plan during the current calibration freeze.
 
 ## Public/private split
 
