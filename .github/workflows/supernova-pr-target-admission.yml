@@ -63,3 +63,10 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: cd trusted && python scripts/reconcile_ruleset_attestation.py
+      - name: Diagnose authority-bootstrap structural eligibility using accepted-main bytes only
+        if: github.event_name == 'pull_request_target'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: cd trusted && python scripts/diagnose_authority_bootstrap.py
