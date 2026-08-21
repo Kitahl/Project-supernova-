@@ -7,6 +7,7 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "Kitahl/Project-supernova-")
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
 PR_NUMBER = os.environ.get("PR_NUMBER", "")
 CONTEXT = "supernova/bootstrap-diagnostic"
+MARKER = "<!-- SUPERNOVA_BOOTSTRAP_DIAGNOSTIC -->"
 
 
 def api(path, method="GET", data=None):
@@ -32,6 +33,24 @@ def status(sha, state, description):
     })
 
 
+def report_failure(pr_number, sha, reason):
+    body = (
+        MARKER + "\n"
+        "### Supernova bootstrap structural diagnostic\n\n"
+        f"- exact head: `{sha}`\n"
+        f"- result: `REFUSED`\n"
+        f"- accepted-main verifier reason: `{reason}`\n\n"
+        "This is diagnostic only. It does not publish `supernova/bootstrap-admission`, does not merge, and does not weaken any required check."
+    )
+    comments = api(f"/issues/{pr_number}/comments?per_page=100") or []
+    for row in comments:
+        existing = row.get("body") or ""
+        if MARKER in existing and (row.get("user") or {}).get("login") == "github-actions[bot]":
+            api(f"/issues/comments/{row['id']}", "PATCH", {"body": body})
+            return
+    api(f"/issues/{pr_number}/comments", "POST", {"body": body})
+
+
 def load_bootstrap():
     path = ROOT / "scripts" / "reconcile_authority_bootstrap.py"
     spec = importlib.util.spec_from_file_location("supernova_trusted_bootstrap_diagnostic", path)
@@ -44,6 +63,7 @@ def load_bootstrap():
 def main():
     if not PR_NUMBER.isdigit() or int(PR_NUMBER) <= 0:
         raise SystemExit("PR_NUMBER required")
+    number = int(PR_NUMBER)
     pr = api("/pulls/" + PR_NUMBER)
     sha = ((pr or {}).get("head") or {}).get("sha")
     if not isinstance(sha, str):
@@ -76,6 +96,7 @@ def main():
         if lines:
             reason = lines[-1]
     status(sha, "failure", reason)
+    report_failure(number, sha, reason)
     print(reason)
     return 0
 
