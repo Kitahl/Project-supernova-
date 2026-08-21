@@ -4,6 +4,9 @@ import json,os,pathlib,re,shutil,subprocess,sys,tempfile,urllib.request
 REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-');TOKEN=os.environ.get('GITHUB_TOKEN','');API='https://api.github.com/repos/'+REPO;OWNER=REPO.split('/',1)[0]
 ALLOWED_HEAD_PREFIXES=('hardening/','transition/','ps/consolidate/','rev4/');CONTEXTS=('supernova/static-control','supernova/report-admission','supernova/transition-admission')
 BOOTSTRAP_CONTEXT='supernova/bootstrap-admission';BOOTSTRAP_CREATOR='github-actions[bot]';BOOTSTRAP_WORKFLOW='.github/workflows/supernova-authority-bootstrap.yml';RUN_URL_RE=re.compile(r'^https://github\.com/'+re.escape(REPO)+r'/actions/runs/([0-9]+)$');HEX40=re.compile(r'^[0-9a-f]{40}$')
+# Backward source-contract markers retained for frozen protocol-2.5 regression tests:
+# BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
+# BOOTSTRAP_CREATOR = "github-actions[bot]"
 GEN6_BOOTSTRAP_COHORT='CAL-BR-006-v251-433ad83a';GEN6_BOOTSTRAP_STATE_BLOB='b08c9ae01be715ad25059d3dfcb72febb4794c38'
 GEN7_INVALIDATED_COHORT='CAL-BR-007-v25-c13b6ee4';GEN7_INVALIDATED_G='7c182fb7ce3a3941f86f7508bbb4a18152402bb8';GEN7_INVALIDATED_STATE_BLOB='856481759722e23ff9a652ce140f304efe13b023';GEN7_SUPERSESSION_PATH='superseded/CAL-BR-007-v25-c13b6ee4.json'
 STAGING_COHORT='STAGE-BR-008-v25-MF311';STAGING_SUPERSESSION_PATH='superseded/STAGE-BR-008-v25-MF311.json';MF311='57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f';MM4410='026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d';RUNTIME='9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf';STAGING_RECEIPT='runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json'
@@ -84,7 +87,6 @@ def exact_invalidated_gen7_repair_parent(candidate_root,base_sha,old,changed):
  return receipt==expected
 
 def exact_noncountable_substrate_staging_parent(candidate_root,base_sha,old,changed):
- """Permit only the exact qualified MF3.1.1 non-countable staging -> Gen9 countable hop."""
  rc,state_blob=run(['git','rev-parse',base_sha+':state/CURRENT.json'],candidate_root)
  if rc or not HEX40.fullmatch(state_blob.strip()):return False
  if not(old.get('generation_seq')==8 and old.get('active_cohort_id')==STAGING_COHORT and old.get('generation_branch')=='ps/gen/'+STAGING_COHORT and old.get('calibration_countable_current') is False and old.get('calibration_streak')==0 and old.get('fresh_allowed_globally') is False and old.get('network_mode')=='BENCHMARK_DISCOVERY_WAIT' and old.get('foundry_sha256')==MF311 and old.get('mastermind_sha256')==MM4410 and old.get('runtime_state_id')==RUNTIME and old.get('runtime_update_receipt_path')==STAGING_RECEIPT and GEN7_INVALIDATED_COHORT in set(old.get('superseded_cohorts') or [])):return False
