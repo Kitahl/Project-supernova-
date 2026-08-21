@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Supernova Verification Assurance Disposition Overlay v2.5",
+  "type": "object",
+  "required": ["verifier_assurance_disposition", "verifier_assurance_records", "statement_fidelity_policy"],
+  "properties": {
+    "verifier_assurance_disposition": {
+      "enum": ["ASSURANCE_RECORDS_PRESENT", "TRANSPORT_ONLY_NOT_APPLICABLE"]
+    },
+    "verifier_assurance_records": {"type": "array"},
+    "statement_fidelity_policy": {
+      "enum": ["NOT_APPLICABLE_TRANSPORT_ONLY", "REQUIRED_BY_SCIENTIFIC_MANIFEST"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verifier_assurance_disposition": {"const": "ASSURANCE_RECORDS_PRESENT"}
+        },
+        "required": ["verifier_assurance_disposition"]
+      },
+      "then": {
+        "properties": {
+          "verifier_assurance_records": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verifier_assurance_disposition": {"const": "TRANSPORT_ONLY_NOT_APPLICABLE"}
+        },
+        "required": ["verifier_assurance_disposition"]
+      },
+      "then": {
+        "properties": {
+          "verifier_assurance_records": {"maxItems": 0},
+          "statement_fidelity_policy": {"const": "NOT_APPLICABLE_TRANSPORT_ONLY"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "statement_fidelity_policy": {"const": "REQUIRED_BY_SCIENTIFIC_MANIFEST"}
+        },
+        "required": ["statement_fidelity_policy"]
+      },
+      "then": {
+        "properties": {
+          "verifier_assurance_disposition": {"const": "ASSURANCE_RECORDS_PRESENT"},
+          "verifier_assurance_records": {"minItems": 1}
+        }
+      }
+    }
+  ]
+}
