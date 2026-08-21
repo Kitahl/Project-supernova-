@@ -1,0 +1,155 @@
+{
+  "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-fe539297-r2",
+  "claim_scope": "Replay-only repaired-liveness/control-binding falsifier. No mathematical, benchmark, runtime-capability, statement-fidelity, checker-assurance, calibration-pass or promotion claim is made. KERNEL_VALID != STATEMENT_FIDELITY_CONFIRMED. Failure to find a defect with this one discriminator is not proof of overall correctness.",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-fe539297-r2",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay-only GitHub control/auth/lineage/liveness inspection plus one deterministic in-memory control-blob binding mutation. No private vault read and no scientific execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "active_cohort_supersession_check": "PASS_NOT_SUPERSEDED",
+    "assignment_blob": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+    "auth_commitment_match": "PASS",
+    "canonical_state_blob": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+    "canonical_state_reread": "STABLE_PREWRITE",
+    "canonical_state_source": "main:state/CURRENT.json",
+    "ci_observation": "CI_NOT_OBSERVED_FOR_POSTWRITE_MF04_HEAD",
+    "control_manifest_blob": "08848388882c48062668624d615208ab5d7ec59f",
+    "control_release_tree_sha": "ae42b5fc437963c51434e0dbacef18542fef0b1c",
+    "frozen_path_verification": "Release-root to G whole-repository compare changed only assignments/CAL-BR-010-v25-fe539297-r2.json, control/CAL-BR-010-v25-fe539297-r2.json, and liveness/CAL-BR-010-v25-fe539297-r2.json. None is in required_control_paths, so every required frozen control path retains its release-root Git identity at G.",
+    "generation_branch_prewrite": "IDENTICAL_TO_G",
+    "generation_root_sha": "fe539297bdf6b769140c9970326f3e1de116f276",
+    "hmac_signed_field_mutation_self_check": "PASS_EXECUTIVE_STATUS_MUTATION_INVALIDATED_PROOF",
+    "liveness_contract_blob": "8bd88d895df508e6807588239dea1f8047b73f13",
+    "mf04_liveness_window": {
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true,
+      "expected_window_start_utc": "2026-08-21T22:08:00Z"
+    },
+    "observed_model_binding": "Requested model is GPT-5.6 Sol and requested reasoning is EXTRA_HIGH, but the frozen runtime receipt explicitly makes no observed model/reasoning binding claim; model_binding_status is PARTIAL_UNVERIFIED.",
+    "parent_state_resolution": "PASS_TO_GENERATION_9_STATE_NOW_SUPERSEDED",
+    "prewrite_ci_observation": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending_on_G_before_MF04_receipt",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "runtime_receipt_blob": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_receipt_ref": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "runtime_receipt_status": "VALIDATED_REPLAY_CALIBRATION_ONLY_MODEL_BINDING_NOT_CLAIMED",
+    "worker_branch_prewrite": "IDENTICAL_TO_G"
+  },
+  "evidence_tier": "T0_COUNTABLE_TRANSPORT_REPLAY_ONLY",
+  "executive_status": "ZERO_DELTA_LIVENESS_BLOB_BINDING_MUTATION_REJECTED",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "generation_seq": 10,
+  "issue_ledger": [],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "Fresh evidence consumed: 0.",
+    "Protected/private manifest reads: 0.",
+    "Benchmark executions: 0.",
+    "Deep-research runs: 0.",
+    "No scientific, checker-assurance, or statement-fidelity evidence was generated.",
+    "No defect was found by the single repaired liveness control-blob mismatch discriminator; this is ZERO_DELTA, not proof."
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 should independently reread the exact MF04 branch/report creation history, verify deterministic transport plus strict session/execution-mode/cost bindings, recompute canonical HMAC-2 from its verifier secret copy, and preserve this ZERO_DELTA result if all independent checks pass. No control change or promotion is authorized.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "31071464144bde197aca0e3f13153be2d85208d7",
+  "plan_alignment": [
+    {
+      "check": "ROLE_SCOPE",
+      "detail": "Only replay-safe GitHub control/auth/lineage/liveness evidence and one deterministic repaired-liveness mutation were used.",
+      "result": "PASS"
+    },
+    {
+      "check": "SAFE_REPLAY_ONLY",
+      "detail": "session_header.execution_mode equals report.mode and both equal SAFE_REPLAY_ONLY; no fresh/private/benchmark/deep-research execution occurred.",
+      "result": "PASS"
+    },
+    {
+      "check": "COUNTABLE_COHORT_STATUS",
+      "detail": "State marks Gen10 replacement cohort as countable; this worker makes no calibration-pass or promotion claim. Cohort credit remains conditional on complete 12-worker liveness, MM06 verification, MF06 integration, BIL00 consolidation and admission.",
+      "result": "CONDITIONAL"
+    },
+    {
+      "check": "MODEL_BINDING",
+      "detail": "The runtime update receipt validates the Math Foundry 3.1.1 replay substrate but explicitly states MODEL_BINDING_NOT_CLAIMED. The requested model/reasoning identity is not independently attested; binding remains PARTIAL_UNVERIFIED.",
+      "result": "PARTIAL_UNVERIFIED"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "RPT-CAL-BR-010-v25-fe539297-r2-MF04",
+  "research_questions": [],
+  "role_payload": {
+    "falsifier_count": 1,
+    "falsifier_target": "root-TCB epoch-4 liveness control Git-blob binding",
+    "finding_count": 0,
+    "finding_severity_max": "NONE"
+  },
+  "runtime_implementation_implication": "The repaired liveness contract's control Git-blob identity binding survived the tested schema-valid mismatch mutation. This supports only that exact discriminator; MM06 must still independently reread branch history, validate schema/session/execution-mode/cost bindings, recompute HMAC-2, and perform its own negative mutations.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Attack one repaired control/auth/lineage/liveness/branch-isolation assumption using replay-only evidence and report every evidence-backed defect.",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF04",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "result": "Canonical main pointer was stable on prewrite reread; control and assignment Git blob identities matched the pointer; the declared control-release commit resolved to its declared tree; release-root to G changed only the cohort assignment, control, and liveness files, none in required_control_paths, so every frozen required path retained its release-root Git identity at G. The generation and MF04 branches were identical to G before write; the parent-state blob resolved to the superseded Gen9 state; MF04 role, branch, visibility token, goal, replay-only constraints, liveness slot, and public HMAC commitment all matched.",
+      "status": "COMPLETE",
+      "task_id": "MF04-TRANSPORT-VERIFY"
+    },
+    {
+      "result": "One deterministic repaired-liveness discriminator mutated only the schema-valid 40-hex liveness.control_manifest_git_identity while leaving the frozen cohort control file unchanged. The frozen liveness_contract_guard compares that field to the actual Git blob identity of control/<cohort>.json and therefore rejects the mutant with a control-binding mismatch. No defect was found by this discriminator.",
+      "status": "COMPLETE",
+      "task_id": "MF04-FALSIFIER"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "expected": "The mutant remains syntactically/schema-valid as a 40-hex identity but liveness_contract_guard rejects it because the declared control identity no longer equals the actual Git blob identity of the frozen control file.",
+      "kind": "DETERMINISTIC_REPAIRED_CONTROL_BINDING_MUTATION",
+      "mutation": "In an in-memory copy of liveness/CAL-BR-010-v25-fe539297-r2.json, replace control_manifest_git_identity 08848388882c48062668624d615208ab5d7ec59f with 0000000000000000000000000000000000000000 while leaving control/CAL-BR-010-v25-fe539297-r2.json unchanged.",
+      "observed": "PASS: the frozen guard's exact predicate l.get('control_manifest_git_identity') != blob(cp) triggers the liveness control binding mismatch for this mutation.",
+      "result": "PASS",
+      "target": "Root-TCB epoch-4 liveness contract binding to the exact cohort control Git blob",
+      "test_id": "MF04-T0-LIVENESS-BLOB-BINDING"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "69e260b378ff4588b5c05e1dfd52737c",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "602d59f2985bc13dce943eda948b5e2b6fff6f75247ce8848f03183b4a9a0adc",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF04",
+  "worker_id": "MF04"
+}
