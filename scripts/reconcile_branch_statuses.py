@@ -16,6 +16,10 @@ def validate(branch,generation_head):
  p=subprocess.run([sys.executable,'scripts/validate_branch_bus_v251.py','--branch',branch,'--generation-head',generation_head],cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
  line=(p.stdout.strip().splitlines()[-1] if p.stdout.strip() else 'validator failed')
  return p.returncode==0,line
+def validate_liveness(cohort):
+ p=subprocess.run([sys.executable,'scripts/liveness_contract_guard.py','--root',str(ROOT),'--cohort',cohort],cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
+ line=(p.stdout.strip().splitlines()[-1] if p.stdout.strip() else 'liveness guard failed')
+ return p.returncode==0,line
 def main():
  git('fetch','--prune','origin','+refs/heads/ps/*:refs/remotes/origin/ps/*')
  git('checkout','--detach','origin/main')
@@ -26,7 +30,9 @@ def main():
  h=remote_head(gen)
  if h!=G:post(G,'supernova/branch-generation','failure','generation branch missing or moved')
  else:
-  ok,msg=validate(gen,G);post(G,'supernova/branch-generation','success' if ok else 'failure',msg)
+  ok,msg=validate(gen,G)
+  if ok and state.get('calibration_countable_current') is True:ok,msg=validate_liveness(cohort)
+  post(G,'supernova/branch-generation','success' if ok else 'failure',msg)
  for worker,branch in state['worker_branches'].items():
   h=remote_head(branch)
   if h is None:continue
@@ -44,7 +50,7 @@ def main():
   if not receipt.exists():post(h,'supernova/branch-consolidate','pending','awaiting consolidation receipt')
   else:
    try:
-    r=json.loads(receipt.read_text());expected=r.get('expected_main_head');rc,_,_=git('merge-base','--is-ancestor',expected,h) if expected else (1,'','');rc2,out,_=git('diff','--name-only',expected,h) if expected else (1,'','');names=[x for x in out.splitlines() if x];allowed=all(x.startswith(f'history/{cohort}/') or x=='state/CURRENT.json' or x=='benchmark/registry.json' or x.startswith('control/') or x.startswith('assignments/') or x.startswith('superseded/') or x.startswith('transitions/') for x in names);ok=rc==0 and rc2==0 and allowed and 'state/CURRENT.json' in names
+    r=json.loads(receipt.read_text());expected=r.get('expected_main_head');rc,_,_=git('merge-base','--is-ancestor',expected,h) if expected else (1,'','');rc2,out,_=git('diff','--name-only',expected,h) if expected else (1,'','');names=[x for x in out.splitlines() if x];allowed=all(x.startswith(f'history/{cohort}/') or x=='state/CURRENT.json' or x=='benchmark/registry.json' or x.startswith('control/') or x.startswith('assignments/') or x.startswith('liveness/') or x.startswith('superseded/') or x.startswith('transitions/') for x in names);ok=rc==0 and rc2==0 and allowed and 'state/CURRENT.json' in names
     post(h,'supernova/branch-consolidate','success' if ok else 'failure','consolidation CAS/diff policy '+('PASS' if ok else 'FAIL'))
    except Exception as e:post(h,'supernova/branch-consolidate','failure',f'consolidation parse error {e}')
  git('checkout','--detach','origin/main')
