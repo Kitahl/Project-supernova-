@@ -47,18 +47,23 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         r.update(overrides)
         return r
 
-    def check(self, statuses, run_obj=None):
-        def fake_api(path, method="GET", data=None):
+    def fake_api(self, statuses, runs=None):
+        runs = dict(runs or {self.run_id: self.run()})
+        def call(path, method="GET", data=None):
             if path.startswith("/commits/"):
                 return statuses
-            if path == f"/actions/runs/{self.run_id}":
-                return self.run() if run_obj is None else run_obj
-            if path == f"/actions/runs/{self.run_id + 1}":
-                x = self.run(id=self.run_id + 1)
-                return x
+            prefix = "/actions/runs/"
+            if path.startswith(prefix):
+                rid = int(path[len(prefix):])
+                if rid in runs:
+                    return runs[rid]
             raise AssertionError(path)
-        with mock.patch.object(self.mod, "api", side_effect=fake_api):
-            return self.mod.trusted_bootstrap_success(self.head, self.base, self.pr)
+        return call
+
+    def check(self, statuses, run_obj=None, *, base=None, pr=None):
+        runs = {self.run_id: self.run() if run_obj is None else run_obj}
+        with mock.patch.object(self.mod, "api", side_effect=self.fake_api(statuses, runs)):
+            return self.mod.trusted_bootstrap_success(self.head, self.base if base is None else base, self.pr if pr is None else pr)
 
     def test_exact_designated_completed_run_passes(self):
         self.assertTrue(self.check([self.status()]))
@@ -82,19 +87,18 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
 
     def test_head_and_base_description_binding_is_required(self):
         self.assertFalse(self.check([self.status(description="trusted-main bootstrap PASS")]))
-        self.assertFalse(self.mod.trusted_bootstrap_success(self.head, "c" * 40, self.pr) if False else False)
+        self.assertFalse(self.check([self.status()], base="c" * 40))
+        self.assertFalse(self.check([self.status()], pr=43))
+
+    def test_wrong_repository_or_actor_is_rejected(self):
+        self.assertFalse(self.check([self.status()], self.run(repository={"full_name": "other/repo"})))
+        self.assertFalse(self.check([self.status()], self.run(actor={"login": "other"})))
 
     def test_ambiguous_multiple_successful_designated_runs_fail_closed(self):
-        second = self.status(target_url=f"https://github.com/{self.mod.REPO}/actions/runs/{self.run_id + 1}")
-        def fake_api(path, method="GET", data=None):
-            if path.startswith("/commits/"):
-                return [self.status(), second]
-            if path == f"/actions/runs/{self.run_id}":
-                return self.run()
-            if path == f"/actions/runs/{self.run_id + 1}":
-                return self.run(id=self.run_id + 1)
-            raise AssertionError(path)
-        with mock.patch.object(self.mod, "api", side_effect=fake_api):
+        second_id = self.run_id + 1
+        second = self.status(target_url=f"https://github.com/{self.mod.REPO}/actions/runs/{second_id}")
+        runs = {self.run_id: self.run(), second_id: self.run(id=second_id)}
+        with mock.patch.object(self.mod, "api", side_effect=self.fake_api([self.status(), second], runs)):
             self.assertFalse(self.mod.trusted_bootstrap_success(self.head, self.base, self.pr))
 
 
