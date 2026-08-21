@@ -1,8 +1,8 @@
 {
-  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-15",
+  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-16",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
-  "purpose": "Every NEW countable protocol-2.5 calibration generation must freeze this entire control set before cohort 1. Historical generations are not retrofitted. The prospective surface includes deterministic chunk-verifiable report transport, closed replay/fresh role semantics, assignment-bound fresh authority, exact issue failures, trustworthy receipt timing, explicit verifier-assurance omission semantics, root-TCB epoch 3, one authoritative structural status writer, an exact Gen9 zero-credit replacement gate, and the qualified Math Foundry 3.1.1 substrate.",
+  "purpose": "Every NEW countable protocol-2.5 calibration generation must freeze this entire control set before cohort 1. Historical generations are not retrofitted. The prospective surface includes deterministic chunk-verifiable report transport, closed replay/fresh role semantics, assignment-bound fresh authority, exact issue failures, trustworthy receipt timing, explicit verifier-assurance omission semantics, root-TCB epoch 3, one authoritative structural status writer, an exact Gen9 zero-credit replacement gate, explicit successor liveness control/assignment path bindings, and the qualified Math Foundry 3.1.1 substrate.",
   "required_control_paths": [
     "PROTOCOL.md",
     "BRANCH_PROTOCOL.md",
@@ -97,6 +97,7 @@
     "tests/test_future_fresh_role_model_contracts.py",
     "tests/liveness/test_liveness_monitor.py",
     "tests/liveness/test_frozen_cohort_contract.py",
+    "tests/liveness/test_gen10_path_binding.py",
     "tests/verifier_assurance/test_verifier_assurance_schema.py",
     ".github/workflows/supernova-v25-admission.yml",
     ".github/workflows/supernova-branch-reconciler.yml",
