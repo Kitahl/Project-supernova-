@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 import importlib.util
 import json
 import pathlib
@@ -40,16 +39,19 @@ class FormalToolchainPreflightTests(unittest.TestCase):
         finally:
             path.unlink(missing_ok=True)
 
-    def test_candidate_is_valid_engineering_only_with_unresolved_tag_warning(self):
+    def test_candidate_is_valid_engineering_only_with_resolved_lean_source(self):
         errors, warnings, receipt = preflight.validate_manifest(
             ROOT, ROOT / "docs/formal/FORMAL_TOOLCHAIN_CANDIDATE_V1.json"
         )
+        m = self.candidate()
         self.assertEqual(errors, [])
+        self.assertEqual(warnings, [])
         self.assertEqual(receipt["status"], "PASS")
         self.assertEqual(receipt["authority"], "NONE_ENGINEERING_ONLY")
         self.assertEqual(receipt["supernova_credit"]["calibration"], 0)
         self.assertFalse(receipt["supernova_credit"]["fresh"])
-        self.assertTrue(any(x.startswith("unresolved_tag_source_commit:lean4:") for x in warnings))
+        self.assertEqual(m["components"]["lean4"]["source_commit"], "68218e876d2a38b1985b8590fff244a83c321783")
+        self.assertTrue(all(x["license_status"] == "VERIFIED" for x in m["components"].values()))
 
     def test_declared_toolchain_mismatch_fails(self):
         m = self.candidate()
@@ -66,7 +68,7 @@ class FormalToolchainPreflightTests(unittest.TestCase):
         m["supernova_effects"]["modifies_state"] = True
         self.assertTrue(any(x.startswith("schema:supernova_effects.modifies_state:") for x in self.errors_for(m)))
 
-    def test_qualified_manifest_fails_closed_until_all_gates_close(self):
+    def test_qualified_manifest_fails_closed_until_build_and_component_gates_close(self):
         m = self.candidate()
         m["admission_status"] = "QUALIFIED"
         m["compatibility_status"] = "VERIFIED"
@@ -75,7 +77,13 @@ class FormalToolchainPreflightTests(unittest.TestCase):
         errors = self.errors_for(m)
         self.assertTrue(any("qualified_manifest_contains_unqualified_component" in x for x in errors))
         self.assertTrue(any("qualified_manifest_contains_unbuilt_component" in x for x in errors))
-        self.assertTrue(any("qualified_manifest_contains_unverified_license" in x for x in errors))
+
+    def test_component_qualification_requires_verified_license(self):
+        m = self.candidate()
+        m["components"]["pantograph"]["qualification_status"] = "QUALIFIED"
+        m["components"]["pantograph"]["build_status"] = "PASS"
+        m["components"]["pantograph"]["license_status"] = "UNVERIFIED"
+        self.assertTrue(any("qualified_component_without_license_verification:pantograph" in x for x in self.errors_for(m)))
 
 
 class FormalVerificationReceiptTests(unittest.TestCase):
