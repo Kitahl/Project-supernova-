@@ -1,0 +1,200 @@
+{
+  "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-fe539297-r2",
+  "claim_scope": "T0 replay-only control-plane audit of MF01 representation/blocker responsibilities. No mathematical, scientific, benchmark, KERNEL_VALID or STATEMENT_FIDELITY claim.",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-fe539297-r2",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay-only GitHub control audit. No protected/private/scientific execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+    "assignment_path": "assignments/CAL-BR-010-v25-fe539297-r2.json",
+    "canonical_pointer": "main:state/CURRENT.json",
+    "canonical_pointer_blob_at_final_reread": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+    "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+    "control_manifest_path": "control/CAL-BR-010-v25-fe539297-r2.json",
+    "control_release_commit_sha": "fe539297bdf6b769140c9970326f3e1de116f276",
+    "control_release_tree_sha": "ae42b5fc437963c51434e0dbacef18542fef0b1c",
+    "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+    "liveness_contract_git_identity": "8bd88d895df508e6807588239dea1f8047b73f13",
+    "liveness_contract_path": "liveness/CAL-BR-010-v25-fe539297-r2.json",
+    "mf01_deadline_utc": "2026-08-21T22:55:00Z",
+    "mf01_expected_window_start_utc": "2026-08-21T22:05:00Z",
+    "model_binding_observation": "Requested model identity is present in the active ChatGPT runtime, but no frozen receipt observes the requested reasoning-effort identity; PARTIAL_UNVERIFIED.",
+    "origin_reread_scope": "Operational self-reread only; independent reread is reserved to MM06.",
+    "public_external_reference": "GitHub official REST documentation for Git commit creation and caller-specified committer date.",
+    "runtime_receipt_git_identity": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "runtime_receipt_qualification": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+    "runtime_receipt_status": "VALIDATED"
+  },
+  "evidence_tier": "T0_REPLAY_CONTROL_AUDIT",
+  "executive_status": "BLOCKING_DEFECT_FOUND_ZERO_CLEAN_COHORT_CREDIT",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "generation_seq": 10,
+  "issue_ledger": [
+    {
+      "aliases": [
+        "LIVENESS-COMMITTER-DATE-TRUST"
+      ],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "CONTROL_PLANE_TIMING_TRUST",
+      "component": "T0 liveness / clean-cohort admission",
+      "evidence_refs": [
+        "scripts/check_lane_liveness.py@25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f blob:a9f089d4ddbf50680b7ca8b855cca7b870dbe263",
+        "tests/liveness/test_liveness_monitor.py@25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f blob:7d8009174d3244153ec2209264e342cdd7f78dc3",
+        "liveness/CAL-BR-010-v25-fe539297-r2.json@25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f blob:8bd88d895df508e6807588239dea1f8047b73f13",
+        "GitHub Docs: REST API endpoints for Git commits — Create a commit permits caller-specified author/committer date (https://docs.github.com/en/rest/git/commits)"
+      ],
+      "exact_failure": "scripts/check_lane_liveness.py treats GitHub's commit.committer.date as trustworthy receipt creation time and passes an after-deadline receipt whenever that date is at or before the frozen deadline. GitHub's Create a commit API explicitly permits the caller to provide author/committer date. Therefore a receipt created or pushed after the deadline can carry a backdated committer timestamp and be classified RUN_OBSERVED instead of RUN_LATE/RUN_TIMING_UNKNOWN. The code records committer_login but does not source-bind or otherwise validate the timestamp.",
+      "issue_id": "O-T0-GEN10-LIVENESS-COMMIT-DATE-BACKDATING",
+      "next_action": "MM06/BIL00 independently confirm the timing-source defect. If confirmed, deny Gen10 clean-cohort credit, keep/reset the v2.5 streak at zero, repair the liveness timing authority in a new immutable protocol-2.5 generation, and rerun cohort 1.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Do not use Git author/committer timestamps as authoritative liveness evidence. Preserve pre-deadline direct observation as sufficient, but for an after-deadline poll require a server-generated, source-bound timestamp that the worker cannot choose, such as a trusted GitHub Actions/check/status event created for the exact report head by the expected GitHub App, or a trusted monitor receipt persisted before deadline. Treat commit author/committer dates as informational only.",
+      "required_test": "Add a regression where the report is first observed after the deadline, the Git commit committer date is backdated to before the deadline, and no trusted server-time witness exists; the result MUST be RUN_TIMING_UNKNOWN or RUN_LATE and transition_liveness_pass=false. Add paired tests where an expected-source server-time witness before deadline passes and a witness after deadline blocks.",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "summary": "After-deadline receipt timing trusts a Git commit timestamp whose value can be selected by the commit creator."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "fresh_evidence_units_consumed=0",
+    "protected_manifest_reads=0",
+    "benchmark_executions=0",
+    "deep_research_runs=0",
+    "scientific_promotions=0",
+    "runtime_promotions=0",
+    "clean_cohort_credit_claimed_by_MF01=0"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently fetch the MF01 worker branch/report/blob/creation commit, verify schema/session/HMAC/public safety/one-path history and exact-head worker CI, and adjudicate O-T0-GEN10-LIVENESS-COMMIT-DATE-BACKDATING. If confirmed, Gen10 must receive zero clean-cohort credit and be replaced by a new immutable protocol-2.5 cohort with server-time/source-bound liveness evidence; keep the calibration streak at zero.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "31071464144bde197aca0e3f13153be2d85208d7",
+  "plan_alignment": [
+    "Remains in Revision 4 / protocol 2.5 T0 countable replay cohort 1.",
+    "Does not adopt protocol 2.6 or Revision 5.",
+    "Does not consume fresh evidence, private manifests, benchmark executions or deep research.",
+    "Reports one evidence-backed control-plane blocker and does not claim scientific or runtime promotion.",
+    "Clean-cohort credit remains outside MF01 authority and requires MM06, MF06 and BIL00 under repaired controls."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-MF01-CAL-BR-010-v25-fe539297-r2",
+  "research_questions": [],
+  "runtime_implementation_implication": "None. Math Foundry 3.1.1 is bound only as a validated software replay substrate; this receipt does not promote runtime or mathematical truth.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay the repaired representation/blocker control surface under Math Foundry 3.1.1, report every evidence-backed defect, and produce one countable T0 calibration report.",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF01",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W01 | Representation Lab",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "details": "Protocol 2.5, plan, cohort, generation, parent-state identity, checkpoint, runtime identity, assignment/control blobs, MF01 token/branch/goal, replay-only mode, repository-policy flag and non-supersession agree across canonical state and frozen generation.",
+      "status": "PASS",
+      "task": "canonical_lineage_and_assignment"
+    },
+    {
+      "details": "Generation G is exactly one commit above the declared control-release root and adds only the active assignment, control manifest and frozen liveness contract; the release tree pins the required control surface.",
+      "status": "PASS",
+      "task": "immutable_generation_freeze"
+    },
+    {
+      "details": "The prompt-private MF01 capability hashes to the frozen public MF01 commitment. The private value is not persisted or exposed.",
+      "status": "PASS",
+      "task": "worker_auth_commitment"
+    },
+    {
+      "details": "The frozen 12-lane contract is present and blob-bound; MF01 has the assigned branch/report path and a 22:05Z-22:55Z window. The monitor's after-deadline timing source is not trustworthy against backdating; see issue ledger.",
+      "status": "PASS_WITH_MONITOR_DEFECT",
+      "task": "liveness_contract_binding"
+    },
+    {
+      "details": "The REST reconciler is GET-only diagnostic with distinct contexts; scripts/reconcile_branch_statuses.py is the sole authoritative structural status writer and validates countable liveness before branch-generation success.",
+      "status": "PASS",
+      "task": "gen9_dual_writer_repair"
+    },
+    {
+      "details": "The evaluator now emits RUN_LATE and blocks when its supplied created_at_utc exceeds deadline, and tests cover late versus delayed-poll cases. However created_at_utc is sourced from client-settable Git commit committer.date, leaving a backdating bypass.",
+      "status": "PARTIAL",
+      "task": "gen9_late_receipt_logic_repair"
+    },
+    {
+      "details": "The stale task_registry countable_cohort_eligible=false field is explicitly frozen as historical non-authoritative metadata; state/control/assignment are the authoritative countability triple and agree true.",
+      "status": "PASS",
+      "task": "task_registry_countability_semantics"
+    },
+    {
+      "details": "No fresh, private, benchmark or deep-research work was authorized or consumed.",
+      "status": "NOT_PERFORMED",
+      "task": "scientific_execution"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "Exactly assignment/control/liveness were added from the declared release root to G.",
+      "status": "PASS",
+      "test": "release_root_to_generation_diff"
+    },
+    {
+      "result": "Contract guard checks schema, plan/protocol, cohort/generation/root, assignment/control blob binding, exact unique 12 lanes, branch/path binding and strictly increasing windows.",
+      "status": "PASS",
+      "test": "frozen_liveness_contract_guard_surface"
+    },
+    {
+      "result": "REST reconciler is non-authoritative diagnostics only; authoritative branch reconciler owns supernova/branch-generation.",
+      "status": "PASS",
+      "test": "single_authoritative_branch_generation_writer"
+    },
+    {
+      "result": "Given a truthful created_at_utc after deadline, evaluator emits RUN_LATE and blocks.",
+      "status": "PASS_AT_FUNCTION_LEVEL",
+      "test": "late_receipt_classification_logic"
+    },
+    {
+      "result": "The GitHub observer supplies commit.committer.date as created_at_utc; that timestamp is part of the caller-created Git commit object and can be backdated.",
+      "status": "FAIL",
+      "test": "late_receipt_timing_source_authenticity"
+    },
+    {
+      "result": "Canonical state, active control and active assignment all declare the cohort countable; stale task-registry activation metadata is explicitly non-authoritative.",
+      "status": "PASS",
+      "test": "canonical_countability_authorities"
+    },
+    {
+      "result": "The report creation commit does not exist until after this signed object is written; independent/external status is not self-attested.",
+      "status": "NOT_OBSERVED_AT_SIGNING",
+      "test": "worker_structural_ci_at_signing"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "f83645e839bb4fc79ab741d24d83accc",
+  "worker_auth_commitment": "74ae88fc0a346a423d7fe0e0dcd3787ab0b29fbe455ae4e8b17f30b96923d74f",
+  "worker_auth_proof": "6c6785f9776a98f73ded6408bf4a32c309f46ab9a54dcfaaf90ff745d1762f96",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF01",
+  "worker_id": "MF01"
+}
