@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FormalBuildMatrixReceipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","authority","mode","status","toolchain_manifest_sha256","wall_clock_limit","components","errors","supernova_credit"],
+  "properties": {
+    "schema_version": {"const": "PS-FORMAL-BUILD-MATRIX-RECEIPT-1"},
+    "authority": {"const": "NONE_ENGINEERING_ONLY"},
+    "mode": {"enum": ["PLAN_ONLY","EXECUTE"]},
+    "status": {"enum": ["PLAN_ONLY","BLOCKED","PASS","FAIL"]},
+    "toolchain_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "wall_clock_limit": {"const": "NONE"},
+    "lean_version": {"type": ["string","null"]},
+    "lake_version": {"type": ["string","null"]},
+    "components": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/component"}
+    },
+    "errors": {"type": "array", "items": {"type": "string"}},
+    "supernova_credit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calibration","fresh","scientific","authority"],
+      "properties": {
+        "calibration": {"const": 0},
+        "fresh": {"const": false},
+        "scientific": {"const": false},
+        "authority": {"const": "NONE"}
+      }
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository","source_commit","source_path","source_identity_status","toolchain_status","build_command","build_status"],
+      "properties": {
+        "repository": {"type": "string"},
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "source_path": {"type": ["string","null"]},
+        "source_identity_status": {"enum": ["NOT_CHECKED","PASS","FAIL"]},
+        "toolchain_status": {"enum": ["NOT_CHECKED","PASS","FAIL"]},
+        "build_command": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "build_status": {"enum": ["NOT_RUN","BLOCKED","PASS","FAIL"]},
+        "returncode": {"type": ["integer","null"]},
+        "stdout_sha256": {"type": ["string","null"], "pattern": "^[0-9a-f]{64}$"},
+        "stderr_sha256": {"type": ["string","null"], "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "PS-FORMAL-SOURCE-LICENSE-RECEIPTS-1",
+  "authority": "NONE_ENGINEERING_ONLY",
+  "scope": "TOP_LEVEL_REPOSITORY_LICENSE_FILES_ONLY",
+  "verified_at_utc": "2026-08-21T18:40:00Z",
+  "components": {
+    "lean4": {
+      "repository": "leanprover/lean4",
+      "source_commit": "68218e876d2a38b1985b8590fff244a83c321783",
+      "license_path": "LICENSE",
+      "license_blob_sha": "813da297567374691eaae7a88739dbbefd2afdfd",
+      "spdx": "Apache-2.0",
+      "status": "VERIFIED_TOP_LEVEL"
+    },
+    "mathlib": {
+      "repository": "leanprover-community/mathlib4",
+      "source_commit": "fabf563a7c95a166b8d7b6efca11c8b4dc9d911f",
+      "license_path": "LICENSE",
+      "license_blob_sha": "8dada3edaf50dbc082c9a125058f25def75e625a",
+      "spdx": "Apache-2.0",
+      "status": "VERIFIED_TOP_LEVEL"
+    },
+    "pantograph": {
+      "repository": "leanprover/Pantograph",
+      "source_commit": "d704b851542b1d2caf1287f65c49f5011f687c05",
+      "license_path": "LICENSE",
+      "license_blob_sha": "34f63a391b4d93837eb63da949c91f76b394cf8c",
+      "spdx": "Apache-2.0",
+      "status": "VERIFIED_TOP_LEVEL"
+    },
+    "comparator": {
+      "repository": "leanprover/comparator",
+      "source_commit": "fd2e25de155523dbce1f35d410511f9f63998461",
+      "license_path": "LICENSE",
+      "license_blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "spdx": "Apache-2.0",
+      "status": "VERIFIED_TOP_LEVEL"
+    },
+    "lean4export": {
+      "repository": "leanprover/lean4export",
+      "source_commit": "8554815c2dc6b7abe99ec1f08849c9759ba77947",
+      "license_path": "LICENSE",
+      "license_blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "spdx": "Apache-2.0",
+      "status": "VERIFIED_TOP_LEVEL"
+    }
+  },
+  "limitations": [
+    "This receipt verifies only the top-level repository licence files at the pinned source identities.",
+    "Transitive dependency licences, notices, binary redistribution obligations and model/service terms remain separate qualification requirements.",
+    "Licence verification grants no mathematical or Supernova authority."
+  ],
+  "supernova_credit": {
+    "calibration": 0,
+    "fresh": false,
+    "scientific": false,
+    "authority": "NONE"
+  }
+}

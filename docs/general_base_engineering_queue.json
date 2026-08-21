@@ -64,7 +64,10 @@
       "phase": "PHASE0_TRUST_FLOOR",
       "status": "DONE",
       "dependencies": ["EGB-001"],
-      "evidence": ["docs/formal/FORMAL_TOOLCHAIN_CANDIDATE_V1.json"]
+      "evidence": [
+        "docs/formal/FORMAL_TOOLCHAIN_CANDIDATE_V1.json",
+        "docs/formal/FORMAL_SOURCE_LICENSE_RECEIPTS_V1.json"
+      ]
     },
     {
       "id": "EGB-004",
@@ -83,38 +86,57 @@
       "evidence": ["tests/formal/test_formal_trust_floor.py"]
     },
     {
+      "id": "EGB-005A",
+      "name": "No-timeout exact-source build-matrix harness and tests",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "DONE",
+      "dependencies": ["EGB-003", "EGB-005"],
+      "evidence": [
+        "schemas/formal_build_matrix_receipt.schema.json",
+        "scripts/formal_build_matrix.py",
+        "tests/formal/test_formal_build_matrix.py"
+      ]
+    },
+    {
       "id": "EGB-006",
       "name": "Clean combined Lean/Mathlib/Pantograph/Comparator/lean4export build matrix",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "TODO",
-      "dependencies": ["EGB-005"]
+      "status": "READY_REQUIRES_LEAN_RUNNER",
+      "dependencies": ["EGB-005A"],
+      "blocking_conditions": [
+        "current ChatGPT execution environment has no lean/lake/elan binaries",
+        "current shell environment cannot fetch GitHub sources",
+        "no additional connected cloud build-runner plugin is available",
+        "qualification requires exact pinned source directories plus Lean 4.31.0 and lake"
+      ],
+      "required_command": "python scripts/formal_build_matrix.py --execute --source mathlib=/exact/mathlib --source pantograph=/exact/Pantograph --source comparator=/exact/comparator --source lean4export=/exact/lean4export --out /tmp/formal-build-receipt.json"
     },
     {
       "id": "EGB-007",
       "name": "Pantograph minimal theorem stateful interaction",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "TODO",
+      "status": "BLOCKED_BY_EGB_006",
       "dependencies": ["EGB-006"]
     },
     {
       "id": "EGB-008",
       "name": "Comparator plus lean4export positive and adversarial replay suite",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "TODO",
+      "status": "BLOCKED_BY_EGB_006",
       "dependencies": ["EGB-006"]
     },
     {
       "id": "EGB-009",
       "name": "Sandbox, escape, mutation and trusted-computing-base qualification",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "TODO",
+      "status": "BLOCKED_BY_EGB_007_EGB_008",
       "dependencies": ["EGB-007", "EGB-008"]
     },
     {
       "id": "EGB-010",
       "name": "Phase-0 clean-package qualification and replay receipt",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "TODO",
+      "status": "BLOCKED_BY_EGB_009",
       "dependencies": ["EGB-009"]
     },
     {

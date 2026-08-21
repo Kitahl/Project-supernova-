@@ -9,10 +9,10 @@
       "repository": "leanprover/lean4",
       "ref_type": "tag",
       "ref": "v4.31.0",
-      "source_commit": null,
+      "source_commit": "68218e876d2a38b1985b8590fff244a83c321783",
       "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
       "role": "KERNEL",
-      "license_status": "UNVERIFIED",
+      "license_status": "VERIFIED",
       "build_status": "NOT_RUN",
       "qualification_status": "UNQUALIFIED"
     },
@@ -23,7 +23,7 @@
       "source_commit": "fabf563a7c95a166b8d7b6efca11c8b4dc9d911f",
       "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
       "role": "LIBRARY",
-      "license_status": "UNVERIFIED",
+      "license_status": "VERIFIED",
       "build_status": "NOT_RUN",
       "qualification_status": "UNQUALIFIED"
     },
@@ -34,7 +34,7 @@
       "source_commit": "d704b851542b1d2caf1287f65c49f5011f687c05",
       "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
       "role": "RUNTIME_API",
-      "license_status": "UNVERIFIED",
+      "license_status": "VERIFIED",
       "build_status": "NOT_RUN",
       "qualification_status": "UNQUALIFIED"
     },
@@ -45,7 +45,7 @@
       "source_commit": "fd2e25de155523dbce1f35d410511f9f63998461",
       "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
       "role": "STATEMENT_COMPARATOR",
-      "license_status": "UNVERIFIED",
+      "license_status": "VERIFIED",
       "build_status": "NOT_RUN",
       "qualification_status": "UNQUALIFIED"
     },
@@ -56,7 +56,7 @@
       "source_commit": "8554815c2dc6b7abe99ec1f08849c9759ba77947",
       "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
       "role": "EXPORT_PIPELINE",
-      "license_status": "UNVERIFIED",
+      "license_status": "VERIFIED",
       "build_status": "NOT_RUN",
       "qualification_status": "UNQUALIFIED"
     }
@@ -66,7 +66,7 @@
     "sandbox_status": "NOT_CONFIGURED",
     "network_policy": "BUILD_PREFLIGHT_ONLY_NO_RUNTIME_AUTHORITY",
     "cache_policy": "NO_SHARED_CACHE_FOR_QUALIFICATION",
-    "notes": "All selected upstream components declare Lean 4.31.0 at the pinned revisions. This is compatibility evidence only; no combined build, sandbox, or formal proof qualification has run."
+    "notes": "All selected upstream components declare Lean 4.31.0 at the pinned revisions. Top-level repository licences are verified as Apache-2.0. This is source-level compatibility evidence only; no combined build, sandbox, or formal proof qualification has run."
   },
   "supernova_effects": {
     "modifies_state": false,
@@ -76,8 +76,8 @@
     "grants_authority": false
   },
   "missing_requirements": [
-    "resolve Lean v4.31.0 tag to exact source commit and source archive hash",
-    "record exact licence receipts for every component and all shipped dependencies",
+    "record deterministic source archive hashes for every upstream source package used in qualification",
+    "audit licences and notices for all transitive dependencies included in any distributed package",
     "perform clean builds of all components under one pinned image",
     "run Pantograph stateful theorem interaction smoke and negative tests",
     "run Comparator plus lean4export positive, negative, statement-mutation and axiom-policy fixtures",
@@ -87,9 +87,11 @@
     "produce deterministic package, source, environment and replay receipts"
   ],
   "evidence": [
+    "Lean tag v4.31.0 resolves to source commit 68218e876d2a38b1985b8590fff244a83c321783",
     "mathlib fabf563a7c95a166b8d7b6efca11c8b4dc9d911f declares leanprover/lean4:v4.31.0",
     "Pantograph d704b851542b1d2caf1287f65c49f5011f687c05 declares leanprover/lean4:v4.31.0",
     "Comparator fd2e25de155523dbce1f35d410511f9f63998461 declares leanprover/lean4:v4.31.0",
-    "lean4export 8554815c2dc6b7abe99ec1f08849c9759ba77947 declares leanprover/lean4:v4.31.0"
+    "lean4export 8554815c2dc6b7abe99ec1f08849c9759ba77947 declares leanprover/lean4:v4.31.0",
+    "component licence receipts: docs/formal/FORMAL_SOURCE_LICENSE_RECEIPTS_V1.json"
   ]
 }
