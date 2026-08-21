@@ -1,0 +1,329 @@
+{
+  "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-fe539297-r2",
+  "claim_scope": "Replay-only architecture/TCB transport audit; no Senior SWE performance, mathematical correctness, scientific improvement or promotion claim.",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-fe539297-r2",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "GitHub-only replay audit; no private-vault read or evaluator/research execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_blob_sha": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+    "control_manifest_blob_sha": "08848388882c48062668624d615208ab5d7ec59f",
+    "control_release_commit_sha": "fe539297bdf6b769140c9970326f3e1de116f276",
+    "control_release_tree_sha": "ae42b5fc437963c51434e0dbacef18542fef0b1c",
+    "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+    "liveness_blob_sha": "8bd88d895df508e6807588239dea1f8047b73f13",
+    "mm04_replay_schema_blob_sha": "0abfa123ef58e3b457f6a1ec2b2a7b41f9864810",
+    "observed_model_binding_status": "PARTIAL_UNVERIFIED",
+    "online_audit_refs": [
+      "GitHub REST commit statuses",
+      "GitHub REST workflow runs"
+    ],
+    "prewrite_branch": "IDENTICAL_TO_G",
+    "prewrite_branch_generation_status": "success",
+    "prewrite_liveness_status": "success",
+    "prewrite_report": "ABSENT",
+    "prewrite_report_admission_status": "pending",
+    "prewrite_static_control_status": "success",
+    "prewrite_transition_admission_status": "pending",
+    "report_schema_blob_sha": "8372632e48df1d9fcb28133cdea4788adfd658fc",
+    "runtime_receipt_model_binding": "MODEL_BINDING_NOT_CLAIMED",
+    "runtime_update_receipt_blob_sha": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_update_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "source_scope": "GITHUB_ONLY",
+    "validator_blob_sha": "3c2992d5a9239897de9a1130deba65015c24372d",
+    "worker_auth_metadata_blob_sha": "9498d1d49b8636a3a313dc63be89f4433330c230"
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL_AUDIT",
+  "executive_status": "FINDINGS_BLOCKING_COUNTABLE_T0_RECEIPT_WAITING_MM06",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "generation_seq": 10,
+  "issue_ledger": [
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "FROZEN_CONTROL_CONTRADICTION",
+      "component": "generation freeze / statement fidelity",
+      "evidence_refs": [
+        "BRANCH_PROTOCOL.md@G#9dc8ff12ccbdb323d9150534b968e5583db4ad1d",
+        "control/CAL-BR-010-v25-fe539297-r2.json@G#08848388882c48062668624d615208ab5d7ec59f",
+        "liveness/CAL-BR-010-v25-fe539297-r2.json@G#8bd88d895df508e6807588239dea1f8047b73f13",
+        "compare:fe539297bdf6b769140c9970326f3e1de116f276...25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f=control+assignment+liveness",
+        "scripts/reconcile_branch_rest.py@G#9488244cea6f4fd81f72950565f65830a17e0279",
+        "scripts/validate_branch_bus_v251.py@G#3c2992d5a9239897de9a1130deba65015c24372d",
+        "github-status:25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f:supernova/branch-generation=success"
+      ],
+      "exact_failure": "BRANCH_PROTOCOL.md says the generation branch may add only control and assignment before G. Exact fe539297bdf6b769140c9970326f3e1de116f276...25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f adds control/CAL-BR-010-v25-fe539297-r2.json, assignments/CAL-BR-010-v25-fe539297-r2.json and liveness/CAL-BR-010-v25-fe539297-r2.json. The repaired REST diagnostic expects the third liveness path for countable cohorts, while the authoritative validator can still return branch-generation success because it does not enforce the prose two-path restriction.",
+      "issue_id": "MM04-T0-GENERATION-LIVENESS-FREEZE-CONTRACT-001",
+      "next_action": "Zero-credit Gen10 if upheld; repair on accepted main and freeze a replacement cohort at streak zero.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Freeze one machine-readable generation-delta policy and make prose and validators use it; countable replay must define exactly {control,assignment,liveness}.",
+      "required_test": "Exact three-path countable delta PASS; missing/mismatched liveness or extra path FAIL; regression fails if prose and machine policy disagree.",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "summary": "Frozen prose permits only control+assignment at G; Gen10 requires control+assignment+liveness."
+    },
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "SEMANTIC_NONVACUITY_UNDERCONSTRAINED",
+      "component": "MM04 replay payload",
+      "evidence_refs": [
+        "schemas/mastermind_mm04_replay_payload.schema.json@G#0abfa123ef58e3b457f6a1ec2b2a7b41f9864810",
+        "scripts/validate_branch_bus_v251.py@G#3c2992d5a9239897de9a1130deba65015c24372d",
+        "tests/test_future_fresh_role_model_contracts.py@G#1ae6b64892bc7f789e85de6b59e87a1266c6892",
+        "config/roles.json@G#04a7e3edeb394507a7dc8e6ee697c65ed05db01d"
+      ],
+      "exact_failure": "The MM04 schema requires nonempty architecture_checks, nonvacuity_checks and provenance_checks, but each item is only a nonempty string. The frozen regression accepts ['a'], ['n'], ['p'], so evidence, named surfaces and falsifier outcomes are not machine-required.",
+      "issue_id": "MM04-T0-MM04-ROLE-NONVACUITY-SCHEMA-001",
+      "next_action": "Close semantic MM04 nonvacuity before replacement cohort credit.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Use closed check_record objects with stable check_id, surface/category, status, evidence_refs, falsifier/negative-control result and typed N/A/exclusion reason.",
+      "required_test": "Placeholder/evidence-free checks FAIL; evidence-backed typed architecture/nonvacuity/provenance/exclusion checks PASS.",
+      "severity": "HIGH",
+      "status": "OPEN_PARTIAL_REPAIR",
+      "summary": "MM04 payload is required/closed, but its check arrays accept placeholder strings."
+    },
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "PROVENANCE_UNDERBINDING",
+      "component": "authority-bootstrap provenance",
+      "evidence_refs": [
+        "scripts/reconcile_open_prs.py@G#78ddc0cbe77a2633a01f0ea1212efd9efceddc90",
+        ".github/workflows/supernova-authority-bootstrap.yml@G#b72214cda8070a9e6f3576cdd88d497c74dfa1d0",
+        ".github/workflows/supernova-bootstrap-completion-reconcile.yml@G#9d58bcf7d4ae79fd10f0129a1186d95bf45576c1",
+        "tests/test_bootstrap_status_provenance.py@G#ab403cfe03412a57eae1249b07fcd53cbc642b03",
+        "github-docs:REST-commit-statuses-and-workflow-runs"
+      ],
+      "exact_failure": "reconcile_open_prs.py checks status context/creator/description/target run and run id/path/event/result/repo/actor, but ignores COMPLETED_BOOTSTRAP_RUN_ID and does not require the fetched run's pull-request association to identify the same PR/head/base. The positive provenance test's run fixture contains no PR/head/base association and passes.",
+      "issue_id": "MM04-T0-BOOTSTRAP-RUN-PR-BINDING-001",
+      "next_action": "Bind bootstrap consumption to the exact completion run before future authority-changing admission.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Require status target run ID == COMPLETED_BOOTSTRAP_RUN_ID on completion and verify the designated run's PR association plus frozen diagnosed head/base; fail closed on ambiguity.",
+      "required_test": "Run for PR/head A referenced by head B FAIL; completed-run-ID mismatch FAIL; exact run+PR+diagnosed binding PASS.",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Bootstrap completion supplies an exact run ID, but the trusted consumer does not bind its decision to that run and PR association."
+    },
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "MUTABLE_VALIDATOR_RUNTIME",
+      "component": "validator environment identity",
+      "evidence_refs": [
+        "PROTOCOL.md@G#1f7c97947c2d732e99f228fd539a0057b3861aee",
+        ".github/workflows/supernova-branch-reconciler.yml@G#b0d835792b1a487e819c40a4807fcf211492ec64",
+        ".github/workflows/supernova-authority-bootstrap.yml@G#b72214cda8070a9e6f3576cdd88d497c74dfa1d0",
+        "requirements-validation.lock@G#9475996659114e684f0b6dcbb67d83af3bde431c",
+        "config/checker_pins.json@G#ffc5cd4f882be9e8e8b75ea95d8452a6a2f95fc9"
+      ],
+      "exact_failure": "Countable workflows use full action SHAs and hash-locked wheels but run on ubuntu-latest and setup-python '3.13'. The lock does not bind an exact runner image, Python build/executable or Git/toolchain identity, and no equivalent immutable environment receipt is frozen.",
+      "issue_id": "MM04-T0-VALIDATOR-ENVIRONMENT-IDENTITY-001",
+      "next_action": "Freeze validator runtime identity before replacement cohort credit.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Use a digest-pinned validator image or frozen environment receipt binding exact runner/OS, interpreter, Git/toolchain and dependency identities.",
+      "required_test": "Changing runner/interpreter selectors without a new qualifying frozen environment identity cannot publish countable PASS.",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Actions and wheels are pinned; ubuntu-latest and Python 3.13 are not immutable environment identities."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "evaluator=NOT_EXECUTED",
+    "architecture=NOT_MEASURED",
+    "fresh=0",
+    "protected_reads=0",
+    "benchmark_executions=0",
+    "deep_research=0",
+    "self_promotion=false",
+    "MM04 recommends Gen10 calibration credit=0 pending authoritative adjudication"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads exact report commit/blob/HMAC/history/status. BIL00 adjudicates the frozen generation-diff contradiction; if upheld, supersede Gen10 at zero credit and freeze a repaired replacement cohort.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "31071464144bde197aca0e3f13153be2d85208d7",
+  "plan_alignment": [
+    "Mastermind PRE_REVIEW_ONLY preserved; no execution, self-grading or promotion.",
+    "SAFE_REPLAY_ONLY with zero fresh/private/benchmark/deep-research consumption.",
+    "Architecture remains NOT_MEASURED because no evaluator executed.",
+    "Three admission contexts remain non-substitutable; branch-generation does not substitute for report/transition admission.",
+    "No implementation multiplicity was called statistical independence.",
+    "No Foundry/Court/Tribunal/scientific/runtime/benchmark state mutated."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-MM04-CAL-BR-010-v25-fe539297-r2-R1",
+  "research_questions": [],
+  "role_payload": {
+    "architecture_checks": [
+      "Reviewed generation/control topology and release-to-G semantics.",
+      "Reviewed MM04 role/schema/validator closure.",
+      "Reviewed structural CI, bootstrap provenance, validator environment and verifier assurance."
+    ],
+    "architecture_result": {
+      "evidence_refs": [
+        "assignments/CAL-BR-010-v25-fe539297-r2.json@G#c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+        "mode:SAFE_REPLAY_ONLY",
+        "benchmark_executions=0"
+      ],
+      "reason": "Replay-only T0 audit; no Senior SWE evaluator/benchmark execution authorized.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    },
+    "evaluator_execution_status": "NOT_EXECUTED",
+    "nonvacuity_checks": [
+      "Kept no-evaluator outcome typed NOT_MEASURED/null.",
+      "Confirmed placeholder strings satisfy MM04 check arrays and recorded the defect.",
+      "Separated repaired controls from independent-verification claims."
+    ],
+    "provenance_checks": [
+      "Read canonical/frozen GitHub objects at exact G.",
+      "Verified MM04 branch==G and report absent prewrite.",
+      "Verified secret commitment and prepared whole-report HMAC-2 without exposing secret."
+    ],
+    "schema_version": "PS-MM04-REPLAY-PAYLOAD-2.5-1",
+    "self_promotion": false
+  },
+  "runtime_implementation_implication": "No runtime/scientific implementation change is authorized; findings require BIL00-controlled protocol-2.5 repair.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay evaluator-execution validity, nonvacuity, authority provenance and architecture contracts; report evidence-backed defects without protected benchmark work.",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM04",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W04 | Senior SWE Architecture",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "evidence_refs": [
+        "state/CURRENT.json@main#72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+        "control/CAL-BR-010-v25-fe539297-r2.json@G#08848388882c48062668624d615208ab5d7ec59f",
+        "assignments/CAL-BR-010-v25-fe539297-r2.json@G#c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+        "liveness@G#8bd88d895df508e6807588239dea1f8047b73f13",
+        "MM04 branch identical to G=25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f; report absent prewrite"
+      ],
+      "status": "PASS",
+      "task": "identity/branch/liveness"
+    },
+    {
+      "evidence_refs": [
+        "release=fe539297bdf6b769140c9970326f3e1de116f276;tree=ae42b5fc437963c51434e0dbacef18542fef0b1c",
+        "release->G=control+assignment+liveness",
+        "issue:MM04-T0-GENERATION-LIVENESS-FREEZE-CONTRACT-001"
+      ],
+      "status": "PASS_WITH_FINDING",
+      "task": "release/control freeze"
+    },
+    {
+      "evidence_refs": [
+        "config/worker_auth.json@G#9498d1d49b8636a3a313dc63be89f4433330c230",
+        "private commitment matched; secret not emitted"
+      ],
+      "status": "PASS",
+      "task": "HMAC2 commitment"
+    },
+    {
+      "evidence_refs": [
+        "SAFE_REPLAY_ONLY",
+        "benchmark_executions=0",
+        "Mastermind PRE_REVIEW_ONLY"
+      ],
+      "status": "NOT_EXECUTED",
+      "task": "Senior SWE evaluator"
+    },
+    {
+      "evidence_refs": [
+        "issue_ledger"
+      ],
+      "status": "FINDINGS",
+      "task": "architecture/TCB audit"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "details": "Active/non-superseded; state/control/assignment match; MM04 branch==G; report absent; liveness eligible.",
+      "status": "PASS",
+      "test_id": "GEN10_IDENTITY_BRANCH_LIVENESS"
+    },
+    {
+      "details": "Release commit resolves to declared tree ae42b5fc... .",
+      "status": "PASS",
+      "test_id": "GEN10_RELEASE_TREE"
+    },
+    {
+      "details": "Exact release->G has control+assignment+liveness; frozen BRANCH_PROTOCOL says only control+assignment.",
+      "status": "FAIL_CONTROL",
+      "test_id": "GEN10_GENERATION_STATEMENT_FIDELITY"
+    },
+    {
+      "details": "HMAC-2 metadata consistent; validator enforces header.execution_mode==mode==SAFE_REPLAY_ONLY.",
+      "status": "PASS",
+      "test_id": "HMAC2_MODE"
+    },
+    {
+      "details": "REST helper is GET-only with distinct contexts; checkout reconciler is sole authoritative structural writer.",
+      "status": "PASS",
+      "test_id": "STRUCTURAL_SINGLE_WRITER_REPAIR"
+    },
+    {
+      "details": "Verification schema requires typed transport N/A or nonempty assurance records; scientific fidelity requires records.",
+      "status": "PASS",
+      "test_id": "VERIFIER_ASSURANCE_EXPLICITNESS_REPAIR"
+    },
+    {
+      "details": "Frozen tests execute positive/mismatch/stale/missing expected-base guard behavior.",
+      "status": "PASS",
+      "test_id": "TRANSITION_BEHAVIORAL_NONVACUITY_REPAIR"
+    },
+    {
+      "details": "Placeholder nonempty strings satisfy MM04 check arrays.",
+      "status": "FAIL",
+      "test_id": "MM04_ROLE_NONVACUITY"
+    },
+    {
+      "details": "Trusted consumer ignores completed run ID and fetched-run PR association.",
+      "status": "FAIL",
+      "test_id": "BOOTSTRAP_RUN_PR_BINDING"
+    },
+    {
+      "details": "ubuntu-latest and Python 3.13 remain mutable without equivalent exact environment receipt.",
+      "status": "FAIL",
+      "test_id": "VALIDATOR_ENVIRONMENT_IDENTITY"
+    },
+    {
+      "details": "Architecture remains NOT_MEASURED.",
+      "status": "NOT_EXECUTED",
+      "test_id": "SENIOR_SWE_EVALUATOR"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "8c460331538144ba9233e4b5398d579b",
+  "worker_auth_commitment": "836768b1672cc8639cfeb3fe06ebd8ce1667cdb0dc5ce1c7a6cd6c263f1521d0",
+  "worker_auth_proof": "a78903461ce8dc28288505df2d07bdf4c16afe92736e42fa681ab12ca16120c7",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM04",
+  "worker_id": "MM04"
+}
