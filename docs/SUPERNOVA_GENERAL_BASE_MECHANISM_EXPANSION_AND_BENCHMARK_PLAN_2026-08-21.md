@@ -141,6 +141,8 @@ verifier_assurance_status in {
 
 `COMPILES` is not proof admission. `EXACT_FORMAL_PROOF` requires the declared exact validity, statement-fidelity, axiom-policy and source/toolchain predicates. Same-kernel replay is defence-in-depth and must not be described as external independence. Different-implementation replay is an orthogonal assurance property, not a mandatory final rung for every exact result.
 
+The verification Court must also record its trusted computing base: exact Lean/Mathlib, Comparator and `lean4export` revisions; the operating system and hardware; the sandbox and kernel features; privilege level; cache provenance; and network/filesystem policy. Follow the exact pinned Lean Eval security recipe. Comparator currently documents sandbox/OS assumptions and a required `systemd-run` mitigation for a landrun issue; do not describe the Court as qualified until the frozen deployment reproduces those protections and adversarial escape tests.
+
 ### 3.3 Library and retrieval
 
 Build a corpus keyed by repository, commit, Lean/Mathlib versions, fully qualified declaration name, normalized type hash, namespace/import scope, dependency edges, informal description, lexical features, embeddings, successful proof use, authority and invalidation epoch.
@@ -440,15 +442,19 @@ Not authorized:
 - LeanInteract: `https://github.com/augustepoiroux/LeanInteract`
 - LeanSearch-v2: `https://github.com/frenzymath/LeanSearch-v2`
 - Lean Eval: `https://github.com/leanprover/lean-eval`
+- lean4export: `https://github.com/leanprover/lean4export`
+- landrun: `https://github.com/zouuup/landrun`
+- SafeVerify: `https://github.com/GasStationManager/SafeVerify`
 - Comparator: `https://github.com/leanprover/comparator`
 - BFS-Prover-V2: `https://github.com/ByteDance-Seed/BFS-Prover-V2`
 - APOLLO: `https://github.com/aziksh-ospanov/APOLLO`
 - ax-prover-base: `https://github.com/Axiomatic-AI/ax-prover-base`
 - AutoformBot: `https://github.com/facebookresearch/autoform-bot`
 - ATLAS: `https://github.com/facebookresearch/atlas-lean`
-- Herald: `https://github.com/lean-dojo/Herald`
+- Herald: `https://github.com/frenzymath/herald_translator`
 - ProofNet-Verified: `https://github.com/marcusm117/ProofNet-Verified`
 - PutnamBench: `https://github.com/trishullab/PutnamBench`
+- FATE: `https://github.com/frenzymath/FATE`
 - CombiBench: `https://github.com/MoonshotAI/CombiBench`
 - MA-ProofBench: `https://github.com/OpenBMB/MA-ProofBench`
 - LeanCat: `https://github.com/sciencraft/LeanCat`
@@ -458,7 +464,7 @@ Not authorized:
 - Kissat: `https://github.com/arminbiere/kissat`
 - cvc5: `https://github.com/cvc5/cvc5`
 - VeriPB: `https://gitlab.com/MIAOresearch/software/VeriPB`
-- PBLean: `https://github.com/Seasawher/PBLean`
+- PBLean: `https://github.com/leansolving/pblean`
 - HiGHS: `https://github.com/ERGO-Code/HiGHS`
 - SCIP: `https://github.com/scipopt/scip`
 - SageMath: `https://github.com/sagemath/sage`
