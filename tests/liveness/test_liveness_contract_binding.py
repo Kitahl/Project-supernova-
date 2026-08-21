@@ -53,11 +53,16 @@ def fixture():
 
 class LivenessContractBindingTests(unittest.TestCase):
     def test_schema_has_no_self_referential_generation_head(self):
+        self.assertEqual(SCHEMA.get("title"), "CohortLivenessContract v2")
         self.assertNotIn("generation_head_sha", SCHEMA.get("properties", {}))
+        self.assertNotIn("generation_head_sha", SCHEMA.get("required", []))
         self.assertIn("generation_root_sha", SCHEMA.get("required", []))
+        self.assertEqual(SCHEMA["properties"]["schema_version"].get("const"), "PS-COHORT-LIVENESS-2")
 
     def test_positive_contract_passes_schema_and_binding(self):
         c, control, assignment, cb, ab = fixture()
+        self.assertEqual(len(c["lanes"]), 12)
+        self.assertEqual({x["lane_id"] for x in c["lanes"]}, set(WORKERS))
         self.assertEqual(list(Draft202012Validator(SCHEMA).iter_errors(c)), [])
         self.assertEqual(V251.liveness_contract_errors(c, control, assignment, cb, ab), [])
 
