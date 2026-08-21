@@ -1,0 +1,351 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W07 | Before/After Self-Bench",
+    "target_program": "MASTERMIND",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "iteration_id": "CAL-BR-009-v25-b53ab205",
+    "iteration_number": 9,
+    "role_id": "MM07",
+    "goal": "Replay typed before/after diagnostic and bounded self-proposal semantics; report defects while preserving solver/memory/improver separation.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-009-v25-b53ab205",
+  "worker_id": "MM07",
+  "report_id": "PS-BRANCH-CAL-BR-009-v25-b53ab205-MM07",
+  "generation_seq": 9,
+  "generation_head_sha": "67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f",
+  "worker_branch": "ps/work/CAL-BR-009-v25-b53ab205/MM07",
+  "assignment_id": "PS-BRANCH-CAL-BR-009-v25-b53ab205",
+  "assignment_git_identity": "a467f2b50d08bc3ae36d7490dab3d118a9af1f9b",
+  "parent_state_git_identity": "1b2f5bacbe70eabb1828ee3f643a6959fad83284",
+  "control_manifest_id": "CTRL-CAL-BR-009-v25-b53ab205",
+  "control_manifest_git_identity": "df7d03a4e92fe410960779be90497313fdc23448",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "16d504f7b3ee0f003018e50a3f00171c",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "8381570a96782767ac210b67645196c3b7018059f9e0aae5aa104e10d70098d2",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_COUNTABLE_REPLAY_PUBLIC_CONTROL_AUDIT",
+  "executive_status": "CONTROL_DEFECTS_FOUND_PRE_REVIEW_ONLY",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM07-GEN9-TRANSPORT",
+      "status": "PASS",
+      "result": "Canonical main, exact G, control/assignment identities, generation immutability, MM07 branch isolation, visibility token, liveness contract and pre-write report absence were verified from GitHub public control state."
+    },
+    {
+      "task_id": "MM07-GEN9-BEFORE-AFTER",
+      "status": "NOT_MEASURED",
+      "result": "No benchmark program or suite is assigned and T0 is SAFE_REPLAY_ONLY. No numeric before/after diagnostic was executed, inferred or promoted."
+    },
+    {
+      "task_id": "MM07-GEN9-SELF-PROPOSAL",
+      "status": "NOT_PROPOSED",
+      "result": "No scores were generated or frozen, so no bounded next self-candidate was proposed."
+    },
+    {
+      "task_id": "MM07-GEN9-GOAL2",
+      "status": "NOT_ELIGIBLE",
+      "result": "Goal 2 remains blocked by Goal 1. Solver F, memory M and improver I were not evaluated; no descendant or memory gain is labeled improver gain."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM07-V25-001",
+      "severity": "HIGH",
+      "component": "MM07 replay-role semantic enforcement",
+      "status": "OPEN_PARTIAL_REPAIR",
+      "classification": "CONTROL_CONTRACT_GAP",
+      "aliases": [
+        "MM07_ROLE_SEMANTICS_NOT_MACHINE_ENFORCED"
+      ],
+      "summary": "Fresh MM07 payload typing exists, but SAFE_REPLAY_ONLY MM07 receipts still bypass the role-specific payload validator.",
+      "exact_failure": "The frozen report schema requires MM07 role_payload only for FRESH_EXECUTION, and validate_branch_bus_v251.py returns from typed_role_payload_errors for every non-fresh report. Therefore a T0 SAFE_REPLAY_ONLY MM07 receipt can be structurally valid while placing a prohibited self-improvement, numeric before/after, bounded-candidate, or F/M-to-I attribution claim in free-form signed fields. HMAC authenticates the claim but does not make the role semantics valid.",
+      "evidence_refs": [
+        "config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+        "plan/PLAN.json@69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+        "schemas/branch_report.schema.json@62608e780c7d585e55bfaf48c9b10940cd84346e",
+        "schemas/mastermind_mm07_payload.schema.json@4b714fa8e46ea6aff8ff0af0bb394263f726402e",
+        "scripts/validate_branch_bus_v251.py@e3b5f90fd5ee3b14e69e59b788f092dfc007cd73",
+        "tests/test_future_fresh_role_model_contracts.py@d073c233dcc8698ff08b3278deaeee62c17beb35"
+      ],
+      "blocker": true,
+      "proposed_protocol_2_5_fix_test": "Require a mode-discriminated MM07 role payload in both replay and fresh reports. For T0 require typed BEFORE_AFTER=NOT_MEASURED, numeric_delta=null, next_self_candidate=null, self_promotion=false and goal2_credit=false; add negative validator tests that mutate each field into a forbidden claim and require rejection/quarantine.",
+      "required_test": "A SAFE_REPLAY_ONLY MM07 fixture carrying numeric self-improvement, self-promotion, a non-null next candidate or F/M-as-I credit must fail trusted branch validation.",
+      "owner": "BIL00+MM06",
+      "authoritative_control_change": true,
+      "next_action": "Carry this stable issue through MM06/MF06/BIL00. Do not mutate frozen Gen9; repair only in a newly frozen control generation."
+    },
+    {
+      "issue_id": "MM07-V25-002",
+      "severity": "MEDIUM",
+      "component": "worker issue-ledger schema",
+      "status": "OPEN_PARTIAL_REPAIR",
+      "classification": "ISSUE_RECORD_COMPLETENESS_GAP",
+      "aliases": [
+        "ISSUE_LEDGER_CONTRACT_UNTYPED"
+      ],
+      "summary": "Issue entries are now closed and deduplicated, but the exact failure/confound statement remains optional.",
+      "exact_failure": "schemas/branch_report.schema.json now requires issue_id, severity, component, status, evidence_refs, blocker, proposed fix/test, owner, control-change flag and next action, and the trusted validator rejects duplicate issue IDs. However exact_failure is not in the issue_record required list, so a report can satisfy the frozen schema while omitting the exact confound/failure that this lane's issue contract requires.",
+      "evidence_refs": [
+        "schemas/branch_report.schema.json@62608e780c7d585e55bfaf48c9b10940cd84346e",
+        "scripts/validate_branch_bus_v251.py@e3b5f90fd5ee3b14e69e59b788f092dfc007cd73",
+        "tests/test_v25_report_contracts.py@326d096c95ce7f9203fa7ade82abdd99518c378a"
+      ],
+      "blocker": false,
+      "proposed_protocol_2_5_fix_test": "Add exact_failure to issue_record.required and add a regression test proving an otherwise complete issue without exact_failure is rejected.",
+      "required_test": "Delete exact_failure from a complete issue fixture and require Draft202012Validator failure.",
+      "owner": "BIL00+MM06",
+      "authoritative_control_change": true,
+      "next_action": "Preserve this receipt's explicit exact_failure fields; stage the schema/test repair only in the next frozen control generation."
+    },
+    {
+      "issue_id": "MM07-V25-004",
+      "severity": "HIGH",
+      "component": "future Stage0-LOOP MM07 payload contract",
+      "status": "OPEN",
+      "classification": "FUTURE_FRESH_ROLE_CONTRACT_INCOMPLETE",
+      "summary": "The fresh MM07 payload captures TRAIN-only and F/M/I identity separation but does not encode several frozen Stage0/self-proposal obligations.",
+      "exact_failure": "schemas/mastermind_mm07_payload.schema.json has train_only=true, generation_index<=4, F/M/I identities, matched cost binding and no origin-task promotion, but has no fields for predeclared_stop, typed event trace, descriptive-only rho_improve, before/after metric missingness, score-freeze timing, or at-most-one bounded next candidate. Once FRESH_EXECUTION becomes eligible, trusted validation can therefore accept a payload that satisfies the current schema while violating those frozen Stage0-LOOP and bounded self-proposal requirements.",
+      "evidence_refs": [
+        "plan/PLAN.json@69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+        "config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+        "schemas/mastermind_mm07_payload.schema.json@4b714fa8e46ea6aff8ff0af0bb394263f726402e",
+        "scripts/validate_branch_bus_v251.py@e3b5f90fd5ee3b14e69e59b788f092dfc007cd73",
+        "tests/test_future_fresh_role_model_contracts.py@d073c233dcc8698ff08b3278deaeee62c17beb35"
+      ],
+      "blocker": false,
+      "proposed_protocol_2_5_fix_test": "Extend the MM07 fresh payload with predeclared_stop=true, typed_event_trace_ref, rho_improve_claim=DESCRIPTIVE_ONLY, typed before/after metric results, scores_frozen_before_candidate=true and next_candidate cardinality 0..1; add negative tests for each omitted invariant and retain existing F/M/I isolation checks.",
+      "required_test": "Construct fresh MM07 payloads violating each Stage0 invariant independently and require trusted validation failure before fresh activation.",
+      "owner": "BIL00+MM06",
+      "authoritative_control_change": true,
+      "next_action": "Treat as a future-fresh admission defect and close before Stage0-LOOP or any fresh MM07 execution is enabled."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM07-GEN9-PTR-01",
+      "status": "PASS",
+      "detail": "main state matched protocol 2.5, expected plan/runtime/checkpoint, generation 9, current non-superseded cohort, source-bound repo policy and fresh_allowed_globally=false."
+    },
+    {
+      "test_id": "MM07-GEN9-BRANCH-01",
+      "status": "PASS",
+      "detail": "Generation branch and MM07 worker branch both compared identical to frozen G immediately before creation; assigned report path was absent."
+    },
+    {
+      "test_id": "MM07-GEN9-FREEZE-01",
+      "status": "PASS",
+      "detail": "Control-release commit b53ab205a68dd0346fc33e75655bdc781c02eda3 resolved to declared tree 399432daeae28777f3bd0604a12ef64aafb5e9ff. Recursive tree was non-truncated and contained the declared frozen control surface. Release-to-G changed only current control, assignment and liveness additions, so required frozen control paths did not drift."
+    },
+    {
+      "test_id": "MM07-GEN9-AUTH-01",
+      "status": "PASS",
+      "detail": "SHA-256 of the prompt-private MM07 secret matched the frozen public commitment. The raw secret is not stored or exposed; whole-report HMAC-2 is computed after removing worker_auth_proof."
+    },
+    {
+      "test_id": "MM07-GEN9-LIVENESS-01",
+      "status": "PASS",
+      "detail": "Frozen liveness contract binds MM07 to the expected 2026-08-21T16:15:00Z start and 2026-08-21T16:55:00Z deadline; this execution began within that eligible window and exact-G liveness status was success."
+    },
+    {
+      "test_id": "MM07-GEN9-CI-01",
+      "status": "OBSERVED_MIXED",
+      "detail": "Pre-write exact-G status snapshot: supernova/liveness=success and supernova/branch-generation=success; branch-worker, branch-verify, branch-integrate and branch-consolidate were pending. Pending contexts are not represented as PASS."
+    },
+    {
+      "test_id": "MM07-GEN9-RUNTIME-01",
+      "status": "PASS_REPLAY_ONLY",
+      "detail": "Frozen GEN8-FOUNDRY-3.1.1-REPLAY-BINDING receipt preserves runtime identity, binds Foundry 3.1.1 and Mastermind 4.4.10 software identities, consumes no fresh evidence and changes no scientific status. It is not a self-improvement result."
+    },
+    {
+      "test_id": "MM07-GEN9-MODEL-01",
+      "status": "PARTIAL_UNVERIFIED",
+      "detail": "The runtime/model family matches the requested GPT-5.6 Sol session target, but the frozen automation surface cannot independently attest EXTRA_HIGH reasoning effort; no model-sensitive fresh evidence is used."
+    },
+    {
+      "test_id": "MM07-GEN9-REPAIR-01",
+      "status": "PARTIAL",
+      "detail": "Prior MM07 issue-ledger and phase-template defects were materially repaired: exact assignment phase is now explicit and issue records are closed/deduplicated. Remaining gaps are recorded under stable IDs MM07-V25-001, MM07-V25-002 and MM07-V25-004."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "item": "T0_COUNTABLE_REPLAY_ONLY",
+      "status": "PASS",
+      "detail": "No fresh evidence, private-manifest read, benchmark execution or deep research occurred."
+    },
+    {
+      "item": "MASTERMIND_PRE_REVIEW_ONLY",
+      "status": "PASS",
+      "detail": "Only transport/control instrumentation was audited; Mastermind did not execute, self-grade or promote."
+    },
+    {
+      "item": "SAME_SUITE_BEFORE_AFTER_DIAGNOSTIC_ONLY",
+      "status": "PASS_NOT_MEASURED",
+      "detail": "No suite is assigned, so BEFORE/AFTER remains NOT_MEASURED and no numeric delta exists."
+    },
+    {
+      "item": "BOUNDED_SELF_PROPOSAL",
+      "status": "PASS_NONE",
+      "detail": "No score was generated or frozen and NEXT_SELF_CANDIDATE remains NONE."
+    },
+    {
+      "item": "STAGE0_LOOP_BOUND",
+      "status": "PRESERVED_NOT_RUN",
+      "detail": "Future Stage0-LOOP remains TRAIN-only, maximum four frozen generations, predeclared stop, complete costs, typed events and descriptive-only rho_improve. This cohort does not claim Stage0 execution."
+    },
+    {
+      "item": "GOAL2_F_M_I_SEPARATION",
+      "status": "PRESERVED_NOT_ELIGIBLE",
+      "detail": "Goal 2 requires T3-RW then T5 then DR27/E5B, the same untouched solver F*, controlled memory M, matched complete R&D cost and fresh independent evaluation of improver I. None is measured or credited here."
+    },
+    {
+      "item": "GEN6_HISTORY",
+      "status": "UNCHANGED",
+      "detail": "Historical Gen6 non-countable state is not modified or recredited."
+    }
+  ],
+  "evidence_and_provenance": {
+    "source": "GITHUB_PUBLIC_CONTROL_PLANE_ONLY",
+    "canonical_state": {
+      "path": "main:state/CURRENT.json",
+      "git_blob": "31071464144bde197aca0e3f13153be2d85208d7"
+    },
+    "parent_state": {
+      "ref": "b53ab205a68dd0346fc33e75655bdc781c02eda3",
+      "git_blob": "1b2f5bacbe70eabb1828ee3f643a6959fad83284"
+    },
+    "generation": {
+      "branch": "ps/gen/CAL-BR-009-v25-b53ab205",
+      "head": "67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f",
+      "pre_write_compare": "IDENTICAL"
+    },
+    "worker_branch": {
+      "branch": "ps/work/CAL-BR-009-v25-b53ab205/MM07",
+      "pre_write_compare": "IDENTICAL_TO_G",
+      "pre_write_report_path": "ABSENT"
+    },
+    "control": {
+      "path": "control/CAL-BR-009-v25-b53ab205.json",
+      "git_blob": "df7d03a4e92fe410960779be90497313fdc23448",
+      "control_release_commit": "b53ab205a68dd0346fc33e75655bdc781c02eda3",
+      "control_release_tree": "399432daeae28777f3bd0604a12ef64aafb5e9ff",
+      "recursive_tree_truncated": false,
+      "drift_from_release_to_G": "NONE_ON_REQUIRED_PATHS; only active control+assignment+liveness added"
+    },
+    "assignment": {
+      "path": "assignments/CAL-BR-009-v25-b53ab205.json",
+      "git_blob": "a467f2b50d08bc3ae36d7490dab3d118a9af1f9b"
+    },
+    "liveness": {
+      "path": "liveness/CAL-BR-009-v25-b53ab205.json",
+      "git_blob": "c91ee15f0e66f0297ea5ea5f31f8f8a9969f9b86",
+      "mm07_window_start_utc": "2026-08-21T16:15:00Z",
+      "mm07_deadline_utc": "2026-08-21T16:55:00Z"
+    },
+    "runtime_receipt": {
+      "path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+      "git_blob": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "status": "VALIDATED",
+      "runtime_identity_preserved": true,
+      "fresh_scientific_evidence": false
+    },
+    "selected_frozen_git_blobs": {
+      "config/roles.json": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "config/worker_auth.json": "9498d1d49b8636a3a313dc63be89f4433330c230",
+      "SESSION_STANDARD.md": "3ac507a31438c8eba5497c72a61a7979ab1a3a52",
+      "BRANCH_WORKER_PROTOCOL.md": "2103ec2cc4dcdf623f32e76878bd0a01f7a66d15",
+      "branch/CONFIG.json": "6e366efd9f401682265d8bea274b88655edb26a0",
+      "plan/PLAN.json": "69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+      "schemas/branch_report.schema.json": "62608e780c7d585e55bfaf48c9b10940cd84346e",
+      "schemas/branch_verification.schema.json": "406e1126024580e6628245cebd9130d6206add04",
+      "schemas/mastermind_mm07_payload.schema.json": "4b714fa8e46ea6aff8ff0af0bb394263f726402e",
+      "scripts/validate_branch_bus_v251.py": "e3b5f90fd5ee3b14e69e59b788f092dfc007cd73",
+      "tests/test_v25_report_contracts.py": "326d096c95ce7f9203fa7ade82abdd99518c378a",
+      "tests/test_future_fresh_role_model_contracts.py": "d073c233dcc8698ff08b3278deaeee62c17beb35",
+      "benchmark/registry.json": "461c5bd695df5ac849e27df80799ed12871d281a"
+    },
+    "pre_write_ci": {
+      "supernova/liveness": "success",
+      "supernova/branch-generation": "success",
+      "supernova/branch-worker": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-consolidate": "pending"
+    },
+    "auth": {
+      "commitment_verified": true,
+      "raw_secret_persisted": false,
+      "canonicalization": "remove worker_auth_proof; sorted keys; compact separators; UTF-8; ensure_ascii=false"
+    }
+  },
+  "claim_scope": "T0 replay-only transport/control instrumentation. No numeric before/after, self-improvement, Goal-2 improver or scientific promotion claim.",
+  "runtime_implementation_implication": "None. This worker changed no runtime, benchmark, main/control, scientific state or other branch.",
+  "negative_zero_outcomes": [
+    {
+      "name": "BEFORE_AFTER",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "name": "NEXT_SELF_CANDIDATE",
+      "status": "NONE",
+      "value": null
+    },
+    {
+      "name": "SELF_PROMOTION",
+      "status": "FALSE",
+      "value": false
+    },
+    {
+      "name": "GOAL2_IMPROVER_GAIN",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "name": "FRESH_EVIDENCE",
+      "status": "ZERO",
+      "value": 0
+    },
+    {
+      "name": "PRIVATE_MANIFEST_READS",
+      "status": "ZERO",
+      "value": 0
+    },
+    {
+      "name": "BENCHMARK_EXECUTIONS",
+      "status": "ZERO",
+      "value": 0
+    },
+    {
+      "name": "DEEP_RESEARCH_RUNS",
+      "status": "ZERO",
+      "value": 0
+    }
+  ],
+  "research_questions": [],
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "T0 replay-only GitHub public-control audit; no private vault access, protected evidence, benchmark execution or deep research."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently rereads branch/head/blob/history, validates schema/session/HMAC/liveness/public safety, and carries stable open issues through MF06/BIL00. Do not mutate frozen Gen9; accepted authoritative repairs belong to a new frozen v2.5 generation.",
+  "worker_auth_proof": "6af7aeed211da375a7702230c25d7538c81a80611af8cbf8ba6354b814107568"
+}
