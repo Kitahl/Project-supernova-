@@ -57,14 +57,16 @@ FORBIDDEN_PREFIXES = (
     "benchmark/",
     "research/",
 )
-# The installed bootstrap is itself a root of trust. It may authorize other
-# authority changes, but it may never authorize a change to its own policy,
-# privileged verifier, or privileged workflow. Those changes require a new
-# independently trusted seed whose authority predates the proposed root change.
-ROOT_BOOTSTRAP_PATHS = {
+
+# These paths are always part of the installed bootstrap root. The remainder of
+# the non-self-amendable TCB is derived from accepted-main admission metadata so
+# the bootstrap cannot indirectly replace another privileged adjudicator.
+ROOT_BOOTSTRAP_STATIC_PATHS = {
+    "config/admission_authority.json",
     "config/authority_bootstrap_v25.json",
     "scripts/reconcile_authority_bootstrap.py",
     ".github/workflows/supernova-authority-bootstrap.yml",
+    "requirements-validation.lock",
 }
 REQUIRED_INSTALLED_CONTROL_PATHS = {
     "config/admission_authority.json",
@@ -117,6 +119,51 @@ def fail(sha: str | None, reason: str):
     return 1
 
 
+def bootstrap_root_paths(trusted_root: pathlib.Path):
+    """Return the accepted-main transitive write-capable admission TCB.
+
+    The source of this set is accepted-main admission metadata, never candidate
+    metadata. A candidate may not use automated bootstrap to change this set or
+    any member of it; root rotation requires an independent seed.
+    """
+    roots = set(ROOT_BOOTSTRAP_STATIC_PATHS)
+    admission = load_json(trusted_root, "config/admission_authority.json")
+    for key in (
+        "authority_bootstrap_policy",
+        "trusted_reconciler",
+        "trusted_authority_bootstrap_reconciler",
+        "candidate_diagnostic_workflow",
+    ):
+        value = admission.get(key)
+        if isinstance(value, str) and value:
+            roots.add(value)
+    for key in ("trusted_validator_entrypoints", "authoritative_status_workflows"):
+        values = admission.get(key) or []
+        if not isinstance(values, list):
+            raise ValueError(f"accepted admission authority {key} is not a list")
+        for value in values:
+            if not isinstance(value, str) or not value:
+                raise ValueError(f"accepted admission authority {key} contains invalid path")
+            roots.add(value)
+    return roots
+
+
+def diagnostic_binding_errors(pr: dict, diagnosed_head_sha: str | None, diagnosed_base_sha: str | None):
+    """Bind the read-only diagnostic result to the exact PR bytes it diagnosed."""
+    errors = []
+    head_sha = (pr.get("head") or {}).get("sha")
+    base_sha = (pr.get("base") or {}).get("sha")
+    if not isinstance(diagnosed_head_sha, str) or not HEX40.fullmatch(diagnosed_head_sha):
+        errors.append("invalid diagnosed head SHA")
+    elif diagnosed_head_sha != head_sha:
+        errors.append("diagnosed head SHA no longer matches current PR head")
+    if not isinstance(diagnosed_base_sha, str) or not HEX40.fullmatch(diagnosed_base_sha):
+        errors.append("invalid diagnosed base SHA")
+    elif diagnosed_base_sha != base_sha:
+        errors.append("diagnosed base SHA no longer matches current PR base")
+    return errors
+
+
 def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathlib.Path, changed: list[str]):
     """Mechanically preserve the frozen root invariants under automated bootstrap.
 
@@ -125,9 +172,12 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
     """
     errors: list[str] = []
 
-    root_drift = sorted(ROOT_BOOTSTRAP_PATHS.intersection(changed))
-    if root_drift:
-        errors.append("bootstrap root self-modification requires independent seed: " + root_drift[0])
+    try:
+        root_drift = sorted(bootstrap_root_paths(trusted_root).intersection(changed))
+        if root_drift:
+            errors.append("bootstrap root self-modification requires independent seed: " + root_drift[0])
+    except Exception as exc:
+        errors.append("bootstrap root TCB derivation failed: " + repr(exc))
 
     try:
         policy = load_json(candidate_root, "config/repo_policy.json")
@@ -268,6 +318,13 @@ def main():
 
     if os.environ.get("CANDIDATE_DIAGNOSTICS_RESULT") != "success":
         return fail(head_sha, "read-only candidate diagnostics did not succeed")
+    binding_errors = diagnostic_binding_errors(
+        pr,
+        os.environ.get("DIAGNOSED_HEAD_SHA"),
+        os.environ.get("DIAGNOSED_BASE_SHA"),
+    )
+    if binding_errors:
+        return fail(head_sha, binding_errors[0])
     if base.get("ref") != "main":
         return fail(head_sha, "base is not main")
     if head_repo != REPO or author != OWNER:
@@ -287,6 +344,8 @@ def main():
     trusted = out.strip()
     if rc or not HEX40.fullmatch(trusted):
         return fail(head_sha, "cannot resolve exact accepted main")
+    if os.environ.get("DIAGNOSED_BASE_SHA") != trusted:
+        return fail(head_sha, "diagnosed base SHA is not exact accepted main")
     run(["git", "fetch", "--no-tags", "origin", f"pull/{number}/head"], root)
     rc, _ = run(["git", "merge-base", "--is-ancestor", trusted, head_sha], root)
     if rc:
@@ -327,7 +386,7 @@ def main():
         run(["git", "worktree", "remove", "--force", str(tmp)], root)
         shutil.rmtree(tmp, ignore_errors=True)
 
-    post("success", head_sha, "trusted-main authority bootstrap PASS; candidate diagnostics were read-only")
+    post("success", head_sha, "trusted-main authority bootstrap PASS; diagnostics bound to exact head/base")
     print("AUTHORITY BOOTSTRAP PASS", number, head_sha)
     return 0
 
