@@ -1,0 +1,11 @@
+{
+  "schema_version":"PS-COHORT-SUPERSESSION-1",
+  "cohort_id":"CAL-BR-009-v25-b53ab205",
+  "generation_head_sha":"67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f",
+  "state_blob_sha":"31071464144bde197aca0e3f13153be2d85208d7",
+  "disposition":"INVALIDATED_ZERO_CREDIT_MUTABLE_DUAL_WRITER_STRUCTURAL_STATUS",
+  "calibration_credit":0,
+  "fresh_evidence_consumed":false,
+  "replacement_generation_seq":10,
+  "replacement_countable":true
+}
