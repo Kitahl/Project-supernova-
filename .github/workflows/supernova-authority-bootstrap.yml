@@ -1,4 +1,5 @@
 name: Supernova Authority Bootstrap
+run-name: Supernova Authority Bootstrap PR #${{ github.event.pull_request.number }} HEAD=${{ github.event.pull_request.head.sha }} BASE=${{ github.event.pull_request.base.sha }}
 
 on:
   pull_request_target:
@@ -66,15 +67,17 @@ jobs:
           git fetch --no-tags origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
       - name: Install trusted validation environment
         run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock"
-      - name: Publish trusted bootstrap decision
+      - name: Publish trusted bootstrap decision bound to diagnosed bytes
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           CANDIDATE_DIAGNOSTICS_RESULT: ${{ needs.candidate-diagnostics.result }}
+          DIAGNOSED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DIAGNOSED_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: cd trusted && python3 scripts/reconcile_authority_bootstrap.py
-      - name: Reconcile normal required contexts after bootstrap approval
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: cd trusted && python3 scripts/reconcile_open_prs.py
+      # Normal source-bound contexts are deliberately NOT republished inside this
+      # still-running bootstrap workflow. The accepted-main completion workflow
+      # runs scripts/reconcile_open_prs.py only after this designated run reaches
+      # completed/success, so its provenance can be independently verified.
