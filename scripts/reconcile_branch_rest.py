@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import base64, json, os, re, sys, urllib.parse, urllib.request, urllib.error
+import base64, datetime as dt, json, os, re, sys, urllib.parse, urllib.request, urllib.error
 TOKEN=os.environ.get('GITHUB_TOKEN','')
 REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-')
 API='https://api.github.com/repos/'+REPO
@@ -49,6 +49,48 @@ def top_schema_check(obj,schema):
         allowed=set(schema.get('properties',{}));extra=set(obj)-allowed
         if extra:return False,'extra '+','.join(sorted(extra)[:4])
     return True,'top envelope ok'
+def parse_utc(value):
+    if not isinstance(value,str):raise ValueError('timestamp not string')
+    x=dt.datetime.fromisoformat(value.replace('Z','+00:00'))
+    if x.tzinfo is None:raise ValueError('timestamp not timezone-aware')
+    return x.astimezone(dt.timezone.utc)
+def validate_liveness_contract(contract,cohort,root,control_sha,assignment_sha,assignment):
+    e=[]
+    if not isinstance(contract,dict):return ['liveness contract not object']
+    required={'cohort_id','generation_seq','generation_root_sha','control_manifest_git_identity','assignment_git_identity','lanes'}
+    allowed=required
+    missing=required-set(contract)
+    extra=set(contract)-allowed
+    if missing:e.append('liveness missing '+','.join(sorted(missing)))
+    if extra:e.append('liveness extra '+','.join(sorted(extra)))
+    if contract.get('cohort_id')!=cohort:e.append('liveness cohort mismatch')
+    if contract.get('generation_seq')!=assignment.get('generation_seq'):e.append('liveness generation_seq mismatch')
+    if contract.get('generation_root_sha')!=root:e.append('liveness generation root mismatch')
+    if contract.get('control_manifest_git_identity')!=control_sha:e.append('liveness control blob mismatch')
+    if contract.get('assignment_git_identity')!=assignment_sha:e.append('liveness assignment blob mismatch')
+    lanes=contract.get('lanes')
+    if not isinstance(lanes,list):return e+['liveness lanes not array']
+    if len(lanes)!=len(WORKERS):e.append('liveness lane count != 12')
+    ids=[]
+    lane_required={'lane_id','branch','path','expected_window_start_utc','deadline_utc'}
+    lane_allowed=lane_required|{'eligible_before_deadline'}
+    for lane in lanes:
+        if not isinstance(lane,dict):e.append('liveness lane not object');continue
+        lm=lane_required-set(lane);lx=set(lane)-lane_allowed
+        if lm:e.append('liveness lane missing '+','.join(sorted(lm)))
+        if lx:e.append('liveness lane extra '+','.join(sorted(lx)))
+        wid=lane.get('lane_id');ids.append(wid)
+        aw=(assignment.get('workers') or {}).get(wid)
+        if wid not in WORKERS or not isinstance(aw,dict):e.append('liveness unknown lane '+str(wid));continue
+        if lane.get('branch')!=aw.get('worker_branch'):e.append(str(wid)+' liveness branch mismatch')
+        if lane.get('path')!=f'reports/{cohort}/{wid}.json':e.append(str(wid)+' liveness path mismatch')
+        try:
+            start=parse_utc(lane.get('expected_window_start_utc'));deadline=parse_utc(lane.get('deadline_utc'))
+            if start>=deadline:e.append(str(wid)+' liveness window not increasing')
+        except Exception as x:e.append(str(wid)+' liveness time '+str(x))
+    if set(ids)!=set(WORKERS):e.append('liveness worker set mismatch')
+    if len(ids)!=len(set(ids)):e.append('liveness duplicate lane_id')
+    return e
 def main():
     _,state=content('state/CURRENT.json','main')
     if state.get('task_network_plan_id')!=PLAN or state.get('transport_mode')!='BRANCH_GITOPS':
@@ -68,14 +110,21 @@ def main():
         if assignment.get('generation_root_sha')!=root:errors.append('assignment root mismatch')
         if assignment.get('control_manifest_git_identity')!=cm['sha']:errors.append('assignment control blob mismatch')
         if assignment.get('generation_branch')!=gen:errors.append('assignment generation branch mismatch')
-        c,files=changed_files(root,G)
+        countable=bool(control.get('calibration_countable') is True or assignment.get('calibration_countable') is True or state.get('calibration_countable_current') is True)
         expected={state['active_control_manifest_path'],state['active_assignment_path']}
+        if countable:
+            lpath=f'liveness/{cohort}.json';lm,liveness=content(lpath,G);_,lschema=content('schemas/cohort_liveness_contract.schema.json',G)
+            ok,msg=top_schema_check(liveness,lschema)
+            if not ok:errors.append('liveness schema '+msg)
+            errors.extend(validate_liveness_contract(liveness,cohort,root,cm['sha'],am['sha'],assignment))
+            expected.add(lpath)
+        c,files=changed_files(root,G)
         if set(files)!=expected:errors.append('generation root->G changed paths '+repr(files))
         for p in control.get('required_control_paths',[]):
             a,_=file_text(p,root);b,_=file_text(p,G)
             if a['sha']!=b['sha']:errors.append('frozen control drift '+p)
     except Exception as e:errors.append('generation exception: '+str(e))
-    status(G,'supernova/branch-generation','failure' if errors else 'success',('FAIL: '+errors[0]) if errors else 'immutable generation/control/assignment PASS')
+    status(G,'supernova/branch-generation','failure' if errors else 'success',('FAIL: '+errors[0]) if errors else 'immutable generation/control/assignment/liveness PASS')
     if errors:
         print('generation failed');[print('-',x) for x in errors];return 1
     _,report_schema=content('schemas/branch_report.schema.json',G)
