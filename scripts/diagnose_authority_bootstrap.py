@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import contextlib, importlib.util, io, json, os, pathlib, urllib.request
+import contextlib, importlib.util, io, json, os, pathlib, re, urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 REPO = os.environ.get("GITHUB_REPOSITORY", "Kitahl/Project-supernova-")
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
 PR_NUMBER = os.environ.get("PR_NUMBER", "")
 CONTEXT = "supernova/bootstrap-diagnostic"
-MARKER = "<!-- SUPERNOVA_BOOTSTRAP_DIAGNOSTIC -->"
 
 
 def api(path, method="GET", data=None):
@@ -25,30 +24,47 @@ def api(path, method="GET", data=None):
         return json.loads(raw) if raw else None
 
 
-def status(sha, state, description):
+def status(sha, state, description, context=CONTEXT):
     api("/statuses/" + sha, "POST", {
         "state": state,
-        "context": CONTEXT,
+        "context": context,
         "description": description[:140],
     })
 
 
-def report_failure(pr_number, sha, reason):
-    body = (
-        MARKER + "\n"
-        "### Supernova bootstrap structural diagnostic\n\n"
-        f"- exact head: `{sha}`\n"
-        f"- result: `REFUSED`\n"
-        f"- accepted-main verifier reason: `{reason}`\n\n"
-        "This is diagnostic only. It does not publish `supernova/bootstrap-admission`, does not merge, and does not weaken any required check."
-    )
-    comments = api(f"/issues/{pr_number}/comments?per_page=100") or []
-    for row in comments:
-        existing = row.get("body") or ""
-        if MARKER in existing and (row.get("user") or {}).get("login") == "github-actions[bot]":
-            api(f"/issues/comments/{row['id']}", "PATCH", {"body": body})
-            return
-    api(f"/issues/{pr_number}/comments", "POST", {"body": body})
+def reason_code(reason):
+    rules = [
+        ("read-only candidate diagnostics", "candidate-diagnostics"),
+        ("base is not main", "base-main"),
+        ("same-repository owner-authored", "same-repo-owner"),
+        ("head prefix", "head-prefix"),
+        ("invalid head SHA", "head-sha"),
+        ("calibration streak", "streak-zero"),
+        ("fresh work", "fresh-off"),
+        ("resolve exact accepted main", "accepted-main"),
+        ("does not descend from exact accepted main", "current-main-ancestor"),
+        ("enumerate candidate changes", "candidate-diff"),
+        ("empty authority change", "nonempty-change"),
+        ("state/scientific/runtime-sensitive path", "forbidden-path"),
+        ("outside automated bootstrap allowlist", "path-allowlist"),
+        ("candidate git mode", "regular-git-mode"),
+        ("non-regular candidate path", "regular-git-mode"),
+        ("candidate data worktree", "candidate-worktree"),
+        ("plan identity/protocol", "plan-protocol"),
+        ("Revision 4 freeze", "revision-freeze"),
+        ("bootstrap root self-modification", "root-self-modification"),
+        ("repo policy invariant", "repo-policy"),
+        ("admission authority invariant", "admission-authority"),
+        ("bootstrap policy invariant", "bootstrap-policy"),
+        ("protocol freeze", "protocol-freeze"),
+        ("countable control", "countable-control"),
+        ("candidate policy parse/check", "candidate-policy-check"),
+    ]
+    for needle, code in rules:
+        if needle.lower() in reason.lower():
+            return code
+    slug = re.sub(r"[^a-z0-9]+", "-", reason.lower()).strip("-")[:48]
+    return slug or "unknown"
 
 
 def load_bootstrap():
@@ -63,7 +79,6 @@ def load_bootstrap():
 def main():
     if not PR_NUMBER.isdigit() or int(PR_NUMBER) <= 0:
         raise SystemExit("PR_NUMBER required")
-    number = int(PR_NUMBER)
     pr = api("/pulls/" + PR_NUMBER)
     sha = ((pr or {}).get("head") or {}).get("sha")
     if not isinstance(sha, str):
@@ -86,6 +101,7 @@ def main():
 
     if rc == 0:
         status(sha, "success", "structural bootstrap eligible; candidate diagnostics assumed PASS for diagnostic replay")
+        status(sha, "success", "structural bootstrap eligibility PASS", "supernova/bootstrap-diagnostic/eligible")
         return 0
 
     reason = "bootstrap structural replay refused"
@@ -95,9 +111,10 @@ def main():
         lines = [x.strip() for x in out.getvalue().splitlines() if x.strip()]
         if lines:
             reason = lines[-1]
+    code = reason_code(reason)
     status(sha, "failure", reason)
-    report_failure(number, sha, reason)
-    print(reason)
+    status(sha, "failure", reason, "supernova/bootstrap-diagnostic/" + code)
+    print(code, reason)
     return 0
 
 
