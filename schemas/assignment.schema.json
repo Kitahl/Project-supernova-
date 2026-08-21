@@ -1,1 +1,71 @@
-{"$defs":{"worker":{"additionalProperties":false,"properties":{"constraints":{"items":{"type":"string"},"type":"array"},"fresh_allowed":{"type":"boolean"},"goal":{"type":"string"},"opaque_evidence_ids":{"items":{"type":"string"},"type":"array"},"private_manifest_git_identity":{"type":["string","null"]},"private_manifest_id":{"type":["string","null"]},"role":{"type":"string"},"target_program":{"enum":["MATH_FOUNDRY","MASTERMIND","JOINT"]},"visibility_token":{"pattern":"^[0-9a-f]{32}$","type":"string"},"worker_branch":{"type":"string"}},"required":["worker_branch","fresh_allowed","role","goal","target_program","visibility_token","opaque_evidence_ids","private_manifest_id","private_manifest_git_identity","constraints"],"type":"object"}},"$schema":"https://json-schema.org/draft/2020-12/schema","additionalProperties":false,"properties":{"assignment_id":{"type":"string"},"benchmark_program":{"type":["string","null"]},"benchmark_suite_id":{"type":["string","null"]},"calibration_countable":{"type":"boolean"},"cohort_id":{"type":"string"},"consolidation_branch":{"type":"string"},"control_manifest_git_identity":{"pattern":"^[0-9a-f]{40}$","type":"string"},"control_manifest_id":{"type":"string"},"control_manifest_path":{"type":"string"},"expected_base_head":{"pattern":"^[0-9a-f]{40}$","type":"string"},"generation_branch":{"type":"string"},"generation_root_sha":{"pattern":"^[0-9a-f]{40}$","type":"string"},"generation_seq":{"minimum":1,"type":"integer"},"integrator_branch":{"type":"string"},"network_checkpoint_id":{"type":"string"},"network_mode":{"enum":["GITHUB_BRANCH_CALIBRATION","FRESH_ENABLED","BENCHMARK_DISCOVERY_WAIT"]},"parent_state_git_identity":{"pattern":"^[0-9a-f]{40}$","type":"string"},"phase":{"type":"string"},"purpose":{"type":"string"},"repo_policy_required":{"const":true},"runtime_state_id":{"type":"string"},"sealed_slots":{"items":{"type":"string"},"type":"array"},"short_test":{"type":"boolean"},"task_network_plan_id":{"const":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},"verifier_branch":{"type":"string"},"workers":{"additionalProperties":false,"properties":{"EXT01":{"$ref":"#/$defs/worker"},"MF01":{"$ref":"#/$defs/worker"},"MF02":{"$ref":"#/$defs/worker"},"MF03":{"$ref":"#/$defs/worker"},"MF04":{"$ref":"#/$defs/worker"},"MF05":{"$ref":"#/$defs/worker"},"MM01":{"$ref":"#/$defs/worker"},"MM02":{"$ref":"#/$defs/worker"},"MM03":{"$ref":"#/$defs/worker"},"MM04":{"$ref":"#/$defs/worker"},"MM05":{"$ref":"#/$defs/worker"},"MM07":{"$ref":"#/$defs/worker"}},"required":["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],"type":"object"}},"required":["task_network_plan_id","cohort_id","assignment_id","generation_seq","parent_state_git_identity","control_manifest_id","control_manifest_path","control_manifest_git_identity","network_checkpoint_id","runtime_state_id","network_mode","phase","short_test","calibration_countable","repo_policy_required","generation_branch","generation_root_sha","workers","verifier_branch","integrator_branch","consolidation_branch","sealed_slots"],"title":"Project Supernova Branch Assignment v2.5.1","type":"object"}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Supernova Branch Assignment v2.5.2",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "fresh_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pool", "stage", "purpose_id"],
+      "properties": {
+        "pool": {"enum": ["TRAIN", "CALIBRATION", "G1", "G8", "GOAL2", "RESEARCH_FROZEN"]},
+        "stage": {"type": "string", "minLength": 1},
+        "purpose_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "worker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["worker_branch", "fresh_allowed", "role", "goal", "target_program", "visibility_token", "opaque_evidence_ids", "private_manifest_id", "private_manifest_git_identity", "constraints"],
+      "properties": {
+        "worker_branch": {"type": "string"},
+        "fresh_allowed": {"type": "boolean"},
+        "fresh_scope": {"oneOf": [{"$ref": "#/$defs/fresh_scope"}, {"type": "null"}]},
+        "role": {"type": "string"},
+        "goal": {"type": "string"},
+        "target_program": {"enum": ["MATH_FOUNDRY", "MASTERMIND", "JOINT"]},
+        "visibility_token": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "opaque_evidence_ids": {"type": "array", "items": {"type": "string"}},
+        "private_manifest_id": {"type": ["string", "null"]},
+        "private_manifest_git_identity": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "constraints": {"type": "array", "items": {"type": "string"}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"fresh_allowed": {"const": true}}, "required": ["fresh_allowed"]},
+          "then": {
+            "required": ["fresh_scope"],
+            "properties": {
+              "fresh_scope": {"$ref": "#/$defs/fresh_scope"},
+              "private_manifest_id": {"type": "string", "minLength": 1},
+              "private_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
+    "cohort_id": {"type": "string"}, "assignment_id": {"type": "string"}, "generation_seq": {"type": "integer", "minimum": 1},
+    "parent_state_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "control_manifest_id": {"type": "string"}, "control_manifest_path": {"type": "string"},
+    "control_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "network_checkpoint_id": {"type": "string"}, "runtime_state_id": {"type": "string"},
+    "network_mode": {"enum": ["GITHUB_BRANCH_CALIBRATION", "FRESH_ENABLED", "BENCHMARK_DISCOVERY_WAIT"]}, "phase": {"type": "string"}, "purpose": {"type": "string"},
+    "short_test": {"type": "boolean"}, "calibration_countable": {"type": "boolean"}, "repo_policy_required": {"const": true},
+    "benchmark_program": {"type": ["string", "null"]}, "benchmark_suite_id": {"type": ["string", "null"]},
+    "generation_branch": {"type": "string"}, "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "workers": {
+      "type": "object", "additionalProperties": false,
+      "required": ["MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"],
+      "properties": {
+        "MF01": {"$ref": "#/$defs/worker"}, "MF02": {"$ref": "#/$defs/worker"}, "MF03": {"$ref": "#/$defs/worker"}, "MF04": {"$ref": "#/$defs/worker"},
+        "MF05": {"$ref": "#/$defs/worker"}, "MM01": {"$ref": "#/$defs/worker"}, "MM02": {"$ref": "#/$defs/worker"}, "MM03": {"$ref": "#/$defs/worker"},
+        "MM04": {"$ref": "#/$defs/worker"}, "MM05": {"$ref": "#/$defs/worker"}, "MM07": {"$ref": "#/$defs/worker"}, "EXT01": {"$ref": "#/$defs/worker"}
+      }
+    },
+    "verifier_branch": {"type": "string"}, "integrator_branch": {"type": "string"}, "consolidation_branch": {"type": "string"},
+    "expected_base_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "sealed_slots": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["task_network_plan_id", "cohort_id", "assignment_id", "generation_seq", "parent_state_git_identity", "control_manifest_id", "control_manifest_path", "control_manifest_git_identity", "network_checkpoint_id", "runtime_state_id", "network_mode", "phase", "short_test", "calibration_countable", "repo_policy_required", "generation_branch", "generation_root_sha", "workers", "verifier_branch", "integrator_branch", "consolidation_branch", "sealed_slots"]
+}
