@@ -49,9 +49,10 @@
   "research_rule": "BIL00 only at 00:58 and 12:58, and only when an accepted open research lane exists. While T0 is unqualified, T0 transport/repository/admission closure is the only admissible research lane; all other hourly BIL00 runs are director, liveness, issue-consolidation and guarded-repair runs.",
   "admission_contexts": ["supernova/static-control","supernova/report-admission","supernova/transition-admission"],
   "activation_status": {
-    "canonical_hourly_registry": "READY_ON_HARDENING_BRANCH",
-    "native_task_schedule": "OBSERVED_HOURLY_15_OF_15",
+    "canonical_hourly_registry": "FROZEN_TASK_DEFINITION_ONLY",
+    "native_task_schedule": "LIVE_TASK_STATE_OBSERVED_SEPARATELY",
     "project_chat_placement": "UNVERIFIED_NONBLOCKING_OPERATIONAL_FALLBACK_GITHUB_CANONICAL",
-    "countable_cohort_eligible": false
+    "countability_authority": "main:state/CURRENT.json + active control/assignment",
+    "activation_snapshot_scope": "HISTORICAL_TASK_DEPLOYMENT_ONLY_NONAUTHORITATIVE"
   }
 }
