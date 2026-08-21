@@ -1,0 +1,17 @@
+{
+  "schema_version": "PS-SUBSTRATE-STAGING-COMPLETION-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "seed_merge_commit_sha": "221a5271cb6cb7fd708d81f7bff2ee253ff0067f",
+  "seed_policy_blob": "92ef58b615f5e949f3d1f2c63d91cd71692e2ca1",
+  "seed_reconciler_blob": "7a8dc40c4d8ca6521d3e3f9e764a4f48f8ab76c6",
+  "seed_workflow_blob": "4e9f91888c78c72c1d6b011baa40f0a8995fded7",
+  "staging_generation_seq": 8,
+  "countable_successor_generation_seq": 9,
+  "staging_cohort_id": "STAGE-BR-008-v25-MF311",
+  "target_foundry_sha256": "57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+  "target_mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+  "runtime_update_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+  "disposition": "ONE_SHOT_NONCOUNTABLE_STAGING_TO_COUNTABLE_SUCCESSOR",
+  "seed_disposition_after_use": "PERMANENTLY_INERT_BY_MARKER_AND_GENERATION_ADVANCE"
+}
