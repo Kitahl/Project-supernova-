@@ -25,9 +25,6 @@ BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
 BOOTSTRAP_CREATOR = "github-actions[bot]"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
-# These bytes define or exercise admission authority. They may be admitted only
-# after a separate accepted-main bootstrap verifier has published the exact
-# bootstrap context from the expected GitHub Actions principal.
 AUTHORITY_PREFIXES = (
     "scripts/",
     "tests/",
@@ -182,6 +179,37 @@ def trusted_static_control(trusted_root: pathlib.Path, candidate_root: pathlib.P
     return [] if rc == 0 else ["trusted static validation failed: " + out[-1200:]]
 
 
+def first_countable_bootstrap_report_errors(old: dict, new: dict):
+    """Return None when normal prior-cohort report admission is required.
+
+    A single fail-closed exception exists only for the transition from a
+    deliberately non-countable bootstrap cohort into the first countable v2.5
+    cohort. That historical bootstrap must never be retrofitted into a clean
+    report envelope merely to start countable calibration.
+    """
+    if not (
+        old.get("calibration_countable_current") is False
+        and new.get("calibration_countable_current") is True
+    ):
+        return None
+
+    errors = []
+    if old.get("calibration_streak") != 0:
+        errors.append("first-countable bootstrap old calibration streak is not zero")
+    if new.get("calibration_streak") != 0:
+        errors.append("first-countable bootstrap new calibration streak is not zero")
+    if new.get("fresh_allowed_globally") is not False:
+        errors.append("first-countable bootstrap fresh evidence must remain disabled")
+    if new.get("repo_policy_status") != "VERIFIED_PROTECTED_SOURCE_BOUND":
+        errors.append("first-countable bootstrap source-bound repository policy is not verified")
+    if new.get("generation_seq") != old.get("generation_seq", -1) + 1:
+        errors.append("first-countable bootstrap generation is not the exact successor")
+    old_cohort = old.get("active_cohort_id")
+    if not old_cohort or old_cohort not in (new.get("superseded_cohorts") or []):
+        errors.append("first-countable bootstrap does not explicitly supersede old cohort")
+    return errors
+
+
 def report_admission(candidate_root: pathlib.Path, base_sha: str, changed: list[str]):
     if "state/CURRENT.json" not in changed:
         return []
@@ -191,6 +219,11 @@ def report_admission(candidate_root: pathlib.Path, base_sha: str, changed: list[
         return ["cannot read base state: " + old_text[-800:]]
     try:
         old = json.loads(old_text)
+        new = json.loads((candidate_root / "state" / "CURRENT.json").read_text(encoding="utf-8"))
+        bootstrap_errors = first_countable_bootstrap_report_errors(old, new)
+        if bootstrap_errors is not None:
+            return bootstrap_errors
+
         cohort = old["active_cohort_id"]
         root = candidate_root / "history" / cohort
         con = json.loads((root / "CONSOLIDATION.json").read_text(encoding="utf-8"))
