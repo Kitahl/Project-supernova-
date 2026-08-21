@@ -1,0 +1,261 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W03 | SlopCode Contracts",
+    "target_program": "MASTERMIND",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "role_id": "MM03",
+    "goal": "Replay typed missing/NOT_MEASURED and report-contract semantics, report defects, and never collapse missing metrics to zero.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "worker_id": "MM03",
+  "report_id": "RPT-CAL-BR-007-v25-c13b6ee4-MM03",
+  "generation_seq": 7,
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MM03",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "96ed14f5a4ee33a85512a6b5355eea06",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "d5d29c40c01d773210aa8bcd880ad7db3d56d79d4552c58c9183410c79dda197",
+  "worker_auth_proof": "886b0f60f6a3fa2ffbc1017b7ac433338e2a1fdf3719f80f318bf78fada4aa3a",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL_EVIDENCE_ONLY",
+  "executive_status": "Replay-only MM03 control/report-contract audit completed with two evidence-backed report-contract defects. SlopCode scientific effect remains NOT_MEASURED; no fresh, protected, benchmark, or research evidence was consumed.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MM03-TASK-CONTROL-FREEZE",
+      "status": "PASS",
+      "result": "Frozen control-release lineage and exact generation binding verified; control-release→G adds only the cohort control manifest and assignment."
+    },
+    {
+      "task_id": "MM03-TASK-AUTH",
+      "status": "PASS",
+      "result": "Prompt-private secret commitment matches frozen MM03 public SHA-256 commitment; raw secret not persisted."
+    },
+    {
+      "task_id": "MM03-TASK-BRANCH-ISOLATION",
+      "status": "PASS",
+      "result": "Assigned MM03 branch exists, is identical to G before first receipt, and assigned report path is absent."
+    },
+    {
+      "task_id": "MM03-TASK-SLOPCODE-SCIENTIFIC",
+      "status": "NOT_MEASURED",
+      "result": "No fresh SlopCode benchmark or protected evidence is authorized in T0 countable replay; scientific mechanism effect is typed missing, never zero."
+    },
+    {
+      "task_id": "MM03-TASK-REPORT-CONTRACT-ADVERSARY",
+      "status": "ISSUES_FOUND",
+      "result": "Frozen report schema/validator do not machine-enforce typed missingness, and the standardized header phase grammar conflicts with strict full-assignment-phase enforcement."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MM03-RPT-TYPED-MISSING-001",
+      "status": "OPEN",
+      "severity": "HIGH",
+      "title": "Typed missingness is not machine-enforced by the v2.5 worker report contract",
+      "evidence": [
+        "schemas/branch_report.schema.json leaves task_ledger, issue_ledger, test_ledger, plan_alignment, negative_zero_outcomes and research_questions as untyped arrays; role_payload is optional and open-ended.",
+        "scripts/validate_branch_bus_v251.py validates the generic report schema plus bindings/cost zeros but does not reject a scientific metric encoded as numeric 0 when it should be NOT_MEASURED, nor require an MM03 typed result object.",
+        "The frozen MM03 assignment and config/roles.json explicitly require missing metrics to remain typed missing rather than zero."
+      ],
+      "impact": "A structurally valid countable receipt can satisfy transport validation while omitting MM03's scientific result contract or representing an unmeasured scientific metric as 0 inside an unconstrained payload. This defeats the lane's stated calibration objective and can contaminate later aggregation.",
+      "smallest_v25_fix": "Add a frozen $defs MetricResult with required status/type/reason fields and conditional value semantics (MEASURED => numeric value allowed; NOT_MEASURED/UNKNOWN/NOT_APPLICABLE => value must be null), require the MM03 role payload to contain the typed SlopCode result, and add negative tests showing numeric 0 for NOT_MEASURED is rejected. Because cohort 1 is already active, treat the authoritative hardening as streak-resetting per the v2.5 freeze rule.",
+      "falsifier": "Construct a schema-valid MM03 report that omits role_payload entirely, or sets role_payload.slopcode_result={\"status\":\"NOT_MEASURED\",\"value\":0}. If the frozen schema/validator rejects both cases, this issue is falsified."
+    },
+    {
+      "issue_id": "MM03-RPT-PHASE-002",
+      "status": "OPEN",
+      "severity": "MEDIUM",
+      "title": "Standardized header phase grammar is stale relative to strict full-phase equality",
+      "evidence": [
+        "SESSION_STANDARD.md presents PHASE as one of generic tokens such as T0/E1/G1/C1.",
+        "BRANCH_WORKER_PROTOCOL.md requires the first visible header to copy the full phase exactly from frozen assignment/control.",
+        "scripts/validate_branch_bus_v251.py enforces session_header.phase == assignment.phase; the active assignment phase is T0_COUNTABLE_REPLAY_COHORT_1."
+      ],
+      "impact": "A worker following the header template literally with PHASE=T0 can fail strict session validation despite otherwise following SESSION_STANDARD.md, creating avoidable countable-cohort transport failures.",
+      "smallest_v25_fix": "Change the session header template to PHASE: <exact frozen assignment phase> (optionally document canonical phase family separately) and add a negative test that generic T0 is rejected when the assignment carries a longer phase string.",
+      "falsifier": "If SESSION_STANDARD.md is amended or formally interpreted by another frozen rule so that its phase placeholder is explicitly non-enumerative and strict full-assignment phase is unambiguous, this documentation-contract issue is closed."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MM03-T01-STATE-LIVENESS",
+      "status": "PASS",
+      "evidence": "main state is protocol 2.5 / BRANCH_GITOPS / active cohort CAL-BR-007-v25-c13b6ee4; cohort is not superseded; fresh_allowed_globally=false; calibration_countable_current=true."
+    },
+    {
+      "test_id": "MM03-T02-CONTROL-RELEASE-TREE",
+      "status": "PASS",
+      "evidence": "Frozen control release c13b6ee4ef38797a81804aa38dab9186de441e5f has tree 65c525b6e7cf5ce788f88bbed45b7486739a81b9 exactly matching control manifest."
+    },
+    {
+      "test_id": "MM03-T03-CONTROL-CLOSURE",
+      "status": "PASS",
+      "evidence": "Control release→G is exactly two commits adding only control/CAL-BR-007-v25-c13b6ee4.json and assignments/CAL-BR-007-v25-c13b6ee4.json; all required control paths are therefore byte-identical to the frozen release."
+    },
+    {
+      "test_id": "MM03-T04-KEY-BLOBS",
+      "status": "PASS",
+      "evidence": "SESSION_STANDARD.md=a0825fc2a465ff48abdc1e8efa7c9303ad1709de; config/roles.json=04a7e3edeb394507a7dc8e6ee697c65ed05db01d; config/worker_auth.json=9498d1d49b8636a3a313dc63be89f4433330c230; schemas/branch_report.schema.json=a1cd0862351962730bd8b3de4f67a9d13732ad8f; scripts/validate_branch_bus_v251.py=959b3199fedbe571a1125d14aee287da40b87b3e."
+    },
+    {
+      "test_id": "MM03-T05-WORKER-PREWRITE",
+      "status": "PASS",
+      "evidence": "G→assigned MM03 branch compare is identical (ahead=0, behind=0, files=[]); assigned report path returned 404 before write."
+    },
+    {
+      "test_id": "MM03-T06-AUTH-COMMITMENT",
+      "status": "PASS",
+      "evidence": "SHA-256(prompt-private MM03 secret bytes) equals frozen public commitment d5d29c40c01d773210aa8bcd880ad7db3d56d79d4552c58c9183410c79dda197."
+    },
+    {
+      "test_id": "MM03-T07-MODE",
+      "status": "PASS",
+      "evidence": "session_header.execution_mode == report.mode == SAFE_REPLAY_ONLY; all fresh/private/benchmark/research costs are zero."
+    },
+    {
+      "test_id": "MM03-T08-TYPED-MISSING",
+      "status": "PASS_FOR_THIS_REPORT",
+      "evidence": "This report encodes SlopCode scientific effect as status=NOT_MEASURED with value=null; no scientific zero is asserted."
+    },
+    {
+      "test_id": "MM03-T09-PREWRITE-CI",
+      "status": "CI_NOT_OBSERVED",
+      "evidence": "At G, supernova/branch-generation and supernova/static-control are success while supernova/branch-worker is pending before the worker receipt exists; pending is not PASS."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "requirement": "Mastermind PRE_REVIEW_ONLY",
+      "status": "PASS",
+      "evidence": "No Foundry/Court/scientific-state mutation, self-grading, benchmark execution, or promotion performed."
+    },
+    {
+      "requirement": "T0 countable replay-only",
+      "status": "PASS",
+      "evidence": "SAFE_REPLAY_ONLY with zero fresh evidence, protected reads, benchmark executions, and deep research."
+    },
+    {
+      "requirement": "typed missingness",
+      "status": "PASS_FOR_THIS_REPORT_WITH_CONTROL_DEFECT_OPEN",
+      "evidence": "SlopCode result preserved as NOT_MEASURED/null, while MM03-RPT-TYPED-MISSING-001 records that the frozen contract does not enforce this mechanically."
+    }
+  ],
+  "evidence_and_provenance": {
+    "canonical_state": {
+      "path": "state/CURRENT.json",
+      "ref": "main",
+      "git_identity": "856481759722e23ff9a652ce140f304efe13b023"
+    },
+    "generation": {
+      "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+      "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+      "control_release_commit_sha": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+      "control_release_tree_sha": "65c525b6e7cf5ce788f88bbed45b7486739a81b9",
+      "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+      "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de"
+    },
+    "frozen_key_blobs": {
+      "SESSION_STANDARD.md": "a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+      "config/roles.json": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "config/worker_auth.json": "9498d1d49b8636a3a313dc63be89f4433330c230",
+      "schemas/branch_report.schema.json": "a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+      "scripts/validate_branch_bus_v251.py": "959b3199fedbe571a1125d14aee287da40b87b3e",
+      "runtime/updates/GEN7-REPLAY-SUBSTRATE-BINDING.json": "61ad3692aab911f49ce03a8f354ab0b5a8dfb0cd"
+    },
+    "runtime_binding": {
+      "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+      "runtime_update_path": "runtime/updates/GEN7-REPLAY-SUBSTRATE-BINDING.json",
+      "runtime_update_git_identity": "61ad3692aab911f49ce03a8f354ab0b5a8dfb0cd",
+      "requested_model": "GPT-5.6 Sol",
+      "requested_reasoning_effort": "EXTRA_HIGH",
+      "observed_model_identity": "GPT-5.6 Sol",
+      "observed_reasoning_effort_receipt": null,
+      "model_binding_status": "PARTIAL_UNVERIFIED",
+      "note": "Model identity is available in the active runtime context; no independent receipt proving EXTRA_HIGH reasoning effort is exposed, so VERIFIED is not claimed."
+    },
+    "fresh_or_private_evidence_used": false,
+    "origin_independent_reread": false
+  },
+  "claim_scope": "Transport/control-contract evidence only. No fresh SlopCode measurement, no protected evidence, no scientific effect estimate, and no Mastermind mechanism promotion.",
+  "runtime_implementation_implication": "No runtime or scientific-state change is authorized by this report. The two open issues are v2.5 control/report-contract hardening findings for independent MM06/MF06/BIL00 disposition.",
+  "negative_zero_outcomes": [
+    {
+      "id": "MM03-SLOPCODE-EFFECT",
+      "status": "NOT_MEASURED",
+      "value": null,
+      "missingness_type": "ASSIGNMENT_FORBIDS_FRESH_MEASUREMENT",
+      "reason": "Active T0 assignment is replay-only and explicitly carries no SlopCode benchmark/private evidence."
+    },
+    {
+      "id": "MM03-FRESH-EVIDENCE-UNITS",
+      "status": "MEASURED_ACCOUNTING",
+      "value": 0,
+      "reason": "Accounting quantity only; not a scientific effect value."
+    },
+    {
+      "id": "MM03-PROTECTED-MANIFEST-READS",
+      "status": "MEASURED_ACCOUNTING",
+      "value": 0,
+      "reason": "Accounting quantity only."
+    },
+    {
+      "id": "MM03-BENCHMARK-EXECUTIONS",
+      "status": "MEASURED_ACCOUNTING",
+      "value": 0,
+      "reason": "Accounting quantity only."
+    },
+    {
+      "id": "MM03-DEEP-RESEARCH-RUNS",
+      "status": "MEASURED_ACCOUNTING",
+      "value": 0,
+      "reason": "Accounting quantity only."
+    }
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "slopcode_result": {
+      "status": "NOT_MEASURED",
+      "value": null,
+      "missingness_type": "ASSIGNMENT_FORBIDS_FRESH_MEASUREMENT",
+      "metric_family": "SLOPCODE_MECHANISM_EFFECT",
+      "scientific_zero_asserted": false
+    },
+    "report_contract_audit": {
+      "typed_missingness_preserved_in_this_report": true,
+      "typed_missingness_machine_enforced_by_frozen_schema": false,
+      "role_payload_required_by_frozen_schema": false,
+      "generic_phase_template_matches_active_assignment_phase": false
+    }
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay/control-plane reads only. No private vault, protected manifest, benchmark execution, deep research, or scientific evidence consumption."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently fetch the exact MM03 worker head, verify one-path/one-create history, recompute HMAC-2, validate the report/schema/session/auth/cost bindings, and treat MM03-RPT-TYPED-MISSING-001 and MM03-RPT-PHASE-002 as open v2.5 control defects rather than scientific results. Any authoritative repair after cohort-1 start must follow the frozen streak-reset rule."
+}
