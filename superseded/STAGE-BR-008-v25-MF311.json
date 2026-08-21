@@ -1,0 +1,11 @@
+{
+  "schema_version":"PS-COHORT-SUPERSESSION-1",
+  "cohort_id":"STAGE-BR-008-v25-MF311",
+  "generation_head_sha":"6325824aac035d190dbfb0a54b9eca49af36c046",
+  "state_blob_sha":"1b2f5bacbe70eabb1828ee3f643a6959fad83284",
+  "disposition":"NONCOUNTABLE_SUBSTRATE_STAGING_COMPLETE_ZERO_CREDIT",
+  "calibration_credit":0,
+  "fresh_evidence_consumed":false,
+  "replacement_generation_seq":9,
+  "replacement_countable":true
+}
