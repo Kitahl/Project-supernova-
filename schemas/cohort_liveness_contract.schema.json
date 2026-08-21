@@ -1,23 +1,41 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "CohortLivenessContract v1",
+  "title": "CohortLivenessContract v2",
   "type": "object",
   "additionalProperties": false,
-  "required": ["cohort_id", "generation_head_sha", "lanes"],
+  "required": [
+    "schema_version",
+    "cohort_id",
+    "generation_root_sha",
+    "control_manifest_id",
+    "control_manifest_git_identity",
+    "assignment_id",
+    "assignment_git_identity",
+    "lanes"
+  ],
   "properties": {
-    "cohort_id": {"type": "string"},
-    "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "schema_version": {"const": "PS-COHORT-LIVENESS-2"},
+    "cohort_id": {"type": "string", "minLength": 1},
+    "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "control_manifest_id": {"type": "string", "minLength": 1},
+    "control_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "assignment_id": {"type": "string", "minLength": 1},
+    "assignment_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "lanes": {
-      "type": "array", "minItems": 1,
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "uniqueItems": true,
       "items": {
-        "type": "object", "additionalProperties": false,
+        "type": "object",
+        "additionalProperties": false,
         "required": ["lane_id", "branch", "path", "expected_window_start_utc", "deadline_utc"],
         "properties": {
-          "lane_id": {"type": "string"},
-          "branch": {"type": "string"},
-          "path": {"type": "string"},
-          "expected_window_start_utc": {"type": "string"},
-          "deadline_utc": {"type": "string"},
+          "lane_id": {"enum": ["MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"]},
+          "branch": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "minLength": 1},
+          "expected_window_start_utc": {"type": "string", "minLength": 1},
+          "deadline_utc": {"type": "string", "minLength": 1},
           "eligible_before_deadline": {"type": "boolean"}
         }
       }
