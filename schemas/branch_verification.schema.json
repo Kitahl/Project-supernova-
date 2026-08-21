@@ -1,90 +1,112 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"Project Supernova Branch Verification v2.5 hardened",
-  "type":"object",
-  "additionalProperties":false,
-  "required":[
-    "session_header","task_network_plan_id","cohort_id","verification_id","generation_head_sha","verifier_branch","runtime_state_id","executive_status",
-    "safe_report_refs","quarantined_report_refs","missing_workers","worker_auth_verification","partition_exhaustive_verified",
-    "lane_liveness_observations","liveness_complete","verifier_assurance_records","checker_pin_bundle_ref","statement_fidelity_policy",
-    "task_ledger","issue_ledger","test_ledger","plan_alignment","research_questions","calibration_pass","verdict","pre_ci_observation","required_post_write_ci_context","next_action"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Supernova Branch Verification v2.5 hardened",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_header", "task_network_plan_id", "cohort_id", "verification_id", "generation_head_sha", "verifier_branch", "runtime_state_id", "executive_status",
+    "safe_report_refs", "quarantined_report_refs", "missing_workers", "worker_auth_verification", "partition_exhaustive_verified",
+    "lane_liveness_observations", "liveness_complete", "verifier_assurance_records", "checker_pin_bundle_ref", "statement_fidelity_policy",
+    "task_ledger", "issue_ledger", "test_ledger", "plan_alignment", "research_questions", "calibration_pass", "verdict", "pre_ci_observation", "required_post_write_ci_context", "next_action"
   ],
-  "properties":{
-    "session_header":{"type":"object"},
-    "task_network_plan_id":{"const":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
-    "cohort_id":{"type":"string"},
-    "verification_id":{"type":"string"},
-    "generation_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},
-    "verifier_branch":{"type":"string"},
-    "runtime_state_id":{"type":"string"},
-    "executive_status":{"type":"string"},
-    "safe_report_refs":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/safe_ref"}},
-    "quarantined_report_refs":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/quarantine_ref"}},
-    "missing_workers":{"type":"array","uniqueItems":true,"items":{"$ref":"#/$defs/worker_id"}},
-    "worker_auth_verification":{
-      "type":"object","additionalProperties":false,
-      "required":["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],
-      "properties":{
-        "MF01":{"enum":["PASS","FAIL","MISSING"]},"MF02":{"enum":["PASS","FAIL","MISSING"]},"MF03":{"enum":["PASS","FAIL","MISSING"]},
-        "MF04":{"enum":["PASS","FAIL","MISSING"]},"MF05":{"enum":["PASS","FAIL","MISSING"]},"MM01":{"enum":["PASS","FAIL","MISSING"]},
-        "MM02":{"enum":["PASS","FAIL","MISSING"]},"MM03":{"enum":["PASS","FAIL","MISSING"]},"MM04":{"enum":["PASS","FAIL","MISSING"]},
-        "MM05":{"enum":["PASS","FAIL","MISSING"]},"MM07":{"enum":["PASS","FAIL","MISSING"]},"EXT01":{"enum":["PASS","FAIL","MISSING"]}
+  "properties": {
+    "session_header": {"type": "object"},
+    "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
+    "cohort_id": {"type": "string"},
+    "verification_id": {"type": "string"},
+    "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "verifier_branch": {"type": "string"},
+    "runtime_state_id": {"type": "string"},
+    "executive_status": {"type": "string"},
+    "safe_report_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/safe_ref"}},
+    "quarantined_report_refs": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/quarantine_ref"}},
+    "missing_workers": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/worker_id"}},
+    "worker_auth_verification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"],
+      "properties": {
+        "MF01": {"enum": ["PASS", "FAIL", "MISSING"]}, "MF02": {"enum": ["PASS", "FAIL", "MISSING"]}, "MF03": {"enum": ["PASS", "FAIL", "MISSING"]},
+        "MF04": {"enum": ["PASS", "FAIL", "MISSING"]}, "MF05": {"enum": ["PASS", "FAIL", "MISSING"]}, "MM01": {"enum": ["PASS", "FAIL", "MISSING"]},
+        "MM02": {"enum": ["PASS", "FAIL", "MISSING"]}, "MM03": {"enum": ["PASS", "FAIL", "MISSING"]}, "MM04": {"enum": ["PASS", "FAIL", "MISSING"]},
+        "MM05": {"enum": ["PASS", "FAIL", "MISSING"]}, "MM07": {"enum": ["PASS", "FAIL", "MISSING"]}, "EXT01": {"enum": ["PASS", "FAIL", "MISSING"]}
       }
     },
-    "partition_exhaustive_verified":{"const":true},
-    "lane_liveness_observations":{"type":"array","minItems":12,"maxItems":12,"items":{"$ref":"#/$defs/liveness"}},
-    "liveness_complete":{"type":"boolean"},
-    "verifier_assurance_records":{"type":"array","items":{"type":"object"}},
-    "checker_pin_bundle_ref":{"const":"config/checker_pins.json"},
-    "statement_fidelity_policy":{"enum":["NOT_APPLICABLE_TRANSPORT_ONLY","REQUIRED_BY_SCIENTIFIC_MANIFEST"]},
-    "task_ledger":{"type":"array"},"issue_ledger":{"type":"array"},"test_ledger":{"type":"array"},"plan_alignment":{"type":"array"},"research_questions":{"type":"array"},
-    "calibration_pass":{"type":"boolean"},
-    "verdict":{"enum":["VERIFIED_COMPLETE","VERIFIED_WITH_QUARANTINES","INCOMPLETE","INVALID"]},
-    "pre_ci_observation":{"enum":["PRE_CI","CI_NOT_OBSERVED"]},
-    "required_post_write_ci_context":{"const":"supernova/report-admission"},
-    "negative_findings":{"type":"array"},
-    "next_action":{"type":"string"}
+    "partition_exhaustive_verified": {"const": true},
+    "lane_liveness_observations": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/liveness"}},
+    "liveness_complete": {"type": "boolean"},
+    "verifier_assurance_records": {"type": "array", "items": {"$ref": "#/$defs/verifier_assurance"}},
+    "checker_pin_bundle_ref": {"const": "config/checker_pins.json"},
+    "statement_fidelity_policy": {"enum": ["NOT_APPLICABLE_TRANSPORT_ONLY", "REQUIRED_BY_SCIENTIFIC_MANIFEST"]},
+    "task_ledger": {"type": "array"}, "issue_ledger": {"type": "array"}, "test_ledger": {"type": "array"}, "plan_alignment": {"type": "array"}, "research_questions": {"type": "array"},
+    "calibration_pass": {"type": "boolean"},
+    "verdict": {"enum": ["VERIFIED_COMPLETE", "VERIFIED_WITH_QUARANTINES", "INCOMPLETE", "INVALID"]},
+    "pre_ci_observation": {"enum": ["PRE_CI", "CI_NOT_OBSERVED"]},
+    "required_post_write_ci_context": {"const": "supernova/report-admission"},
+    "negative_findings": {"type": "array"},
+    "next_action": {"type": "string"}
   },
-  "$defs":{
-    "worker_id":{"enum":["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"]},
-    "safe_ref":{
-      "type":"object","additionalProperties":false,
-      "required":["worker_id","branch","branch_head_sha","path","blob_sha","report_creation_commit_sha","path_change_commit_count","generation_ancestry_valid","single_path_diff_valid","immutable_history_valid","structural_ci_context","structural_ci_status","verifier_reread_verified","schema_valid","strict_session_valid","execution_mode_valid","auth_valid","public_safety_valid"],
-      "properties":{
-        "worker_id":{"$ref":"#/$defs/worker_id"},"branch":{"type":"string"},"branch_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},
-        "path":{"type":"string"},"blob_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},"report_creation_commit_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},
-        "path_change_commit_count":{"const":1},"generation_ancestry_valid":{"const":true},"single_path_diff_valid":{"const":true},"immutable_history_valid":{"const":true},
-        "structural_ci_context":{"const":"supernova/branch-worker"},"structural_ci_status":{"const":"PASS"},"verifier_reread_verified":{"const":true},"schema_valid":{"const":true},
-        "strict_session_valid":{"const":true},"execution_mode_valid":{"const":true},"auth_valid":{"const":true},"public_safety_valid":{"const":true}
+  "$defs": {
+    "worker_id": {"enum": ["MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"]},
+    "safe_ref": {
+      "type": "object", "additionalProperties": false,
+      "required": ["worker_id", "branch", "branch_head_sha", "path", "blob_sha", "report_creation_commit_sha", "path_change_commit_count", "generation_ancestry_valid", "single_path_diff_valid", "immutable_history_valid", "structural_ci_context", "structural_ci_status", "verifier_reread_verified", "schema_valid", "strict_session_valid", "execution_mode_valid", "auth_valid", "public_safety_valid"],
+      "properties": {
+        "worker_id": {"$ref": "#/$defs/worker_id"}, "branch": {"type": "string"}, "branch_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "path": {"type": "string"}, "blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "report_creation_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "path_change_commit_count": {"const": 1}, "generation_ancestry_valid": {"const": true}, "single_path_diff_valid": {"const": true}, "immutable_history_valid": {"const": true},
+        "structural_ci_context": {"const": "supernova/branch-worker"}, "structural_ci_status": {"const": "PASS"}, "verifier_reread_verified": {"const": true}, "schema_valid": {"const": true},
+        "strict_session_valid": {"const": true}, "execution_mode_valid": {"const": true}, "auth_valid": {"const": true}, "public_safety_valid": {"const": true}
       }
     },
-    "quarantine_ref":{
-      "type":"object","additionalProperties":false,
-      "required":["worker_id","branch","expected_path","observed_head_sha","observed_blob_sha","observed_path_change_commits","reason_code","summary","evidence_refs","disposition"],
-      "properties":{
-        "worker_id":{"$ref":"#/$defs/worker_id"},"branch":{"type":"string"},"expected_path":{"type":"string"},
-        "observed_head_sha":{"type":["string","null"],"pattern":"^[0-9a-f]{40}$"},"observed_blob_sha":{"type":["string","null"],"pattern":"^[0-9a-f]{40}$"},
-        "observed_path_change_commits":{"type":"array","uniqueItems":true,"items":{"type":"string","pattern":"^[0-9a-f]{40}$"}},
-        "reason_code":{"type":"string"},"summary":{"type":"string"},"evidence_refs":{"type":"array","items":{"type":"string"}},"disposition":{"type":"string"}
+    "quarantine_ref": {
+      "type": "object", "additionalProperties": false,
+      "required": ["worker_id", "branch", "expected_path", "observed_head_sha", "observed_blob_sha", "observed_path_change_commits", "reason_code", "summary", "evidence_refs", "disposition"],
+      "properties": {
+        "worker_id": {"$ref": "#/$defs/worker_id"}, "branch": {"type": "string"}, "expected_path": {"type": "string"},
+        "observed_head_sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"}, "observed_blob_sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "observed_path_change_commits": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{40}$"}},
+        "reason_code": {"type": "string"}, "summary": {"type": "string"}, "evidence_refs": {"type": "array", "items": {"type": "string"}}, "disposition": {"type": "string"}
       }
     },
-    "liveness":{
-      "type":"object","additionalProperties":false,
-      "required":["lane_id","expected_window_start","expected_window_end","observation_time","receipt_status","task_state","observation_source","lateness_seconds"],
-      "properties":{
-        "lane_id":{"$ref":"#/$defs/worker_id"},"task_id":{"type":["string","null"]},"associated_chat_ref":{"type":["string","null"]},
-        "expected_window_start":{"type":"string"},"expected_window_end":{"type":"string"},"observation_time":{"type":"string"},
-        "receipt_status":{"enum":["RUN_OBSERVED","ZERO_DELTA_RECEIPT_OBSERVED","RUN_LATE","NO_RECEIPT"]},
-        "task_state":{"enum":["ACTIVE","TASK_PAUSED_INACTIVITY","TASK_PAUSED_CHAT_DELETED","TASK_PAUSED_MANUAL","TASK_STATE_UNKNOWN"]},
-        "observation_source":{"enum":["GITHUB_RECEIPT_MONITOR","AUTHORITATIVE_TASK_STATE","MANUAL_AUDIT"]},
-        "receipt_ref":{"type":["string","null"]},"lateness_seconds":{"type":"integer","minimum":0},"notes":{"type":"string"}
+    "liveness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["lane_id", "expected_window_start", "expected_window_end", "observation_time", "receipt_status", "task_state", "observation_source", "lateness_seconds"],
+      "properties": {
+        "lane_id": {"$ref": "#/$defs/worker_id"}, "task_id": {"type": ["string", "null"]}, "associated_chat_ref": {"type": ["string", "null"]},
+        "expected_window_start": {"type": "string"}, "expected_window_end": {"type": "string"}, "observation_time": {"type": "string"},
+        "receipt_status": {"enum": ["RUN_OBSERVED", "ZERO_DELTA_RECEIPT_OBSERVED", "RUN_LATE", "NO_RECEIPT"]},
+        "task_state": {"enum": ["ACTIVE", "TASK_PAUSED_INACTIVITY", "TASK_PAUSED_CHAT_DELETED", "TASK_PAUSED_MANUAL", "TASK_STATE_UNKNOWN"]},
+        "observation_source": {"enum": ["GITHUB_RECEIPT_MONITOR", "AUTHORITATIVE_TASK_STATE", "MANUAL_AUDIT"]},
+        "receipt_ref": {"type": ["string", "null"]}, "lateness_seconds": {"type": "integer", "minimum": 0}, "notes": {"type": "string"}
+      }
+    },
+    "verifier_assurance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checker_id", "exact_version_or_commit", "assurance_type", "implementation_family", "shared_tcb", "statement_identity_scope", "independence_status", "known_advisories", "exploit_regression_digest", "mutation_fuzz_digest", "last_security_review", "scope"],
+      "properties": {
+        "checker_id": {"type": "string"},
+        "exact_version_or_commit": {"type": "string"},
+        "assurance_type": {"enum": ["PRIMARY_KERNEL", "SAME_KERNEL_FRESH_REPLAY", "EXTERNAL_KERNEL_IMPLEMENTATION", "STATEMENT_IDENTITY_CHECKER", "STATEMENT_FIDELITY_AUTHORITY"]},
+        "implementation_family": {"type": "string"},
+        "language": {"type": ["string", "null"]},
+        "export_format": {"type": ["string", "null"]},
+        "shared_tcb": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "shared_algorithmic_lineage": {"type": ["string", "null"]},
+        "statement_identity_scope": {"type": "string"},
+        "known_advisories": {"type": "array", "items": {"type": "string"}},
+        "exploit_regression_digest": {"type": "string"},
+        "mutation_fuzz_digest": {"type": "string"},
+        "last_security_review": {"type": "string"},
+        "scope": {"type": "string"},
+        "independence_status": {"enum": ["NOT_ASSESSED", "SHARED_KERNEL", "SHARED_EXPORT_PIPELINE", "DIVERSE_IMPLEMENTATION_SHARED_SPEC", "JOINTLY_EXPLOITABLE_HISTORY", "NO_INDEPENDENCE_CLAIM"]}
       }
     }
   },
-  "allOf":[
+  "allOf": [
     {
-      "if":{"properties":{"verdict":{"const":"VERIFIED_COMPLETE"}}},
-      "then":{"properties":{"liveness_complete":{"const":true},"missing_workers":{"maxItems":0},"quarantined_report_refs":{"maxItems":0},"safe_report_refs":{"minItems":12,"maxItems":12}}}
+      "if": {"properties": {"verdict": {"const": "VERIFIED_COMPLETE"}}},
+      "then": {"properties": {"liveness_complete": {"const": true}, "missing_workers": {"maxItems": 0}, "quarantined_report_refs": {"maxItems": 0}, "safe_report_refs": {"minItems": 12, "maxItems": 12}}}
     }
   ]
 }
