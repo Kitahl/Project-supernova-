@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-ADMISSION-AUTHORITY-2.5-4",
+  "schema_version": "PS-ADMISSION-AUTHORITY-2.5-5",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "required_status_creator": "github-actions[bot]",
@@ -20,12 +20,18 @@
     ".github/workflows/supernova-open-pr-reconciler.yml",
     ".github/workflows/supernova-authority-bootstrap.yml",
     ".github/workflows/supernova-bootstrap-completion-reconcile.yml",
-    ".github/workflows/supernova-root-rotation-seed.yml"
+    ".github/workflows/supernova-root-rotation-seed.yml",
+    ".github/workflows/supernova-structural-status-rotation-seed.yml"
   ],
   "trusted_authority_helpers": [
     "config/root_rotation_seed_v25.json",
     "scripts/reconcile_root_rotation_seed.py",
     ".github/workflows/supernova-root-rotation-seed.yml",
+    "config/structural_status_rotation_seed_v25.json",
+    "scripts/reconcile_structural_status_rotation_seed.py",
+    ".github/workflows/supernova-structural-status-rotation-seed.yml",
+    "config/structural_status_rotation_epoch_v25.json",
+    "config/gen9_repair_reset_epoch_v25.json",
     "config/root_tcb_epoch_v25.json",
     ".github/workflows/supernova-bootstrap-completion-reconcile.yml"
   ],
@@ -36,7 +42,13 @@
   "bootstrap_status_provenance": "DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_REQUIRED",
   "root_tcb_epoch_path": "config/root_tcb_epoch_v25.json",
   "root_tcb_derivation": "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS",
-  "authority_change_rule": "Authority-changing PRs may not self-admit. Candidate tests execute only in a separate read-only job. Exact accepted-main bootstrap verifier bytes must bind the diagnostic result to the exact PR head/base and publish supernova/bootstrap-admission=success with a target_url naming the designated authority-bootstrap workflow run. Normal required contexts may be published only after that exact designated workflow run is completed successfully and the trusted reconciler verifies its workflow path, event, run state, exact PR/head/base description and GitHub Actions principal. Every accepted-main write-capable admission validator/reconciler/workflow/helper and the validation dependency lock is in the non-self-amendable root TCB. Root-TCB changes require a separately trusted root-rotation seed.",
+  "structural_status_authority": {
+    "authoritative_writer": "scripts/reconcile_branch_statuses.py",
+    "rest_reconciler_role": "DIAGNOSTIC_CONTEXTS_ONLY",
+    "rest_context_prefix": "supernova/rest-",
+    "shared_structural_context_writers_forbidden": true
+  },
+  "authority_change_rule": "Authority-changing PRs may not self-admit. Candidate tests execute only in a separate read-only job. Exact accepted-main bootstrap verifier bytes must bind the diagnostic result to the exact PR head/base and publish supernova/bootstrap-admission=success with a target_url naming the designated authority-bootstrap workflow run. Normal required contexts may be published only after that exact designated workflow run is completed successfully and the trusted reconciler verifies its workflow path, event, run state, exact PR association, exact head/base, GitHub Actions principal, and unique qualifying run. Every accepted-main write-capable admission validator/reconciler/workflow/helper and the validation dependency lock is in the non-self-amendable root TCB. Root-TCB changes require a separately trusted one-shot seed.",
   "same_repository_required": true,
   "owner_authored_required_for_privileged_reconciliation": true,
   "exact_current_main_ancestor_required": true,
