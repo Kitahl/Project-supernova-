@@ -33,7 +33,17 @@ class RuntimeUpdateLineageTests(unittest.TestCase):
         (self.root / "config").mkdir(parents=True)
         (self.root / "runtime" / "updates").mkdir(parents=True)
         shutil.copy2(ROOT / "schemas" / "runtime_update.schema.json", self.root / "schemas" / "runtime_update.schema.json")
-        shutil.copy2(ROOT / "config" / "substrate_epoch_v25.json", self.root / "config" / "substrate_epoch_v25.json")
+
+        # This test models a synthetic substrate transition. Its epoch fixture must
+        # describe the synthetic post-transition state, not whichever Foundry release
+        # happens to be active in the repository when the regression is run.
+        epoch = json.loads((ROOT / "config" / "substrate_epoch_v25.json").read_text(encoding="utf-8"))
+        epoch["math_foundry"]["source_archive_sha256"] = NEW_FOUNDRY
+        epoch["mastermind"]["sha256"] = NEW_MASTERMIND
+        (self.root / "config" / "substrate_epoch_v25.json").write_text(
+            json.dumps(epoch, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+
         self.parent = self.runtime_state(OLD_FOUNDRY, OLD_MASTERMIND)
         self.current = self.runtime_state(NEW_FOUNDRY, NEW_MASTERMIND)
         self.current["runtime_update_receipt_path"] = "runtime/updates/GEN7-SUBSTRATE.json"
@@ -100,6 +110,11 @@ class RuntimeUpdateLineageTests(unittest.TestCase):
 
     def errors(self):
         return self.mod.runtime_receipt_errors(self.root, self.parent, self.current, ["foundry_sha256", "mastermind_sha256"])
+
+    def test_fixture_epoch_tracks_synthetic_candidate_not_live_release(self):
+        epoch = json.loads((self.root / "config" / "substrate_epoch_v25.json").read_text(encoding="utf-8"))
+        self.assertEqual(epoch["math_foundry"]["source_archive_sha256"], NEW_FOUNDRY)
+        self.assertEqual(epoch["mastermind"]["sha256"], NEW_MASTERMIND)
 
     def test_valid_replay_substrate_receipt_passes(self):
         self.write_receipt(self.receipt()); self.assertEqual(self.errors(), [])
