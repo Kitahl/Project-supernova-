@@ -1,0 +1,302 @@
+{
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "claim_scope": "Public frozen-control replay and architecture/TCB adversarial audit only. No protected Senior SWE benchmark, evaluator execution, architecture score, scientific efficacy claim, mathematical result, Court status, Foundry authority or scientific-state change.",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Countable T0 replay only. Public GitHub control-plane reads and deterministic HMAC/report construction are transport/control work, not fresh scientific evidence.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "canonical_state": {
+      "blob": "856481759722e23ff9a652ce140f304efe13b023",
+      "calibration_countable_current": true,
+      "path": "state/CURRENT.json",
+      "repo_policy_status": "VERIFIED_PROTECTED_SOURCE_BOUND",
+      "source_ref": "main"
+    },
+    "control_release": {
+      "commit": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+      "generation_delta": [
+        "control/CAL-BR-007-v25-c13b6ee4.json",
+        "assignments/CAL-BR-007-v25-c13b6ee4.json"
+      ],
+      "tree": "65c525b6e7cf5ce788f88bbed45b7486739a81b9"
+    },
+    "frozen_blobs": {
+      "admission_authority": "838d68f674132aaadb24acdb790bda8497e553be",
+      "assignment": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+      "authority_bootstrap_policy": "053c18dd706a6f5c315cf3c32a8cc38c0644dfcf",
+      "authority_bootstrap_reconciler": "262029e45ba0dfdd7825e137c16aa998b697bf92",
+      "authority_bootstrap_workflow": "0dcfb054699e5761a9420c410aaab661a14f2592",
+      "branch_config": "6e366efd9f401682265d8bea274b88655edb26a0",
+      "branch_report_schema": "a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+      "branch_worker_protocol": "2103ec2cc4dcdf623f32e76878bd0a01f7a66d15",
+      "checker_pins": "ffc5cd4f882be9e8e8b75ea95d8452a6a2f95fc9",
+      "control_manifest": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+      "countable_control_set": "dd86247c0ad249d4d8d6f74a3656f8127448ad6c",
+      "open_pr_reconciler": "be1431ee2eb6c176016a919f3f1f458c34f478ad",
+      "plan": "69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+      "repo_policy": "81e310ae87d65ac6a796d2dd9a963f30c62887ac",
+      "requirements_validation_lock": "9475996659114e684f0b6dcbb67d83af3bde431c",
+      "roles": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "runtime_binding_receipt": "61ad3692aab911f49ce03a8f354ab0b5a8dfb0cd",
+      "session_standard": "a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+      "transition_guard": "b16400b91626d02ac923140059b24cd18b3200dd",
+      "transition_guard_test": "9921d90fad402907515cd141d8ea35235998d2cf",
+      "v251_validator": "959b3199fedbe571a1125d14aee287da40b87b3e",
+      "worker_auth": "9498d1d49b8636a3a313dc63be89f4433330c230"
+    },
+    "generation": {
+      "branch": "ps/gen/CAL-BR-007-v25-c13b6ee4",
+      "head": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+      "prewrite_compare_to_head": "identical"
+    },
+    "parent_state": {
+      "blob": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+      "calibration_countable": false,
+      "cohort_id": "CAL-BR-006-v251-433ad83a",
+      "generation_seq": 6
+    },
+    "prewrite_ci": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "runtime_binding": {
+      "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+      "qualification_class": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+      "receipt_path": "runtime/updates/GEN7-REPLAY-SUBSTRATE-BINDING.json",
+      "status": "VALIDATED"
+    },
+    "worker_prewrite": {
+      "branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MM04",
+      "prewrite_compare_to_generation": "identical",
+      "report_preexisted": false
+    }
+  },
+  "evidence_tier": "T0_FROZEN_CONTROL_REPLAY",
+  "executive_status": "VALID_ASSIGNED_REPORT_WITH_CONTROL_ISSUES. Gen7 is the first countable protocol-2.5 replay cohort and MM04 was eligible at exact G with no preexisting report. Five architecture/TCB defects are recorded: report issue-ledger schema closure, bootstrap transitive TCB closure, bootstrap diagnostic-head binding, bootstrap status provenance, and transition-guard test nonvacuity. No Senior SWE evaluator ran, therefore architecture performance is NOT_MEASURED. Fresh/private/benchmark/deep-research consumption is zero.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "generation_seq": 7,
+  "issue_ledger": [
+    {
+      "control_change": true,
+      "evidence": [
+        "schemas/branch_report.schema.json@a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+        "scripts/validate_branch_bus_v251.py@959b3199fedbe571a1125d14aee287da40b87b3e",
+        "tests/test_v25_report_contracts.py@5ab736b0db210a2ef8cf87946d3465c03fd68ff2",
+        "BRANCH_WORKER_PROTOCOL.md@2103ec2cc4dcdf623f32e76878bd0a01f7a66d15"
+      ],
+      "exact_blocker": "The frozen report schema constrains issue_ledger only as an array; it has no closed-world item schema and does not require stable issue ID, severity, evidence refs, exact bug, smallest fix/test, owner, control-change flag or next action. The branch validator delegates issue structure to that schema and adds no issue-record checks. HMAC authenticates whatever was supplied but cannot prove the mandatory issue report is complete/nonvacuous.",
+      "issue_id": "MM04-T0-ISSUE-LEDGER-SCHEMA-CLOSURE-001",
+      "next_action": "BIL00 should harden the report schema and regression tests before the next countable cohort; do not reinterpret Gen7 HMAC-valid reports as proving issue-ledger completeness.",
+      "next_test": "Validate malformed reports missing each required issue-record field and require rejection; validate a complete issue record and an explicit typed ZERO_DELTA no-finding receipt as the only legal empty-issue case.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Add a closed-world $defs.issue_record requiring stable issue_id, severity, evidence, exact_blocker, proposed_v25_fix_or_falsifier, next_test, owner, control_change and next_action. Tie empty issue_ledger to an explicit terminal ZERO_DELTA status/record rather than allowing a structurally silent empty array.",
+      "severity": "HIGH"
+    },
+    {
+      "control_change": true,
+      "evidence": [
+        "scripts/reconcile_authority_bootstrap.py@262029e45ba0dfdd7825e137c16aa998b697bf92",
+        "config/admission_authority.json@838d68f674132aaadb24acdb790bda8497e553be",
+        "config/countable_control_set_v25.json@dd86247c0ad249d4d8d6f74a3656f8127448ad6c",
+        "tests/test_authority_bootstrap.py@d4ca39d9989b2191e914d99f8ab3ae534dc3a03c",
+        "requirements-validation.lock@9475996659114e684f0b6dcbb67d83af3bde431c"
+      ],
+      "exact_blocker": "Automated bootstrap treats only three files as non-self-amendable ROOT_BOOTSTRAP_PATHS, while its allowlist permits broad scripts/, .github/workflows/ and requirements-validation.lock changes. The admission-authority contract names additional privileged reconciler, validator and authoritative status-writer executables. A candidate can preserve checked declarative invariants while modifying another privileged executable that becomes trusted after merge, yielding one-step-delayed authority self-amendment.",
+      "issue_id": "MM04-T0-BOOTSTRAP-TRANSITIVE-TCB-CLOSURE-001",
+      "next_action": "Do not treat the installed three-file bootstrap root as a transitively closed authority TCB. BIL00 should close the trusted root before any future automated authority rotation relies on it.",
+      "next_test": "Using accepted-main bootstrap code, mutate reconcile_open_prs.py to unconditional context success, mutate one trusted validator to unconditional PASS, weaken one authoritative status-writing workflow, and alter requirements-validation.lock while preserving declarative JSON invariants; each candidate must be rejected solely because a root-TCB path changed.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Mechanically derive a non-self-amendable bootstrap root from config/admission_authority.json plus its runtime dependency lock: bootstrap policy/workflow/reconciler, normal trusted reconciler, every trusted validator entrypoint, every authoritative status-writing workflow, and requirements-validation.lock. Any change to that transitive set requires a separate independently trusted root-rotation/seed path.",
+      "severity": "CRITICAL"
+    },
+    {
+      "control_change": true,
+      "evidence": [
+        ".github/workflows/supernova-authority-bootstrap.yml@0dcfb054699e5761a9420c410aaab661a14f2592",
+        "scripts/reconcile_authority_bootstrap.py@262029e45ba0dfdd7825e137c16aa998b697bf92",
+        "tests/test_authority_bootstrap.py@d4ca39d9989b2191e914d99f8ab3ae534dc3a03c"
+      ],
+      "exact_blocker": "The read-only diagnostic job checks github.event.pull_request.head.sha, but the privileged trusted-bootstrap job forwards only PR_NUMBER and CANDIDATE_DIAGNOSTICS_RESULT. The verifier then refetches the PR and uses its current head SHA, while cancel-in-progress is false. Diagnostics success for head A can therefore be consumed after the PR advances so that later head B receives the bootstrap decision without an equality proof tying B to the diagnosed bytes.",
+      "issue_id": "MM04-T0-BOOTSTRAP-DIAGNOSTIC-HEAD-BINDING-001",
+      "next_action": "Bind diagnostics and privileged bootstrap to one immutable candidate/base tuple before any future authority-changing PR is trusted.",
+      "next_test": "Add a synchronized A-to-B PR-head race fixture: diagnostics succeeds for A, PR advances to B before privileged reconciliation, and B must receive no successful bootstrap status from A's diagnostic result.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Pass DIAGNOSED_HEAD_SHA and DIAGNOSED_BASE_SHA from the pull_request_target event into the privileged job and require exact equality with the API-refetched PR head/base before any status publication; fail closed on mismatch.",
+      "severity": "HIGH"
+    },
+    {
+      "control_change": true,
+      "evidence": [
+        "scripts/reconcile_open_prs.py@be1431ee2eb6c176016a919f3f1f458c34f478ad",
+        "config/admission_authority.json@838d68f674132aaadb24acdb790bda8497e553be",
+        "config/authority_bootstrap_v25.json@053c18dd706a6f5c315cf3c32a8cc38c0644dfcf",
+        ".github/workflows/supernova-authority-bootstrap.yml@0dcfb054699e5761a9420c410aaab661a14f2592"
+      ],
+      "exact_blocker": "trusted_bootstrap_success() accepts bootstrap authority by commit-status context text, success state and creator.login == github-actions[bot]. Multiple workflows share that principal; the predicate does not establish that the status came from the designated immutable bootstrap workflow/run on the exact diagnosed head/base. This is weaker than the authority contract's claimed source-verified bootstrap semantics.",
+      "issue_id": "MM04-T0-BOOTSTRAP-STATUS-PROVENANCE-001",
+      "next_action": "BIL00/EXT01 should bind bootstrap approval to a mechanically distinguished workflow/run or dedicated principal before depending on the context as authority provenance.",
+      "next_test": "Publish or fixture a successful supernova/bootstrap-admission status from a different workflow under the same github-actions[bot] principal; the trusted reconciler must reject it. Positive fixture must prove designated workflow identity plus exact head/base/event.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Require a completed successful run of the designated immutable authority-bootstrap workflow for the exact candidate head, expected base and allowed event via GitHub Actions run identity, or use a dedicated App/check source identity enforceable by the ruleset. Context+shared creator alone must not authorize authority drift.",
+      "severity": "HIGH"
+    },
+    {
+      "control_change": true,
+      "evidence": [
+        "scripts/transition_guard.py@b16400b91626d02ac923140059b24cd18b3200dd",
+        "tests/test_transition_expected_base_head.py@9921d90fad402907515cd141d8ea35235998d2cf",
+        "config/countable_control_set_v25.json@dd86247c0ad249d4d8d6f74a3656f8127448ad6c"
+      ],
+      "exact_blocker": "The critical transition regression test verifies expected-base enforcement by reading transition_guard.py as text and asserting that three source substrings exist. It does not execute the guard. Dead code, an unreachable check, an altered call path or a refactor could preserve those strings while disabling the safety property, so the test is structurally vacuous with respect to behavior.",
+      "issue_id": "MM04-T0-TRANSITION-GUARD-TEST-NONVACUITY-001",
+      "next_action": "Replace source-string presence assertions with executable behavior tests and freeze them before relying on the transition guard for a second clean countable cohort.",
+      "next_test": "Invoke the trusted guard against temporary Git repositories/roots covering exact-base PASS; missing expected_base_head on a state-changing transition FAIL; state/control/assignment mismatch FAIL; stale base FAIL; missing atomic companion path FAIL; and historical Gen6 non-transition/backward-compatible PASS.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Convert expected-base and atomic-transition tests into executable fixtures that exercise scripts/transition_guard.py through its actual validate/main path, including positive and adversarial negative cases. Keep source-text assertions only as supplemental lint, not nonvacuity evidence.",
+      "severity": "HIGH"
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "No protected Senior SWE task consumed.",
+    "No evaluator or Senior SWE benchmark executed; architecture outcome remains NOT_MEASURED.",
+    "No fresh evidence units consumed.",
+    "No private manifest or private vault read.",
+    "No benchmark execution.",
+    "No worker deep-research run.",
+    "No Mastermind proposal executed or self-graded.",
+    "No Foundry, Court, Tribunal or scientific-state authority mutated.",
+    "No promotion, calibration-streak mutation or benchmark-cursor movement.",
+    "No independent origin reread is claimed."
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads the exact MM04 branch head/report blob and verifies generation ancestry, one-path immutable history, frozen Draft-2020-12 schema, strict session equality, SAFE_REPLAY_ONLY equality, public safety, zero-cost semantics, MM04 commitment and whole-report HMAC-2. BIL00 should consolidate the five TCB/nonvacuity issues; MM04 performs no promotion or second write for this cohort.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "plan_alignment": [
+    {
+      "plan_rule": "Mastermind is PRE_REVIEW_ONLY bounded proposal/adversarial/falsifier authority; never executes, self-grades or promotes.",
+      "status": "PASS"
+    },
+    {
+      "plan_rule": "T0 countable calibration remains replay-only with zero fresh/protected/benchmark/deep-research cost.",
+      "status": "PASS"
+    },
+    {
+      "plan_rule": "Multiple checkers are defence-in-depth, not statistical independence; same-kernel replay is not external verification.",
+      "status": "PASS"
+    },
+    {
+      "plan_rule": "Kernel validity, evaluator execution and statement fidelity remain separate authorities; unexecuted Senior SWE performance is NOT_MEASURED.",
+      "status": "PASS"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "MM04-CAL-BR-007-v25-c13b6ee4-001",
+  "research_questions": [
+    "Should issue-ledger records become a closed-world mandatory schema before cohort 2 can count as clean?",
+    "What is the mechanically minimal transitively closed authority root for protocol-2.5 automated bootstrap?",
+    "Should bootstrap provenance use a dedicated GitHub App/check identity or exact workflow-run identity bound to head/base/event?",
+    "Which executable mutation/ablation fixtures are sufficient to make transition and architecture-surface nonvacuity mechanically observable before fresh Mastermind evaluation?"
+  ],
+  "role_payload": {
+    "architecture_result": "NOT_MEASURED",
+    "architecture_surface_review": {
+      "dynamic_registration": "GATE_RETAINED_NOT_EXECUTED",
+      "evaluator_execution_validity": "GATE_RETAINED_NOT_EXECUTED",
+      "exclusion_and_na": "GATE_RETAINED_NOT_EXECUTED",
+      "mutation_ablation": "GATE_RETAINED_NOT_EXECUTED",
+      "nonvacuity": "CONTROL_DEFECTS_FOUND_NO_BENCHMARK_EXECUTION",
+      "omitted_surfaces": "CONTROL_DEFECTS_FOUND_NO_BENCHMARK_EXECUTION",
+      "preservation_universe": "GATE_RETAINED_NOT_EXECUTED",
+      "reachability_terminal_semantics": "GATE_RETAINED_NOT_EXECUTED"
+    },
+    "authority_mode": "PRE_REVIEW_ONLY",
+    "evaluator_executed": false,
+    "promotion_authorized": false,
+    "self_grade_authorized": false
+  },
+  "runtime_implementation_implication": "The frozen GEN7 runtime-update receipt binds Mastermind 4.4.10 only for software replay calibration. MM04 establishes no Senior SWE architecture performance and proposes no runtime/scientific mutation. The five findings concern frozen bus/TCB contracts and tests.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay evaluator-execution validity, nonvacuity and architecture contracts; report evidence-backed defects without protected benchmark work.",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM04",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W04 | Senior SWE Architecture",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "result": "Reviewed frozen architecture/TCB control surfaces for schema closure, auth/mode consistency, CI separation, pinning, verifier assurance, statement-fidelity separation, omission/nonvacuity and authority-boundary defects without executing a Senior SWE evaluator.",
+      "scope": "Frozen public GitHub controls at exact Gen7 G only.",
+      "status": "COMPLETE",
+      "task_id": "MM04-T0-ARCH-TCB-REPLAY"
+    },
+    {
+      "result": "Eligible first-write state established: active unsuperseded Gen7, countable replay, repo policy source-bound, generation and worker refs identical to G, report absent, commitment matched.",
+      "scope": "Create-once branch-isolated transport preflight.",
+      "status": "COMPLETE",
+      "task_id": "MM04-T0-TRANSPORT-PREFLIGHT"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "PASS: state, control, assignment, parent, plan, generation, runtime/checkpoint and MM04 branch/token/goal/target identities matched; Gen6 is superseded history and active Gen7 is not superseded.",
+      "test_id": "MM04-T0-IDENTITY-LIVENESS-PREFLIGHT"
+    },
+    {
+      "result": "PASS: frozen control-release tree matched; G is exactly release plus cohort control+assignment; required control set retained release identities.",
+      "test_id": "MM04-T0-FROZEN-CONTROL-CLOSURE"
+    },
+    {
+      "result": "PASS: public MM04 commitment matched prompt-private capability; HMAC-2 metadata/canonicalization are consistent across auth/control/branch/report-schema/protocol surfaces. Secret was not written to public state.",
+      "test_id": "MM04-T0-HMAC2-CONSISTENCY"
+    },
+    {
+      "result": "PASS: frozen validator explicitly rejects session_header.execution_mode != report.mode and calibration requires both SAFE_REPLAY_ONLY; local draft validation against exact Draft-2020-12 branch report schema returned zero errors.",
+      "test_id": "MM04-T0-MODE-SCHEMA"
+    },
+    {
+      "result": "PASS_WITH_DEFECTS: three required CI contexts are defined as non-substitutable; action SHAs and Python dependency hashes are pinned; verifier assurance is typed and same-kernel replay is not external verification. Bootstrap provenance/TCB defects remain in issue ledger.",
+      "test_id": "MM04-T0-CI-PINNING-ASSURANCE"
+    },
+    {
+      "result": "NOT_MEASURED: no Senior SWE evaluator, dynamic-registration exercise, architecture mutation/ablation or protected benchmark was executed. Evaluator-execution validity is preserved as a gate, not converted to a performance result.",
+      "test_id": "MM04-T0-EVALUATOR-VALIDITY"
+    }
+  ],
+  "visibility_token": "536045bbfd8a8490110599d40da0ece8",
+  "worker_auth_commitment": "836768b1672cc8639cfeb3fe06ebd8ce1667cdb0dc5ce1c7a6cd6c263f1521d0",
+  "worker_auth_proof": "13d739114ed2128c33fc6cb2ea67d05bce2740df834928d2907ba64243e93f2c",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MM04",
+  "worker_id": "MM04"
+}
