@@ -2,18 +2,13 @@
 from __future__ import annotations
 import json, os, pathlib, re, shutil, subprocess, tempfile, urllib.request
 
-ROOT=pathlib.Path.cwd().resolve()
-REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-')
-TOKEN=os.environ.get('GITHUB_TOKEN','')
-API='https://api.github.com/repos/'+REPO
-OWNER=REPO.split('/',1)[0]
-PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
-HEX40=re.compile(r'^[0-9a-f]{40}$')
-POLICY_PATH='config/structural_status_rotation_seed_v25.json'
+ROOT=pathlib.Path.cwd().resolve();REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-');TOKEN=os.environ.get('GITHUB_TOKEN','');API='https://api.github.com/repos/'+REPO;OWNER=REPO.split('/',1)[0]
+PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa';HEX40=re.compile(r'^[0-9a-f]{40}$');POLICY_PATH='config/structural_status_rotation_seed_v25.json'
+GEN9_COHORT='CAL-BR-009-v25-b53ab205';GEN9_G='67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f';GEN9_STATE_BLOB='31071464144bde197aca0e3f13153be2d85208d7'
+FOUNDRY='57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f';MASTERMIND='026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d';RUNTIME='9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf'
 
 def api(path,method='GET',data=None):
- req=urllib.request.Request(API+path,data=(json.dumps(data).encode() if data is not None else None),method=method)
- req.add_header('Accept','application/vnd.github+json');req.add_header('X-GitHub-Api-Version','2022-11-28')
+ req=urllib.request.Request(API+path,data=(json.dumps(data).encode() if data is not None else None),method=method);req.add_header('Accept','application/vnd.github+json');req.add_header('X-GitHub-Api-Version','2022-11-28')
  if TOKEN:req.add_header('Authorization','Bearer '+TOKEN)
  with urllib.request.urlopen(req,timeout=30) as r:
   raw=r.read();return json.loads(raw) if raw else None
@@ -26,8 +21,7 @@ def git_blob(path):
  rc,out=run(['git','rev-parse','HEAD:'+path]);return out.strip() if rc==0 else None
 
 def post(sha,ctx,state,desc):
- target=f"https://github.com/{REPO}/actions/runs/{os.environ.get('GITHUB_RUN_ID','')}"
- api('/statuses/'+sha,'POST',{'state':state,'context':ctx,'description':desc[:140],'target_url':target})
+ target=f"https://github.com/{REPO}/actions/runs/{os.environ.get('GITHUB_RUN_ID','')}";api('/statuses/'+sha,'POST',{'state':state,'context':ctx,'description':desc[:140],'target_url':target})
 
 def fail(sha,reason,policy):
  if isinstance(sha,str) and HEX40.fullmatch(sha):
@@ -49,10 +43,11 @@ def main():
  if base.get('ref')!='main' or (head.get('repo') or {}).get('full_name')!=REPO or (pr.get('user') or {}).get('login')!=OWNER:return fail(sha,'same-repo owner PR to main required',policy)
  if not str(head.get('ref','')).startswith(policy['head_prefix_required']):return fail(sha,'head prefix not structural-rotation eligible',policy)
  state=load(ROOT,'state/CURRENT.json')
+ if git_blob('state/CURRENT.json')!=GEN9_STATE_BLOB or state.get('active_cohort_id')!=GEN9_COHORT or state.get('generation_head_sha')!=GEN9_G:return fail(sha,'canonical state is not exact zero-credit Gen9 target',policy)
  if state.get('calibration_streak')!=0 or state.get('fresh_allowed_globally') is not False:return fail(sha,'streak must be zero and fresh disabled',policy)
+ if state.get('foundry_sha256')!=FOUNDRY or state.get('mastermind_sha256')!=MASTERMIND or state.get('runtime_state_id')!=RUNTIME:return fail(sha,'Gen9 substrate/runtime identity drift',policy)
  if (ROOT/policy['one_shot_marker_path']).exists():return fail(sha,'structural-status epoch marker exists; seed permanently inert',policy)
- run(['git','fetch','--no-tags','origin',f'pull/{number}/head'])
- rc,_=run(['git','merge-base','--is-ancestor',trusted,sha])
+ run(['git','fetch','--no-tags','origin',f'pull/{number}/head']);rc,_=run(['git','merge-base','--is-ancestor',trusted,sha])
  if rc:return fail(sha,'candidate does not descend from exact accepted main',policy)
  rc,out=run(['git','diff','--name-only',trusted+'...'+sha]);changed=[x for x in out.splitlines() if x]
  if rc or not changed:return fail(sha,'cannot enumerate nonempty candidate diff',policy)
@@ -80,6 +75,10 @@ def main():
   if root_epoch.get('schema_version')!='PS-ROOT-TCB-EPOCH-2.5-3' or root_epoch.get('epoch')!=3:return fail(sha,'root TCB epoch 3 not installed',policy)
   if root_epoch.get('previous_epoch_blob')!=current_root_blob:return fail(sha,'root TCB epoch 3 does not bind previous accepted epoch',policy)
   if root_epoch.get('structural_status_rotation_epoch_path')!='config/structural_status_rotation_epoch_v25.json':return fail(sha,'root TCB does not bind structural rotation marker',policy)
+  reset=load(tmp,'config/gen9_repair_reset_epoch_v25.json')
+  expected={'schema_version':'PS-GEN9-REPAIR-RESET-EPOCH-2.5-1','old_state_blob':GEN9_STATE_BLOB,'old_cohort_id':GEN9_COHORT,'old_generation_head_sha':GEN9_G,'allowed_successor_generation_seq':10,'calibration_credit':0,'fresh_evidence_consumed':False,'foundry_sha256':FOUNDRY,'mastermind_sha256':MASTERMIND,'runtime_state_id':RUNTIME}
+  for k,v in expected.items():
+   if reset.get(k)!=v:return fail(sha,'invalid Gen9 zero-credit reset marker '+k,policy)
   adm=load(tmp,'config/admission_authority.json');helpers=set(adm.get('trusted_authority_helpers') or []);workflows=set(adm.get('authoritative_status_workflows') or [])
   if not set(policy['seed_paths'][:3]).issubset(helpers):return fail(sha,'new root TCB does not protect structural seed',policy)
   if '.github/workflows/supernova-structural-status-rotation-seed.yml' not in workflows:return fail(sha,'new root TCB does not inventory structural seed workflow',policy)
@@ -87,6 +86,8 @@ def main():
   if "'supernova/branch-generation'" in rest or '"supernova/branch-generation"' in rest:return fail(sha,'REST reconciler still contains authoritative branch-generation context',policy)
   if "'supernova/branch-worker'" in rest or '"supernova/branch-worker"' in rest:return fail(sha,'REST reconciler still contains authoritative branch-worker context',policy)
   if 'supernova/rest-branch-generation-diagnostic' not in rest or 'supernova/rest-branch-worker-diagnostic' not in rest:return fail(sha,'distinct REST diagnostic contexts missing',policy)
+  open_prs=(tmp/'scripts/reconcile_open_prs.py').read_text(encoding='utf-8')
+  if 'GEN9_ZERO_CREDIT_RESET' not in open_prs or 'config/gen9_repair_reset_epoch_v25.json' not in open_prs:return fail(sha,'exact Gen9 repair-reset gate missing',policy)
  finally:
   run(['git','worktree','remove','--force',str(tmp)]);shutil.rmtree(tmp,ignore_errors=True)
  post(sha,policy['seed_context'],'success','accepted-main structural-status seed PASS; exact head/base')
