@@ -45,8 +45,13 @@ def request_json(path: str):
         return json.loads(raw) if raw else None
 
 
-def content(path: str, ref: str):
-    value = request_json(
+# Compatibility alias retained for the raw-file regression harness.
+# It remains GET-only: there is no status publication or write method here.
+req = request_json
+
+
+def file_text(path: str, ref: str):
+    value = req(
         "/contents/"
         + urllib.parse.quote(path, safe="/")
         + "?ref="
@@ -55,12 +60,17 @@ def content(path: str, ref: str):
     if not isinstance(value, dict) or value.get("type") != "file":
         raise RuntimeError(f"{path}@{ref}: not a file")
     text = base64.b64decode(value.get("content", "")).decode("utf-8")
+    return value, text
+
+
+def content(path: str, ref: str):
+    value, text = file_text(path, ref)
     return value, json.loads(text)
 
 
 def branch_head(branch: str):
     try:
-        return request_json("/branches/" + urllib.parse.quote(branch, safe=""))["commit"]["sha"]
+        return req("/branches/" + urllib.parse.quote(branch, safe=""))["commit"]["sha"]
     except urllib.error.HTTPError as exc:
         if exc.code == 404:
             return None
@@ -68,7 +78,7 @@ def branch_head(branch: str):
 
 
 def changed_files(base: str, head: str) -> list[str]:
-    comparison = request_json("/compare/" + base + "..." + head)
+    comparison = req("/compare/" + base + "..." + head)
     return [
         item["filename"]
         for item in comparison.get("files", [])
@@ -104,6 +114,7 @@ def diagnostic(context: str, result: str, findings: list[str], **extra):
 def generation_diagnostic(state: dict) -> tuple[dict, dict | None, dict | None]:
     cohort = state["active_cohort_id"]
     generation_head = state["generation_head_sha"]
+    G = generation_head
     generation_branch = state["generation_branch"]
     findings: list[str] = []
     control = assignment = None
@@ -122,6 +133,10 @@ def generation_diagnostic(state: dict) -> tuple[dict, dict | None, dict | None]:
             findings.append("generation plan mismatch")
         if control.get("cohort_id") != cohort or assignment.get("cohort_id") != cohort:
             findings.append("generation cohort mismatch")
+        if assignment.get("control_manifest_git_identity") != control_meta["sha"]:
+            findings.append("assignment control blob mismatch")
+        if assignment.get("generation_branch") != generation_branch:
+            findings.append("assignment generation branch mismatch")
         root = control.get("control_release_commit_sha")
         if not isinstance(root, str) or not HEX40.fullmatch(root):
             findings.append("bad generation root")
@@ -135,6 +150,10 @@ def generation_diagnostic(state: dict) -> tuple[dict, dict | None, dict | None]:
                     "generation root->G paths mismatch "
                     f"expected={sorted(expected)} observed={sorted(observed)}"
                 )
+            for p in control.get("required_control_paths", []):
+                a,_=file_text(p,root);b,_=file_text(p,G)
+                if a["sha"] != b["sha"]:
+                    findings.append("frozen control drift " + p)
     except Exception as exc:
         findings.append("generation diagnostic exception: " + str(exc))
 
@@ -173,6 +192,8 @@ def worker_diagnostics(state: dict) -> list[dict]:
                 if observed != [expected]:
                     findings.append(f"diff != exactly assigned report: {observed}")
                 _, report = content(expected, head)
+                if report.get("task_network_plan_id") != PLAN:
+                    findings.append("plan binding mismatch")
                 if report.get("worker_id") != worker:
                     findings.append("worker binding mismatch")
                 if report.get("cohort_id") != cohort:
@@ -269,8 +290,8 @@ def main() -> int:
         "records": records,
     }
     print(json.dumps(result, indent=2, sort_keys=True))
-    # Diagnostics never gate, publish, or overwrite authoritative CI.
     return 0
+
 
 
 if __name__ == "__main__":
