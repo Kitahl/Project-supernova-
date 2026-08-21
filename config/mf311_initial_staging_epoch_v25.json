@@ -1,0 +1,19 @@
+{
+  "schema_version":"PS-MF311-INITIAL-STAGING-EPOCH-2.5-1",
+  "protocol_version":"2.5",
+  "task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "seed_install_main_commit_sha":"fc223dcf58b5ab8fe2d49f02af3e9a989eb754c9",
+  "seed_actual_install_merge_commit_sha":"6cf610d5fc2fd435637da41323e693987ca579bc",
+  "seed_policy_blob":"aa3e9dc5b0df6cf7a64fe0d1e6cfea0d8ae8367c",
+  "seed_reconciler_blob":"36e9f84cb1335d51092e7dc7683708b43240da4f",
+  "seed_workflow_blob":"d32800075b2b7b27ebf73712166e2922b77f6e0c",
+  "staging_cohort_id":"STAGE-BR-008-v25-MF311",
+  "staging_generation_seq":8,
+  "foundry_sha256":"57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+  "mastermind_sha256":"026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+  "runtime_state_id":"9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "disposition":"ONE_SHOT_SEED_CONSUMED_PERMANENTLY_INERT",
+  "calibration_credit":0,
+  "fresh_evidence_credit":0,
+  "scientific_credit":0
+}
