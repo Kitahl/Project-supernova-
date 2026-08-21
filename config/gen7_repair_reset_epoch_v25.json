@@ -1,0 +1,21 @@
+{
+  "schema_version": "PS-GEN7-REPAIR-RESET-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "invalidated_state_blob": "856481759722e23ff9a652ce140f304efe13b023",
+  "invalidated_cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "invalidated_generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "disposition": "INVALIDATED_ZERO_CREDIT_AUTHORITATIVE_CONTROL_DEFECTS",
+  "required_successor_generation_seq": 8,
+  "required_successor_streak": 0,
+  "required_successor_fresh_allowed": false,
+  "required_supersession_path": "superseded/CAL-BR-007-v25-c13b6ee4.json",
+  "seed_policy_blob": "988b9f133e09cd08a9659aa7cfa26c3f69251156",
+  "seed_reconciler_blob": "9a39df8bbdd295b995daa70fee284d800b2669a9",
+  "seed_workflow_blob": "4bb79d68eb54ef0c49541f3012855c0421c76c64",
+  "seed_disposition_after_acceptance": "PERMANENTLY_INERT_AND_REMOVE_AFTER_USE",
+  "authority_effect": "ONE_EXACT_INVALIDATED_PARENT_REPORT_ADMISSION_EXCEPTION_ONLY",
+  "scientific_credit": 0,
+  "calibration_credit": 0,
+  "fresh_evidence_credit": 0
+}
