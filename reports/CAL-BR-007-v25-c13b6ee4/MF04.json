@@ -1,0 +1,163 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "role_id": "MF04",
+    "goal": "Attack one control/auth/lineage/liveness/branch-isolation assumption using replay-only evidence and report every evidence-backed defect.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "worker_id": "MF04",
+  "report_id": "RPT-CAL-BR-007-v25-c13b6ee4-MF04",
+  "generation_seq": 7,
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MF04",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "b5021dae33ffc08c44b43e99d42ed238",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "efe6c7e5f710034a6dc4a81499529dd9d09426fb6f78b1a244c685f7f9595841",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_COUNTABLE_TRANSPORT_REPLAY_ONLY",
+  "executive_status": "VALID_ASSIGNED_REPORT_WITH_HIGH_VERIFIER_ASSURANCE_SCHEMA_BINDING_GAP",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF04-TRANSPORT-VERIFY",
+      "status": "COMPLETE",
+      "result": "Canonical main pointer was stable on reread; active cohort is non-superseded and countable; generation and MF04 branches were identical to G prewrite; control/assignment blob identities matched the pointer; control-release commit/tree matched; root-to-G diff changed only cohort control+assignment, so every required frozen control path retained its release-root identity; parent state resolved; role/token/goal/constraints matched; public auth commitment matched the prompt-private secret."
+    },
+    {
+      "task_id": "MF04-FALSIFIER",
+      "status": "COMPLETE",
+      "result": "One deterministic checker-assurance mutation was evaluated: replace every verifier_assurance_records entry with an empty object while keeping the verification receipt otherwise schema-shaped."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "PS-MF04-CHKASSURE-001",
+      "class": "VERIFIER_ASSURANCE_SCHEMA_BINDING_GAP",
+      "status": "OPEN",
+      "severity": "HIGH",
+      "evidence_refs": [
+        "schemas/branch_verification.schema.json@7c182fb7ce3a3941f86f7508bbb4a18152402bb8#properties.verifier_assurance_records",
+        "schemas/verifier_assurance.schema.json@7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+        "scripts/validate_branch_bus_v251.py@7c182fb7ce3a3941f86f7508bbb4a18152402bb8#verify-branch-validation",
+        "BRANCH_PROTOCOL.md@7c182fb7ce3a3941f86f7508bbb4a18152402bb8#Independent-reread-and-closed-verification"
+      ],
+      "exact_failure": "branch_verification.schema.json constrains verifier_assurance_records only as an array of generic objects, while a separate frozen verifier_assurance.schema.json defines the mandatory checker identity/version/assurance/TCB/independence/advisory/exploit-regression/mutation-fuzz fields. validate_branch_bus_v251.py validates the verification receipt only against branch_verification.schema.json and does not separately validate each assurance record against verifier_assurance.schema.json. Therefore verifier_assurance_records=[{}] is accepted at this structural validator layer, defeating machine-enforced assurance-record completeness.",
+      "scope": "Frozen protocol-2.5 verification schema and structural branch validator. This is not a claim that MM06 will actually emit empty assurance records or that report-admission necessarily accepts such a verifier receipt; it falsifies treating the current branch-verification schema/branch-verify diagnostic as proof that assurance records satisfy the frozen VerifierAssuranceRecord contract.",
+      "smallest_protocol_2_5_repair_test": "Make verifier_assurance_records.items enforce schemas/verifier_assurance.schema.json, or explicitly validate every record with that schema inside validate_branch_bus_v251.py and the report-admission validator. Add a negative test with verifier_assurance_records=[{}] that must fail.",
+      "owner": "MM06_CONTROL_SCHEMA",
+      "control_change_flag": true,
+      "next_action": "MM06 should apply the standalone verifier-assurance schema independently before declaring any safe report. Freeze the schema/validator repair before a successor countable cohort; changing the active frozen control invalidates the current countable streak."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MF04-T0-AUTH",
+      "kind": "REQUIRED_HMAC2_SELF_CHECK",
+      "target": "MF04 final report canonical HMAC-2",
+      "mutation": "Change signed field executive_status after proof generation and keep worker_auth_proof unchanged.",
+      "expected": "Recomputed HMAC differs from the retained proof.",
+      "observed": "PASS: the recomputed HMAC changed, confirming that this report's signed-content mutation invalidates its proof.",
+      "result": "PASS"
+    },
+    {
+      "test_id": "MF04-T1",
+      "kind": "DETERMINISTIC_SCHEMA_CHECKER_ASSURANCE_MUTATION",
+      "target": "schemas/branch_verification.schema.json + scripts/validate_branch_bus_v251.py",
+      "mutation": "Set verifier_assurance_records to [{}] in an otherwise schema-shaped MM06 verification receipt.",
+      "expected": "Closed verifier assurance should reject a record missing checker_id, exact_version_or_commit, assurance_type, implementation_family, shared_tcb, statement_identity_scope, independence_status, known_advisories, exploit_regression_digest, mutation_fuzz_digest, last_security_review and scope.",
+      "observed": "The branch verification schema accepts each assurance item as any object, and the branch validator performs no second validation against schemas/verifier_assurance.schema.json.",
+      "result": "FALSIFIER_FOUND_HIGH"
+    }
+  ],
+  "plan_alignment": [
+    {
+      "check": "ROLE_SCOPE",
+      "detail": "Only replay-safe transport/control/schema evidence and one deterministic checker-assurance falsifier were used.",
+      "result": "PASS"
+    },
+    {
+      "check": "SAFE_REPLAY_ONLY",
+      "detail": "session_header.execution_mode equals report.mode and both equal SAFE_REPLAY_ONLY; no fresh/private/benchmark/research execution occurred.",
+      "result": "PASS"
+    },
+    {
+      "check": "COUNTABLE_COHORT_STATUS",
+      "detail": "The state marks this as the first countable protocol-2.5 replay cohort, but this worker makes no calibration-pass or promotion claim; cohort credit remains conditional on MM06/MF06/BIL00 closure.",
+      "result": "CONDITIONAL"
+    }
+  ],
+  "evidence_and_provenance": {
+    "canonical_state_source": "main:state/CURRENT.json",
+    "canonical_state_reread": "STABLE_PREWRITE",
+    "active_cohort_supersession_check": "PASS_NOT_SUPERSEDED",
+    "generation_branch_prewrite": "IDENTICAL_TO_G",
+    "worker_branch_prewrite": "IDENTICAL_TO_G",
+    "generation_root_sha": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+    "control_release_tree_sha": "65c525b6e7cf5ce788f88bbed45b7486739a81b9",
+    "frozen_path_verification": "Release-root to G whole-repository compare changed only assignments/CAL-BR-007-v25-c13b6ee4.json and control/CAL-BR-007-v25-c13b6ee4.json; neither path is in required_control_paths, so all frozen required paths at G retain the exact release-root Git identities.",
+    "assignment_blob": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+    "control_manifest_blob": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+    "parent_state_resolution": "PASS_TO_GENERATION_6_STATE",
+    "auth_commitment_match": "PASS",
+    "runtime_receipt_ref": "runtime/updates/GEN7-REPLAY-SUBSTRATE-BINDING.json",
+    "runtime_receipt_status": "VALIDATED_REPLAY_CALIBRATION_ONLY",
+    "observed_model_binding": "Runtime identifies GPT-5.6 Sol, but an independent runtime receipt for reasoning-effort identity is not available to this worker; model_binding_status remains PARTIAL_UNVERIFIED.",
+    "prewrite_ci_observation": {
+      "supernova/branch-generation": "success",
+      "supernova/static-control": "success",
+      "supernova/branch-worker": "pending_on_G_before_MF04_receipt",
+      "supernova/report-admission": "pending"
+    },
+    "ci_observation": "CI_NOT_OBSERVED_FOR_POSTWRITE_MF04_HEAD"
+  },
+  "claim_scope": "Transport/control/schema finding only. No mathematical, benchmark, runtime-capability, statement-fidelity, calibration-pass or promotion claim is made. KERNEL_VALID != STATEMENT_FIDELITY_CONFIRMED. A failed falsifier search would not be proof; here one schema/checker-assurance falsifier was found.",
+  "runtime_implementation_implication": "Bind verifier_assurance_records to the frozen VerifierAssuranceRecord schema in both schema and executable validation. Until repaired, branch-verify structural success must not be treated as evidence that checker-assurance records are complete. Existing MM06 HMAC/session/branch reread obligations remain independently necessary.",
+  "negative_zero_outcomes": [
+    "Fresh evidence consumed: 0.",
+    "Protected/private manifest reads: 0.",
+    "Benchmark executions: 0.",
+    "Deep-research runs: 0.",
+    "No scientific or statement-fidelity evidence was generated.",
+    "HMAC-2 signed-field mutation self-check passed; no cryptographic HMAC construction defect was found."
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "falsifier_target": "verifier assurance record schema binding",
+    "falsifier_count": 1,
+    "finding_count": 1,
+    "finding_severity_max": "HIGH"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Replay-only GitHub control/schema/auth/lineage inspection. No private vault read and no scientific execution."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 should independently reread the MF04 branch and HMAC, and independently validate every verifier_assurance_record against schemas/verifier_assurance.schema.json. The control owner should freeze a successor protocol-2.5 repair plus a [{}] negative regression before any new countable cohort; no promotion is authorized."
+}
