@@ -6,7 +6,7 @@ Every scheduled-task response begins with this header before any prose:
 === PROJECT SUPERNOVA SESSION ===
 SESSION_NAME: <stable standardized task title>
 TARGET_PROGRAM: MATH_FOUNDRY | MASTERMIND | JOINT
-PHASE: <T0|E1|G1|C1|REACTION|DR03|E3|SELECT|IGNITION|CASCADE|E5B|E6|RESEARCH>
+PHASE: <exact frozen assignment phase string>
 ITERATION_ID: <active cohort/suite/research id>
 ITERATION_NUMBER: <generation_seq or research sequence>
 ROLE_ID: <MF01...BIL00>
@@ -19,6 +19,8 @@ MODEL_BINDING_STATUS: VERIFIED | PARTIAL_UNVERIFIED | UNVERIFIED | MISMATCH
 EXECUTION_MODE: SAFE_REPLAY_ONLY | FRESH_EXECUTION | WAITING | RESEARCH
 === END SESSION HEADER ===
 ```
+
+`PHASE` is not an independent closed vocabulary. For an assigned network run it MUST equal the exact `phase` value in the frozen active assignment. Examples of phase families include T0, E1, G1, C1, REACTION, DR03, E3, SELECT, IGNITION, CASCADE, E5B, E6, and RESEARCH; concrete assignment strings such as `T0_COUNTABLE_REPLAY_COHORT_1` are authoritative when frozen in the assignment.
 
 The associated task/chat is persistent. Stable session titles are:
 
