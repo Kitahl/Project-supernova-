@@ -3,7 +3,8 @@
 
 Consumes an explicit frozen cohort liveness contract. It never guesses whether a
 Scheduled Task ran. Missing GitHub receipt is NO_RECEIPT; it blocks only after the
-declared deadline. Task cause remains TASK_STATE_UNKNOWN unless inspected separately.
+declared deadline. The contract is bound to pre-existing generation-root/control/
+assignment identities; the containing Git tree binds it to the final generation.
 """
 from __future__ import annotations
 import argparse, datetime as dt, json, os, pathlib, urllib.error, urllib.parse, urllib.request
@@ -20,7 +21,9 @@ def evaluate(contract: dict, now: dt.datetime, exists_fn: Callable[[str,str], bo
     if now.tzinfo is None: raise ValueError('now must be timezone-aware')
     now=now.astimezone(UTC); observations=[]; blocking=[]
     for lane in contract['lanes']:
-        deadline=parse_time(lane['deadline_utc']); exists=exists_fn(lane['branch'],lane['path'])
+        start=parse_time(lane['expected_window_start_utc']);deadline=parse_time(lane['deadline_utc'])
+        if deadline<=start: raise ValueError('deadline must be after expected window start')
+        exists=exists_fn(lane['branch'],lane['path'])
         if exists:
             receipt_status='RUN_OBSERVED'; late=max(0,int((now-deadline).total_seconds())) if now>deadline else 0
         elif now>deadline:
@@ -35,7 +38,17 @@ def evaluate(contract: dict, now: dt.datetime, exists_fn: Callable[[str,str], bo
             'receipt_ref':f"{lane['branch']}:{lane['path']}" if exists else None,'lateness_seconds':late,
             'notes':'GitHub receipt existence only; Scheduled Task state not inferred.'
         })
-    return {'schema_version':'PS-LIVENESS-MONITOR-1','cohort_id':contract['cohort_id'],'generation_head_sha':contract['generation_head_sha'],'observation_time':now.isoformat().replace('+00:00','Z'),'observations':observations,'blocking_lanes':blocking,'transition_liveness_pass':not blocking}
+    return {
+        'schema_version':'PS-LIVENESS-MONITOR-2',
+        'cohort_id':contract['cohort_id'],
+        'generation_root_sha':contract['generation_root_sha'],
+        'control_manifest_git_identity':contract['control_manifest_git_identity'],
+        'assignment_git_identity':contract['assignment_git_identity'],
+        'observation_time':now.isoformat().replace('+00:00','Z'),
+        'observations':observations,
+        'blocking_lanes':blocking,
+        'transition_liveness_pass':not blocking,
+    }
 
 def github_exists(repo: str, token: str):
     api='https://api.github.com/repos/'+repo
