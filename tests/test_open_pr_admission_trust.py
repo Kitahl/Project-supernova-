@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import pathlib
 import unittest
 from unittest import mock
@@ -17,6 +18,18 @@ class OpenPrAdmissionTrustTests(unittest.TestCase):
             "user": {"login": user},
             "base": {"ref": base},
             "head": {"ref": head, "sha": "a" * 40, "repo": {"full_name": repo}},
+        }
+
+    @staticmethod
+    def gen6_state():
+        return {
+            "generation_seq": 6,
+            "active_cohort_id": MOD.GEN6_BOOTSTRAP_COHORT,
+            "calibration_countable_current": False,
+            "calibration_streak": 0,
+            "fresh_allowed_globally": False,
+            "repo_policy_status": "UNVERIFIED_BLOCKING",
+            "generation_head_sha": "c86c091c3be840559a46670218705be1277acd8f",
         }
 
     def test_same_repo_main_owner_and_allowed_prefix_required(self):
@@ -74,6 +87,57 @@ class OpenPrAdmissionTrustTests(unittest.TestCase):
             errors = MOD.changed_file_mode_errors(pathlib.Path("/repo"), "a" * 40, ["state/CURRENT.json"])
         self.assertTrue(errors)
         self.assertIn("non-regular candidate path", errors[0])
+
+    def test_exact_noncountable_gen6_boundary_skips_missing_historical_fanin(self):
+        old = self.gen6_state()
+
+        def fake_run(cmd, cwd, env=None):
+            if cmd[:2] == ["git", "show"]:
+                return 0, json.dumps(old)
+            if cmd[:2] == ["git", "rev-parse"]:
+                return 0, MOD.GEN6_BOOTSTRAP_STATE_BLOB
+            raise AssertionError(cmd)
+
+        with mock.patch.object(MOD, "run", side_effect=fake_run):
+            self.assertEqual(
+                MOD.report_admission(pathlib.Path("/candidate"), "a" * 40, ["state/CURRENT.json"]),
+                [],
+            )
+
+    def test_gen6_boundary_near_miss_does_not_skip_historical_fanin(self):
+        cases = []
+        countable = self.gen6_state(); countable["calibration_countable_current"] = True; cases.append(countable)
+        fresh = self.gen6_state(); fresh["fresh_allowed_globally"] = True; cases.append(fresh)
+        wrong_cohort = self.gen6_state(); wrong_cohort["active_cohort_id"] = "OTHER"; cases.append(wrong_cohort)
+        wrong_generation = self.gen6_state(); wrong_generation["generation_seq"] = 5; cases.append(wrong_generation)
+        wrong_policy = self.gen6_state(); wrong_policy["repo_policy_status"] = "VERIFIED_PROTECTED_SOURCE_BOUND"; cases.append(wrong_policy)
+
+        for old in cases:
+            def fake_run(cmd, cwd, env=None, old=old):
+                if cmd[:2] == ["git", "show"]:
+                    return 0, json.dumps(old)
+                if cmd[:2] == ["git", "rev-parse"]:
+                    return 0, MOD.GEN6_BOOTSTRAP_STATE_BLOB
+                raise AssertionError(cmd)
+            with self.subTest(old=old), mock.patch.object(MOD, "run", side_effect=fake_run):
+                errors = MOD.report_admission(pathlib.Path("/candidate"), "a" * 40, ["state/CURRENT.json"])
+                self.assertTrue(errors)
+                self.assertIn("report admission", errors[0])
+
+    def test_wrong_gen6_state_blob_does_not_get_bootstrap_exception(self):
+        old = self.gen6_state()
+
+        def fake_run(cmd, cwd, env=None):
+            if cmd[:2] == ["git", "show"]:
+                return 0, json.dumps(old)
+            if cmd[:2] == ["git", "rev-parse"]:
+                return 0, "0" * 40
+            raise AssertionError(cmd)
+
+        with mock.patch.object(MOD, "run", side_effect=fake_run):
+            errors = MOD.report_admission(pathlib.Path("/candidate"), "a" * 40, ["state/CURRENT.json"])
+        self.assertTrue(errors)
+        self.assertIn("report admission", errors[0])
 
 
 if __name__ == "__main__":

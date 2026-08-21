@@ -24,6 +24,8 @@ CONTEXTS = (
 BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
 BOOTSTRAP_CREATOR = "github-actions[bot]"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
+GEN6_BOOTSTRAP_COHORT = "CAL-BR-006-v251-433ad83a"
+GEN6_BOOTSTRAP_STATE_BLOB = "b08c9ae01be715ad25059d3dfcb72febb4794c38"
 
 # These bytes define or exercise admission authority. They may be admitted only
 # after a separate accepted-main bootstrap verifier has published the exact
@@ -182,6 +184,21 @@ def trusted_static_control(trusted_root: pathlib.Path, candidate_root: pathlib.P
     return [] if rc == 0 else ["trusted static validation failed: " + out[-1200:]]
 
 
+def exact_noncountable_gen6_bootstrap_parent(candidate_root: pathlib.Path, base_sha: str, old: dict):
+    rc, out = run(["git", "rev-parse", base_sha + ":state/CURRENT.json"], candidate_root)
+    if rc or out.strip() != GEN6_BOOTSTRAP_STATE_BLOB:
+        return False
+    return (
+        old.get("generation_seq") == 6
+        and old.get("active_cohort_id") == GEN6_BOOTSTRAP_COHORT
+        and old.get("calibration_countable_current") is False
+        and old.get("calibration_streak") == 0
+        and old.get("fresh_allowed_globally") is False
+        and old.get("repo_policy_status") == "UNVERIFIED_BLOCKING"
+        and old.get("generation_head_sha") == "c86c091c3be840559a46670218705be1277acd8f"
+    )
+
+
 def report_admission(candidate_root: pathlib.Path, base_sha: str, changed: list[str]):
     if "state/CURRENT.json" not in changed:
         return []
@@ -191,6 +208,13 @@ def report_admission(candidate_root: pathlib.Path, base_sha: str, changed: list[
         return ["cannot read base state: " + old_text[-800:]]
     try:
         old = json.loads(old_text)
+        # Generation 6 is the explicitly frozen non-countable bootstrap generation.
+        # It has no canonical countable fan-in history on main and must never be
+        # retrofitted with synthesized receipts. This exact immutable boundary is
+        # therefore N/A for historical report admission only; static, lineage and
+        # transition admission still execute normally on the Gen7 candidate.
+        if exact_noncountable_gen6_bootstrap_parent(candidate_root, base_sha, old):
+            return []
         cohort = old["active_cohort_id"]
         root = candidate_root / "history" / cohort
         con = json.loads((root / "CONSOLIDATION.json").read_text(encoding="utf-8"))
