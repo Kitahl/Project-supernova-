@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import base64, json, os, re, sys, urllib.parse, urllib.request, urllib.error
+import base64, datetime as dt, json, os, re, sys, urllib.parse, urllib.request, urllib.error
 TOKEN=os.environ.get('GITHUB_TOKEN','')
 REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-')
 API='https://api.github.com/repos/'+REPO
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 WORKERS=('MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01')
+WORKER_SET=set(WORKERS)
 SESS={'MF01':'PS-MF-W01 | Representation Lab','MF02':'PS-MF-W02 | E1 Solver Routing','MF03':'PS-MF-W03 | Lemma & Operator Lab','MF04':'PS-MF-W04 | Adversarial Falsifier','MF05':'PS-MF-W05 | Product Closure','MM01':'PS-MM-W01 | React Mechanisms','MM02':'PS-MM-W02 | DeepSWE Mechanisms','MM03':'PS-MM-W03 | SlopCode Contracts','MM04':'PS-MM-W04 | Senior SWE Architecture','MM05':'PS-MM-W05 | E3 Mechanism Controls','MM07':'PS-MM-W07 | Before/After Self-Bench','EXT01':'PS-JOINT-A01 | Runtime & Transport Audit'}
 HEX40=re.compile(r'^[0-9a-f]{40}$');HEX64=re.compile(r'^[0-9a-f]{64}$')
 BAD={'hidden_task_name','hidden_task_id','protected_task_id','benchmark_item_id','raw_hidden_prompt','private_manifest_payload','private_manifest_content','worker_auth_secret','worker_auth_secret_hex','secret','credential','api_key','access_token','password'}
@@ -49,6 +50,38 @@ def top_schema_check(obj,schema):
         allowed=set(schema.get('properties',{}));extra=set(obj)-allowed
         if extra:return False,'extra '+','.join(sorted(extra)[:4])
     return True,'top envelope ok'
+def parse_time(s):
+    try:
+        x=dt.datetime.fromisoformat(str(s).replace('Z','+00:00'))
+        return x if x.tzinfo is not None else None
+    except Exception:return None
+def liveness_errors(contract,control,assignment,control_blob,assignment_blob):
+    e=[]
+    if not isinstance(contract,dict):return ['liveness contract not object']
+    exact={
+        'schema_version':'PS-COHORT-LIVENESS-2',
+        'cohort_id':assignment.get('cohort_id'),
+        'generation_root_sha':assignment.get('generation_root_sha'),
+        'control_manifest_id':assignment.get('control_manifest_id'),
+        'control_manifest_git_identity':control_blob,
+        'assignment_id':assignment.get('assignment_id'),
+        'assignment_git_identity':assignment_blob,
+    }
+    for k,v in exact.items():
+        if contract.get(k)!=v:e.append('liveness '+k+' mismatch')
+    lanes=contract.get('lanes')
+    if not isinstance(lanes,list) or len(lanes)!=12:return e+['liveness lanes != 12']
+    ids=[x.get('lane_id') for x in lanes if isinstance(x,dict)]
+    if set(ids)!=WORKER_SET or len(ids)!=12 or len(set(ids))!=12:e.append('liveness worker set mismatch')
+    by={x.get('lane_id'):x for x in lanes if isinstance(x,dict)}
+    for w in WORKERS:
+        lane=by.get(w);aw=(assignment.get('workers') or {}).get(w,{})
+        if not lane:continue
+        if lane.get('branch')!=aw.get('worker_branch'):e.append('liveness branch '+w)
+        if lane.get('path')!=f"reports/{assignment.get('cohort_id')}/{w}.json":e.append('liveness path '+w)
+        start=parse_time(lane.get('expected_window_start_utc'));deadline=parse_time(lane.get('deadline_utc'))
+        if start is None or deadline is None or deadline<start:e.append('liveness time '+w)
+    return e
 def main():
     _,state=content('state/CURRENT.json','main')
     if state.get('task_network_plan_id')!=PLAN or state.get('transport_mode')!='BRANCH_GITOPS':
@@ -70,12 +103,16 @@ def main():
         if assignment.get('generation_branch')!=gen:errors.append('assignment generation branch mismatch')
         c,files=changed_files(root,G)
         expected={state['active_control_manifest_path'],state['active_assignment_path']}
+        if control.get('calibration_countable') is True:
+            lp=f'liveness/{cohort}.json';expected.add(lp)
+            lm,contract=content(lp,G)
+            errors.extend(liveness_errors(contract,control,assignment,cm['sha'],am['sha']))
         if set(files)!=expected:errors.append('generation root->G changed paths '+repr(files))
         for p in control.get('required_control_paths',[]):
             a,_=file_text(p,root);b,_=file_text(p,G)
             if a['sha']!=b['sha']:errors.append('frozen control drift '+p)
     except Exception as e:errors.append('generation exception: '+str(e))
-    status(G,'supernova/branch-generation','failure' if errors else 'success',('FAIL: '+errors[0]) if errors else 'immutable generation/control/assignment PASS')
+    status(G,'supernova/branch-generation','failure' if errors else 'success',('FAIL: '+errors[0]) if errors else 'immutable generation/control/assignment/liveness PASS')
     if errors:
         print('generation failed');[print('-',x) for x in errors];return 1
     _,report_schema=content('schemas/branch_report.schema.json',G)
@@ -120,6 +157,11 @@ def main():
             _,obj=content(path,H);_,sch=content(schema_path,G);ok,msg=top_schema_check(obj,sch)
             if not ok:e.append(msg)
             if obj.get('task_network_plan_id')!=PLAN or obj.get('cohort_id')!=cohort or obj.get('generation_head_sha')!=G:e.append('identity binding')
+            if key=='verifier_branch':
+                lm,_=file_text(f'liveness/{cohort}.json',G)
+                if obj.get('liveness_contract_path')!=f'liveness/{cohort}.json':e.append('liveness contract path')
+                if obj.get('liveness_contract_git_identity')!=lm['sha']:e.append('liveness contract blob')
+                if obj.get('liveness_contract_binding_verified') is not True:e.append('liveness binding flag')
         except Exception as x:e.append(str(x))
         status(H,ctx,'failure' if e else 'success',key+(': FAIL '+e[0] if e else ': structural PASS'))
     cb=state.get('consolidation_branch')
