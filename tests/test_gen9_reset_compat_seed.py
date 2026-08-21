@@ -12,6 +12,7 @@ class Gen9ResetCompatSeedContract(unittest.TestCase):
         self.assertEqual(p["one_shot_marker_path"],"config/gen9_reset_compat_epoch_v25.json")
         self.assertEqual(set(p["allowed_root_candidate_paths"]),set(p["required_root_candidate_paths"]))
         self.assertNotIn("state/CURRENT.json",p["allowed_root_candidate_paths"])
+        self.assertNotIn("schemas/cohort_liveness_contract.schema.json",p["allowed_root_candidate_paths"])
         self.assertTrue(all(x not in p["allowed_root_candidate_paths"] for x in p["seed_paths"]))
 
     def test_privileged_job_executes_accepted_main_seed_only(self):
