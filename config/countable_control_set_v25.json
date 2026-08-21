@@ -61,6 +61,7 @@
     "tests/test_substrate_epoch_v25.py",
     "tests/test_authority_bootstrap.py",
     "tests/test_bootstrap_root_tcb_and_head_binding.py",
+    "tests/test_task_registry_countability_authority.py",
     "tests/test_ruleset_attestation_workflow.py",
     "tests/test_ruleset_status_attestation.py",
     "tests/test_bootstrap_diagnostic.py",
