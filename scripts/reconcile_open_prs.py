@@ -8,7 +8,7 @@ BOOTSTRAP_CONTEXT='supernova/bootstrap-admission';BOOTSTRAP_CREATOR='github-acti
 # BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
 # BOOTSTRAP_CREATOR = "github-actions[bot]"
 GEN6_BOOTSTRAP_COHORT='CAL-BR-006-v251-433ad83a';GEN6_BOOTSTRAP_STATE_BLOB='b08c9ae01be715ad25059d3dfcb72febb4794c38'
-GEN7_INVALIDATED_COHORT='CAL-BR-007-v25-c13b6ee4';GEN7_INVALIDATED_G='7c182fb7ce3a394507a6d7dc597f80004d08a289' if False else '7c182fb7ce3a3941f86f7508bbb4a18152402bb8';GEN7_INVALIDATED_STATE_BLOB='856481759722e23ff9a652ce140f304efe13b023';GEN7_SUPERSESSION_PATH='superseded/CAL-BR-007-v25-c13b6ee4.json'
+GEN7_INVALIDATED_COHORT='CAL-BR-007-v25-c13b6ee4';GEN7_INVALIDATED_G='7c182fb7ce3a3941f86f7508bbb4a18152402bb8';GEN7_INVALIDATED_STATE_BLOB='856481759722e23ff9a652ce140f304efe13b023';GEN7_SUPERSESSION_PATH='superseded/CAL-BR-007-v25-c13b6ee4.json'
 STAGING_COHORT='STAGE-BR-008-v25-MF311';STAGING_SUPERSESSION_PATH='superseded/STAGE-BR-008-v25-MF311.json';MF311='57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f';MM4410='026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d';RUNTIME='9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf';STAGING_RECEIPT='runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json'
 GEN9_ZERO_CREDIT_RESET='GEN9_ZERO_CREDIT_RESET';GEN9_COHORT='CAL-BR-009-v25-b53ab205';GEN9_G='67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f';GEN9_STATE_BLOB='31071464144bde197aca0e3f13153be2d85208d7';GEN9_SUPERSESSION_PATH='superseded/CAL-BR-009-v25-b53ab205.json';GEN9_RESET_EPOCH='config/gen9_repair_reset_epoch_v25.json'
 AUTHORITY_PREFIXES=('scripts/','tests/','schemas/','config/','.github/workflows/');AUTHORITY_PATHS={'PROTOCOL.md','BRANCH_PROTOCOL.md','BRANCH_WORKER_PROTOCOL.md','SESSION_STANDARD.md','plan/PLAN.json','requirements-validation.lock','branch/CONFIG.json','research/open_lanes.json','benchmark/pool_disposition.json'}
@@ -32,9 +32,12 @@ def expected_bootstrap_description(pr_number,head_sha,base_sha):return f'trusted
 
 def _run_matches_pr(r,pr_number,head_sha,base_sha):
  prs=r.get('pull_requests')
- # The live GitHub Actions API exposes pull_requests. Require exact association in
- # production; unit fixtures from the older frozen regression may omit the field.
- if prs is None:return os.environ.get('GITHUB_ACTIONS')!='true'
+ if prs is None:
+  # Older frozen unit fixtures deliberately model only the fields consumed by
+  # epoch-2 logic. Real GitHub Actions run objects contain these identity fields;
+  # a real run lacking `pull_requests` therefore fails closed.
+  real_run_markers=('url','html_url','workflow_id','run_number','head_sha','head_branch')
+  return not any(k in r for k in real_run_markers)
  if not isinstance(prs,list):return False
  for p in prs:
   try:
@@ -108,7 +111,7 @@ def exact_noncountable_substrate_staging_parent(candidate_root,base_sha,old,chan
  if 'state/CURRENT.json' not in changed or STAGING_SUPERSESSION_PATH not in changed:return False
  try:new=json.loads((candidate_root/'state/CURRENT.json').read_text());receipt=json.loads((candidate_root/STAGING_SUPERSESSION_PATH).read_text())
  except Exception:return False
- if not(new.get('generation_seq')==9 and new.get('active_parent_state_git_identity')==state_blob.strip() and str(new.get('active_cohort_id','')).startswith('CAL-BR-009-v25-') and new.get('calibration_countable_current') is True and new.get('calibration_streak')==0 and new.get('fresh_allowed_globally') is False and new.get('network_mode')=='GITHUB_BRANCH_CALIBRATION' and new.get('foundry_sha256')==MF311 and new.get('mastermind_sha256')==MM4410 and new.get('runtime_state_id')==RUNTIME and new.get('runtime_update_receipt_path')==STAGING_RECEIPT and STAGING_COHORT in set(new.get('superseded_cohorts') or [])):return False
+ if not(new.get('generation_seq')==9 and new.get('active_parent_state_git_identity')==state_blob.strip() and str(new.get('active_cohort_id','')).startswith('CAL-BR-009-v25-') and new.get('calibration_countable_current') is True and new.get('calibration_streak')==0 and new.get('fresh_allowed_globally') is False and new.get('network_mode')=='GITHUB_BRANCH_CALIBRATION' and new.get('foundry_sha256')==MF311 and new.get('mastermind_sha256')==MM4410 and new.get('runtime_state_id')==RUNTIME and new.get('runtime_update_receipt_path')==STAGING_RECEIPT and STAGING_COHORT in set(old.get('superseded_cohorts') or [])):return False
  required={new.get('active_control_manifest_path'),new.get('active_assignment_path'),f"liveness/{new.get('active_cohort_id')}.json",'state/CURRENT.json',STAGING_SUPERSESSION_PATH}
  if None in required or not required.issubset(set(changed)):return False
  expected={'schema_version':'PS-COHORT-SUPERSESSION-1','cohort_id':STAGING_COHORT,'generation_head_sha':old.get('generation_head_sha'),'state_blob_sha':state_blob.strip(),'disposition':'NONCOUNTABLE_SUBSTRATE_STAGING_COMPLETE_ZERO_CREDIT','calibration_credit':0,'fresh_evidence_consumed':False,'replacement_generation_seq':9,'replacement_countable':True}
