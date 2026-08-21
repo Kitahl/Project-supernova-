@@ -14,7 +14,7 @@
   "root_tcb_source": "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS",
   "authoritative_structural_writer": "scripts/reconcile_branch_statuses.py",
   "secondary_rest_authority": "DIAGNOSTIC_CONTEXTS_ONLY",
-  "bootstrap_provenance": "DESIGNATED_WORKFLOW_RUN_EXACT_PR_HEAD_BASE_ASSOCIATION_REQUIRED",
+  "bootstrap_provenance": "DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_REQUIRED",
   "gen9_repair_reset_epoch_path": "config/gen9_repair_reset_epoch_v25.json",
   "root_change_rule": "NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED",
   "fresh_science_effect": "NONE",
