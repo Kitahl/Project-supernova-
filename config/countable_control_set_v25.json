@@ -1,8 +1,8 @@
 {
-  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-6",
+  "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-7",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
-  "purpose": "Every NEW countable protocol-2.5 calibration generation must freeze this entire control set before cohort 1. Historical generations are not retrofitted. MM01 fresh proposal typing, exact session-phase semantics, and explicit non-authoritative task-registry countability semantics are part of the frozen control surface.",
+  "purpose": "Every NEW countable protocol-2.5 calibration generation must freeze this entire control set before cohort 1. Historical generations are not retrofitted. The surface includes MM01 typed proposal/session/registry hardening and the accepted-main one-shot root-rotation seed used to repair the admission TCB without self-admission.",
   "required_control_paths": [
     "PROTOCOL.md",
     "BRANCH_PROTOCOL.md",
@@ -19,6 +19,7 @@
     "config/countable_control_set_v25.json",
     "config/admission_authority.json",
     "config/authority_bootstrap_v25.json",
+    "config/root_rotation_seed_v25.json",
     "config/substrate_epoch_v25.json",
     "config/read_only_probe_parallelism_v25.json",
     "branch/CONFIG.json",
@@ -49,6 +50,7 @@
     "scripts/reconcile_v25_admission.py",
     "scripts/reconcile_open_prs.py",
     "scripts/reconcile_authority_bootstrap.py",
+    "scripts/reconcile_root_rotation_seed.py",
     "scripts/reconcile_ruleset_attestation.py",
     "scripts/diagnose_authority_bootstrap.py",
     "scripts/check_lane_liveness.py",
@@ -62,6 +64,7 @@
     "tests/test_transition_expected_base_head.py",
     "tests/test_substrate_epoch_v25.py",
     "tests/test_authority_bootstrap.py",
+    "tests/test_root_rotation_seed.py",
     "tests/test_ruleset_attestation_workflow.py",
     "tests/test_ruleset_status_attestation.py",
     "tests/test_bootstrap_diagnostic.py",
@@ -78,6 +81,7 @@
     ".github/workflows/supernova-comment-admission.yml",
     ".github/workflows/supernova-pr-target-admission.yml",
     ".github/workflows/supernova-authority-bootstrap.yml",
+    ".github/workflows/supernova-root-rotation-seed.yml",
     ".github/workflows/supernova-ruleset-attestation.yml",
     ".github/workflows/supernova-liveness-monitor.yml",
     "requirements-validation.lock"
