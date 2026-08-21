@@ -63,6 +63,7 @@
     "tests/test_ruleset_attestation_workflow.py",
     "tests/test_ruleset_status_attestation.py",
     "tests/test_bootstrap_diagnostic.py",
+    "tests/test_runtime_update_lineage.py",
     "tests/liveness/test_liveness_monitor.py",
     "tests/verifier_assurance/test_verifier_assurance_schema.py",
     ".github/workflows/supernova-v25-admission.yml",
