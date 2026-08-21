@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Supernova Runtime Model Binding Attestation v2.5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "status", "task_network_plan_id", "runtime_state_id", "model_target",
+    "reasoning_effort_target", "observed_model_id", "observed_reasoning_effort",
+    "model_match", "reasoning_match", "environment_sha256", "attestor_kind",
+    "created_pre_outcome", "attestation_id"
+  ],
+  "properties": {
+    "schema_version": {"const": "PS-MODEL-BINDING-ATTESTATION-2.5-1"},
+    "status": {"const": "VALIDATED"},
+    "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
+    "runtime_state_id": {"type": "string", "minLength": 1},
+    "model_target": {"const": "GPT-5.6 Sol"},
+    "reasoning_effort_target": {"const": "EXTRA_HIGH"},
+    "observed_model_id": {"const": "GPT-5.6 Sol"},
+    "observed_reasoning_effort": {"const": "EXTRA_HIGH"},
+    "model_match": {"const": true},
+    "reasoning_match": {"const": true},
+    "environment_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "attestor_kind": {"const": "RUNTIME_OBSERVED"},
+    "created_pre_outcome": {"const": true},
+    "attestation_id": {"type": "string", "minLength": 1}
+  }
+}
