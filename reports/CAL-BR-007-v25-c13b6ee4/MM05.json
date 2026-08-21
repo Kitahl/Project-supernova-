@@ -1,0 +1,294 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W05 | E3 Mechanism Controls",
+    "target_program": "MASTERMIND",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "role_id": "MM05",
+    "goal": "Replay E3 executable-envelope and learned/random/no-change gating semantics; report defects and keep unexecuted outcomes NOT_MEASURED.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "worker_id": "MM05",
+  "report_id": "CAL-BR-007-v25-c13b6ee4-MM05",
+  "generation_seq": 7,
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MM05",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "7282c1ec1e131fb8d642d21e818c8614",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "9cb54215a604da9aea1570e7ccfc757435aed4643e2a94931a51cdf877c75739",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_COUNTABLE_REPLAY_ONLY_COHORT_1",
+  "executive_status": "Countable T0 replay-only MM05 receipt. Frozen Gen7 lineage, assignment, worker branch, runtime substrate receipt and public authentication commitment were verified. LEARNED_PROPOSAL, RANDOM_ADMISSIBLE, NO_CHANGE and NO_CHANGE_EQUAL_COMPUTE remain NOT_MEASURED because no executable E3 artifacts, evaluator or matched complete-cost envelope were assigned. Four frozen-control gaps are recorded for successor repair; no E3 score or promotion is claimed.",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task": "resolve_canonical_pointer",
+      "status": "PASS",
+      "detail": "Resolved active protocol-2.5 cohort CAL-BR-007-v25-c13b6ee4 and immutable generation G from main:state/CURRENT.json; cohort is active, countable, fresh-disabled and not superseded."
+    },
+    {
+      "task": "verify_generation_and_worker_branch_prewrite",
+      "status": "PASS",
+      "detail": "Generation branch and assigned MM05 worker branch both compared identical to G before first receipt; assigned report path was absent."
+    },
+    {
+      "task": "verify_frozen_control_lineage",
+      "status": "PASS",
+      "detail": "Control and assignment blob identities match canonical state. Frozen control-release commit c13b6ee4ef38797a81804aa38dab9186de441e5f resolves tree 65c525b6e7cf5ce788f88bbed45b7486739a81b9; release-to-G delta adds only this cohort control and assignment, so every required_control_path is inherited unchanged."
+    },
+    {
+      "task": "verify_worker_auth_commitment",
+      "status": "PASS",
+      "detail": "Prompt-private MM05 secret SHA-256 matched the frozen public commitment. Secret was not published or persisted."
+    },
+    {
+      "task": "verify_runtime_substrate_receipt",
+      "status": "PASS",
+      "detail": "Frozen GEN7-REPLAY-SUBSTRATE-BINDING receipt is VALIDATED and independently qualifies Candidate-7 Foundry and Mastermind 4.4.10 for replay calibration only; it does not establish runtime model/reasoning identity or scientific improvement."
+    },
+    {
+      "task": "observe_prewrite_structural_status",
+      "status": "PASS_WITH_PENDING_DOWNSTREAM",
+      "detail": "At G, supernova/branch-generation and supernova/static-control are success; branch-worker, branch-verify, branch-integrate, branch-consolidate, report-admission and transition-admission are pending before this worker receipt/fan-in."
+    },
+    {
+      "task": "execute_e3_controls",
+      "status": "NOT_MEASURED",
+      "detail": "No executable learned proposal, same-envelope random admissible arm, equal-compute no-change arm, evaluator, or matched complete-cost envelope was assigned. T0 assignment forbids E3 scoring."
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "O-E3-TYPED-REPORT-CONTRACT-GAP",
+      "severity": "HIGH",
+      "kind": "CONTROL_GAP",
+      "status": "OPEN",
+      "evidence": "Frozen config/roles.json requires LEARNED_PROPOSAL, RANDOM_ADMISSIBLE, NO_CHANGE_EQUAL_COMPUTE, frozen hashes/budgets/cache/seeds/scoring and matched complete cost, but schemas/branch_report.schema.json leaves role_payload as an unconstrained object and has no E3-conditional required fields.",
+      "proposed_v25_fix": "Add an E3-specific conditional report schema (or dedicated E3 schema) requiring typed arm status, executable artifact/evaluator/runtime identities, shared mutation/security envelope evidence, full component cost ledger including proposal/feature/probe/selection overhead, seeds/scoring and promotion prohibition on missing fields.",
+      "required_test": "Negative fixtures must reject E3 reports missing any arm, evaluator/artifact hash, same-envelope witness, complete-cost component or seed/scoring field; a replay-only T0 report with all arms NOT_MEASURED must remain valid.",
+      "owner": "MM05_CONTROL_SCHEMA_MAINTAINER",
+      "next_action": "Repair only in a successor frozen control release before any E3-eligible assignment; do not mutate Gen7."
+    },
+    {
+      "issue_id": "O-MM05-ISSUE-LEDGER-SCHEMA",
+      "severity": "HIGH",
+      "kind": "CONTROL_GAP",
+      "status": "OPEN",
+      "evidence": "Frozen assignment requires every evidence-backed defect in issue_ledger with stable issue semantics, but schemas/branch_report.schema.json constrains issue_ledger only as type=array and does not require issue_id, severity, kind, fix/test, owner or next_action.",
+      "proposed_v25_fix": "Define a typed issue-ledger item schema with required stable issue_id, severity, kind, status, evidence, proposed_v25_fix, required_test, owner and next_action fields.",
+      "required_test": "Add one negative schema fixture per missing required issue field and a duplicate/unstable-ID rejection test.",
+      "owner": "REPORT_SCHEMA_CONTROL_MAINTAINER",
+      "next_action": "Carry into the next control release; Gen7 receipt records the fields voluntarily and remains immutable."
+    },
+    {
+      "issue_id": "O-T0-MODEL-BINDING-STATUS-GAP",
+      "severity": "HIGH",
+      "kind": "VALIDATOR_GAP",
+      "status": "OPEN",
+      "evidence": "Frozen SESSION_STANDARD.md permits VERIFIED only when both model and reasoning identities are runtime-observed. Frozen validate_branch_bus_v251.py strictly checks many session fields but omits model_binding_status; the report schema only enumerates allowed strings. The Gen7 substrate receipt qualifies software artifacts, not the executing model/reasoning identity.",
+      "proposed_v25_fix": "Bind model_binding_status to an explicit frozen runtime model+reasoning attestation. Reject VERIFIED when either identity is not independently observed; retain PARTIAL_UNVERIFIED when only model family is observable.",
+      "required_test": "Mutation fixture changing PARTIAL_UNVERIFIED to VERIFIED without a qualifying runtime model+reasoning receipt must fail branch validation; a valid attested fixture must pass.",
+      "owner": "BRANCH_VALIDATOR_CONTROL_MAINTAINER",
+      "next_action": "Patch successor validator/schema policy before any model-sensitive fresh or promotion-eligible cohort."
+    },
+    {
+      "issue_id": "O-T0-SESSION-PHASE-VOCAB-DRIFT",
+      "severity": "MEDIUM",
+      "kind": "CONTROL_HYGIENE",
+      "status": "OPEN",
+      "evidence": "Frozen SESSION_STANDARD.md documents phase vocabulary T0|E1|G1|C1|REACTION|DR03|E3|SELECT|IGNITION|CASCADE|E5B|E6|RESEARCH, while the frozen assignment requires exact phase T0_COUNTABLE_REPLAY_COHORT_1. The report schema allows arbitrary strings and validator binds to assignment, so executable behavior is consistent but the normative standard is stale.",
+      "proposed_v25_fix": "Either add countable/bootstrap phase values to the session standard or split canonical stage from subphase/cohort class and bind both fields consistently.",
+      "required_test": "Schema/validator/documentation fixture must prove every assignment phase is representable by the session standard and exact header copy remains required.",
+      "owner": "SESSION_STANDARD_CONTROL_MAINTAINER",
+      "next_action": "Repair as control hygiene in a successor release; no Gen7 mutation."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test": "canonical_plan_protocol_transport",
+      "result": "PASS"
+    },
+    {
+      "test": "active_cohort_not_superseded",
+      "result": "PASS"
+    },
+    {
+      "test": "generation_branch_equals_G",
+      "result": "PASS"
+    },
+    {
+      "test": "worker_branch_equals_G_prewrite",
+      "result": "PASS"
+    },
+    {
+      "test": "assigned_report_absent_prewrite",
+      "result": "PASS"
+    },
+    {
+      "test": "control_blob_identity",
+      "result": "PASS"
+    },
+    {
+      "test": "assignment_blob_identity",
+      "result": "PASS"
+    },
+    {
+      "test": "frozen_control_release_tree_identity",
+      "result": "PASS"
+    },
+    {
+      "test": "required_control_path_closure_inherited_unchanged",
+      "result": "PASS"
+    },
+    {
+      "test": "worker_auth_commitment",
+      "result": "PASS"
+    },
+    {
+      "test": "runtime_substrate_binding_receipt",
+      "result": "PASS_REPLAY_ONLY"
+    },
+    {
+      "test": "prewrite_generation_structural_status",
+      "result": "PASS"
+    },
+    {
+      "test": "e3_executable_artifact_evaluator_cost_envelope",
+      "result": "NOT_AVAILABLE"
+    },
+    {
+      "test": "model_reasoning_runtime_binding",
+      "result": "PARTIAL_UNVERIFIED"
+    }
+  ],
+  "plan_alignment": [
+    {
+      "requirement": "BRANCH_GITOPS isolated create-once worker write",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "COUNTABLE_T0_CALIBRATION_COHORT_1",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "SAFE_REPLAY_ONLY",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "header.execution_mode == report.mode",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "zero fresh/private/benchmark/research cost",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "report every evidence-backed issue in issue_ledger",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "Mastermind PRE_REVIEW_ONLY",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "LEARNED_PROPOSAL/RANDOM_ADMISSIBLE/NO_CHANGE typed NOT_MEASURED without executable controls",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "whole-report HMAC-2",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "origin_reread_claim=false",
+      "status": "ALIGNED"
+    }
+  ],
+  "evidence_and_provenance": {
+    "canonical_pointer": "main:state/CURRENT.json",
+    "generation_branch": "ps/gen/CAL-BR-007-v25-c13b6ee4",
+    "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+    "frozen_control_release_commit_sha": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+    "frozen_control_release_tree_sha": "65c525b6e7cf5ce788f88bbed45b7486739a81b9",
+    "generation_delta_from_control_release": [
+      "assignments/CAL-BR-007-v25-c13b6ee4.json",
+      "control/CAL-BR-007-v25-c13b6ee4.json"
+    ],
+    "frozen_report_schema_git_identity": "a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+    "frozen_session_standard_git_identity": "a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+    "frozen_worker_auth_git_identity": "9498d1d49b8636a3a313dc63be89f4433330c230",
+    "frozen_roles_git_identity": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "frozen_branch_worker_protocol_git_identity": "2103ec2cc4dcdf623f32e76878bd0a01f7a66d15",
+    "frozen_runtime_update_git_identity": "61ad3692aab911f49ce03a8f354ab0b5a8dfb0cd",
+    "prewrite_structural_status": {
+      "supernova/branch-generation": "success",
+      "supernova/static-control": "success",
+      "supernova/branch-worker": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-consolidate": "pending",
+      "supernova/report-admission": "pending",
+      "supernova/transition-admission": "pending"
+    },
+    "scientific_evidence_consumed": false,
+    "protected_references_read": false,
+    "worker_self_reread_authority": false
+  },
+  "claim_scope": "Countable T0 transport/control evidence for the MM05 lane only. No E3 scientific effectiveness claim, no learned/random/no-change comparison, no mechanism superiority claim, no model-sensitive fresh claim and no promotion claim.",
+  "runtime_implementation_implication": "The frozen substrate receipt qualifies Candidate-7 Foundry and Mastermind 4.4.10 for replay calibration only. This MM05 receipt does not establish E3 runtime execution, scientific improvement, or model/reasoning identity beyond PARTIAL_UNVERIFIED.",
+  "negative_zero_outcomes": [
+    "LEARNED_PROPOSAL=NOT_MEASURED",
+    "RANDOM_ADMISSIBLE=NOT_MEASURED",
+    "NO_CHANGE=NOT_MEASURED",
+    "NO_CHANGE_EQUAL_COMPUTE=NOT_MEASURED",
+    "No executable E3 artifact supplied.",
+    "No evaluator supplied.",
+    "No matched complete-cost envelope supplied.",
+    "No E3 score.",
+    "No fresh evidence.",
+    "No private-manifest read.",
+    "No benchmark execution.",
+    "No deep research."
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "LEARNED_PROPOSAL": "NOT_MEASURED",
+    "RANDOM_ADMISSIBLE": "NOT_MEASURED",
+    "NO_CHANGE": "NOT_MEASURED",
+    "NO_CHANGE_EQUAL_COMPUTE": "NOT_MEASURED",
+    "executable_bounded_artifact": false,
+    "evaluator_available": false,
+    "matched_complete_cost_envelope": false,
+    "e3_score": null,
+    "promotion": "NONE"
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Countable replay-only transport/control verification only; zero scientific fresh/private/benchmark/research consumption."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently fetches the assigned MM05 branch and verifies lineage, single-file diff, report blob/schema, HMAC-2, public safety and structural statuses. BIL00 may count this lane only through full valid cohort fan-in. Repair the four recorded control gaps only in a successor frozen release; do not mutate Gen7.",
+  "worker_auth_proof": "44ccc2c7213db935644513e73d0696a5d30f307fbb2ab6a78ec5cc0daa95d3a0"
+}
