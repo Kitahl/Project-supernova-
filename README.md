@@ -21,7 +21,7 @@ Where older design guides, the 29-page protocol-2.5 construction specification, 
 
 **No protocol 2.6 and no Revision 5 until the calibration streak reaches two consecutive clean countable protocol-2.5 cohorts.**
 
-`main:state/CURRENT.json` is the sole live status pointer. Generation 6 remains immutable replay-only diagnostic history. The live programme is now Gen7, the first countable protocol-2.5 replay-only calibration cohort, under source-bound repository protection. Fresh scientific work remains disabled and the calibration streak remains subject to complete clean-cohort admission; documentation updates do not create calibration credit.
+`main:state/CURRENT.json` is the sole live status pointer. Gen9 is immutable zero-credit invalidated history after the structural-status control defect and schema-compatible root repair. The live programme is now **Gen10**, cohort `CAL-BR-010-v25-fe539297-r2`, the replacement countable protocol-2.5 replay-only calibration cohort 1 under root-TCB epoch 4. Fresh scientific work remains disabled and the calibration streak is 0; clean credit requires the complete `12 workers -> MM06 -> MF06 -> BIL00` path. Documentation updates do not create calibration credit.
 
 ## Canonical definition
 
@@ -76,15 +76,15 @@ No receipt is not a null result. A normal no-finding run emits a zero-delta rece
 
 ## Current scheduled-task scope
 
-The frozen 15-lane network is active for the Gen7 countable replay-calibration cohort. Workers remain on their exact frozen assignments; do not repurpose active prompts for H0/H1, OCN, RETRO, CID, Stage-0 TRAIN work or Frontier modelling unless a future frozen assignment explicitly authorizes it.
+The frozen 15-lane network is active for the **Gen10 replacement countable replay-calibration cohort** `CAL-BR-010-v25-fe539297-r2`. Workers remain on their exact frozen assignments; do not repurpose active prompts for H0/H1, OCN, RETRO, CID, Stage-0 TRAIN work or Frontier modelling unless a future frozen assignment explicitly authorizes it.
 
-All Gen7 calibration work remains `SAFE_REPLAY_ONLY`: no fresh/protected benchmark consumption, no scientific promotion, and no inference from a missing receipt. The active operational qualification is persistent 15/15 liveness plus the complete `12 workers -> MM06 -> MF06 -> BIL00` cohort path.
+All Gen10 calibration work remains `SAFE_REPLAY_ONLY`: no fresh/protected benchmark consumption, no scientific promotion, and no inference from a missing receipt. The active operational qualification is persistent 15/15 liveness plus the complete `12 workers -> MM06 -> MF06 -> BIL00` cohort path.
 
 Broad foundational Deep Research should not be restarted merely because transport qualification completes. Targeted research should answer concrete implementation-contract, inherited-machinery, baseline or empirical-design questions. The current derived formal disposition is recorded separately and is not protocol authority.
 
 ## Work allowed now without scientific promotion
 
-- Gen7 replay-only countable calibration and liveness qualification;
+- Gen10 replay-only countable calibration and liveness qualification;
 - H0 exact synthetic/oracle worlds in a separately authorized non-admissible environment;
 - H1 SOUND-only interval kernel in a separately authorized non-admissible environment;
 - Cascade/Horizon soundness drafts and mechanisation;
