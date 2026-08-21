@@ -1,0 +1,284 @@
+{
+  "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-fe539297-r2",
+  "claim_scope": "Replay-only T0 transport/liveness/control audit for Gen10. No fresh/protected benchmark evidence, scientific metric, mathematical result, runtime mutation, clean-cohort promotion or protocol advancement is claimed.",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-fe539297-r2",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay-only bounded transport/liveness audit using frozen GitHub state/control files, status/issue/branch observations and one narrow official GitHub API semantics check. No protected/private/scientific execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+    "assignment_path": "assignments/CAL-BR-010-v25-fe539297-r2.json",
+    "audit_observation_time_utc": "2026-08-21T22:22:30Z",
+    "canonical_main_head": "3f2d10980ead2c75f8ccb532159d270c53898c85",
+    "canonical_pointer": "main:state/CURRENT.json",
+    "canonical_pointer_blob": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+    "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+    "control_manifest_path": "control/CAL-BR-010-v25-fe539297-r2.json",
+    "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+    "generation_root_sha": "fe539297bdf6b769140c9970326f3e1de116f276",
+    "liveness_contract_git_identity": "8bd88d895df508e6807588239dea1f8047b73f13",
+    "liveness_contract_path": "liveness/CAL-BR-010-v25-fe539297-r2.json",
+    "model_binding_observation": "Model target is available in-session; requested reasoning effort lacks an independent frozen runtime receipt, so binding remains PARTIAL_UNVERIFIED.",
+    "open_issue_refs": [
+      "https://github.com/Kitahl/Project-supernova-/issues/21",
+      "https://github.com/Kitahl/Project-supernova-/issues/160",
+      "https://github.com/Kitahl/Project-supernova-/issues/161",
+      "https://github.com/Kitahl/Project-supernova-/issues/156",
+      "https://github.com/Kitahl/Project-supernova-/issues/4"
+    ],
+    "open_pr_count_observed": 0,
+    "origin_reread_scope": "No authoritative self-reread claim; MM06 owns later independent reread and HMAC verification.",
+    "report_schema_git_identity": "8372632e48df1d9fcb28133cdea4788adfd658fc",
+    "root_tcb_epoch_git_identity": "fbdf8b84bf6997630d69a98abb5771f97ef7c77a",
+    "root_tcb_epoch_path": "config/root_tcb_epoch_v25.json",
+    "runtime_receipt_git_identity": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "runtime_receipt_qualification": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+    "worker_auth_config_git_identity": "9498d1d49b8636a3a313dc63be89f4433330c230",
+    "worker_common_deadline_utc": "2026-08-21T22:55:00Z"
+  },
+  "evidence_tier": "T0_REPLAY_TRANSPORT_LIVENESS_AUDIT",
+  "executive_status": "T0_BLOCKING_DEFECTS_FOUND_NO_CLEAN_COHORT_CREDIT",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "generation_seq": 10,
+  "issue_ledger": [
+    {
+      "aliases": [
+        "LIVENESS-COMMITTER-DATE-TRUST"
+      ],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "CONTROL_PLANE_TIMING_TRUST",
+      "component": "T0 liveness / clean-cohort admission",
+      "evidence_refs": [
+        "scripts/check_lane_liveness.py@25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f blob:a9f089d4ddbf50680b7ca8b855cca7b870dbe263",
+        "reports/CAL-BR-010-v25-fe539297-r2/MF01.json@ps/work/CAL-BR-010-v25-fe539297-r2/MF01 blob:95ba5414daeb6a15a2abddeeae5c4bdafa39ce71",
+        "GitHub Docs REST Git commits create-commit parameters: https://docs.github.com/en/rest/git/commits?apiVersion=2022-11-28"
+      ],
+      "exact_failure": "Frozen scripts/check_lane_liveness.py maps GitHub commit.committer.date to created_at_utc and treats a receipt as on-time whenever that value is at/before the frozen deadline. GitHub's raw Git Create a commit API permits the caller to supply author/committer date. The monitor records committer_login but does not source-bind the timestamp or prove a server-generated creation event. Therefore a post-deadline receipt can have an apparently pre-deadline commit timestamp under a sufficiently capable writer, undermining immutable creation-time liveness authority.",
+      "issue_id": "O-T0-GEN10-LIVENESS-COMMIT-DATE-BACKDATING",
+      "next_action": "MM06/BIL00 independently rerun this falsifier. If confirmed, Gen10 receives zero clean-cohort credit and the liveness authority is repaired prospectively in a new immutable protocol-2.5 generation at streak zero.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Use a server-generated, expected-source and exact-head-bound timestamp witness for after-deadline adjudication, or a trusted monitor receipt persisted before deadline. Treat Git author/committer timestamps as informational only.",
+      "required_test": "Create a report commit first observed after deadline with committer date backdated before deadline and no trusted server-time witness; admission MUST be RUN_TIMING_UNKNOWN or RUN_LATE with transition_liveness_pass=false. Pair with before-deadline and expected-source server-time positive controls.",
+      "severity": "CRITICAL",
+      "status": "OPEN_CROSS_WORKER_CORROBORATED",
+      "summary": "After-deadline receipt timing trusts a Git commit committer timestamp that is not intrinsically server-generated."
+    },
+    {
+      "aliases": [
+        "GitHub issue #21"
+      ],
+      "authoritative_control_change": false,
+      "blocker": true,
+      "classification": "PLATFORM_SCHEDULER_LIVENESS",
+      "component": "Native scheduled-lane persistence and cohort liveness",
+      "evidence_refs": [
+        "config/task_registry_v25.json@25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f blob:c7d1e878ab1c72f73de32213a2589417583055f7",
+        "liveness/CAL-BR-010-v25-fe539297-r2.json@25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f blob:8bd88d895df508e6807588239dea1f8047b73f13",
+        "GitHub issue #21: https://github.com/Kitahl/Project-supernova-/issues/21",
+        "Scheduled Tasks live observation 2026-08-21T22:22:30Z"
+      ],
+      "exact_failure": "Frozen config/task_registry_v25.json requires exactly 15 native hourly lanes and no sixteenth lane. The live Scheduled Tasks surface contained the expected native set, but the historically unstable MF02 lane was not enabled at this observation even though it had produced a Gen10 receipt. This reproduces the persistence condition tracked by GitHub issue #21. Separately, MM04 had no Gen10 receipt at 22:22:30Z, but because the frozen deadline is 22:55Z that receipt state remains WAITING/NO_RECEIPT_PREDEADLINE rather than terminal failure.",
+      "issue_id": "TASK-DEPLOY-20",
+      "next_action": "Keep GitHub issue #21 open. BIL00 may perform the allowed scheduler remediation; MM06 must not infer clean transport solely from existing receipts or supernova/liveness=success.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Restore the native lane and obtain repeated independent 15/15 enabled observations across later scheduled windows without BIL00 repair. Preserve receipt-path liveness separately from scheduler enablement.",
+      "required_test": "Before cohort credit, observe exactly 15/15 expected native lanes enabled on at least the protocol-required repeated observations, including MF02; require all 12 worker receipts by frozen deadline and keep missing/late/unknown fail-closed.",
+      "severity": "HIGH",
+      "status": "OPEN_REPRODUCED",
+      "summary": "The required 15-lane native scheduler condition was not satisfied at this audit observation."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "fresh_evidence_units_consumed=0",
+    "protected_manifest_reads=0",
+    "benchmark_executions=0",
+    "deep_research_runs=0",
+    "runtime_promotions=0",
+    "scientific_promotions=0",
+    "clean_cohort_credit_claimed_by_EXT01=0",
+    "broad_research_runs=0"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently fetch and validate all worker branches/reports/HMACs, preserve MM04 as WAITING until its frozen deadline and fail closed thereafter if absent/late/unknown, independently rerun O-T0-GEN10-LIVENESS-COMMIT-DATE-BACKDATING, and refuse clean-cohort passage while TASK-DEPLOY-20's 15/15 enabled condition is not satisfied. BIL00 owns issue mirroring/remediation; no fresh science or runtime promotion.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "31071464144bde197aca0e3f13153be2d85208d7",
+  "plan_alignment": [
+    "Protocol 2.5 / Revision 4 remains frozen; no protocol 2.6 or Revision 5 adoption.",
+    "Gen10 remains SAFE_REPLAY_ONLY, countable candidate cohort 1 at streak zero, fresh=false.",
+    "Exact generation structural success is preserved but clean cohort credit is withheld from EXT01 because evidence-backed T0 blockers remain.",
+    "Worker receipts are not scientific/runtime authority; Math Foundry 3.1.1 qualification is software replay calibration only.",
+    "BIL00 owns GitHub issue mirroring/remediation/consolidation; MM06 owns independent report reread/HMAC verification."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-EXT01-CAL-BR-010-v25-fe539297-r2",
+  "research_questions": [],
+  "runtime_implementation_implication": "None. Foundry 3.1.1 and Mastermind 4.4.10 remain replay-calibration substrate identities only. EXT01 findings concern transport/liveness admission and do not change runtime truth.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Independently audit immutable generation freeze, 3.1.1 substrate binding, worker isolation, GitHub source binding, liveness, issue pipeline and public/private separation.",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "EXT01",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-JOINT-A01 | Runtime & Transport Audit",
+    "target_program": "JOINT"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "details": "Live main and frozen state/control/assignment agree on protocol 2.5, plan, Gen10 cohort, generation head, parent state, checkpoint/runtime, countable=true and fresh=false; Gen9 remains superseded zero-credit history.",
+      "status": "PASS",
+      "task": "canonical_lineage_and_countability"
+    },
+    {
+      "details": "Declared control-release root to G is one commit and adds exactly the active assignment, control manifest and liveness contract. Authoritative supernova/branch-generation on exact G is success.",
+      "status": "PASS",
+      "task": "immutable_generation_freeze"
+    },
+    {
+      "details": "Frozen scripts/reconcile_branch_statuses.py is the sole authoritative supernova/branch-* writer; scripts/reconcile_branch_rest.py is GET-only and emits distinct supernova/rest-* diagnostic records.",
+      "status": "PASS",
+      "task": "single_structural_writer_repair"
+    },
+    {
+      "details": "The 12-lane pre-outcome contract is present and blob-bound. Functional late/missing classification is fail-closed, but its GitHub observer trusts commit.committer.date as creation time; that field can be caller-selected through GitHub's raw Git create-commit API.",
+      "status": "PARTIAL_BLOCKING",
+      "task": "frozen_liveness_contract"
+    },
+    {
+      "details": "Frozen registry defines exactly 15 native Vancouver-staggered lanes and no sixteenth lane. Live Scheduled Tasks observation found the required set present but did not satisfy 15/15 enabled because historically unstable MF02 was not enabled, reproducing TASK-DEPLOY-20.",
+      "status": "BLOCKED",
+      "task": "native_lane_topology_and_enablement"
+    },
+    {
+      "details": "At the 2026-08-21T22:22:30Z observation, 10 peer worker branches had exactly one assigned report path; MM04 remained at G with no report. The frozen common worker deadline is 22:55Z, so MM04 is WAITING/NO_RECEIPT_PREDEADLINE, not terminal failure and never ZERO_DELTA. EXT01 was still at G immediately before this create-once write.",
+      "status": "WAITING",
+      "task": "worker_fanin_predeadline"
+    },
+    {
+      "details": "Live main reports protected=true and canonical state reports VERIFIED_PROTECTED_SOURCE_BOUND. The classic branch-protection detail exposed by this connector has required checks disabled/empty and does not itself expose ruleset source binding, so this run does not manufacture a new independent source-binding proof; no regression evidence was observed.",
+      "status": "PASS_WITH_OBSERVABILITY_LIMIT",
+      "task": "repo_policy_source_binding"
+    },
+    {
+      "details": "Frozen runtime receipt binds Math Foundry 3.1.1 and Mastermind 4.4.10 with runtime_before == runtime_after and explicitly limits qualification to software replay calibration; no mathematical/scientific authority is inferred.",
+      "status": "PASS_REPLAY_ONLY",
+      "task": "substrate_runtime_binding"
+    },
+    {
+      "details": "Frozen root TCB epoch is 4, the single structural writer is named, REST structural output is diagnostic-only, and the Gen9 reset compatibility seed is marked permanently inert after the accepted epoch marker.",
+      "status": "PASS",
+      "task": "root_tcb_epoch4_and_seed_retirement"
+    },
+    {
+      "details": "Prompt-private EXT01 capability matched the frozen public commitment. HMAC-2 binds the complete canonical report after removing only worker_auth_proof. No private manifest, protected evidence, credential or raw capability material is stored.",
+      "status": "PASS",
+      "task": "hmac2_and_public_private_boundary"
+    },
+    {
+      "details": "Requested model identity is available in-session, but no frozen independent runtime attestation proves requested reasoning effort; requested text is not treated as binding proof.",
+      "status": "PARTIAL_UNVERIFIED",
+      "task": "model_binding"
+    },
+    {
+      "details": "No fresh evidence, protected/private manifest read, benchmark execution, deep research, runtime promotion or scientific promotion occurred.",
+      "status": "NOT_PERFORMED",
+      "task": "scientific_execution"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "fe539297... -> G adds exactly assignments/CAL-BR-010-v25-fe539297-r2.json, control/CAL-BR-010-v25-fe539297-r2.json and liveness/CAL-BR-010-v25-fe539297-r2.json.",
+      "status": "PASS",
+      "test": "release_root_to_generation_diff"
+    },
+    {
+      "result": "Exact G has supernova/branch-generation=success and supernova/liveness=success; static-control=success. Report/transition/worker/verifier/integrator/consolidation contexts were still pending at the stop observation.",
+      "status": "PASS",
+      "test": "exact_generation_status"
+    },
+    {
+      "result": "reconcile_branch_statuses.py publishes authoritative structural contexts; reconcile_branch_rest.py is GET-only and names distinct diagnostic contexts.",
+      "status": "PASS",
+      "test": "single_authoritative_structural_writer"
+    },
+    {
+      "result": "MF01-05, MM01-03, MM05 and MM07 were each exactly one commit ahead of G and changed only reports/<cohort>/<worker>.json. MM04 and pre-write EXT01 were identical to G.",
+      "status": "PASS_FOR_OBSERVED_RECEIPTS",
+      "test": "worker_branch_isolation"
+    },
+    {
+      "result": "The frozen evaluator blocks RUN_LATE, RUN_TIMING_UNKNOWN and post-deadline NO_RECEIPT.",
+      "status": "PASS_AT_FUNCTION_LEVEL",
+      "test": "liveness_functional_late_classification"
+    },
+    {
+      "result": "The GitHub observer sources created_at_utc from commit.committer.date without a server-time/source-binding proof; GitHub's raw Git commit API permits caller-specified committer date.",
+      "status": "FAIL",
+      "test": "liveness_timestamp_authority"
+    },
+    {
+      "result": "Frozen topology is exactly 15/no-sixteenth; live native scheduled set was present but did not satisfy 15/15 enabled because MF02 was not enabled.",
+      "status": "FAIL",
+      "test": "native_lane_count_and_enablement"
+    },
+    {
+      "result": "10 peer reports existed before EXT01 write; MM04 had no report. Observation preceded the 22:55Z deadline, so no late/missing terminal judgment is made.",
+      "status": "WAITING",
+      "test": "worker_fanin_at_observation"
+    },
+    {
+      "result": "Epoch 4 is active and Gen9 reset compatibility seed is explicitly permanently inert after its marker.",
+      "status": "PASS",
+      "test": "root_tcb_epoch4"
+    },
+    {
+      "result": "Foundry 3.1.1 / Mastermind 4.4.10 identities match state; runtime identity is unchanged and receipt denies scientific promotion.",
+      "status": "PASS_REPLAY_ONLY",
+      "test": "runtime_substrate_receipt"
+    },
+    {
+      "result": "Private capability hashes to frozen EXT01 public commitment; canonical whole-report HMAC-2 construction is used and signed-field mutation changes the derived proof.",
+      "status": "PASS",
+      "test": "hmac2_commitment_and_mutation"
+    },
+    {
+      "result": "PARTIAL_UNVERIFIED used because no frozen independent reasoning-effort attestation is available.",
+      "status": "PASS",
+      "test": "model_binding_honesty"
+    },
+    {
+      "result": "No open pull requests were returned for the repository at the audit observation.",
+      "status": "PASS",
+      "test": "open_pr_watch"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "b6951e0e45b54867a6b86a916e0d4685",
+  "worker_auth_commitment": "74216d4e0414c15b747b329e4de2133dd2c9528fdf99d3e9a709136533f9d87b",
+  "worker_auth_proof": "3c88fc951772cce2c1c8e09c3682de7dbc3668db2c9574684a8d9f2945714789",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/EXT01",
+  "worker_id": "EXT01"
+}
