@@ -1,0 +1,31 @@
+{
+  "schema_version": "PS-GEN9-REPAIR-RESET-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "epoch": 1,
+  "status": "ACTIVE_ONE_SHOT_EXACT_GEN9_ZERO_CREDIT_RESET",
+  "old_state_blob": "31071464144bde197aca0e3f13153be2d85208d7",
+  "old_cohort_id": "CAL-BR-009-v25-b53ab205",
+  "old_generation_head_sha": "67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f",
+  "allowed_successor_generation_seq": 10,
+  "allowed_successor_cohort_prefix": "CAL-BR-010-v25-",
+  "required_successor_countable": true,
+  "required_successor_calibration_streak": 0,
+  "required_successor_fresh_allowed_globally": false,
+  "required_atomic_transition_paths": [
+    "state/CURRENT.json",
+    "superseded/CAL-BR-009-v25-b53ab205.json",
+    "control/<successor-cohort>.json",
+    "assignments/<successor-cohort>.json",
+    "liveness/<successor-cohort>.json"
+  ],
+  "supersession_disposition": "INVALIDATED_ZERO_CREDIT_MUTABLE_DUAL_WRITER_STRUCTURAL_STATUS",
+  "calibration_credit": 0,
+  "fresh_evidence_consumed": false,
+  "foundry_sha256": "57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+  "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "structural_status_rotation_epoch_path": "config/structural_status_rotation_epoch_v25.json",
+  "ordinary_clean_history_gate": "UNCHANGED_FOR_ALL_OTHER_TRANSITIONS",
+  "failure_semantics": "FAIL_CLOSED"
+}

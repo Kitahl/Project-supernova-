@@ -1,4 +1,4 @@
-name: Supernova v2.5 REST Branch + Admission Reconciler
+name: Supernova v2.5 REST Diagnostics + Admission Reconciler
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
   reconcile:
     runs-on: ubuntu-latest
     steps:
-      - name: Run exact-main no-dependency reconcilers
+      - name: Run exact-main read-only diagnostics and admission reconciler
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -35,5 +35,7 @@ jobs:
               with urllib.request.urlopen(req,timeout=30) as r:
                   open('/tmp/'+name,'wb').write(r.read())
           PY
+          # This script is GET-only and emits non-authoritative JSON diagnostics.
           python3 /tmp/reconcile_branch_rest.py
+          # This is the only status-writing program in this workflow.
           python3 /tmp/reconcile_v25_admission.py
