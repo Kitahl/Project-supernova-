@@ -16,6 +16,8 @@ SPEC.loader.exec_module(MOD)
 PLAN = "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"
 BASE = "b" * 40
 HEAD = "c" * 40
+CONTROL_BLOB = "d" * 40
+ASSIGNMENT_BLOB = "e" * 40
 WORKERS = (
     "MF01", "MF02", "MF03", "MF04", "MF05",
     "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01",
@@ -53,7 +55,9 @@ def successor(cohort="CAL-BR-010-v25-test"):
         "generation_branch": f"ps/gen/{cohort}",
         "generation_head_sha": HEAD,
         "active_control_manifest_path": f"control/{cohort}.json",
+        "active_control_manifest_git_identity": CONTROL_BLOB,
         "active_assignment_path": f"assignments/{cohort}.json",
+        "active_assignment_git_identity": ASSIGNMENT_BLOB,
         "worker_branches": {worker: f"ps/work/{cohort}/{worker}" for worker in WORKERS},
         "verifier_branch": f"ps/verify/{cohort}",
         "integrator_branch": f"ps/integrate/{cohort}",
@@ -76,7 +80,7 @@ def successor(cohort="CAL-BR-010-v25-test"):
     }
 
 
-def write_candidate(root: pathlib.Path, new=None, receipt=None, marker=None):
+def write_candidate(root: pathlib.Path, new=None, receipt=None, marker=None, control_blob=CONTROL_BLOB, assignment_blob=ASSIGNMENT_BLOB):
     new = successor() if new is None else new
     cohort = new["active_cohort_id"]
     marker = {
@@ -112,6 +116,7 @@ def write_candidate(root: pathlib.Path, new=None, receipt=None, marker=None):
         "parent_state_git_identity": MOD.GEN9_STATE_BLOB,
         "expected_base_head": BASE,
         "calibration_countable": True,
+        "control_manifest_id": "CTRL-TEST",
         "control_release_commit_sha": BASE,
     }
     assignment = {
@@ -121,14 +126,24 @@ def write_candidate(root: pathlib.Path, new=None, receipt=None, marker=None):
         "parent_state_git_identity": MOD.GEN9_STATE_BLOB,
         "expected_base_head": BASE,
         "calibration_countable": True,
+        "assignment_id": "ASSIGN-TEST",
+        "control_manifest_id": "CTRL-TEST",
+        "control_manifest_git_identity": control_blob,
         "generation_branch": f"ps/gen/{cohort}",
         "generation_root_sha": BASE,
     }
     liveness = {
+        "schema_version": "PS-COHORT-LIVENESS-2.5-2",
+        "protocol_version": "2.5",
+        "task_network_plan_id": PLAN,
         "cohort_id": cohort,
+        "generation_seq": 10,
         "generation_root_sha": BASE,
-        "control_manifest_path": f"control/{cohort}.json",
-        "assignment_path": f"assignments/{cohort}.json",
+        "control_manifest_id": "CTRL-TEST",
+        "control_manifest_git_identity": control_blob,
+        "assignment_id": "ASSIGN-TEST",
+        "assignment_git_identity": assignment_blob,
+        "lanes": [],
     }
     files = {
         "state/CURRENT.json": new,
@@ -142,100 +157,112 @@ def write_candidate(root: pathlib.Path, new=None, receipt=None, marker=None):
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(payload), encoding="utf-8")
-    changed = {
+    return sorted({
         "state/CURRENT.json",
         MOD.GEN9_SUPERSESSION_PATH,
         f"control/{cohort}.json",
         f"assignments/{cohort}.json",
         f"liveness/{cohort}.json",
-    }
-    return sorted(changed)
+    })
+
+
+def fake_git_run(state_blob=MOD.GEN9_STATE_BLOB, control_blob=CONTROL_BLOB, assignment_blob=ASSIGNMENT_BLOB):
+    def fake(cmd, cwd, env=None):
+        if cmd[:2] == ["git", "rev-parse"]:
+            spec = cmd[2]
+            if spec == BASE + ":state/CURRENT.json":
+                return 0, state_blob
+            if spec.startswith("HEAD:control/"):
+                return 0, control_blob
+            if spec.startswith("HEAD:assignments/"):
+                return 0, assignment_blob
+        raise AssertionError(cmd)
+    return fake
 
 
 class Gen9ZeroCreditResetTests(unittest.TestCase):
-    def admitted(self, root, old=None, changed=None, state_blob=None):
+    def admitted(self, root, old=None, changed=None, state_blob=None, control_blob=CONTROL_BLOB, assignment_blob=ASSIGNMENT_BLOB):
         old = old_state() if old is None else old
-        changed = write_candidate(root) if changed is None else changed
+        changed = write_candidate(root, control_blob=control_blob, assignment_blob=assignment_blob) if changed is None else changed
         state_blob = MOD.GEN9_STATE_BLOB if state_blob is None else state_blob
-        with mock.patch.object(MOD, "run", return_value=(0, state_blob)):
+        with mock.patch.object(MOD, "run", side_effect=fake_git_run(state_blob, control_blob, assignment_blob)):
             return MOD.exact_gen9_zero_credit_reset_parent(root, BASE, old, changed)
 
     def test_exact_transition_is_admitted(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = pathlib.Path(directory)
-            self.assertTrue(self.admitted(root))
+            self.assertTrue(self.admitted(pathlib.Path(directory)))
+
+    def test_liveness_schema_remains_closed_and_has_no_path_fields(self):
+        schema=json.loads((ROOT/"schemas/cohort_liveness_contract.schema.json").read_text())
+        self.assertFalse(schema.get("additionalProperties", True))
+        props=schema.get("properties") or {}
+        self.assertNotIn("control_manifest_path", props)
+        self.assertNotIn("assignment_path", props)
+        self.assertIn("control_manifest_git_identity", props)
+        self.assertIn("assignment_git_identity", props)
 
     def test_wrong_predecessor_blob_fails_closed(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = pathlib.Path(directory)
-            write_candidate(root)
+            root=pathlib.Path(directory); write_candidate(root)
             self.assertFalse(self.admitted(root, state_blob="0" * 40))
+
+    def test_control_or_assignment_blob_mismatch_fails_closed(self):
+        for key in ("control", "assignment"):
+            with self.subTest(key=key), tempfile.TemporaryDirectory() as directory:
+                root=pathlib.Path(directory); new=successor(); changed=write_candidate(root,new=new)
+                if key=="control": new["active_control_manifest_git_identity"]="0"*40
+                else: new["active_assignment_git_identity"]="0"*40
+                (root/"state/CURRENT.json").write_text(json.dumps(new))
+                with mock.patch.object(MOD,"run",side_effect=fake_git_run()):
+                    self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root,BASE,old_state(),changed))
+
+    def test_liveness_identity_mismatch_fails_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=pathlib.Path(directory); changed=write_candidate(root)
+            cohort=successor()["active_cohort_id"]; p=root/f"liveness/{cohort}.json"
+            live=json.loads(p.read_text()); live["assignment_git_identity"]="0"*40; p.write_text(json.dumps(live))
+            with mock.patch.object(MOD,"run",side_effect=fake_git_run()):
+                self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root,BASE,old_state(),changed))
 
     def test_old_credit_or_fresh_near_miss_fails_closed(self):
         for key, value in (("calibration_streak", 1), ("fresh_allowed_globally", True)):
             with self.subTest(key=key), tempfile.TemporaryDirectory() as directory:
-                root = pathlib.Path(directory)
-                write_candidate(root)
-                old = old_state(); old[key] = value
+                root=pathlib.Path(directory); write_candidate(root); old=old_state(); old[key]=value
                 self.assertFalse(self.admitted(root, old=old))
 
     def test_successor_must_be_countable_streak_zero_and_fresh_off(self):
-        for key, value in (
-            ("calibration_countable_current", False),
-            ("calibration_streak", 1),
-            ("fresh_allowed_globally", True),
-        ):
+        for key, value in (("calibration_countable_current", False),("calibration_streak", 1),("fresh_allowed_globally", True)):
             with self.subTest(key=key), tempfile.TemporaryDirectory() as directory:
-                root = pathlib.Path(directory)
-                new = successor(); new[key] = value
-                changed = write_candidate(root, new=new)
-                with mock.patch.object(MOD, "run", return_value=(0, MOD.GEN9_STATE_BLOB)):
-                    self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root, BASE, old_state(), changed))
+                root=pathlib.Path(directory); new=successor(); new[key]=value; changed=write_candidate(root,new=new)
+                with mock.patch.object(MOD,"run",side_effect=fake_git_run()):
+                    self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root,BASE,old_state(),changed))
 
     def test_exact_five_path_atomic_diff_is_required(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = pathlib.Path(directory)
-            changed = write_candidate(root)
-            changed.append("transitions/extra.json")
-            with mock.patch.object(MOD, "run", return_value=(0, MOD.GEN9_STATE_BLOB)):
-                self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root, BASE, old_state(), changed))
+            root=pathlib.Path(directory); changed=write_candidate(root); changed.append("transitions/extra.json")
+            with mock.patch.object(MOD,"run",side_effect=fake_git_run()):
+                self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root,BASE,old_state(),changed))
 
     def test_nonzero_credit_or_changed_substrate_fails_closed(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = pathlib.Path(directory)
-            receipt = {
-                "schema_version": "PS-COHORT-SUPERSESSION-1",
-                "cohort_id": MOD.GEN9_COHORT,
-                "generation_head_sha": MOD.GEN9_G,
-                "state_blob_sha": MOD.GEN9_STATE_BLOB,
-                "disposition": MOD.GEN9_SUPERSESSION_DISPOSITION,
-                "calibration_credit": 1,
-                "fresh_evidence_consumed": False,
-                "replacement_generation_seq": 10,
-                "replacement_countable": True,
-            }
-            changed = write_candidate(root, receipt=receipt)
-            with mock.patch.object(MOD, "run", return_value=(0, MOD.GEN9_STATE_BLOB)):
-                self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root, BASE, old_state(), changed))
+            root=pathlib.Path(directory)
+            receipt={"schema_version":"PS-COHORT-SUPERSESSION-1","cohort_id":MOD.GEN9_COHORT,"generation_head_sha":MOD.GEN9_G,"state_blob_sha":MOD.GEN9_STATE_BLOB,"disposition":MOD.GEN9_SUPERSESSION_DISPOSITION,"calibration_credit":1,"fresh_evidence_consumed":False,"replacement_generation_seq":10,"replacement_countable":True}
+            changed=write_candidate(root,receipt=receipt)
+            with mock.patch.object(MOD,"run",side_effect=fake_git_run()):
+                self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root,BASE,old_state(),changed))
         with tempfile.TemporaryDirectory() as directory:
-            root = pathlib.Path(directory)
-            new = successor(); new["foundry_sha256"] = "0" * 64
-            changed = write_candidate(root, new=new)
-            with mock.patch.object(MOD, "run", return_value=(0, MOD.GEN9_STATE_BLOB)):
-                self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root, BASE, old_state(), changed))
+            root=pathlib.Path(directory); new=successor(); new["foundry_sha256"]="0"*64; changed=write_candidate(root,new=new)
+            with mock.patch.object(MOD,"run",side_effect=fake_git_run()):
+                self.assertFalse(MOD.exact_gen9_zero_credit_reset_parent(root,BASE,old_state(),changed))
 
     def test_report_admission_uses_exact_reset_without_fabricated_history(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = pathlib.Path(directory)
-            changed = write_candidate(root)
-            def fake_run(cmd, cwd, env=None):
-                if cmd[:2] == ["git", "show"]:
-                    return 0, json.dumps(old_state())
-                if cmd[:2] == ["git", "rev-parse"]:
-                    return 0, MOD.GEN9_STATE_BLOB
-                raise AssertionError(cmd)
-            with mock.patch.object(MOD, "run", side_effect=fake_run):
-                self.assertEqual(MOD.report_admission(root, BASE, changed), [])
+            root=pathlib.Path(directory); changed=write_candidate(root)
+            def fake_run(cmd,cwd,env=None):
+                if cmd[:2]==["git","show"]: return 0,json.dumps(old_state())
+                return fake_git_run()(cmd,cwd,env)
+            with mock.patch.object(MOD,"run",side_effect=fake_run):
+                self.assertEqual(MOD.report_admission(root,BASE,changed),[])
 
 
 if __name__ == "__main__":
