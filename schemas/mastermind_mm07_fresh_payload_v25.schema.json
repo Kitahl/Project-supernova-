@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mastermind MM07 Bounded Stage0 / Improver Payload v2.5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_kind",
+    "train_only",
+    "generation_index",
+    "source_identity",
+    "evaluator_identity",
+    "model_tools_environment_identity",
+    "budget_identity",
+    "cache_retention_identity",
+    "solver_identity",
+    "memory_control_identity",
+    "improver_identity",
+    "claim_status",
+    "improver_treatment_isolated",
+    "complete_cost_binding",
+    "origin_task_promotion",
+    "predeclared_stop_ref",
+    "predeclared_stop_frozen_before_start",
+    "typed_event_trace_ref",
+    "typed_event_trace_digest",
+    "rho_improve_interpretation",
+    "before_result",
+    "after_result",
+    "scores_frozen_before_candidate",
+    "next_candidate",
+    "candidate_generation_rule"
+  ],
+  "properties": {
+    "schema_version": {"const": "PS-MM07-PAYLOAD-2.5-2"},
+    "experiment_kind": {"enum": ["BOUNDED_TRAIN_DIAGNOSTIC", "GOAL2_IMPROVER_COMPARISON"]},
+    "train_only": {"const": true},
+    "generation_index": {"type": "integer", "minimum": 1, "maximum": 4},
+    "source_identity": {"type": "string", "minLength": 1},
+    "evaluator_identity": {"type": "string", "minLength": 1},
+    "model_tools_environment_identity": {"type": "string", "minLength": 1},
+    "budget_identity": {"type": "string", "minLength": 1},
+    "cache_retention_identity": {"type": "string", "minLength": 1},
+    "solver_identity": {"type": "string", "minLength": 1},
+    "memory_control_identity": {"type": "string", "minLength": 1},
+    "improver_identity": {"type": "string", "minLength": 1},
+    "claim_status": {"enum": ["DIAGNOSTIC_NOT_GOAL2", "IMPROVER_COMPARISON_CANDIDATE"]},
+    "improver_treatment_isolated": {"type": "boolean"},
+    "complete_cost_binding": {"const": "REPORT_COST_LEDGER_COMPLETE"},
+    "origin_task_promotion": {"const": false},
+    "predeclared_stop_ref": {"type": "string", "minLength": 1},
+    "predeclared_stop_frozen_before_start": {"const": true},
+    "typed_event_trace_ref": {"type": "string", "minLength": 1},
+    "typed_event_trace_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rho_improve_interpretation": {"const": "DESCRIPTIVE_ONLY"},
+    "before_result": {"$ref": "#/$defs/metric_result"},
+    "after_result": {"$ref": "#/$defs/metric_result"},
+    "scores_frozen_before_candidate": {"const": true},
+    "next_candidate": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["candidate_id", "bounded_mutation_ref", "selection_basis_ref"],
+          "properties": {
+            "candidate_id": {"type": "string", "minLength": 1},
+            "bounded_mutation_ref": {"type": "string", "minLength": 1},
+            "selection_basis_ref": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "candidate_generation_rule": {"const": "AT_MOST_ONE_BOUNDED_NEXT_CANDIDATE"}
+  },
+  "$defs": {
+    "metric_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "value", "reason", "metric_identity"],
+      "properties": {
+        "status": {"enum": ["MEASURED", "NOT_MEASURED", "UNKNOWN", "NOT_APPLICABLE"]},
+        "value": {"type": ["number", "null"]},
+        "reason": {"type": "string", "minLength": 1},
+        "metric_identity": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "MEASURED"}}, "required": ["status"]},
+          "then": {"properties": {"value": {"type": "number"}}},
+          "else": {"properties": {"value": {"const": null}}}
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"claim_status": {"const": "IMPROVER_COMPARISON_CANDIDATE"}}, "required": ["claim_status"]},
+      "then": {
+        "properties": {
+          "experiment_kind": {"const": "GOAL2_IMPROVER_COMPARISON"},
+          "improver_treatment_isolated": {"const": true}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"experiment_kind": {"const": "BOUNDED_TRAIN_DIAGNOSTIC"}}, "required": ["experiment_kind"]},
+      "then": {"properties": {"claim_status": {"const": "DIAGNOSTIC_NOT_GOAL2"}}}
+    }
+  ]
+}
