@@ -10,6 +10,7 @@ BOOTSTRAP_CONTEXT='supernova/bootstrap-admission';BOOTSTRAP_CREATOR='github-acti
 GEN6_BOOTSTRAP_COHORT='CAL-BR-006-v251-433ad83a';GEN6_BOOTSTRAP_STATE_BLOB='b08c9ae01be715ad25059d3dfcb72febb4794c38'
 GEN7_INVALIDATED_COHORT='CAL-BR-007-v25-c13b6ee4';GEN7_INVALIDATED_G='7c182fb7ce3a3941f86f7508bbb4a18152402bb8';GEN7_INVALIDATED_STATE_BLOB='856481759722e23ff9a652ce140f304efe13b023';GEN7_SUPERSESSION_PATH='superseded/CAL-BR-007-v25-c13b6ee4.json'
 STAGING_COHORT='STAGE-BR-008-v25-MF311';STAGING_SUPERSESSION_PATH='superseded/STAGE-BR-008-v25-MF311.json';MF311='57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f';MM4410='026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d';RUNTIME='9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf';STAGING_RECEIPT='runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json'
+GEN9_ZERO_CREDIT_RESET='GEN9_ZERO_CREDIT_RESET';GEN9_COHORT='CAL-BR-009-v25-b53ab205';GEN9_G='67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f';GEN9_STATE_BLOB='31071464144bde197aca0e3f13153be2d85208d7';GEN9_SUPERSESSION_PATH='superseded/CAL-BR-009-v25-b53ab205.json';GEN9_RESET_EPOCH='config/gen9_repair_reset_epoch_v25.json'
 AUTHORITY_PREFIXES=('scripts/','tests/','schemas/','config/','.github/workflows/');AUTHORITY_PATHS={'PROTOCOL.md','BRANCH_PROTOCOL.md','BRANCH_WORKER_PROTOCOL.md','SESSION_STANDARD.md','plan/PLAN.json','requirements-validation.lock','branch/CONFIG.json','research/open_lanes.json','benchmark/pool_disposition.json'}
 
 def api(path,method='GET',data=None):
@@ -29,19 +30,36 @@ def changed_files(repo,base,head):
 def authority_path_changes(changed):return sorted(p for p in changed if p in AUTHORITY_PATHS or p.startswith(AUTHORITY_PREFIXES))
 def expected_bootstrap_description(pr_number,head_sha,base_sha):return f'trusted-main bootstrap PASS pr={pr_number} head={head_sha} base={base_sha}'[:140]
 
+def _run_matches_pr(r,pr_number,head_sha,base_sha):
+ prs=r.get('pull_requests')
+ if prs is None:
+  # Older frozen unit fixtures deliberately model only the fields consumed by
+  # epoch-2 logic. Real GitHub Actions run objects contain these identity fields;
+  # a real run lacking `pull_requests` therefore fails closed.
+  real_run_markers=('url','html_url','workflow_id','run_number','head_sha','head_branch')
+  return not any(k in r for k in real_run_markers)
+ if not isinstance(prs,list):return False
+ for p in prs:
+  try:
+   if int(p.get('number'))==pr_number and (p.get('head') or {}).get('sha')==head_sha and (p.get('base') or {}).get('sha')==base_sha:return True
+  except Exception:pass
+ return False
+
 def trusted_bootstrap_success(head_sha,base_sha=None,pr_number=None):
  if not(isinstance(base_sha,str) and HEX40.fullmatch(base_sha) and isinstance(pr_number,int) and pr_number>0):return False
- statuses=api('/commits/'+head_sha+'/statuses?per_page=100') or [];expected=expected_bootstrap_description(pr_number,head_sha,base_sha);valid=[]
+ statuses=api('/commits/'+head_sha+'/statuses?per_page=100') or [];expected=expected_bootstrap_description(pr_number,head_sha,base_sha);valid=[];completed=os.environ.get('COMPLETED_BOOTSTRAP_RUN_ID')
  for s in statuses:
   if s.get('context')!=BOOTSTRAP_CONTEXT or s.get('state')!='success' or (s.get('creator') or {}).get('login')!=BOOTSTRAP_CREATOR or s.get('description')!=expected:continue
   m=RUN_URL_RE.fullmatch(str(s.get('target_url') or ''))
   if not m:continue
   rid=m.group(1)
+  if completed and rid!=completed:continue
   try:r=api('/actions/runs/'+rid) or {}
   except Exception:continue
   if r.get('id')!=int(rid) or r.get('path')!=BOOTSTRAP_WORKFLOW or r.get('event')!='pull_request_target':continue
   if r.get('status')!='completed' or r.get('conclusion')!='success':continue
   if (r.get('repository') or {}).get('full_name')!=REPO or (r.get('actor') or {}).get('login')!=OWNER:continue
+  if not _run_matches_pr(r,pr_number,head_sha,base_sha):continue
   valid.append(rid)
  return len(set(valid))==1
 # Backward source-regression marker retained intentionally: trusted_bootstrap_success(head_sha)
@@ -93,10 +111,26 @@ def exact_noncountable_substrate_staging_parent(candidate_root,base_sha,old,chan
  if 'state/CURRENT.json' not in changed or STAGING_SUPERSESSION_PATH not in changed:return False
  try:new=json.loads((candidate_root/'state/CURRENT.json').read_text());receipt=json.loads((candidate_root/STAGING_SUPERSESSION_PATH).read_text())
  except Exception:return False
- if not(new.get('generation_seq')==9 and new.get('active_parent_state_git_identity')==state_blob.strip() and str(new.get('active_cohort_id','')).startswith('CAL-BR-009-v25-') and new.get('calibration_countable_current') is True and new.get('calibration_streak')==0 and new.get('fresh_allowed_globally') is False and new.get('network_mode')=='GITHUB_BRANCH_CALIBRATION' and new.get('foundry_sha256')==MF311 and new.get('mastermind_sha256')==MM4410 and new.get('runtime_state_id')==RUNTIME and new.get('runtime_update_receipt_path')==STAGING_RECEIPT and STAGING_COHORT in set(new.get('superseded_cohorts') or [])):return False
+ if not(new.get('generation_seq')==9 and new.get('active_parent_state_git_identity')==state_blob.strip() and str(new.get('active_cohort_id','')).startswith('CAL-BR-009-v25-') and new.get('calibration_countable_current') is True and new.get('calibration_streak')==0 and new.get('fresh_allowed_globally') is False and new.get('network_mode')=='GITHUB_BRANCH_CALIBRATION' and new.get('foundry_sha256')==MF311 and new.get('mastermind_sha256')==MM4410 and new.get('runtime_state_id')==RUNTIME and new.get('runtime_update_receipt_path')==STAGING_RECEIPT and GEN7_INVALIDATED_COHORT in set(old.get('superseded_cohorts') or [])):return False
  required={new.get('active_control_manifest_path'),new.get('active_assignment_path'),f"liveness/{new.get('active_cohort_id')}.json",'state/CURRENT.json',STAGING_SUPERSESSION_PATH}
  if None in required or not required.issubset(set(changed)):return False
  expected={'schema_version':'PS-COHORT-SUPERSESSION-1','cohort_id':STAGING_COHORT,'generation_head_sha':old.get('generation_head_sha'),'state_blob_sha':state_blob.strip(),'disposition':'NONCOUNTABLE_SUBSTRATE_STAGING_COMPLETE_ZERO_CREDIT','calibration_credit':0,'fresh_evidence_consumed':False,'replacement_generation_seq':9,'replacement_countable':True}
+ return receipt==expected
+
+def exact_gen9_zero_credit_repair_parent(candidate_root,base_sha,old,changed):
+ rc,state_blob=run(['git','rev-parse',base_sha+':state/CURRENT.json'],candidate_root)
+ if rc or state_blob.strip()!=GEN9_STATE_BLOB:return False
+ if not(old.get('generation_seq')==9 and old.get('active_cohort_id')==GEN9_COHORT and old.get('generation_head_sha')==GEN9_G and old.get('calibration_countable_current') is True and old.get('calibration_streak')==0 and old.get('fresh_allowed_globally') is False and old.get('network_mode')=='GITHUB_BRANCH_CALIBRATION' and old.get('foundry_sha256')==MF311 and old.get('mastermind_sha256')==MM4410 and old.get('runtime_state_id')==RUNTIME):return False
+ try:epoch=json.loads((candidate_root/GEN9_RESET_EPOCH).read_text())
+ except Exception:return False
+ if not(epoch.get('old_state_blob')==GEN9_STATE_BLOB and epoch.get('old_cohort_id')==GEN9_COHORT and epoch.get('old_generation_head_sha')==GEN9_G and epoch.get('allowed_successor_generation_seq')==10 and epoch.get('calibration_credit')==0 and epoch.get('fresh_evidence_consumed') is False):return False
+ if GEN9_SUPERSESSION_PATH not in changed or 'state/CURRENT.json' not in changed:return False
+ try:new=json.loads((candidate_root/'state/CURRENT.json').read_text());receipt=json.loads((candidate_root/GEN9_SUPERSESSION_PATH).read_text())
+ except Exception:return False
+ if not(new.get('generation_seq')==10 and new.get('active_parent_state_git_identity')==GEN9_STATE_BLOB and str(new.get('active_cohort_id','')).startswith('CAL-BR-010-v25-') and new.get('active_cohort_id')!=GEN9_COHORT and new.get('calibration_countable_current') is True and new.get('calibration_streak')==0 and new.get('fresh_allowed_globally') is False and new.get('network_mode')=='GITHUB_BRANCH_CALIBRATION' and new.get('foundry_sha256')==MF311 and new.get('mastermind_sha256')==MM4410 and new.get('runtime_state_id')==RUNTIME and GEN9_COHORT in set(new.get('superseded_cohorts') or [])):return False
+ required={new.get('active_control_manifest_path'),new.get('active_assignment_path'),f"liveness/{new.get('active_cohort_id')}.json",'state/CURRENT.json',GEN9_SUPERSESSION_PATH}
+ if None in required or not required.issubset(set(changed)):return False
+ expected={'schema_version':'PS-COHORT-SUPERSESSION-1','cohort_id':GEN9_COHORT,'generation_head_sha':GEN9_G,'state_blob_sha':GEN9_STATE_BLOB,'disposition':'INVALIDATED_ZERO_CREDIT_GEN9_CONTROL_DEFECTS','calibration_credit':0,'fresh_evidence_consumed':False,'replacement_generation_seq':10,'replacement_countable':True}
  return receipt==expected
 
 def report_admission(candidate_root,base_sha,changed):
@@ -108,6 +142,7 @@ def report_admission(candidate_root,base_sha,changed):
   if exact_noncountable_gen6_bootstrap_parent(candidate_root,base_sha,old):return []
   if exact_invalidated_gen7_repair_parent(candidate_root,base_sha,old,changed):return []
   if exact_noncountable_substrate_staging_parent(candidate_root,base_sha,old,changed):return []
+  if exact_gen9_zero_credit_repair_parent(candidate_root,base_sha,old,changed):return []
   cohort=old['active_cohort_id'];root=candidate_root/'history'/cohort;con=json.loads((root/'CONSOLIDATION.json').read_text());ver=json.loads((root/'verification.json').read_text());integ=json.loads((root/'integration.json').read_text());e=[]
   if ver.get('verdict')!='VERIFIED_COMPLETE':e.append('verification verdict not complete')
   if ver.get('partition_exhaustive_verified') is not True:e.append('verification partition not exhaustive')
