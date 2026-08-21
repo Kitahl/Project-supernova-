@@ -28,16 +28,38 @@ class CountableControlFreezeTests(unittest.TestCase):
         }
         self.assertTrue(must.issubset(self.required), sorted(must - self.required))
 
-    def test_active_countable_generation_must_freeze_entire_set(self):
+    def test_active_countable_generation_freeze_or_explicit_hardening_supersession(self):
+        """Do not require a historical frozen generation to contain future hardening files.
+
+        If the candidate countable-control set is unchanged relative to the active frozen
+        generation, the active control must freeze the entire set. If a hardening change
+        deliberately enlarges the future control set, the current generation remains
+        immutable historical evidence and the only admissible state is streak=0,
+        fresh=false, with the contract explicitly requiring a new generation/reset before
+        any countable credit can be earned under the changed control.
+        """
         state = json.loads((ROOT / "state/CURRENT.json").read_text(encoding="utf-8"))
         if state.get("calibration_countable_current") is not True:
             self.skipTest("current generation is intentionally non-countable")
+
         control = json.loads((ROOT / state["active_control_manifest_path"]).read_text(encoding="utf-8"))
         frozen = set(control.get("required_control_paths", []))
-        self.assertTrue(self.required.issubset(frozen), sorted(self.required - frozen))
+        proposed_not_in_frozen = sorted(self.required - frozen)
+
         self.assertTrue(control.get("calibration_countable") is True)
         self.assertEqual(state.get("repo_policy_status"), "VERIFIED_PROTECTED_SOURCE_BOUND")
         self.assertEqual(state.get("protocol_version"), "2.5")
+
+        if proposed_not_in_frozen:
+            self.assertEqual(state.get("calibration_streak"), 0)
+            self.assertFalse(state.get("fresh_allowed_globally"))
+            self.assertEqual(
+                self.contract.get("authoritative_change_after_cohort1"),
+                "RESETS_CALIBRATION_STREAK_TO_ZERO",
+            )
+            return
+
+        self.assertTrue(self.required.issubset(frozen), sorted(self.required - frozen))
 
 
 if __name__ == "__main__":
