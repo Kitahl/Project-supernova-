@@ -1,0 +1,251 @@
+{
+  "session_header": {
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W02 | E1 Solver Routing",
+    "target_program": "MATH_FOUNDRY",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "role_id": "MF02",
+    "goal": "Replay E1 routing/schedule control semantics and transport bindings, report defects, and produce one countable T0 calibration report without protected execution.",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "model_target": "GPT-5.6 Sol",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "execution_mode": "SAFE_REPLAY_ONLY"
+  },
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "worker_id": "MF02",
+  "report_id": "CAL-BR-007-v25-c13b6ee4-MF02-COUNTABLE-T0-REPLAY",
+  "generation_seq": 7,
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MF02",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "visibility_token": "883e4a02ec8ca952add720928abe22ac",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_auth_commitment": "6bb082c9eca80a34c622079e099aa9fee90350220c60b6e336172d7c92c053bc",
+  "worker_auth_proof": "64d15b52552af40f650b6f7a3aa84b168bf5fb92ef2a67431a70d1d026c1910b",
+  "status": "VALID_ASSIGNED_REPORT",
+  "mode": "SAFE_REPLAY_ONLY",
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL",
+  "executive_status": "PASS_WITH_REPLAY_CONTROL_ISSUES",
+  "fresh_evidence_ids": [],
+  "private_manifest_id": null,
+  "private_manifest_git_identity": null,
+  "task_ledger": [
+    {
+      "task_id": "MF02-G7-T1",
+      "task": "Verify canonical pointer, lineage, frozen assignment/control bindings and worker isolation.",
+      "status": "PASS",
+      "evidence_refs": [
+        "main:state/CURRENT.json@856481759722e23ff9a652ce140f304efe13b023",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:control/CAL-BR-007-v25-c13b6ee4.json@509c36ebf5bfffee57683497c1147bcdbbefde38",
+        "control_release_commit=c13b6ee4ef38797a81804aa38dab9186de441e5f",
+        "control_release_tree=65c525b6e7cf5ce788f88bbed45b7486739a81b9"
+      ]
+    },
+    {
+      "task_id": "MF02-G7-T2",
+      "task": "Replay E1 routing/schedule control semantics without executing any benchmark.",
+      "status": "PASS",
+      "evidence_refs": [
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:benchmark/registry.json@461c5bd695df5ac849e27df80799ed12871d281a",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:plan/PLAN.json@69527053afe947bc3f503e3d1e94a924c5d5c8a6"
+      ]
+    },
+    {
+      "task_id": "MF02-G7-T3",
+      "task": "Verify whole-report authentication preconditions and public-safe replay accounting.",
+      "status": "PASS",
+      "evidence_refs": [
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:config/worker_auth.json@9498d1d49b8636a3a313dc63be89f4433330c230",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:schemas/branch_report.schema.json@a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:scripts/validate_branch_bus_v251.py@959b3199fedbe571a1125d14aee287da40b87b3e"
+      ]
+    }
+  ],
+  "issue_ledger": [
+    {
+      "issue_id": "MF02-G7-ISSUE-001",
+      "severity": "MEDIUM",
+      "component": "SESSION_STANDARD.md / strict session validation",
+      "summary": "The frozen human-readable phase vocabulary omits the exact phase token required by the frozen assignment and strict branch validator.",
+      "evidence_refs": [
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:SESSION_STANDARD.md@a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:scripts/validate_branch_bus_v251.py@959b3199fedbe571a1125d14aee287da40b87b3e"
+      ],
+      "blocker": false,
+      "protocol_2_5_fix_or_test": "In a future authoritative control generation, define PHASE as the exact frozen assignment phase or explicitly include extended T0 phase tokens; add a test asserting every frozen assignment phase is representable by SESSION_STANDARD and is the value enforced by strict validation.",
+      "owner": "BIL00",
+      "control_change_required": true,
+      "next_action": "Consolidate as a control-documentation mismatch; do not mutate generation 7 in place. BIL00/MM06 should decide whether it affects clean-cohort credit."
+    },
+    {
+      "issue_id": "MF02-G7-ISSUE-002",
+      "severity": "MEDIUM",
+      "component": "config/task_registry_v25.json activation_status",
+      "summary": "The frozen task registry says countable_cohort_eligible=false while the canonical generation-7 state, control manifest and assignment declare this cohort countable under verified repository policy.",
+      "evidence_refs": [
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:config/task_registry_v25.json@c7d1e878ab1c72f73de32213a2589417583055f7",
+        "main:state/CURRENT.json@856481759722e23ff9a652ce140f304efe13b023",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:control/CAL-BR-007-v25-c13b6ee4.json@509c36ebf5bfffee57683497c1147bcdbbefde38",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de"
+      ],
+      "blocker": false,
+      "protocol_2_5_fix_or_test": "Move mutable cohort-eligibility state out of the frozen task registry or freeze a generation-specific registry value; add a consistency test comparing canonical state/control/assignment countability with any registry eligibility flag.",
+      "owner": "BIL00",
+      "control_change_required": true,
+      "next_action": "Record for post-cohort control hardening; do not reinterpret the stale registry flag as authority over the exact current/control/assignment bindings."
+    }
+  ],
+  "test_ledger": [
+    {
+      "test_id": "MF02-G7-CANONICAL-POINTER",
+      "status": "PASS",
+      "result": "Opening and pre-write rereads resolved the same active generation-7 cohort and exact G; generation 6 is superseded."
+    },
+    {
+      "test_id": "MF02-G7-GENERATION-FREEZE",
+      "status": "PASS",
+      "result": "Generation branch equals exact G. The frozen control-release commit resolves tree 65c525b6e7cf5ce788f88bbed45b7486739a81b9; release-to-G changes only the cohort control and assignment, so every declared required-control path is inherited unchanged from the frozen release."
+    },
+    {
+      "test_id": "MF02-G7-WORKER-ISOLATION-PREWRITE",
+      "status": "PASS",
+      "result": "Assigned MF02 worker branch equals exact G and the target report path is absent before creation."
+    },
+    {
+      "test_id": "MF02-G7-WORKER-AUTH-COMMITMENT",
+      "status": "PASS",
+      "result": "SHA-256 of the prompt-private capability bytes equals the frozen public MF02 commitment; the raw capability is not published."
+    },
+    {
+      "test_id": "MF02-G7-STRUCTURAL-CI-PREWRITE",
+      "status": "PARTIAL",
+      "result": "Exact G has supernova/branch-generation=success and supernova/static-control=success. Worker-head structural status is necessarily not yet available before the create-once worker commit; no PASS is claimed for that future head."
+    },
+    {
+      "test_id": "MF02-G7-E1-EXECUTION",
+      "status": "NOT_EXECUTED_BY_CONTRACT",
+      "result": "No BASE, SBS, VBS_single, AUTO, VBS_schedule or ORACLE_SCHEDULE benchmark arm was executed; fresh/protected work is disabled."
+    }
+  ],
+  "plan_alignment": [
+    {
+      "requirement": "Current scheduled scope is T0 only.",
+      "status": "PASS",
+      "evidence_ref": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:plan/PLAN.json@69527053afe947bc3f503e3d1e94a924c5d5c8a6"
+    },
+    {
+      "requirement": "MF02 future E1 ownership preserves executable BASE, SBS, single-route VBS, AUTO and admissible same-total-budget schedule/oracle truth with complete availability/outcome/cost accounting.",
+      "status": "PASS_REPLAY_ONLY",
+      "evidence_ref": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d"
+    },
+    {
+      "requirement": "E1 is the next Math Foundry clean suite but requires transport completion plus private pre-outcome freeze.",
+      "status": "PASS_REPLAY_ONLY",
+      "evidence_ref": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8:benchmark/registry.json@461c5bd695df5ac849e27df80799ed12871d281a"
+    }
+  ],
+  "evidence_and_provenance": {
+    "canonical_pointer": {
+      "path": "main:state/CURRENT.json",
+      "blob": "856481759722e23ff9a652ce140f304efe13b023",
+      "protocol_version": "2.5",
+      "generation_seq": 7,
+      "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+      "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+      "calibration_countable_current": true,
+      "fresh_allowed_globally": false,
+      "repo_policy_status": "VERIFIED_PROTECTED_SOURCE_BOUND"
+    },
+    "frozen_generation": {
+      "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+      "control_release_commit_sha": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+      "control_release_tree_sha": "65c525b6e7cf5ce788f88bbed45b7486739a81b9",
+      "release_to_generation_changed_paths": [
+        "assignments/CAL-BR-007-v25-c13b6ee4.json",
+        "control/CAL-BR-007-v25-c13b6ee4.json"
+      ],
+      "required_control_paths_inherited_unchanged": true
+    },
+    "frozen_key_blobs": {
+      "assignment": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+      "control": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+      "session_standard": "a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+      "roles": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "worker_auth": "9498d1d49b8636a3a313dc63be89f4433330c230",
+      "task_registry_v25": "c7d1e878ab1c72f73de32213a2589417583055f7",
+      "branch_config": "6e366efd9f401682265d8bea274b88655edb26a0",
+      "branch_report_schema": "a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+      "branch_validator_v251": "959b3199fedbe571a1125d14aee287da40b87b3e",
+      "benchmark_registry": "461c5bd695df5ac849e27df80799ed12871d281a",
+      "plan": "69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+      "runtime_update_receipt": "61ad3692aab911f49ce03a8f354ab0b5a8dfb0cd"
+    },
+    "runtime_binding": {
+      "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+      "runtime_update_id": "GEN7-REPLAY-SUBSTRATE-BINDING",
+      "foundry_sha256": "5bfe4bf2cc7e8c4cb9751b831803e28eb45cebe22c0085310c8f00459caf994e",
+      "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+      "qualification_class": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+      "scientific_status_changed": false
+    },
+    "model_binding": {
+      "requested_model": "GPT-5.6 Sol",
+      "requested_reasoning_effort": "EXTRA_HIGH",
+      "observed_status": "PARTIAL_UNVERIFIED",
+      "note": "The session identifies GPT-5.6 Sol, but no frozen runtime receipt independently proves both model and reasoning-effort identity. No model-sensitive fresh evidence is promoted."
+    }
+  },
+  "claim_scope": "Replay-only transport/control audit for MF02 in the first countable protocol-2.5 cohort. It confirms frozen E1 control semantics and transport bindings only; it does not measure E1 performance or establish scientific route/schedule superiority.",
+  "runtime_implementation_implication": "The bound Candidate-7 Foundry substrate is qualified for replay calibration only. E1 remains blocked until two clean countable protocol-2.5 cohorts close and a private frozen pre-outcome manifest authorizes fresh execution.",
+  "negative_zero_outcomes": [
+    "No fresh evidence was consumed.",
+    "No protected/private manifest was read.",
+    "No benchmark arm was executed.",
+    "No deep research was run.",
+    "No scientific promotion or runtime-state mutation occurred.",
+    "Single-route VBS is not treated as a universal same-budget schedule ceiling."
+  ],
+  "research_questions": [],
+  "role_payload": {
+    "e1_successor": "MF-E1-CLEAN-ROUTE-TRUTH",
+    "e1_executed": false,
+    "required_future_matrix": [
+      "BASE",
+      "SBS",
+      "VBS_single",
+      "AUTO",
+      "VBS_schedule_ORACLE_SCHEDULE_when_admissible"
+    ],
+    "routing_credit_rule": "Identical actual execution under changed ranking receives zero routing credit.",
+    "complete_cost_rule": "Record route availability/UNKNOWN, raw outcomes, actual executed actions and complete same-total-budget cost.",
+    "deferred_future_scope": [
+      "MF-0R/X",
+      "B2 multi-fidelity",
+      "HEADROOM same-menu oracle"
+    ]
+  },
+  "cost_ledger": {
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "notes": "Countable T0 replay only; all prohibited evidence and execution costs remain zero."
+  },
+  "public_safety_status": "PASS",
+  "origin_reread_claim": false,
+  "next_action": "MM06 independently rereads the exact worker report/head/blob, verifies Draft-2020-12 schema, strict session equality, HMAC-2 and public safety, and adjudicates the two recorded control inconsistencies before MF06 integration. E1 remains unexecuted."
+}
