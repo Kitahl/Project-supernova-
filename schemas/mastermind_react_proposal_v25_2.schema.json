@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Supernova MM01 React Proposal Envelope v2.5.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "proposal_id",
+    "proposal_class",
+    "authority",
+    "source_role",
+    "source_task_id",
+    "assignment_evidence",
+    "preservation_controls",
+    "observer_contract",
+    "contract_controls",
+    "contamination_controls",
+    "mutation_controls",
+    "execution_envelope",
+    "evaluator_envelope",
+    "provenance",
+    "negative_controls",
+    "claim_scope",
+    "self_promotion_requested",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {"const": "PS-MM01-REACT-PROPOSAL-2.5-2"},
+    "proposal_id": {"type": "string", "minLength": 1},
+    "proposal_class": {"enum": ["BOUNDED_MECHANISM_PROPOSAL", "PRESERVATION_REPAIR_PROPOSAL", "OBSERVER_CONTRACT_PROPOSAL"]},
+    "authority": {"const": "PRE_REVIEW_ONLY"},
+    "source_role": {"const": "MM01"},
+    "source_task_id": {"type": "string", "minLength": 1},
+    "assignment_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assignment_id",
+        "cohort_id",
+        "phase",
+        "pool_class",
+        "fresh_allowed",
+        "private_manifest_id",
+        "private_manifest_git_identity"
+      ],
+      "properties": {
+        "assignment_id": {"type": "string", "minLength": 1},
+        "cohort_id": {"type": "string", "minLength": 1},
+        "phase": {"const": "STAGE0_LOOP"},
+        "pool_class": {"const": "TRAIN_TUNING"},
+        "fresh_allowed": {"const": true},
+        "private_manifest_id": {"type": "string", "minLength": 1},
+        "private_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    },
+    "preservation_controls": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "observer_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed_inputs", "forbidden_hidden_inputs", "observation_timing_preserved"],
+      "properties": {
+        "observed_inputs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "forbidden_hidden_inputs": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+        "observation_timing_preserved": {"const": true}
+      }
+    },
+    "contract_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["producer_obligations", "consumer_obligations", "invariants", "failure_semantics"],
+      "properties": {
+        "producer_obligations": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "consumer_obligations": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "invariants": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "failure_semantics": {"const": "FAIL_CLOSED"}
+      }
+    },
+    "contamination_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin_task_excluded_from_promotion", "protected_eval_not_read", "source_versions_frozen", "cross_task_leakage_check"],
+      "properties": {
+        "origin_task_excluded_from_promotion": {"const": true},
+        "protected_eval_not_read": {"const": true},
+        "source_versions_frozen": {"const": true},
+        "cross_task_leakage_check": {"enum": ["PASS", "NOT_APPLICABLE"]}
+      }
+    },
+    "mutation_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mutation_surface", "bounded_change", "rollback_defined", "security_envelope", "forbidden_surfaces"],
+      "properties": {
+        "mutation_surface": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "bounded_change": {"const": true},
+        "rollback_defined": {"const": true},
+        "security_envelope": {"type": "string", "minLength": 1},
+        "forbidden_surfaces": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "execution_envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_status", "executable_artifact_ref", "complete_cost_accounting_required", "equal_compute_control_required"],
+      "properties": {
+        "execution_status": {"enum": ["NOT_EXECUTED", "EXECUTABLE_CANDIDATE"]},
+        "executable_artifact_ref": {"type": ["string", "null"]},
+        "complete_cost_accounting_required": {"const": true},
+        "equal_compute_control_required": {"const": true}
+      }
+    },
+    "evaluator_envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["self_grading_forbidden", "independent_evaluator_required", "evaluator_ref"],
+      "properties": {
+        "self_grading_forbidden": {"const": true},
+        "independent_evaluator_required": {"const": true},
+        "evaluator_ref": {"type": ["string", "null"]}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_refs", "artifact_digests", "model_binding_status"],
+      "properties": {
+        "source_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "artifact_digests": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+        "model_binding_status": {"enum": ["VERIFIED", "PARTIAL_UNVERIFIED", "UNVERIFIED", "MISMATCH"]}
+      }
+    },
+    "negative_controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["control_id", "purpose"],
+        "properties": {
+          "control_id": {"type": "string", "minLength": 1},
+          "purpose": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "claim_scope": {"type": "string", "minLength": 1},
+    "self_promotion_requested": {"const": false},
+    "next_action": {"type": "string", "minLength": 1}
+  }
+}
