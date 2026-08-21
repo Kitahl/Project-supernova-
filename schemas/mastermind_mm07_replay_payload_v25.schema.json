@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mastermind MM07 Replay-Only Payload v2.5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_kind",
+    "before_result",
+    "after_result",
+    "numeric_delta",
+    "next_self_candidate",
+    "self_promotion",
+    "goal2_credit",
+    "solver_memory_improver_separated",
+    "claim_scope"
+  ],
+  "properties": {
+    "schema_version": {"const": "PS-MM07-REPLAY-PAYLOAD-2.5-1"},
+    "experiment_kind": {"const": "SAFE_REPLAY_DIAGNOSTIC"},
+    "before_result": {"$ref": "#/$defs/not_measured"},
+    "after_result": {"$ref": "#/$defs/not_measured"},
+    "numeric_delta": {"const": null},
+    "next_self_candidate": {"const": null},
+    "self_promotion": {"const": false},
+    "goal2_credit": {"const": false},
+    "solver_memory_improver_separated": {"const": true},
+    "claim_scope": {"const": "CONTROL_REPLAY_ONLY_NO_SELF_IMPROVEMENT_CLAIM"}
+  },
+  "$defs": {
+    "not_measured": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "value", "reason"],
+      "properties": {
+        "status": {"const": "NOT_MEASURED"},
+        "value": {"const": null},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
