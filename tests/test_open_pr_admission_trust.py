@@ -75,6 +75,47 @@ class OpenPrAdmissionTrustTests(unittest.TestCase):
         self.assertTrue(errors)
         self.assertIn("non-regular candidate path", errors[0])
 
+    def bootstrap_states(self):
+        old = {
+            "generation_seq": 6,
+            "active_cohort_id": "CAL-BR-006-v251-433ad83a",
+            "calibration_countable_current": False,
+            "calibration_streak": 0,
+        }
+        new = {
+            "generation_seq": 7,
+            "active_cohort_id": "CAL-BR-007-new",
+            "calibration_countable_current": True,
+            "calibration_streak": 0,
+            "fresh_allowed_globally": False,
+            "repo_policy_status": "VERIFIED_PROTECTED_SOURCE_BOUND",
+            "superseded_cohorts": [old["active_cohort_id"]],
+        }
+        return old, new
+
+    def test_first_countable_bootstrap_is_narrowly_admissible(self):
+        old, new = self.bootstrap_states()
+        self.assertEqual(MOD.first_countable_bootstrap_report_errors(old, new), [])
+
+    def test_first_countable_bootstrap_fail_closed_invariants(self):
+        old, new = self.bootstrap_states()
+        cases = []
+        bad_old = dict(old, calibration_streak=1)
+        cases.append((bad_old, new))
+        cases.append((old, dict(new, calibration_streak=1)))
+        cases.append((old, dict(new, fresh_allowed_globally=True)))
+        cases.append((old, dict(new, repo_policy_status="UNVERIFIED_BLOCKING")))
+        cases.append((old, dict(new, generation_seq=8)))
+        cases.append((old, dict(new, superseded_cohorts=[])))
+        for before, after in cases:
+            with self.subTest(before=before, after=after):
+                self.assertTrue(MOD.first_countable_bootstrap_report_errors(before, after))
+
+    def test_countable_old_cohort_cannot_use_bootstrap_exception(self):
+        old, new = self.bootstrap_states()
+        old["calibration_countable_current"] = True
+        self.assertIsNone(MOD.first_countable_bootstrap_report_errors(old, new))
+
 
 if __name__ == "__main__":
     unittest.main()
