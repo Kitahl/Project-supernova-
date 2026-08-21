@@ -1,0 +1,238 @@
+{
+  "assignment_git_identity": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+  "assignment_id": "PS-BRANCH-CAL-BR-010-v25-fe539297-r2",
+  "claim_scope": "Replay-only evidence about frozen MM01 React proposal and future-fresh authorization contracts. No protected React scientific result, mechanism efficacy claim, benchmark result, mathematical result, Court status, Foundry authority, or scientific-state claim.",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "control_manifest_git_identity": "08848388882c48062668624d615208ab5d7ec59f",
+  "control_manifest_id": "CTRL-CAL-BR-010-v25-fe539297-r2",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "GitHub frozen-control replay only. No private-vault read, protected React evidence, benchmark execution, deep research, or scientific execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_blob": "c7dd68337afdf58c6a86e1468d6d267b84aa6b95",
+    "assignment_schema_blob": "65f0efb0724807572a4946a852c83d8aa4c983ea",
+    "auth_metadata_blob": "9498d1d49b8636a3a313dc63be89f4433330c230",
+    "branch_validator_blob": "3c2992d5a9239897de9a1130deba65015c24372d",
+    "canonical_state_blob": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+    "control_manifest_blob": "08848388882c48062668624d615208ab5d7ec59f",
+    "control_release_commit_sha": "fe539297bdf6b769140c9970326f3e1de116f276",
+    "control_release_tree_sha": "ae42b5fc437963c51434e0dbacef18542fef0b1c",
+    "countable_control_set_blob": "92b30a828d08752d38ca4c3abf2e7dfcb5fd2528",
+    "frozen_mm01_liveness": {
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM01",
+      "deadline_utc": "2026-08-21T22:55:00Z",
+      "eligible_before_deadline": true,
+      "expected_window_start_utc": "2026-08-21T22:10:00Z",
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MM01.json"
+    },
+    "future_fresh_contract_test_blob": "1ae6b64892bc7f789e85de6b59e87a1266c6892c",
+    "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+    "liveness_contract_blob": "8bd88d895df508e6807588239dea1f8047b73f13",
+    "parent_state_blob": "31071464144bde197aca0e3f13153be2d85208d7",
+    "prewrite_statuses": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "private_manifest_schema_blob": "ce66415e00c8f9f8cdbe10dc4297edd586f6e736",
+    "react_contract_test_blob": "89f371861889589d006f2e7e5e932c79ee9f1ac9",
+    "react_proposal_schema_blob": "ea0590d7aa1e6b25446b5450183be544be87e3be",
+    "report_schema_blob": "8372632e48df1d9fcb28133cdea4788adfd658fc",
+    "roles_blob": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "runtime_update_receipt": {
+      "blob": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "model_binding_claimed": false,
+      "path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+      "scope": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+      "status": "VALIDATED"
+    },
+    "session_standard_blob": "3ac507a31438c8eba5497c72a61a7979ab1a3a52",
+    "supersession": {
+      "active_cohort_superseded": false,
+      "gen6_history_superseded": true,
+      "gen7_superseded": true,
+      "gen8_staging_superseded": true,
+      "gen9_superseded": true
+    },
+    "verification_schema_blob": "2ccd4ced4de86abdafd041fd26e0e23db3d770f2"
+  },
+  "evidence_tier": "FROZEN_CONTROL_REPLAY",
+  "executive_status": "ISSUES_FOUND_2_MEDIUM_PARTIAL_REPAIR: Gen10 repairs the Gen9 outer fresh-assignment gates, but two future-fresh MM01 authority bindings remain mechanically incomplete; current T0 consumed zero protected/fresh/private/benchmark/research evidence.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "generation_seq": 10,
+  "issue_ledger": [
+    {
+      "aliases": [],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "AUTHORITY_BINDING_GAP",
+      "component": "MM01 typed React proposal source-task binding",
+      "evidence_refs": [
+        "schemas/mastermind_react_proposal.schema.json@ea0590d7aa1e6b25446b5450183be544be87e3be",
+        "scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "tests/test_mm01_react_contract.py@89f371861889589d006f2e7e5e932c79ee9f1ac9",
+        "schemas/assignment.schema.json@65f0efb0724807572a4946a852c83d8aa4c983ea",
+        "config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d"
+      ],
+      "exact_failure": "Gen10 validate_branch_bus_v251.py correctly checks role_payload.assignment_evidence.assignment_id and cohort_id against the frozen assignment and requires frozen fresh_scope pool=TRAIN and stage=STAGE0_LOOP. However schemas/mastermind_react_proposal.schema.json still accepts any non-empty source_task_id, and typed_role_payload_errors does not compare source_task_id to the frozen worker opaque_evidence_ids, fresh_scope purpose/task identity, or a private-manifest task identity. A future fresh MM01 proposal can therefore be structurally valid while claiming an unassigned source task; origin_task_excluded_from_promotion=true is then not machine-bound to the actual origin task.",
+      "issue_id": "MM01-T0-REACT-ASSIGNMENT-BINDING-002",
+      "next_action": "Freeze source-task cross-binding and negative tests before any protected MM01 TRAIN/Stage0-LOOP assignment.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Add one frozen authoritative source-task binding for fresh MM01, preferably a dedicated opaque source_task_id in fresh_scope or a required non-empty assignment workers.MM01.opaque_evidence_ids set cross-bound to role_payload.source_task_id. Require the exact same opaque task identity in the private manifest ownership/task contract. Add negative fixtures where source_task_id is absent from the frozen assignment or points to a different assigned task; any such payload passing is the falsifier.",
+      "required_test": "A FRESH_EXECUTION MM01 role_payload with correct assignment_id/cohort_id/TRAIN/STAGE0_LOOP but a source_task_id not frozen for MM01 must fail structural validation.",
+      "severity": "MEDIUM",
+      "status": "OPEN_PARTIAL_REPAIR_FUTURE_FRESH_BLOCKER",
+      "summary": "Outer assignment/cohort/TRAIN scope is now cross-bound, but the proposal's source_task_id is still not machine-bound to the frozen assigned task/evidence identity."
+    },
+    {
+      "aliases": [],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "FRESH_AUTHORIZATION_VERIFICATION_GAP",
+      "component": "Future MM01 private FROZEN_PRE_OUTCOME manifest verification",
+      "evidence_refs": [
+        "scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "schemas/assignment.schema.json@65f0efb0724807572a4946a852c83d8aa4c983ea",
+        "schemas/branch_report.schema.json@8372632e48df1d9fcb28133cdea4788adfd658fc",
+        "schemas/private_manifest_contract.schema.json@ce66415e00c8f9f8cdbe10dc4297edd586f6e736",
+        "schemas/branch_verification.schema.json@2ccd4ced4de86abdafd041fd26e0e23db3d770f2",
+        "tests/test_future_fresh_role_model_contracts.py@1ae6b64892bc7f789e85de6b59e87a1266c6892c"
+      ],
+      "exact_failure": "Gen10 validate_branch_bus_v251.py now requires FRESH_ENABLED, worker fresh_allowed=true, typed fresh_scope, non-null private_manifest_id/private_manifest_git_identity, and report equality to the frozen assignment. That repairs the previous null/self-permission gap. But the validator does not fetch or validate the referenced private manifest, schemas/branch_verification.schema.json has no required safe-ref field proving private-manifest blob/schema/ownership binding, and schemas/private_manifest_contract.schema.json leaves ownership, task_contract, evaluator_checker_contract, model_tool_environment_contract, budget_contract, randomization_repeats, cache_context_retention, accounting_contract and contamination_exclusions as unconstrained generic objects. A stale, nonexistent, wrong-task, or semantically empty private manifest reference can therefore satisfy the public structural report path if the assignment contains matching identifier strings.",
+      "issue_id": "MM01-T0-REACT-FRESH-MANIFEST-GATE-003",
+      "next_action": "Complete private-manifest typing and verifier-side exact-blob validation before any protected fresh MM01 work.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Keep the public assignment/report identity gate, then add an authoritative private-side preflight or MM06 verification record that fetches the exact private manifest blob and requires Draft-2020-12 validation plus explicit typed bindings for plan, cohort, checkpoint, runtime, worker/role, opaque source task, TRAIN/STAGE0_LOOP scope, evaluator/checker, observed model/tools/environment, complete budget, randomness/repeats, cache/retention, accounting and contamination exclusions. Extend branch verification safe evidence with the exact manifest blob and PASS/FAIL disposition. Negative fixtures must cover missing/wrong blob, empty ownership/task contracts, wrong task/cohort/checkpoint/runtime, and stale manifest.",
+      "required_test": "A future fresh MM01 receipt must not become MM06-safe unless the exact frozen private manifest blob is independently retrieved and its typed ownership/task/runtime contract is verified; identifier equality alone must fail.",
+      "severity": "MEDIUM",
+      "status": "OPEN_PARTIAL_REPAIR_FUTURE_FRESH_BLOCKER",
+      "summary": "Gen10 requires matching manifest identifiers, but the frozen public structural path still does not prove that the referenced private manifest exists, matches its blob, is semantically typed, and binds the exact fresh task/runtime contract."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "protected React evidence consumed = 0",
+    "fresh evidence units consumed = 0",
+    "private manifest reads = 0",
+    "private vault reads = 0",
+    "benchmark executions = 0",
+    "deep research runs = 0",
+    "proposal executions = 0",
+    "self-grading actions = 0",
+    "scientific promotions = 0",
+    "Foundry/Court/scientific-state mutations = 0"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads the exact MM01 worker head/report blob, validates deterministic transport/schema/HMAC/history/public safety and liveness timing. BIL00 should preserve the two partially repaired future-fresh blockers and freeze source-task plus exact private-manifest verification before any protected MM01 TRAIN/Stage0-LOOP work.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "31071464144bde197aca0e3f13153be2d85208d7",
+  "plan_alignment": [
+    {
+      "details": "Only bounded frozen proposal/authorization contracts were replayed and attacked; no proposal was executed, self-graded, promoted, or used to mutate Foundry/Court/scientific authority.",
+      "requirement": "Mastermind PRE_REVIEW_ONLY",
+      "status": "PASS"
+    },
+    {
+      "details": "Header execution_mode and report mode are both SAFE_REPLAY_ONLY with zero fresh/private/benchmark/deep-research consumption.",
+      "requirement": "T0 SAFE_REPLAY_ONLY",
+      "status": "PASS"
+    },
+    {
+      "details": "No protected React task/evaluator/private manifest was opened; assignment opaque_evidence_ids is empty and private manifest fields are null.",
+      "requirement": "Current T0 no protected React evidence",
+      "status": "PASS"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "MM01-CAL-BR-010-v25-fe539297-r2-REPORT-1",
+  "research_questions": [],
+  "runtime_implementation_implication": "None for current runtime behavior. No Mastermind executable mechanism or React task was run. Findings concern frozen future-fresh control/schema/validator authority boundaries only.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay React mechanism contracts and typed proposal-only authority boundaries, report defects, and keep Mastermind PRE_REVIEW_ONLY.",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM01",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W01 | React Mechanisms",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "status": "PASS",
+      "summary": "Canonical state, exact immutable generation G, control/assignment blobs, parent/checkpoint/runtime, MM01 branch/token, countability, supersession and replay-only constraints were consistent. The MM01 branch was identical to G and the assigned report path was absent before this receipt.",
+      "task_id": "MM01-T0-GEN10-FREEZE-REPLAY"
+    },
+    {
+      "status": "PARTIAL_REPAIR",
+      "summary": "Gen10 now cross-binds MM01 proposal assignment_id/cohort_id and frozen TRAIN/STAGE0_LOOP fresh scope, and requires frozen fresh permission plus manifest identifiers. Residual source-task and private-manifest semantic/verification bindings remain.",
+      "task_id": "MM01-T0-GEN9-ISSUE-REPAIR-REPLAY"
+    },
+    {
+      "status": "DEFECTS_FOUND",
+      "summary": "Attacked only the frozen future MM01 proposal/authorization contracts. No protected React task, evaluator, private manifest, benchmark, or executable Mastermind mechanism was opened or run.",
+      "task_id": "MM01-T0-REACT-BOUNDARY-ATTACK"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "details": "The MM01 worker branch compared identical to generation G before write and the report path was absent. State-declared control and assignment Git identities matched the exact blobs fetched from G. The control-release commit tree matched the frozen control_release_tree_sha; release-to-G changed only the cohort assignment, control and liveness files, so required control paths did not drift.",
+      "status": "PASS",
+      "test_id": "MM01-GEN10-IDENTITY"
+    },
+    {
+      "details": "The prompt-private capability SHA-256 commitment matched the frozen public MM01 commitment. Raw capability bytes are not present in this report.",
+      "status": "PASS",
+      "test_id": "MM01-GEN10-AUTH-COMMITMENT"
+    },
+    {
+      "details": "The frozen validator now rejects wrong proposal assignment_id/cohort_id and non-TRAIN/non-STAGE0_LOOP fresh scope, but no negative test or validator condition binds role_payload.source_task_id to the frozen MM01 assigned task/evidence identity.",
+      "status": "PARTIAL_PASS",
+      "test_id": "MM01-GEN10-ASSIGNMENT-CROSSBIND-REPAIR"
+    },
+    {
+      "details": "The frozen validator now requires fresh permission and matching non-null manifest identifiers, but the frozen verification contract does not record exact private-manifest retrieval/schema/semantic binding, and the private-manifest contract's nested scientific control objects remain structurally unconstrained.",
+      "status": "PARTIAL_PASS",
+      "test_id": "MM01-GEN10-FRESH-MANIFEST-REPAIR"
+    },
+    {
+      "details": "Exact generation G reported supernova/liveness=success, supernova/static-control=success and supernova/branch-generation=success. report-admission, transition-admission, branch-worker, branch-verify, branch-integrate and branch-consolidate were pending and were not interpreted as PASS.",
+      "status": "PARTIAL_PASS",
+      "test_id": "MM01-GEN10-PREWRITE-STRUCTURAL-STATUS"
+    },
+    {
+      "details": "The frozen cohort liveness object binds MM01 to the exact assigned branch/report path and exact control/assignment blob identities with eligible_before_deadline=true. Receipt timing/countability remains an independent MM06/liveness-monitor determination.",
+      "status": "PASS_CONTRACT_ONLY",
+      "test_id": "MM01-GEN10-FROZEN-LIVENESS-BINDING"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "5d79c60035cf4843937526dfdc074e78",
+  "worker_auth_commitment": "0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6",
+  "worker_auth_proof": "1dda8d177543fa1a9592eaa56107420abb842f1b8f20d441a8144c97dd32a237",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM01",
+  "worker_id": "MM01"
+}
