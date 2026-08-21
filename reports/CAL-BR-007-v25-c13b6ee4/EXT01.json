@@ -1,0 +1,597 @@
+{
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "claim_scope": "Protocol-2.5 T0 transport/liveness/control audit only. This report does not establish mathematical truth, scientific capability, benchmark uplift, statement fidelity, runtime promotion, calibration credit, or fresh-evidence validity. Task reports and task-state observations are external evidence, not Supernova runtime truth.",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "GitHub-only replay/control/liveness audit. No private-vault read, benchmark execution, broad research, runtime modification or promotion.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_blob": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+    "assignment_commit_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+    "audit_time_utc": "2026-08-21T05:19:42Z",
+    "audit_time_vancouver": "2026-08-20T22:19:42-07:00",
+    "canonical_pointer": "main:state/CURRENT.json",
+    "canonical_pointer_blob": "856481759722e23ff9a652ce140f304efe13b023",
+    "closed_policy_evidence_reused": [
+      {
+        "number": 16,
+        "stable_id": "O-T0-REPO-SOURCE-POLICY",
+        "url": "https://github.com/Kitahl/Project-supernova-/issues/16"
+      }
+    ],
+    "control_commit_sha": "3d65980d0f3a00edc9ffffafc6d634fa301ba73d",
+    "control_manifest_blob": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+    "control_release_commit_sha": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+    "control_release_tree_sha": "65c525b6e7cf5ce788f88bbed45b7486739a81b9",
+    "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+    "generation_statuses": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "absent",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "main_head_observed": "2aa01bfa277598b7964614eb9bca36f9cdd54335",
+    "main_health_statuses": {
+      "supernova/actions-heartbeat": "success",
+      "supernova/pr-reconciler-health": "success"
+    },
+    "model_binding_observation": "PARTIAL_UNVERIFIED: requested/model identity visible; reasoning-effort identity lacks independent runtime receipt.",
+    "native_lane_observation": {
+      "associated_chat_liveness": "TASK_STATE_UNKNOWN_WHERE_NOT_EXPOSED",
+      "disabled_frozen_lanes": [
+        "MF02"
+      ],
+      "enabled_count": 14,
+      "frozen_lane_count": 15,
+      "sixteenth_active_supernova_lane_observed": false
+    },
+    "open_github_issues_relevant": [
+      {
+        "number": 21,
+        "stable_id": "TASK-DEPLOY-20",
+        "url": "https://github.com/Kitahl/Project-supernova-/issues/21"
+      },
+      {
+        "number": 2,
+        "url": "https://github.com/Kitahl/Project-supernova-/issues/2"
+      },
+      {
+        "number": 4,
+        "url": "https://github.com/Kitahl/Project-supernova-/issues/4"
+      }
+    ],
+    "open_pr_watch": [
+      {
+        "head_sha": "92bde2637851b019f8f205b17c31652b25112b12",
+        "mergeable": false,
+        "number": 51,
+        "required_contexts": {
+          "supernova/report-admission": "failure",
+          "supernova/static-control": "failure",
+          "supernova/transition-admission": "failure"
+        },
+        "url": "https://github.com/Kitahl/Project-supernova-/pull/51"
+      }
+    ],
+    "origin_independent_reread": false,
+    "peer_worker_receipts_prewrite": {
+      "ext01_prewrite": "ABSENT_EXPECTED",
+      "missing": [
+        "MM03",
+        "MM04",
+        "MM07"
+      ],
+      "observed": [
+        "MF01",
+        "MF02",
+        "MF03",
+        "MF04",
+        "MF05",
+        "MM01",
+        "MM02",
+        "MM05"
+      ]
+    },
+    "runtime_update_receipt": "runtime/updates/GEN7-REPLAY-SUBSTRATE-BINDING.json"
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_TRANSPORT_LIVENESS_AUDIT",
+  "executive_status": "T0_BLOCKING_LIVENESS_CONTROL_DEFECTS_FOUND; GEN7_CLEAN_COHORT_CREDIT_NOT_SUPPORTED_BY_EXT01",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "generation_seq": 7,
+  "issue_ledger": [
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "component": "countable cohort liveness / frozen control",
+      "evidence_refs": [
+        "G=7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+        "missing:G:liveness/CAL-BR-007-v25-c13b6ee4.json",
+        "liveness/README.md@e62591ef93dad4a91782f5083bb9001e2734cb0a",
+        "scripts/check_lane_liveness.py@b86e9aa8f619c1183a696b0b97f8c1fa94b52038",
+        ".github/workflows/supernova-liveness-monitor.yml@d1dc30cf8194fe0dc32c62f6801f65b3cd582d85",
+        "independent corroboration: MF01 Gen7 report"
+      ],
+      "github_mirror": "NOT_FOUND_BY_STABLE_ID_SEARCH; BIL00 should create/deduplicate a public-safe issue",
+      "issue_id": "O-T0-GEN7-LIVENESS-CONTRACT-NOT-FROZEN",
+      "next_action": "BIL00 should fail closed on Gen7 clean-cohort credit unless it can produce a separately frozen pre-outcome liveness contract already cryptographically bound to G.",
+      "owner": "BIL00/JOINT-A01",
+      "proposed_protocol_2_5_fix_test": "Do not credit Gen7 as clean. Freeze a replacement protocol-2.5 generation with schema-valid liveness/<cohort>.json binding all 12 worker branches/paths and pre-outcome start/deadline windows; make countable-generation validation fail if the contract is absent/incomplete/mutated; rerun missing/mutated deadline negative tests.",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "summary": "Gen7 is declared countable but no cohort-specific frozen liveness contract exists at exact G, and the frozen liveness workflow no-ops when the contract is absent."
+    },
+    {
+      "authoritative_control_change": false,
+      "blocker": true,
+      "component": "15-lane scheduled-task liveness",
+      "evidence_refs": [
+        "https://github.com/Kitahl/Project-supernova-/issues/21",
+        "config/task_registry_v25.json@c7d1e878ab1c72f73de32213a2589417583055f7",
+        "task-state observation 2026-08-21T05:14Z: PS-MF-W02 | E1 Solver Routing is_enabled=false",
+        "reports/CAL-BR-007-v25-c13b6ee4/MF02.json observed"
+      ],
+      "github_mirror": "Issue #21 already exists and explicitly tracks MF02 persistent enablement",
+      "issue_id": "TASK-DEPLOY-20",
+      "next_action": "Update/deduplicate issue #21 with the Gen7 task-state observation and require later repeated 15/15 observations before closure.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "BIL00 may restore MF02 enablement only if it preserves the frozen hourly :06 Vancouver cadence. Reobserve 15/15 enabled on later runs and preserve the existing MF02 receipt; do not fabricate or replay-replace it.",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "summary": "Current task-state observation violates the 15/15 enablement requirement: MF02 is disabled while the other 14 frozen lanes are enabled. MF02 did produce a Gen7 receipt before being disabled, so the defect is persistent-lane enablement rather than a synthesized missing result."
+    },
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "component": "frozen task registry / countability semantics",
+      "evidence_refs": [
+        "config/task_registry_v25.json@c7d1e878ab1c72f73de32213a2589417583055f7",
+        "main:state/CURRENT.json@856481759722e23ff9a652ce140f304efe13b023",
+        "control/CAL-BR-007-v25-c13b6ee4.json@509c36ebf5bfffee57683497c1147bcdbbefde38",
+        "assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de",
+        "independent corroboration: MF01 and MF02 Gen7 reports"
+      ],
+      "github_mirror": "No exact stable-ID GitHub issue observed in this run",
+      "issue_id": "O-T0-GEN7-COUNTABLE-ACTIVATION-METADATA-MISMATCH",
+      "next_action": "Resolve semantics fail-closed in a new immutable protocol-2.5 generation; do not mutate Gen7.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Before a successor countable generation, either remove/type activation_status.countable_cohort_eligible as historical/non-authoritative or require exact equality with canonical state/control/assignment; add a cross-file mismatch negative test.",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Frozen task_registry_v25 activation_status.countable_cohort_eligible=false contradicts current state/control/assignment countable=true. The field's authority is not clearly typed as historical/non-authoritative."
+    },
+    {
+      "authoritative_control_change": true,
+      "blocker": true,
+      "component": "MM06 verifier-assurance schema binding",
+      "evidence_refs": [
+        "reports/CAL-BR-007-v25-c13b6ee4/MF04.json",
+        "schemas/branch_verification.schema.json@b9073173691609233570aa4f5a8629dc8d861cab",
+        "schemas/verifier_assurance.schema.json frozen at G",
+        "scripts/validate_branch_bus_v251.py@959b3199fedbe571a1125d14aee287da40b87b3e"
+      ],
+      "github_mirror": "Worker issue not observed as a dedicated GitHub issue during this run",
+      "issue_id": "PS-MF04-CHKASSURE-001",
+      "next_action": "MM06 must independently apply the standalone verifier-assurance schema now; BIL00 should mirror/deduplicate and freeze a repair before any successor countable cohort.",
+      "owner": "MM06_CONTROL_SCHEMA/BIL00",
+      "proposed_protocol_2_5_fix_test": "Bind verifier_assurance_records.items to the frozen verifier-assurance schema or validate every record explicitly in trusted verification/admission code. Add a negative verifier_assurance_records=[{}] test that must fail.",
+      "severity": "HIGH",
+      "status": "OPEN_IN_WORKER_EVIDENCE_CONFIRMED_BY_STATIC_REVIEW",
+      "summary": "The frozen branch verification schema permits verifier_assurance_records items as generic objects, while the stricter frozen verifier_assurance schema is not referenced by that field and validate_branch_bus_v251.py does not separately validate each record."
+    },
+    {
+      "authoritative_control_change": false,
+      "blocker": true,
+      "component": "current Gen7 worker fan-in",
+      "evidence_refs": [
+        "missing:ps/work/CAL-BR-007-v25-c13b6ee4/MM03:reports/CAL-BR-007-v25-c13b6ee4/MM03.json",
+        "missing:ps/work/CAL-BR-007-v25-c13b6ee4/MM04:reports/CAL-BR-007-v25-c13b6ee4/MM04.json",
+        "missing:ps/work/CAL-BR-007-v25-c13b6ee4/MM07:reports/CAL-BR-007-v25-c13b6ee4/MM07.json",
+        "config/task_registry_v25.json scheduled minutes 12/13/15 America/Vancouver"
+      ],
+      "github_mirror": "Deduplicate under TASK-DEPLOY-20 unless BIL00 determines a distinct lane defect",
+      "issue_id": "OBS-G7-WORKER-FANIN-INCOMPLETE",
+      "next_action": "Wait for genuine create-once receipts while preserving missing state; no extension or retrospective deadline invention.",
+      "owner": "MM06/BIL00",
+      "proposed_protocol_2_5_fix_test": "Do not synthesize reports or call missing ZERO_DELTA. Permit normal next-run arrival only under existing create-once branches; MM06 must not declare VERIFIED_COMPLETE with any missing worker. A replacement countable cohort must have a frozen deadline contract.",
+      "severity": "HIGH",
+      "status": "WAITING_FAIL_CLOSED",
+      "summary": "At EXT01 audit time, MM03, MM04 and MM07 receipts were absent while their scheduled lanes were enabled. Their exact deadline/lateness classification is unavailable because the cohort liveness contract itself is absent."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "fresh_evidence_units_consumed=0",
+    "protected_manifest_reads=0",
+    "benchmark_executions=0",
+    "deep_research_runs=0",
+    "private_manifest_reads=0",
+    "runtime_promotions=0",
+    "scientific_promotions=0",
+    "calibration_credit_claimed_by_EXT01=0",
+    "task-only runtime claims accepted=0"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06/BIL00 must fail closed on clean Gen7 credit: preserve genuine missing receipts, independently verify all existing worker HMACs/branches/statuses, mirror/deduplicate the new liveness-contract/countability/verifier-assurance defects, restore and repeatedly reobserve MF02 15/15 enablement without fabricating receipts, and create a new immutable protocol-2.5 countable generation if authoritative control repair is required. Fresh/protected science remains disabled.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "plan_alignment": [
+    {
+      "evidence_refs": [
+        "missing frozen liveness contract",
+        "MF02 disabled",
+        "worker fan-in incomplete"
+      ],
+      "notes": "EXT01 does not support Gen7 clean-cohort credit on current evidence.",
+      "obligation_id": "O-T0-TWO_CLEAN_COUNTABLE_V25_COHORTS",
+      "status": "BLOCKED"
+    },
+    {
+      "evidence_refs": [
+        "GitHub issue #16",
+        "main protected"
+      ],
+      "notes": "No current regression objectively established; source creator identity was not re-derived from connector status objects.",
+      "obligation_id": "O-T0-REPO-SOURCE-POLICY",
+      "status": "ALIGNED"
+    },
+    {
+      "evidence_refs": [
+        "assignment/control/state"
+      ],
+      "notes": "Fresh/private/benchmark/deep-research all zero; no runtime/scientific promotion.",
+      "obligation_id": "T0-SAFE-REPLAY",
+      "status": "ALIGNED"
+    },
+    {
+      "evidence_refs": [
+        "GitHub issue #21",
+        "worker issue ledgers"
+      ],
+      "notes": "TASK-DEPLOY-20 already mirrored. New stable liveness-contract and countability-metadata issues were not found as GitHub issues and should be mirrored/deduplicated by BIL00.",
+      "obligation_id": "ISSUE-PIPELINE",
+      "status": "PARTIAL"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "EXT01-CAL-BR-007-v25-c13b6ee4",
+  "research_questions": [],
+  "role_payload": {
+    "benchmark_execution": "NONE",
+    "bil00_status": "MUST_NOT_INCREMENT_STREAK_ON_CURRENT_EXT01_EVIDENCE",
+    "calibration_countability_ruling": "BLOCKED_BY_OBJECTIVE_T0_DEFECTS",
+    "deep_research": "NONE",
+    "disabled_lane": "MF02",
+    "hmac2_commitment_check": "PASS",
+    "hmac2_mutation_check": "PASS",
+    "liveness_contract_present": false,
+    "liveness_ruling": "FAIL_CLOSED",
+    "mf06_status": "BLOCKED_BY_MM06",
+    "mm06_status": "WAITING_FOR_COMPLETE_WORKER_FANIN_AND_STRUCTURAL_CI",
+    "native_lane_count": 15,
+    "native_lanes_enabled": 14,
+    "peer_receipts_missing_prewrite": [
+      "MM03",
+      "MM04",
+      "MM07"
+    ],
+    "peer_receipts_observed_prewrite": 8,
+    "post_ext01_expected_worker_receipts_present": 9,
+    "public_private_split": "PASS_NO_PRIVATE_MANIFEST_OR_PROTECTED_EVIDENCE_READ",
+    "repo_policy_ruling": "PRIOR_MACHINE_EVIDENCE_ACCEPTED_WITH_CURRENT_SOURCE_OBSERVABILITY_LIMIT; NO REGRESSION PROVED",
+    "required_worker_count": 12,
+    "role": "Independent runtime/build + transport audit"
+  },
+  "runtime_implementation_implication": "NONE. EXT01 found transport/control defects and does not alter Math Foundry, Mastermind, benchmark state, scientific state, runtime_state_id or actual_runtime_plan_id.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Independently audit immutable generation freeze, worker isolation, GitHub source binding, liveness, runtime receipt, issue pipeline and public/private separation.",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "EXT01",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-JOINT-A01 | Runtime & Transport Audit",
+    "target_program": "JOINT"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "description": "Canonical main pointer resolves protocol 2.5 / BRANCH_GITOPS generation 7, non-superseded countable replay cohort, fresh disabled, exact G/control/assignment/checkpoint/runtime identities.",
+      "evidence_refs": [
+        "main:state/CURRENT.json@856481759722e23ff9a652ce140f304efe13b023",
+        "G=7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+        "control/CAL-BR-007-v25-c13b6ee4.json@509c36ebf5bfffee57683497c1147bcdbbefde38",
+        "assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de"
+      ],
+      "status": "PASS",
+      "task_id": "EXT01-G7-T1"
+    },
+    {
+      "description": "Immutable generation ancestry is explicit: frozen control-release root c13b6ee4... -> control-only commit 3d65980... -> assignment-only final G 7c182fb..., and exact G carries supernova/branch-generation=success.",
+      "evidence_refs": [
+        "control_release=c13b6ee4ef38797a81804aa38dab9186de441e5f tree=65c525b6e7cf5ce788f88bbed45b7486739a81b9",
+        "commit:3d65980d0f3a00edc9ffffafc6d634fa301ba73d adds control/CAL-BR-007-v25-c13b6ee4.json only",
+        "commit:7c182fb7ce3a3941f86f7508bbb4a18152402bb8 adds assignments/CAL-BR-007-v25-c13b6ee4.json only",
+        "status:G:supernova/branch-generation=success"
+      ],
+      "status": "PASS",
+      "task_id": "EXT01-G7-T2"
+    },
+    {
+      "description": "Whole-report HMAC-2 metadata is coherent, public commitment matches the private EXT01 capability, strict validator enforces session_header.execution_mode == report.mode, and calibration mode/costs are fail-closed SAFE_REPLAY_ONLY/zero.",
+      "evidence_refs": [
+        "config/worker_auth.json@9498d1d49b8636a3a313dc63be89f4433330c230",
+        "schemas/branch_report.schema.json@a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+        "scripts/validate_branch_bus_v251.py@959b3199fedbe571a1125d14aee287da40b87b3e"
+      ],
+      "status": "PASS",
+      "task_id": "EXT01-G7-T3"
+    },
+    {
+      "description": "Countable Gen7 has no frozen cohort-specific liveness contract. The frozen liveness workflow explicitly no-ops when that file is absent, so exact receipt windows/deadlines cannot be authoritatively evaluated and no supernova/liveness status is emitted on G.",
+      "evidence_refs": [
+        "missing:G:liveness/CAL-BR-007-v25-c13b6ee4.json",
+        "liveness/README.md@e62591ef93dad4a91782f5083bb9001e2734cb0a",
+        "scripts/check_lane_liveness.py@b86e9aa8f619c1183a696b0b97f8c1fa94b52038",
+        ".github/workflows/supernova-liveness-monitor.yml@d1dc30cf8194fe0dc32c62f6801f65b3cd582d85",
+        "status:G:supernova/liveness=ABSENT"
+      ],
+      "status": "FAIL",
+      "task_id": "EXT01-G7-T4"
+    },
+    {
+      "description": "Frozen native task registry contains exactly 15 lanes on the expected Vancouver stagger, but current authoritative task-state observation shows 14 enabled and MF02 disabled. No sixteenth active Supernova lane was observed.",
+      "evidence_refs": [
+        "config/task_registry_v25.json@c7d1e878ab1c72f73de32213a2589417583055f7",
+        "GitHub issue #21 https://github.com/Kitahl/Project-supernova-/issues/21",
+        "authoritative task-state observation 2026-08-21T05:14Z: MF02 is_enabled=false; other 14 frozen lanes enabled"
+      ],
+      "status": "FAIL",
+      "task_id": "EXT01-G7-T5"
+    },
+    {
+      "description": "Eight of eleven peer worker receipts were observed pre-EXT01 (MF01, MF02, MF03, MF04, MF05, MM01, MM02, MM05). MM03, MM04 and MM07 receipt paths were absent. Because the frozen cohort liveness contract is missing, their absence cannot be converted into a schema-authoritative deadline/lateness classification; missing is not ZERO_DELTA.",
+      "evidence_refs": [
+        "reports/CAL-BR-007-v25-c13b6ee4/MF01.json",
+        "reports/CAL-BR-007-v25-c13b6ee4/MF02.json",
+        "reports/CAL-BR-007-v25-c13b6ee4/MF03.json",
+        "reports/CAL-BR-007-v25-c13b6ee4/MF04.json",
+        "reports/CAL-BR-007-v25-c13b6ee4/MF05.json",
+        "reports/CAL-BR-007-v25-c13b6ee4/MM01.json",
+        "reports/CAL-BR-007-v25-c13b6ee4/MM02.json",
+        "reports/CAL-BR-007-v25-c13b6ee4/MM05.json",
+        "missing:MM03,MM04,MM07"
+      ],
+      "status": "WAITING",
+      "task_id": "EXT01-G7-T6"
+    },
+    {
+      "description": "Repository-policy gate has previously closed with machine-observed PR-only/deletion/non-fast-forward/source-bound/spoof-resistance evidence in GitHub issue #16, and main remains protected. Current connector status objects expose context/state but not status creator/integration identity, so source binding was not independently re-derived in this run.",
+      "evidence_refs": [
+        "config/repo_policy.json@81e310ae87d65ac6a796d2dd9a963f30c62887ac",
+        "https://github.com/Kitahl/Project-supernova-/issues/16",
+        "main@2aa01bfa277598b7964614eb9bca36f9cdd54335 protected=true"
+      ],
+      "status": "PASS_WITH_OBSERVABILITY_LIMIT",
+      "task_id": "EXT01-G7-T7"
+    },
+    {
+      "description": "Candidate diagnostics are read-only, Actions are full-SHA pinned in sampled frozen workflows, validation dependencies are version+hash locked, and checker/statement-fidelity policy correctly treats T0 as transport-only.",
+      "evidence_refs": [
+        ".github/workflows/supernova-v25-admission.yml@156f781d697af76d9e9c05441da7f7dde6c09ba7",
+        ".github/workflows/supernova-liveness-monitor.yml@d1dc30cf8194fe0dc32c62f6801f65b3cd582d85",
+        "requirements-validation.lock@9475996659114e684f0b6dcbb67d83af3bde431c",
+        "config/checker_pins.json@ffc5cd4f882be9e8e8b75ea95d8452a6a2f95fc9"
+      ],
+      "status": "PASS",
+      "task_id": "EXT01-G7-T8"
+    },
+    {
+      "description": "Benchmark-pool disposition keeps TRAIN/CALIBRATION evidence ineligible for G1/G8/Goal2 promotion, reserves disjoint G1/G8/Goal2 classes, and G8 remains EMPTY_UNSEALED.",
+      "evidence_refs": [
+        "benchmark/pool_disposition.json@1058d5bbc3aa63eee51d0757d6cdf2ff6f378ae1"
+      ],
+      "status": "PASS",
+      "task_id": "EXT01-G7-T9"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "description": "Live main matches expected plan/protocol/BRANCH_GITOPS.",
+      "evidence_refs": [
+        "main:state/CURRENT.json@856481759722e23ff9a652ce140f304efe13b023"
+      ],
+      "kind": "CANONICAL_BINDING",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-PLAN-PROTOCOL"
+    },
+    {
+      "description": "Gen7 is declared countable; fresh remains globally false.",
+      "evidence_refs": [
+        "main:state/CURRENT.json",
+        "control/CAL-BR-007-v25-c13b6ee4.json"
+      ],
+      "kind": "CANONICAL_BINDING",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-COUNTABLE-FRESH"
+    },
+    {
+      "description": "Root -> control-only commit -> assignment-only G; no required frozen control path changed after release root.",
+      "evidence_refs": [
+        "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+        "3d65980d0f3a00edc9ffffafc6d634fa301ba73d",
+        "7c182fb7ce3a3941f86f7508bbb4a18152402bb8"
+      ],
+      "kind": "IMMUTABLE_GIT_CHAIN",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-GENERATION-LINEAGE"
+    },
+    {
+      "description": "Exact G branch-generation success.",
+      "evidence_refs": [
+        "G:supernova/branch-generation"
+      ],
+      "kind": "EXACT_HEAD_STATUS",
+      "result": "success",
+      "status": "PASS",
+      "test_id": "EXT01-G7-GENERATION-CI"
+    },
+    {
+      "description": "Frozen auth metadata and report schema require whole-report HMAC-2; private capability commitment matches public EXT01 commitment.",
+      "evidence_refs": [
+        "config/worker_auth.json@9498d1d49b8636a3a313dc63be89f4433330c230"
+      ],
+      "kind": "AUTH",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-HMAC2-METADATA"
+    },
+    {
+      "description": "After canonical proof construction, changing a signed executive_status field with stale proof changes recomputed HMAC.",
+      "evidence_refs": [
+        "local deterministic canonical-HMAC mutation check"
+      ],
+      "kind": "AUTH_NEGATIVE",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-HMAC2-SIGNED-MUTATION"
+    },
+    {
+      "description": "Frozen validator requires session_header.execution_mode == report.mode; this receipt uses SAFE_REPLAY_ONLY in both.",
+      "evidence_refs": [
+        "scripts/validate_branch_bus_v251.py@959b3199fedbe571a1125d14aee287da40b87b3e"
+      ],
+      "kind": "STRICT_SESSION",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-EXECUTION-MODE-EQUALITY"
+    },
+    {
+      "description": "Cohort-specific frozen liveness contract absent at G.",
+      "evidence_refs": [
+        "missing:G:liveness/CAL-BR-007-v25-c13b6ee4.json"
+      ],
+      "kind": "COUNTABLE_LIVENESS",
+      "result": "FAIL",
+      "status": "FAIL",
+      "test_id": "EXT01-G7-LIVENESS-CONTRACT"
+    },
+    {
+      "description": "Exactly 15 frozen lanes exist; current task-state observation is 14 enabled / MF02 disabled; no sixteenth active Supernova lane.",
+      "evidence_refs": [
+        "config/task_registry_v25.json",
+        "GitHub issue #21",
+        "Scheduled Tasks state observation 2026-08-21T05:14Z"
+      ],
+      "kind": "AUTHORITATIVE_TASK_STATE",
+      "result": "FAIL",
+      "status": "FAIL",
+      "test_id": "EXT01-G7-LANE-ENABLEMENT"
+    },
+    {
+      "description": "Prewrite peer receipts 8/11; MM03/MM04/MM07 absent. EXT01 creation would make 9/12 total workers present.",
+      "evidence_refs": [
+        "assigned worker branches"
+      ],
+      "kind": "GITHUB_RECEIPT_EXISTENCE",
+      "result": "INCOMPLETE",
+      "status": "BLOCKED",
+      "test_id": "EXT01-G7-WORKER-FANIN"
+    },
+    {
+      "description": "Main protected; previous machine-observed source-binding/spoof-resistance closure is recorded in issue #16. Current connector cannot independently expose status integration_id, so source identity is inherited as prior objective evidence rather than re-proved.",
+      "evidence_refs": [
+        "https://github.com/Kitahl/Project-supernova-/issues/16",
+        "main branch protected=true"
+      ],
+      "kind": "POLICY_OBSERVATION",
+      "result": "PASS_WITH_SOURCE_OBSERVABILITY_LIMIT",
+      "status": "PASS",
+      "test_id": "EXT01-G7-REPO-POLICY"
+    },
+    {
+      "description": "Open PR #51 exact head 92bde263... currently has all three required contexts failure while trusted Actions heartbeats succeed; PR remains mergeable=false. Treated as a red/probe observation, not as evidence that current main policy regressed.",
+      "evidence_refs": [
+        "https://github.com/Kitahl/Project-supernova-/pull/51",
+        "92bde2637851b019f8f205b17c31652b25112b12"
+      ],
+      "kind": "T0_PR_WATCH",
+      "result": "FAIL_CLOSED_AS_EXPECTED_FOR_THIS_OPEN_PROBE",
+      "status": "PASS",
+      "test_id": "EXT01-G7-OPEN-PR51"
+    },
+    {
+      "description": "Sampled frozen privileged/diagnostic workflows use full Action SHAs and validation environment is hash-locked.",
+      "evidence_refs": [
+        ".github/workflows/supernova-v25-admission.yml",
+        ".github/workflows/supernova-liveness-monitor.yml",
+        "requirements-validation.lock"
+      ],
+      "kind": "SUPPLY_CHAIN",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-ACTIONS-LOCKS"
+    },
+    {
+      "description": "T0 explicitly executes no mathematical checker and does not infer statement fidelity; future checker versions/commits and fidelity are separate frozen obligations.",
+      "evidence_refs": [
+        "config/checker_pins.json@ffc5cd4f882be9e8e8b75ea95d8452a6a2f95fc9"
+      ],
+      "kind": "AUTHORITY_SEPARATION",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-CHECKER-FIDELITY"
+    },
+    {
+      "description": "Calibration/training pools cannot be promoted; G1/G8/Goal2 are disjoint and G8 remains unsealed.",
+      "evidence_refs": [
+        "benchmark/pool_disposition.json@1058d5bbc3aa63eee51d0757d6cdf2ff6f378ae1"
+      ],
+      "kind": "FRESHNESS_GOVERNANCE",
+      "result": "PASS",
+      "status": "PASS",
+      "test_id": "EXT01-G7-BENCHMARK-POOLS"
+    },
+    {
+      "description": "Requested model identity is visible to this execution context, but no independent runtime receipt proves requested reasoning effort; fresh model-sensitive evidence remains prohibited.",
+      "evidence_refs": [
+        "SESSION_STANDARD.md@a0825fc2a465ff48abdc1e8efa7c9303ad1709de"
+      ],
+      "kind": "MODEL_IDENTITY",
+      "result": "PARTIAL_UNVERIFIED",
+      "status": "NOT_MEASURED",
+      "test_id": "EXT01-G7-MODEL-BINDING"
+    }
+  ],
+  "visibility_token": "a14b7912a70e8f7fa002c82325f2e11b",
+  "worker_auth_commitment": "74216d4e0414c15b747b329e4de2133dd2c9528fdf99d3e9a709136533f9d87b",
+  "worker_auth_proof": "ed8a6a0fbf93ca42e7a9ed53e9d6335fded03c44352410350e121aa1cc0c28d7",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/EXT01",
+  "worker_id": "EXT01"
+}
