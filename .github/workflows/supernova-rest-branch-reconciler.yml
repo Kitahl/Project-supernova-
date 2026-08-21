@@ -1,4 +1,4 @@
-name: Supernova v2.5 REST Branch + Admission Reconciler
+name: Supernova v2.5 REST Diagnostics + Admission Reconciler
 
 on:
   push:
@@ -18,9 +18,9 @@ concurrency:
 
 jobs:
   reconcile:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - name: Run exact-main no-dependency reconcilers
+      - name: Run exact-main REST diagnostics and admission reconciler
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
