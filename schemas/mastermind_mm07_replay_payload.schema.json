@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mastermind MM07 Replay Payload v2.5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "before_result", "after_result", "numeric_delta", "next_self_candidate", "self_promotion", "goal2_credit", "solver_memory_improver_separated", "claim_scope"],
+  "properties": {
+    "schema_version": {"const": "PS-MM07-REPLAY-PAYLOAD-2.5-1"},
+    "before_result": {"$ref": "#/$defs/not_measured"},
+    "after_result": {"$ref": "#/$defs/not_measured"},
+    "numeric_delta": {"const": null},
+    "next_self_candidate": {"const": null},
+    "self_promotion": {"const": false},
+    "goal2_credit": {"const": false},
+    "solver_memory_improver_separated": {"const": true},
+    "claim_scope": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "not_measured": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result_type", "status", "value", "reason"],
+      "properties": {
+        "result_type": {"const": "SCIENTIFIC_METRIC"},
+        "status": {"const": "NOT_MEASURED"},
+        "value": {"const": null},
+        "reason": {"type": "string", "minLength": 1},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}},
+        "unit": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
