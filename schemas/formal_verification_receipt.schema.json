@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FormalVerificationReceipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "statement_identity",
+    "toolchain_manifest_sha256",
+    "validity_status",
+    "statement_fidelity_status",
+    "axiom_policy_status",
+    "source_toolchain_status",
+    "verifier_assurance_status",
+    "derived_exact_formal_proof",
+    "authority"
+  ],
+  "properties": {
+    "schema_version": {"const": "PS-FORMAL-VERIFICATION-RECEIPT-1"},
+    "task_id": {"type": "string", "minLength": 1},
+    "statement_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "declaration_name", "normalized_type_sha256"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "declaration_name": {"type": "string", "minLength": 1},
+        "normalized_type_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "toolchain_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "validity_status": {
+      "enum": ["FORMAL_CANDIDATE", "COMPILES", "KERNEL_ACCEPTED", "COMPARATOR_ACCEPTED"]
+    },
+    "statement_fidelity_status": {
+      "enum": ["UNVERIFIED", "VERIFIED", "REJECTED", "AMBIGUOUS"]
+    },
+    "axiom_policy_status": {
+      "enum": ["UNVERIFIED", "VERIFIED", "REJECTED"]
+    },
+    "source_toolchain_status": {
+      "enum": ["UNVERIFIED", "VERIFIED", "MISMATCH"]
+    },
+    "verifier_assurance_status": {
+      "enum": ["PRIMARY_KERNEL_ONLY", "SAME_KERNEL_REPLAY", "DIFFERENT_IMPLEMENTATION_REPLAY", "NO_INDEPENDENCE_CLAIM"]
+    },
+    "derived_exact_formal_proof": {"type": "boolean"},
+    "authority": {"enum": ["NONE", "EXACT_FORMAL_PROOF"]},
+    "checker_receipts": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "notes": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"derived_exact_formal_proof": {"const": true}},
+        "required": ["derived_exact_formal_proof"]
+      },
+      "then": {
+        "properties": {
+          "validity_status": {"const": "COMPARATOR_ACCEPTED"},
+          "statement_fidelity_status": {"const": "VERIFIED"},
+          "axiom_policy_status": {"const": "VERIFIED"},
+          "source_toolchain_status": {"const": "VERIFIED"},
+          "authority": {"const": "EXACT_FORMAL_PROOF"}
+        }
+      },
+      "else": {
+        "properties": {"authority": {"const": "NONE"}}
+      }
+    }
+  ]
+}

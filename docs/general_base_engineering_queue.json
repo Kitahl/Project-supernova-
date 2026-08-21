@@ -1,0 +1,142 @@
+{
+  "schema_version": "PS-GENERAL-BASE-ENGINEERING-QUEUE-1",
+  "authority": "NONE_ENGINEERING_ONLY",
+  "source_plan": "docs/SUPERNOVA_GENERAL_BASE_MECHANISM_EXPANSION_AND_BENCHMARK_PLAN_2026-08-21.md",
+  "active_programme_effect": "NONE",
+  "automation_policy": {
+    "at_most_one_tranche_per_run": true,
+    "allowed_branch_prefix": "rev4/",
+    "merge_only_after_existing_required_contexts_pass": true,
+    "allowed_new_path_prefixes": [
+      "docs/formal/",
+      "schemas/formal_",
+      "scripts/formal_",
+      "tests/formal/"
+    ],
+    "allowed_exact_paths": [
+      "docs/general_base_engineering_queue.json"
+    ],
+    "forbidden_paths_or_prefixes": [
+      "plan/PLAN.json",
+      "state/",
+      "control/",
+      "assignments/",
+      "benchmark/",
+      "research/open_lanes.json",
+      "config/countable_control_set_v25.json",
+      "config/task_registry_v25.json",
+      "config/worker_auth.json",
+      ".github/workflows/"
+    ],
+    "fresh_benchmark_consumption": false,
+    "calibration_credit": 0,
+    "scientific_credit": 0,
+    "tribunal_state_effect": "NONE",
+    "fail_closed_on_frozen_or_authoritative_change": true
+  },
+  "tranches": [
+    {
+      "id": "EGB-000",
+      "name": "Double-loop-audited general-base mechanism plan",
+      "phase": "PLAN",
+      "status": "DONE",
+      "evidence": ["main:docs/SUPERNOVA_GENERAL_BASE_MECHANISM_EXPANSION_AND_BENCHMARK_PLAN_2026-08-21.md"]
+    },
+    {
+      "id": "EGB-001",
+      "name": "Formal toolchain manifest schema",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "DONE",
+      "dependencies": ["EGB-000"],
+      "evidence": ["schemas/formal_toolchain_manifest.schema.json"]
+    },
+    {
+      "id": "EGB-002",
+      "name": "Typed formal verification receipt schema",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "DONE",
+      "dependencies": ["EGB-000"],
+      "evidence": ["schemas/formal_verification_receipt.schema.json"]
+    },
+    {
+      "id": "EGB-003",
+      "name": "Coherent Lean 4.31 source candidate pins",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "DONE",
+      "dependencies": ["EGB-001"],
+      "evidence": ["docs/formal/FORMAL_TOOLCHAIN_CANDIDATE_V1.json"]
+    },
+    {
+      "id": "EGB-004",
+      "name": "Fail-closed formal toolchain preflight",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "DONE",
+      "dependencies": ["EGB-001", "EGB-003"],
+      "evidence": ["scripts/formal_toolchain_preflight.py"]
+    },
+    {
+      "id": "EGB-005",
+      "name": "Phase-0 schema and preflight negative tests",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "DONE",
+      "dependencies": ["EGB-001", "EGB-002", "EGB-004"],
+      "evidence": ["tests/formal/test_formal_trust_floor.py"]
+    },
+    {
+      "id": "EGB-006",
+      "name": "Clean combined Lean/Mathlib/Pantograph/Comparator/lean4export build matrix",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "TODO",
+      "dependencies": ["EGB-005"]
+    },
+    {
+      "id": "EGB-007",
+      "name": "Pantograph minimal theorem stateful interaction",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "TODO",
+      "dependencies": ["EGB-006"]
+    },
+    {
+      "id": "EGB-008",
+      "name": "Comparator plus lean4export positive and adversarial replay suite",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "TODO",
+      "dependencies": ["EGB-006"]
+    },
+    {
+      "id": "EGB-009",
+      "name": "Sandbox, escape, mutation and trusted-computing-base qualification",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "TODO",
+      "dependencies": ["EGB-007", "EGB-008"]
+    },
+    {
+      "id": "EGB-010",
+      "name": "Phase-0 clean-package qualification and replay receipt",
+      "phase": "PHASE0_TRUST_FLOOR",
+      "status": "TODO",
+      "dependencies": ["EGB-009"]
+    },
+    {
+      "id": "EGB-020",
+      "name": "Versioned Mathlib declaration corpus and legal-premise filter",
+      "phase": "PHASE1_RETRIEVAL",
+      "status": "BLOCKED_BY_PHASE0",
+      "dependencies": ["EGB-010"]
+    },
+    {
+      "id": "EGB-030",
+      "name": "Heterogeneous formal prover portfolio",
+      "phase": "PHASE2_PROVING",
+      "status": "BLOCKED_BY_PHASE0_AND_RETRIEVAL",
+      "dependencies": ["EGB-010", "EGB-020"]
+    },
+    {
+      "id": "EGB-040",
+      "name": "Faithful autoformalization Court",
+      "phase": "PHASE3_AUTOFORMALIZATION",
+      "status": "BLOCKED_BY_FORMAL_RUNTIME",
+      "dependencies": ["EGB-010", "EGB-020"]
+    }
+  ]
+}

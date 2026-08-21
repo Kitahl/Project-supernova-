@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FormalToolchainManifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","authority","admission_status","compatibility_status","lean_toolchain","components","environment","supernova_effects","missing_requirements"],
+  "properties": {
+    "schema_version": {"const": "PS-FORMAL-TOOLCHAIN-MANIFEST-1"},
+    "authority": {"const": "NONE_ENGINEERING_ONLY"},
+    "admission_status": {"enum": ["ENGINEERING_ONLY","QUALIFIED"]},
+    "compatibility_status": {"enum": ["UNVERIFIED","PARTIAL","VERIFIED"]},
+    "lean_toolchain": {"type": "string", "minLength": 1},
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lean4","mathlib","pantograph","comparator","lean4export"],
+      "properties": {
+        "lean4": {"$ref": "#/$defs/component"},
+        "mathlib": {"$ref": "#/$defs/component"},
+        "pantograph": {"$ref": "#/$defs/component"},
+        "comparator": {"$ref": "#/$defs/component"},
+        "lean4export": {"$ref": "#/$defs/component"}
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["os_image","sandbox_status","network_policy","cache_policy"],
+      "properties": {
+        "os_image": {"type": ["string","null"]},
+        "sandbox_status": {"enum": ["NOT_CONFIGURED","CONFIGURED_UNQUALIFIED","QUALIFIED"]},
+        "network_policy": {"type": "string"},
+        "cache_policy": {"type": "string"},
+        "notes": {"type": "string"}
+      }
+    },
+    "supernova_effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modifies_state","modifies_plan","consumes_fresh","changes_calibration","grants_authority"],
+      "properties": {
+        "modifies_state": {"const": false},
+        "modifies_plan": {"const": false},
+        "consumes_fresh": {"const": false},
+        "changes_calibration": {"const": false},
+        "grants_authority": {"const": false}
+      }
+    },
+    "missing_requirements": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "evidence": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository","ref_type","ref","source_commit","declared_lean_toolchain","role","license_status","build_status","qualification_status"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+        "ref_type": {"enum": ["commit","tag"]},
+        "ref": {"type": "string", "minLength": 1},
+        "source_commit": {"type": ["string","null"]},
+        "declared_lean_toolchain": {"type": "string", "minLength": 1},
+        "role": {"enum": ["KERNEL","LIBRARY","RUNTIME_API","STATEMENT_COMPARATOR","EXPORT_PIPELINE"]},
+        "license_status": {"enum": ["UNVERIFIED","VERIFIED"]},
+        "build_status": {"enum": ["NOT_RUN","PASS","FAIL"]},
+        "qualification_status": {"enum": ["UNQUALIFIED","QUALIFIED"]}
+      }
+    }
+  }
+}
