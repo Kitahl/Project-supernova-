@@ -1,0 +1,211 @@
+{
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "claim_scope": "T0 countable transport/control replay only. This report makes no C1 score, generic product-reuse effect, VerifiedProduct admission, mathematical-truth, or product-closure claim.",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "SAFE_REPLAY_ONLY. Public GitHub control-plane reads and local deterministic validation/auth computation only.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_path": "assignments/CAL-BR-007-v25-c13b6ee4.json",
+    "canonical_pointer": "main:state/CURRENT.json",
+    "control_manifest_path": "control/CAL-BR-007-v25-c13b6ee4.json",
+    "control_release_commit_sha": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+    "control_release_tree_sha": "65c525b6e7cf5ce788f88bbed45b7486739a81b9",
+    "foundry_sha256": "5bfe4bf2cc7e8c4cb9751b831803e28eb45cebe22c0085310c8f00459caf994e",
+    "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+    "generation_tree_sha": "70d78c44d59540b1bc6ab86aa3f129f9444e1c41",
+    "liveness_contract_expected_path": "liveness/CAL-BR-007-v25-c13b6ee4.json",
+    "liveness_contract_present_at_G": false,
+    "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+    "public_only_replay": true,
+    "report_path_prewrite_status": "ABSENT",
+    "required_control_freeze_verified": true,
+    "runtime_update_receipt_git_identity": "61ad3692aab911f49ce03a8f354ab0b5a8dfb0cd",
+    "runtime_update_receipt_path": "runtime/updates/GEN7-REPLAY-SUBSTRATE-BINDING.json",
+    "worker_branch_prewrite_relation_to_G": "IDENTICAL"
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL_PLANE",
+  "executive_status": "VALID_ASSIGNED_REPORT with one evidence-backed T0 transport defect: the active countable Gen7 generation contains no frozen per-cohort liveness contract, so the frozen out-of-band receipt-deadline monitor no-ops. C1 and product closure remain NOT_MEASURED.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "generation_seq": 7,
+  "issue_ledger": [
+    {
+      "class": "T0_TRANSPORT_LIVENESS_CONTRACT",
+      "evidence": [
+        "Exact generation tree contains liveness/README.md but no liveness/CAL-BR-007-v25-c13b6ee4.json.",
+        "The frozen liveness workflow exits as a diagnostic no-op when liveness/<cohort>.json is absent.",
+        "The frozen liveness evaluator consumes explicit per-lane branches, paths and deadline_utc from a contract.",
+        "The countable admission reconciler requires liveness_complete plus 12 lane observations and rejects NO_RECEIPT/RUN_LATE, but it does not require or bind those observations to a frozen cohort liveness contract."
+      ],
+      "impact": "The exact receipt-deadline semantics needed to distinguish on-time, late and NO_RECEIPT lanes are not frozen for Gen7. That prevents the configured out-of-band monitor from independently enforcing the countable liveness condition and leaves the verifier's liveness observations without the intended generation-bound deadline contract.",
+      "issue_id": "MF05-GEN7-LIVENESS-CONTRACT-MISSING",
+      "regression_test": "Add a negative countable-generation test proving static-control/countable admission fails when the per-cohort liveness contract is absent, malformed, wrong-cohort/wrong-G, has fewer or extra lanes, or has branch/path/deadline bindings inconsistent with the frozen assignment.",
+      "scope_note": "Single issue path for MF05; no separate scientific/product issue is opened from replay-only evidence.",
+      "severity": "COUNTABILITY_BLOCKING_OR_QUARANTINE_REVIEW",
+      "smallest_v25_repair": "Do not mutate Gen7. Before the next countable v2.5 cohort, freeze liveness/<cohort>.json at G with all 12 worker branch/path/window/deadline bindings; require its presence and schema/identity/partition validation whenever calibration_countable=true; bind MM06 liveness observations to that contract.",
+      "status": "OPEN",
+      "summary": "The first countable v2.5 cohort has no frozen per-cohort liveness contract at exact G, although countable verification requires complete 12-lane liveness and the frozen out-of-band monitor depends on that contract for receipt windows/deadlines."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "FRESH_EVIDENCE_UNITS=0",
+    "PROTECTED_MANIFEST_READS=0",
+    "BENCHMARK_EXECUTIONS=0",
+    "DEEP_RESEARCH_RUNS=0",
+    "C1_SCORE=NOT_MEASURED",
+    "PRODUCT_ADMISSION=NOT_ATTEMPTED",
+    "STATEMENT_FIDELITY_CERTIFICATE=NOT_PRODUCED",
+    "ORIGIN_REREAD=false"
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads and validates the immutable MF05 report, including HMAC/schema/session equality, then adjudicates the countability/quarantine effect of the missing frozen Gen7 liveness contract. Do not promote C1 or mutate Gen7.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "plan_alignment": [
+    {
+      "detail": "No fresh, private, benchmark or deep-research work was consumed.",
+      "obligation": "T0 only / replay only",
+      "status": "SATISFIED"
+    },
+    {
+      "detail": "No product-closure claim or C1 score; E1 and G1 remain prior scientific gates.",
+      "obligation": "C1 succession",
+      "status": "SATISFIED"
+    },
+    {
+      "detail": "No product admission was attempted; exact Foundry execution, independent verification and StatementFidelityCertificate remain separate future obligations.",
+      "obligation": "product admission authority",
+      "status": "NOT_EXERCISED"
+    },
+    {
+      "detail": "No applicable C1 arms ran; future fidelity/statement checking cost must be charged symmetrically.",
+      "obligation": "symmetric fidelity cost",
+      "status": "PRESERVED_NOT_MEASURED"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4-MF05",
+  "research_questions": [],
+  "role_payload": {
+    "benchmark_succession": [
+      "MF-E1-CLEAN-ROUTE-TRUTH",
+      "MF-G1-CLEAN-PROSPECTIVE",
+      "MF-C1-PRODUCT-CLOSURE"
+    ],
+    "c1_arm_status": {
+      "C0_DISABLED": "NOT_EXECUTED",
+      "C1_ENABLED_PRODUCT_ABSENT": "NOT_EXECUTED",
+      "C2_INDEPENDENTLY_GENERATED_VERIFIED_PRODUCT_PRESENT": "NOT_EXECUTED"
+    },
+    "c1_status": "NOT_MEASURED",
+    "future_product_admission_prerequisites": {
+      "exact_foundry_execution": "REQUIRED_NOT_EXECUTED_THIS_RUN",
+      "independent_verifier_pass": "REQUIRED_NOT_OBSERVED_FOR_PRODUCT",
+      "kernel_validity_relation": "ORTHOGONAL_TO_STATEMENT_FIDELITY",
+      "product_use_certificate_compatibility": "REQUIRED_NOT_EVALUATED",
+      "statement_fidelity_certificate": "REQUIRED_NOT_PRODUCED",
+      "symmetric_fidelity_cost": "REQUIRED_NOT_MEASURED"
+    }
+  },
+  "runtime_implementation_implication": "The Gen7 replay substrate receipt establishes software replay qualification only. It does not establish a live C1 VerifiedProduct/ProductUseCertificate runtime path, statement-fidelity admission, or C1 eligibility.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay C1 closure prerequisites and VerifiedProduct gating semantics, report defects, and produce one countable T0 calibration report without C1 scoring.",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF05",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W05 | Product Closure",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "detail": "main pointer resolved to exact generation 7 head; cohort is active and not superseded.",
+      "status": "PASS",
+      "task": "resolve_frozen_generation"
+    },
+    {
+      "detail": "Exact-G control and assignment blobs match the canonical pointer; release-to-G delta is limited to the cohort control and assignment.",
+      "status": "PASS",
+      "task": "verify_control_assignment_identity"
+    },
+    {
+      "detail": "Assigned MF05 worker branch exists, is identical to G, and the assigned report path is absent.",
+      "status": "PASS",
+      "task": "verify_worker_branch_create_once_precondition"
+    },
+    {
+      "detail": "C1 remains gated behind E1 then G1 and explicit runtime/product eligibility; no C1 arm or score was executed.",
+      "status": "PASS_REPLAY_ONLY",
+      "task": "replay_c1_prerequisites"
+    },
+    {
+      "detail": "No liveness/CAL-BR-007-v25-c13b6ee4.json exists at G; the frozen monitor explicitly no-ops when that per-cohort contract is absent.",
+      "status": "DEFECT_FOUND",
+      "task": "verify_liveness_control"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "detail": "Protocol 2.5, BRANCH_GITOPS, expected plan and runtime IDs matched.",
+      "result": "PASS",
+      "test": "plan_protocol_transport_identity"
+    },
+    {
+      "detail": "Frozen control-release commit/tree resolved; G adds only cohort control and assignment relative to the release root.",
+      "result": "PASS",
+      "test": "control_release_freeze"
+    },
+    {
+      "detail": "MF05 branch was identical to G; report path absent.",
+      "result": "PASS",
+      "test": "worker_branch_isolation_prewrite"
+    },
+    {
+      "detail": "SHA-256 of prompt-private capability bytes matched the frozen MF05 public commitment; secret was not emitted or persisted.",
+      "result": "PASS",
+      "test": "worker_auth_public_commitment"
+    },
+    {
+      "detail": "supernova/branch-generation=success and supernova/static-control=success; branch-worker, branch-verify, branch-integrate, branch-consolidate, report-admission and transition-admission were pending pre-write.",
+      "result": "OBSERVED_PARTIAL",
+      "test": "structural_ci_exact_generation"
+    },
+    {
+      "detail": "No frozen liveness/CAL-BR-007-v25-c13b6ee4.json exists at exact G.",
+      "result": "FAIL",
+      "test": "countable_liveness_contract_presence"
+    },
+    {
+      "detail": "Registry remains E1 next, G1 blocked by E1, C1 blocked until justified; no C1 measurement performed.",
+      "result": "PASS_NOT_MEASURED",
+      "test": "c1_scientific_gate"
+    }
+  ],
+  "visibility_token": "5a0d199d7fd9c708858304eecfc253bc",
+  "worker_auth_commitment": "473363d1e1fc0aae9e9df22da0cbd5f8695491863ff6cf82f2bc0a6ba86326f4",
+  "worker_auth_proof": "fdf547299a95b9b508fe6e5508d5057163d3c9d05533bd978457587cb4f50a71",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MF05",
+  "worker_id": "MF05"
+}
