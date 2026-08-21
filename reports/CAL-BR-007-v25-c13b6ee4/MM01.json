@@ -1,0 +1,250 @@
+{
+  "assignment_git_identity": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+  "assignment_id": "PS-BRANCH-CAL-BR-007-v25-c13b6ee4",
+  "claim_scope": "Public frozen-control replay and transport/authority-contract audit only. No protected React evidence, benchmark result, scientific efficacy claim, mathematical result, Court status, Foundry authority or scientific-state change.",
+  "cohort_id": "CAL-BR-007-v25-c13b6ee4",
+  "control_manifest_git_identity": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+  "control_manifest_id": "CTRL-CAL-BR-007-v25-c13b6ee4",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "T0 countable replay only. GitHub public-bus reads and deterministic local HMAC construction are transport/control work, not fresh scientific evidence.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "canonical_state": {
+      "blob": "856481759722e23ff9a652ce140f304efe13b023",
+      "path": "state/CURRENT.json",
+      "source_ref": "main"
+    },
+    "control_release": {
+      "commit": "c13b6ee4ef38797a81804aa38dab9186de441e5f",
+      "generation_delta": [
+        "control/CAL-BR-007-v25-c13b6ee4.json",
+        "assignments/CAL-BR-007-v25-c13b6ee4.json"
+      ],
+      "tree": "65c525b6e7cf5ce788f88bbed45b7486739a81b9"
+    },
+    "frozen_blobs": {
+      "assignment": "063c4b54227b892e4e46ec6454df49c2d6daf8de",
+      "branch_config": "6e366efd9f401682265d8bea274b88655edb26a0",
+      "branch_report_schema": "a1cd0862351962730bd8b3de4f67a9d13732ad8f",
+      "branch_worker_protocol": "2103ec2cc4dcdf623f32e76878bd0a01f7a66d15",
+      "control_manifest": "509c36ebf5bfffee57683497c1147bcdbbefde38",
+      "countable_control_set": "dd86247c0ad249d4d8d6f74a3656f8127448ad6c",
+      "plan": "69527053afe947bc3f503e3d1e94a924c5d5c8a6",
+      "repo_policy": "81e310ae87d65ac6a796d2dd9a963f30c62887ac",
+      "roles": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "runtime_binding_receipt": "61ad3692aab911f49ce03a8f354ab0b5a8dfb0cd",
+      "session_standard": "a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+      "task_registry": "c7d1e878ab1c72f73de32213a2589417583055f7",
+      "v251_validator": "959b3199fedbe571a1125d14aee287da40b87b3e",
+      "worker_auth": "9498d1d49b8636a3a313dc63be89f4433330c230"
+    },
+    "generation": {
+      "branch": "ps/gen/CAL-BR-007-v25-c13b6ee4",
+      "head": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+      "prewrite_compare_to_head": "identical"
+    },
+    "parent_state": {
+      "blob": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+      "calibration_countable": false,
+      "cohort_id": "CAL-BR-006-v251-433ad83a",
+      "generation_seq": 6
+    },
+    "prewrite_ci": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "worker_prewrite": {
+      "branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MM01",
+      "prewrite_compare_to_generation": "identical",
+      "report_preexisted": false
+    }
+  },
+  "evidence_tier": "T0_FROZEN_CONTROL_REPLAY",
+  "executive_status": "VALID_ASSIGNED_REPORT_WITH_CONTROL_ISSUES. Exact generation and worker branches were identical to G prewrite; fresh/private/benchmark/deep-research consumption is zero; Mastermind remains PRE_REVIEW_ONLY. Three bus-level contract/control inconsistencies are recorded in issue_ledger. Prewrite generation structural status was success; worker/verify/integrate/consolidate/report/transition statuses were pending and are not interpreted as PASS.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "7c182fb7ce3a3941f86f7508bbb4a18152402bb8",
+  "generation_seq": 7,
+  "issue_ledger": [
+    {
+      "control_change": true,
+      "evidence": [
+        "assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de",
+        "config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+        "config/countable_control_set_v25.json@dd86247c0ad249d4d8d6f74a3656f8127448ad6c",
+        "schemas/branch_report.schema.json@a1cd0862351962730bd8b3de4f67a9d13732ad8f"
+      ],
+      "exact_blocker": "The frozen MM01 assignment says to replay React mechanism contracts and the MM01 role requires preservation, observer, contract, contamination and mutation controls, but the protocol-2.5 required_control_paths contain no React-specific Mastermind proposal contract/schema. At the bus layer, schemas/branch_report.schema.json leaves optional role_payload unconstrained, so those proposal obligations are not machine-checkable here.",
+      "issue_id": "MM01-T0-REACT-CONTRACT-001",
+      "next_test": "Add negative schema fixtures for missing preservation/observer/contamination/mutation fields and verify validator rejection before any fresh React assignment.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Freeze a bus-level Mastermind proposal contract/schema for future TRAIN/Stage0-LOOP assignments, requiring bounded mechanism scope, preservation obligations, observer/evaluator separation, contamination controls, mutation envelope, origin-task marker, and explicit no-execute/no-self-grade/no-promotion authority. Falsifier: a proposal missing contamination or mutation-bound fields must be rejected mechanically.",
+      "severity": "MEDIUM"
+    },
+    {
+      "control_change": true,
+      "evidence": [
+        "SESSION_STANDARD.md@a0825fc2a465ff48abdc1e8efa7c9303ad1709de",
+        "BRANCH_WORKER_PROTOCOL.md@2103ec2cc4dcdf623f32e76878bd0a01f7a66d15",
+        "scripts/validate_branch_bus_v251.py@959b3199fedbe571a1125d14aee287da40b87b3e",
+        "assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de"
+      ],
+      "exact_blocker": "SESSION_STANDARD.md presents PHASE as a closed-looking list that does not include the frozen assignment phase T0_COUNTABLE_REPLAY_COHORT_1, while BRANCH_WORKER_PROTOCOL.md requires the full frozen assignment phase and validate_branch_bus_v251.py enforces strict equality to assignment.phase.",
+      "issue_id": "MM01-T0-SESSION-PHASE-001",
+      "next_test": "Add a regression test that renders the documented header for every frozen assignment and requires strict-session validation to pass.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Change the session template to PHASE: <exact frozen assignment phase> (with examples only, not an enum), or formally enumerate every legal frozen phase in one schema source. Falsifier: a worker following the displayed T0 shorthand must fail strict-session validation, demonstrating the current ambiguity.",
+      "severity": "MEDIUM"
+    },
+    {
+      "control_change": true,
+      "evidence": [
+        "config/task_registry_v25.json@c7d1e878ab1c72f73de32213a2589417583055f7",
+        "state/CURRENT.json@856481759722e23ff9a652ce140f304efe13b023",
+        "control/CAL-BR-007-v25-c13b6ee4.json@509c36ebf5bfffee57683497c1147bcdbbefde38",
+        "assignments/CAL-BR-007-v25-c13b6ee4.json@063c4b54227b892e4e46ec6454df49c2d6daf8de"
+      ],
+      "exact_blocker": "The frozen task registry contains activation_status.countable_cohort_eligible=false, while canonical state, control manifest and assignment mark the active generation-7 cohort countable and repo-policy-qualified. The field is current-sounding and lives in the frozen control set, so a consumer can derive the opposite eligibility result from another frozen authority surface.",
+      "issue_id": "MM01-T0-REGISTRY-COUNTABILITY-001",
+      "next_test": "Extend countable-control consistency tests to compare any registry eligibility field against the active cohort authority sources or prohibit such mutable gate fields entirely.",
+      "owner": "BIL00",
+      "proposed_v25_fix_or_falsifier": "Make countable eligibility authoritative only in canonical state plus frozen cohort control/assignment. Rename registry activation data as a historical snapshot bound to an explicit base SHA/time, or remove the eligibility boolean from the frozen registry. Falsifier: a consistency test must fail whenever a current-sounding registry gate disagrees with active state/control/assignment.",
+      "severity": "MEDIUM"
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    "No protected React task consumed.",
+    "No fresh evidence units consumed.",
+    "No private manifest or private vault read.",
+    "No benchmark executed.",
+    "No deep research run.",
+    "No Mastermind proposal executed or self-graded.",
+    "No Foundry, Court, Tribunal or scientific-state authority mutated.",
+    "No promotion or benchmark-cursor movement.",
+    "No report-path self-reread will be claimed."
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads the exact MM01 branch head/report blob, validates Draft 2020-12 schema, whole-report HMAC-2, strict session equality, public safety, single-path history and issue ledger. BIL00 should consolidate the three control issues; MM01 performs no promotion or additional write for this cohort.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "b08c9ae01be715ad25059d3dfcb72febb4794c38",
+  "plan_alignment": [
+    {
+      "plan_rule": "Mastermind PRE_REVIEW_ONLY bounded proposal/adversarial/falsifier authority; never executes, self-grades or promotes.",
+      "status": "PASS"
+    },
+    {
+      "plan_rule": "T0 scheduled scope only; fresh/protected/benchmark/deep-research work forbidden.",
+      "status": "PASS"
+    },
+    {
+      "plan_rule": "Origin task cannot promote and state authority remains outside MM01.",
+      "status": "PASS"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "MM01-CAL-BR-007-v25-c13b6ee4-001",
+  "research_questions": [
+    "Should protocol 2.5 freeze a typed Mastermind proposal envelope before any TRAIN React/Stage0-LOOP assignment is permitted?",
+    "Should current countability eligibility be removed entirely from the frozen scheduled-task registry and derived only from canonical state plus cohort control/assignment?",
+    "Should SESSION_STANDARD phase syntax be generated from assignment.phase to eliminate strict-session documentation drift?"
+  ],
+  "role_payload": {
+    "authority_mode": "PRE_REVIEW_ONLY",
+    "bounded_mechanism_proposal": {
+      "execution_authorized": false,
+      "mechanism": "Typed Mastermind proposal envelope with explicit preservation/observer/contamination/mutation and authority-boundary fields.",
+      "promotion_authorized": false,
+      "proposal_status": "CONTROL_FIX_PROPOSAL_ONLY",
+      "self_grade_authorized": false
+    }
+  },
+  "runtime_implementation_implication": "No runtime implementation change is established by MM01. The frozen GEN7 replay-substrate receipt qualifies the Mastermind package for software replay only; this report proposes bus/control fixes and does not mutate runtime authority.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay React mechanism contracts and proposal-only authority boundaries, report defects, and keep Mastermind PRE_REVIEW_ONLY.",
+    "iteration_id": "CAL-BR-007-v25-c13b6ee4",
+    "iteration_number": 7,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM01",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W01 | React Mechanisms",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "result": "Proposal-only authority preserved. React bus-level contract surface reviewed without execution or self-grading.",
+      "scope": "Frozen public-bus controls only; no protected React task or benchmark material.",
+      "status": "COMPLETE",
+      "task_id": "MM01-T0-REPLAY-BOUNDARIES"
+    },
+    {
+      "result": "Eligible prewrite state verified; this report is the sole permitted worker-branch mutation.",
+      "scope": "Create-once branch-isolated receipt.",
+      "status": "COMPLETE",
+      "task_id": "MM01-T0-TRANSPORT-RECEIPT"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "Plan, protocol 2.5, cohort, generation 7, parent-state blob, checkpoint, runtime, assigned token/branch, fresh=false and non-supersession matched.",
+      "status": "PASS",
+      "test_id": "MM01-T0-STATE-BINDING"
+    },
+    {
+      "result": "Generation branch compared identical to exact G. Control-release commit/tree matched manifest; control-release->G changed only the cohort control manifest and assignment, so required frozen controls have no generation drift.",
+      "status": "PASS",
+      "test_id": "MM01-T0-GENERATION-FREEZE"
+    },
+    {
+      "result": "Assigned MM01 worker branch compared identical to G and assigned report path was absent immediately before write.",
+      "status": "PASS",
+      "test_id": "MM01-T0-WORKER-PREWRITE"
+    },
+    {
+      "result": "SHA-256 of prompt-private MM01 secret matched the frozen public MM01 commitment; raw secret was not persisted or exposed.",
+      "status": "PASS",
+      "test_id": "MM01-T0-AUTH-COMMITMENT"
+    },
+    {
+      "result": "SAFE_REPLAY_ONLY; zero fresh evidence, private-manifest reads, benchmark executions and deep-research runs.",
+      "status": "PASS",
+      "test_id": "MM01-T0-MODE-COST"
+    },
+    {
+      "result": "At exact G: supernova/branch-generation=success and supernova/static-control=success; supernova/branch-worker, branch-verify, branch-integrate, branch-consolidate, report-admission and transition-admission were pending. Pending is not PASS.",
+      "status": "OBSERVED_PENDING",
+      "test_id": "MM01-T0-PREWRITE-CI"
+    },
+    {
+      "result": "Requested model identity matches the running model family, but no frozen runtime receipt proves the requested EXTRA_HIGH reasoning setting; substrate binding is software replay qualification only.",
+      "status": "PARTIAL_UNVERIFIED",
+      "test_id": "MM01-T0-MODEL-BINDING"
+    }
+  ],
+  "visibility_token": "7851760c4f2c78a658b92afabb3fe1e6",
+  "worker_auth_commitment": "0af564190f602a24e9249c2536a38bd63ff1e06e77a2abe451a3b34008f0d7f6",
+  "worker_auth_proof": "11cab8a6ee6e7af7a5e602aa9ee3749e1efd73601e231ff02cfc5a64fe7976de",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-007-v25-c13b6ee4/MM01",
+  "worker_id": "MM01"
+}
