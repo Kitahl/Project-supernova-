@@ -5,7 +5,8 @@ import json
 import pathlib
 import unittest
 
-from scripts.validate_branch_bus_v251 import execution_mode_errors
+from jsonschema import Draft202012Validator
+from scripts.validate_branch_bus_v251 import execution_mode_errors, issue_ledger_errors
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 HMAC2 = "PS-HMAC-SHA256-CANONICAL-REPORT-2"
@@ -24,6 +25,21 @@ def canonical_payload(report):
 
 def proof(secret, report):
     return hmac.new(secret, canonical_payload(report), hashlib.sha256).hexdigest()
+
+
+def complete_issue(issue_id="ISSUE-1"):
+    return {
+        "issue_id": issue_id,
+        "severity": "HIGH",
+        "component": "transport control",
+        "status": "OPEN",
+        "evidence_refs": ["commit:abc"],
+        "blocker": True,
+        "proposed_protocol_2_5_fix_test": "repair and rerun falsifier",
+        "owner": "BIL00",
+        "authoritative_control_change": True,
+        "next_action": "stage smallest repair",
+    }
 
 
 class V25ReportContractTests(unittest.TestCase):
@@ -85,6 +101,34 @@ class V25ReportContractTests(unittest.TestCase):
         errors = execution_mode_errors(report, assignment)
         self.assertIn("calibration session execution_mode != SAFE_REPLAY_ONLY", errors)
         self.assertIn("calibration report mode != SAFE_REPLAY_ONLY", errors)
+
+    def test_issue_record_is_closed_and_complete(self):
+        schema = json.loads((ROOT / "schemas" / "branch_report.schema.json").read_text(encoding="utf-8"))
+        issue_schema = schema["$defs"]["issue_record"]
+        self.assertEqual(list(Draft202012Validator(issue_schema).iter_errors(complete_issue())), [])
+        for field in issue_schema["required"]:
+            bad = complete_issue(); bad.pop(field)
+            self.assertTrue(list(Draft202012Validator(issue_schema).iter_errors(bad)), field)
+        extra = complete_issue(); extra["self_attested_pass"] = True
+        self.assertTrue(list(Draft202012Validator(issue_schema).iter_errors(extra)))
+
+    def test_duplicate_issue_ids_fail_trusted_validation(self):
+        report = {"executive_status": "FINDINGS", "issue_ledger": [complete_issue("DUP"), complete_issue("DUP")]}
+        errors = issue_ledger_errors(report)
+        self.assertIn("duplicate issue_ledger issue_id DUP", errors)
+
+    def test_empty_issue_ledger_requires_explicit_zero_delta(self):
+        self.assertEqual(issue_ledger_errors({"executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT", "issue_ledger": []}), [])
+        self.assertIn(
+            "empty issue_ledger requires explicit ZERO_DELTA executive_status",
+            issue_ledger_errors({"executive_status": "PASS", "issue_ledger": []}),
+        )
+
+    def test_zero_delta_cannot_hide_findings(self):
+        self.assertIn(
+            "ZERO_DELTA executive_status requires empty issue_ledger",
+            issue_ledger_errors({"executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT", "issue_ledger": [complete_issue()]}),
+        )
 
     def test_hourly_registry_has_exact_fifteen_staggered_lanes(self):
         reg = json.loads((ROOT / "config" / "task_registry_v25.json").read_text(encoding="utf-8"))

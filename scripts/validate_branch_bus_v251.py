@@ -36,6 +36,19 @@ def mm01_role_payload_errors(report):
   for x in Draft202012Validator(schema).iter_errors(payload):e.append('MM01 React proposal schema: '+x.message)
  except Exception as x:e.append('MM01 React proposal schema execution failed: '+repr(x))
  return e
+def issue_ledger_errors(report):
+ e=[];ledger=report.get('issue_ledger')
+ if not isinstance(ledger,list):return e
+ ids=[]
+ for rec in ledger:
+  if isinstance(rec,dict) and isinstance(rec.get('issue_id'),str):ids.append(rec['issue_id'])
+ seen=set()
+ for issue_id in ids:
+  if issue_id in seen:e.append('duplicate issue_ledger issue_id '+issue_id)
+  seen.add(issue_id)
+ if not ledger and 'ZERO_DELTA' not in str(report.get('executive_status','')):e.append('empty issue_ledger requires explicit ZERO_DELTA executive_status')
+ if ledger and 'ZERO_DELTA' in str(report.get('executive_status','')):e.append('ZERO_DELTA executive_status requires empty issue_ledger')
+ return e
 def validate(branch,G):
  e=[];k,c,w=kind(branch)
  if not k:return [f'unsupported branch {branch}']
@@ -70,7 +83,7 @@ def validate(branch,G):
   else:
    r=load(rp)
    for x in Draft202012Validator(sch('schemas/branch_report.schema.json')).iter_errors(r):e.append(f'report schema: {x.message}')
-   e.extend(mm01_role_payload_errors(r))
+   e.extend(mm01_role_payload_errors(r));e.extend(issue_ledger_errors(r))
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')
