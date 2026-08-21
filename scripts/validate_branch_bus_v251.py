@@ -5,6 +5,7 @@ from jsonschema import Draft202012Validator
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
+TRANSPORT='PRETTY_SORTED_UTF8_JSON_V1'
 SESS={'MF01':'PS-MF-W01 | Representation Lab','MF02':'PS-MF-W02 | E1 Solver Routing','MF03':'PS-MF-W03 | Lemma & Operator Lab','MF04':'PS-MF-W04 | Adversarial Falsifier','MF05':'PS-MF-W05 | Product Closure','MM01':'PS-MM-W01 | React Mechanisms','MM02':'PS-MM-W02 | DeepSWE Mechanisms','MM03':'PS-MM-W03 | SlopCode Contracts','MM04':'PS-MM-W04 | Senior SWE Architecture','MM05':'PS-MM-W05 | E3 Mechanism Controls','MM07':'PS-MM-W07 | Before/After Self-Bench','EXT01':'PS-JOINT-A01 | Runtime & Transport Audit'}
 def git(*a):
  p=subprocess.run(['git','-C',str(ROOT),*a],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False);return p.returncode,p.stdout.strip(),p.stderr.strip()
@@ -26,18 +27,53 @@ def execution_mode_errors(report,assignment):
   if hm!='SAFE_REPLAY_ONLY':e.append('calibration session execution_mode != SAFE_REPLAY_ONLY')
   if rm!='SAFE_REPLAY_ONLY':e.append('calibration report mode != SAFE_REPLAY_ONLY')
  return e
-def typed_role_payload_errors(report):
+def report_transport_errors(path,report):
  e=[]
- if report.get('mode')!='FRESH_EXECUTION':return e
- worker=report.get('worker_id');mapping={'MM01':'schemas/mastermind_react_proposal.schema.json','MM05':'schemas/mastermind_e3_payload.schema.json','MM07':'schemas/mastermind_mm07_payload.schema.json'}
- path=mapping.get(worker)
- if not path:return e
- payload=report.get('role_payload')
- if not isinstance(payload,dict):return [f'{worker} FRESH_EXECUTION requires typed role_payload']
+ try: raw=path.read_bytes()
+ except Exception as x:return ['cannot read exact report bytes: '+repr(x)]
+ if not raw.endswith(b'\n'):e.append('report transport must be newline terminated')
+ if b'\t' in raw:e.append('report transport may not contain tab characters')
+ lines=raw.splitlines()
+ if len(lines)<2:e.append('report transport must be multi-line JSON')
+ if any(len(line)>8192 for line in lines):e.append('report transport line exceeds 8192 UTF-8 bytes')
+ try: expected=(json.dumps(report,sort_keys=True,indent=2,ensure_ascii=False)+'\n').encode('utf-8')
+ except Exception as x:return e+['cannot derive deterministic report transport: '+repr(x)]
+ if raw!=expected:e.append('report transport != PRETTY_SORTED_UTF8_JSON_V1')
+ if report.get('transport_serialization')!=TRANSPORT:e.append('report transport_serialization binding mismatch')
+ return e
+def _schema_errors(worker,payload,path):
+ e=[]
+ if not isinstance(payload,dict):return [f'{worker} requires typed role_payload']
  try:
   schema=sch(path);Draft202012Validator.check_schema(schema)
   for x in Draft202012Validator(schema).iter_errors(payload):e.append(f'{worker} role payload schema: '+x.message)
  except Exception as x:e.append(f'{worker} role payload schema execution failed: '+repr(x))
+ return e
+def typed_role_payload_errors(report,assignment):
+ e=[];worker=report.get('worker_id');mode=report.get('mode');payload=report.get('role_payload');aw=(assignment.get('workers') or {}).get(worker,{})
+ if mode=='SAFE_REPLAY_ONLY':
+  mapping={'MM04':'schemas/mastermind_mm04_replay_payload.schema.json','MM05':'schemas/mastermind_mm05_replay_payload.schema.json','MM07':'schemas/mastermind_mm07_replay_payload.schema.json'}
+  path=mapping.get(worker)
+  if path:e.extend(_schema_errors(worker,payload,path))
+  return e
+ if mode!='FRESH_EXECUTION':return e
+ if assignment.get('network_mode')!='FRESH_ENABLED':e.append('FRESH_EXECUTION requires assignment network_mode FRESH_ENABLED')
+ if aw.get('fresh_allowed') is not True:e.append(f'{worker} FRESH_EXECUTION requires frozen worker fresh_allowed=true')
+ scope=aw.get('fresh_scope')
+ if not isinstance(scope,dict):e.append(f'{worker} FRESH_EXECUTION requires frozen typed fresh_scope')
+ pmid=aw.get('private_manifest_id');pmgit=aw.get('private_manifest_git_identity')
+ if not isinstance(pmid,str) or not pmid:e.append(f'{worker} FRESH_EXECUTION requires frozen private_manifest_id')
+ if not isinstance(pmgit,str) or len(pmgit)!=40:e.append(f'{worker} FRESH_EXECUTION requires frozen private_manifest_git_identity')
+ if report.get('private_manifest_id')!=pmid:e.append(f'{worker} report private_manifest_id != frozen assignment')
+ if report.get('private_manifest_git_identity')!=pmgit:e.append(f'{worker} report private_manifest_git_identity != frozen assignment')
+ mapping={'MF02':'schemas/math_foundry_e1_payload.schema.json','MM01':'schemas/mastermind_react_proposal.schema.json','MM05':'schemas/mastermind_e3_payload.schema.json','MM07':'schemas/mastermind_mm07_payload.schema.json'}
+ path=mapping.get(worker)
+ if path:e.extend(_schema_errors(worker,payload,path))
+ if worker=='MM01' and isinstance(payload,dict):
+  ae=payload.get('assignment_evidence') or {}
+  if ae.get('assignment_id')!=assignment.get('assignment_id'):e.append('MM01 proposal assignment_evidence.assignment_id != frozen assignment')
+  if ae.get('cohort_id')!=assignment.get('cohort_id'):e.append('MM01 proposal assignment_evidence.cohort_id != frozen assignment')
+  if not(isinstance(scope,dict) and scope.get('pool')=='TRAIN' and scope.get('stage')=='STAGE0_LOOP'):e.append('MM01 fresh proposal requires frozen fresh_scope TRAIN/STAGE0_LOOP')
  return e
 def issue_ledger_errors(report):
  e=[];ledger=report.get('issue_ledger')
@@ -105,12 +141,12 @@ def validate(branch,G):
   else:
    r=load(rp)
    for x in Draft202012Validator(sch('schemas/branch_report.schema.json')).iter_errors(r):e.append(f'report schema: {x.message}')
-   e.extend(typed_role_payload_errors(r));e.extend(issue_ledger_errors(r));e.extend(model_binding_errors(r,co))
+   e.extend(report_transport_errors(rp,r));e.extend(typed_role_payload_errors(r,a));e.extend(issue_ledger_errors(r));e.extend(model_binding_errors(r,co))
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')
    e.extend(execution_mode_errors(r,a))
-   bindings={'task_network_plan_id':PLAN,'cohort_id':c,'worker_id':w,'generation_seq':a.get('generation_seq'),'generation_head_sha':G,'worker_branch':branch,'assignment_id':a.get('assignment_id'),'assignment_git_identity':blob(ap),'parent_state_git_identity':a.get('parent_state_git_identity'),'control_manifest_id':a.get('control_manifest_id'),'control_manifest_git_identity':blob(cp),'network_checkpoint_id':a.get('network_checkpoint_id'),'runtime_state_id':a.get('runtime_state_id'),'visibility_token':aw.get('visibility_token'),'worker_auth_scheme':HMAC2,'status':'VALID_ASSIGNED_REPORT','public_safety_status':'PASS','origin_reread_claim':False}
+   bindings={'task_network_plan_id':PLAN,'cohort_id':c,'worker_id':w,'generation_seq':a.get('generation_seq'),'generation_head_sha':G,'worker_branch':branch,'assignment_id':a.get('assignment_id'),'assignment_git_identity':blob(ap),'parent_state_git_identity':a.get('parent_state_git_identity'),'control_manifest_id':a.get('control_manifest_id'),'control_manifest_git_identity':blob(cp),'network_checkpoint_id':a.get('network_checkpoint_id'),'runtime_state_id':a.get('runtime_state_id'),'visibility_token':aw.get('visibility_token'),'worker_auth_scheme':HMAC2,'status':'VALID_ASSIGNED_REPORT','private_manifest_id':aw.get('private_manifest_id'),'private_manifest_git_identity':aw.get('private_manifest_git_identity'),'public_safety_status':'PASS','origin_reread_claim':False}
    for key,val in bindings.items():
     if r.get(key)!=val:e.append(f'report binding mismatch {key}')
    if a.get('network_mode')=='GITHUB_BRANCH_CALIBRATION':
