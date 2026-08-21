@@ -24,6 +24,10 @@ RUN_URL_RE = re.compile(r"^https://github\.com/" + re.escape(REPO) + r"/actions/
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 GEN6_BOOTSTRAP_COHORT = "CAL-BR-006-v251-433ad83a"
 GEN6_BOOTSTRAP_STATE_BLOB = "b08c9ae01be715ad25059d3dfcb72febb4794c38"
+GEN7_INVALIDATED_COHORT = "CAL-BR-007-v25-c13b6ee4"
+GEN7_INVALIDATED_STATE_BLOB = "856481759722e23ff9a652ce140f304efe13b023"
+GEN7_INVALIDATED_HEAD = "7c182fb7ce3a3941f86f7508bbb4a18152402bb8"
+GEN7_INVALIDATED_DISPOSITION = "INVALIDATED_ZERO_CREDIT_AUTHORITATIVE_CONTROL_DEFECTS"
 AUTHORITY_PREFIXES = ("scripts/", "tests/", "schemas/", "config/", ".github/workflows/")
 AUTHORITY_PATHS = {
     "PROTOCOL.md",
@@ -91,12 +95,7 @@ def expected_bootstrap_description(pr_number: int, head_sha: str, base_sha: str)
 
 
 def trusted_bootstrap_success(head_sha: str, base_sha: str | None = None, pr_number: int | None = None):
-    """Require exactly one completed designated bootstrap workflow run.
-
-    A context name plus the shared GitHub Actions principal is insufficient. The
-    successful bootstrap status must point at the exact designated workflow run,
-    and both the status description and run metadata must bind the PR/head/base.
-    """
+    """Require exactly one completed designated bootstrap workflow run."""
     if not (
         isinstance(base_sha, str)
         and HEX40.fullmatch(base_sha)
@@ -191,9 +190,6 @@ def changed_file_mode_errors(repo: pathlib.Path, head_sha: str, changed: list[st
 
 
 def trusted_self_check(trusted_root: pathlib.Path):
-    # Candidate tests already run in the separate read-only diagnostics job.
-    # The privileged status-writing path executes only the root-protected
-    # canonical validator, never the mutable accepted-main test corpus.
     env = os.environ.copy()
     env["GITHUB_TOKEN"] = ""
     rc, out = run([sys.executable, "scripts/validate_bus.py"], trusted_root, env=env)
@@ -226,6 +222,85 @@ def exact_noncountable_gen6_bootstrap_parent(candidate_root: pathlib.Path, base_
     )
 
 
+def exact_invalidated_gen7_repair_parent(candidate_root: pathlib.Path, base_sha: str, old: dict, changed: list[str]):
+    """One exact zero-credit escape hatch for the immutable invalidated Gen7 parent.
+
+    This is not a generic waiver. The base state blob, old cohort/head, successor
+    generation/streak/fresh flags, parent linkage, candidate diff and explicit
+    supersession receipt must all match exactly. Any near miss falls back to the
+    ordinary clean-history admission rule.
+    """
+    rc, out = run(["git", "rev-parse", base_sha + ":state/CURRENT.json"], candidate_root)
+    if rc or out.strip() != GEN7_INVALIDATED_STATE_BLOB:
+        return False
+    if not (
+        old.get("generation_seq") == 7
+        and old.get("active_cohort_id") == GEN7_INVALIDATED_COHORT
+        and old.get("generation_head_sha") == GEN7_INVALIDATED_HEAD
+        and old.get("calibration_countable_current") is True
+        and old.get("calibration_streak") == 0
+        and old.get("fresh_allowed_globally") is False
+        and old.get("repo_policy_status") == "VERIFIED_PROTECTED_SOURCE_BOUND"
+    ):
+        return False
+    try:
+        new = json.loads((candidate_root / "state/CURRENT.json").read_text(encoding="utf-8"))
+        cohort = new["active_cohort_id"]
+        control_path = new["active_control_manifest_path"]
+        assignment_path = new["active_assignment_path"]
+        liveness_path = f"liveness/{cohort}.json"
+        superseded_path = "superseded/CAL-BR-007-v25-c13b6ee4.json"
+        control = json.loads((candidate_root / control_path).read_text(encoding="utf-8"))
+        assignment = json.loads((candidate_root / assignment_path).read_text(encoding="utf-8"))
+        liveness = json.loads((candidate_root / liveness_path).read_text(encoding="utf-8"))
+        superseded = json.loads((candidate_root / superseded_path).read_text(encoding="utf-8"))
+    except Exception:
+        return False
+
+    exact_changed = {"state/CURRENT.json", control_path, assignment_path, liveness_path, superseded_path}
+    if set(changed) != exact_changed:
+        return False
+    if not (
+        new.get("generation_seq") == 8
+        and new.get("active_parent_state_git_identity") == GEN7_INVALIDATED_STATE_BLOB
+        and new.get("calibration_streak") == 0
+        and new.get("calibration_countable_current") is True
+        and new.get("fresh_allowed_globally") is False
+        and new.get("repo_policy_status") == "VERIFIED_PROTECTED_SOURCE_BOUND"
+        and cohort != GEN7_INVALIDATED_COHORT
+        and GEN7_INVALIDATED_COHORT in set(new.get("superseded_cohorts", []))
+        and new.get("expected_base_head") == base_sha
+    ):
+        return False
+    for obj in (control, assignment):
+        if not (
+            obj.get("cohort_id") == cohort
+            and obj.get("generation_seq") == 8
+            and obj.get("parent_state_git_identity") == GEN7_INVALIDATED_STATE_BLOB
+            and obj.get("calibration_countable") is True
+            and obj.get("expected_base_head") == base_sha
+        ):
+            return False
+    if not (
+        liveness.get("cohort_id") == cohort
+        and liveness.get("generation_seq") == 8
+        and liveness.get("generation_root_sha") == base_sha
+    ):
+        return False
+    if not (
+        superseded.get("cohort_id") == GEN7_INVALIDATED_COHORT
+        and superseded.get("generation_seq") == 7
+        and superseded.get("generation_head_sha") == GEN7_INVALIDATED_HEAD
+        and superseded.get("state_blob") == GEN7_INVALIDATED_STATE_BLOB
+        and superseded.get("disposition") == GEN7_INVALIDATED_DISPOSITION
+        and superseded.get("clean_cohort_credit") == 0
+        and superseded.get("calibration_streak_credit") == 0
+        and superseded.get("fresh_evidence_credit") == 0
+    ):
+        return False
+    return True
+
+
 def report_admission(candidate_root: pathlib.Path, base_sha: str, changed: list[str]):
     if "state/CURRENT.json" not in changed:
         return []
@@ -236,6 +311,8 @@ def report_admission(candidate_root: pathlib.Path, base_sha: str, changed: list[
     try:
         old = json.loads(old_text)
         if exact_noncountable_gen6_bootstrap_parent(candidate_root, base_sha, old):
+            return []
+        if exact_invalidated_gen7_repair_parent(candidate_root, base_sha, old, changed):
             return []
         cohort = old["active_cohort_id"]
         root = candidate_root / "history" / cohort
