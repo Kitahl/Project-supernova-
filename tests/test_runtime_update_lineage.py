@@ -114,13 +114,30 @@ class RuntimeUpdateLineageTests(unittest.TestCase):
     def test_missing_receipt_fails(self):
         self.assertTrue(any("without runtime update receipt" in e for e in self.errors()))
 
+    def test_malformed_receipt_fails(self):
+        path = self.root / self.current["runtime_update_receipt_path"]
+        path.write_text("{not-json", encoding="utf-8")
+        self.assertTrue(self.errors())
+
     def test_non_validated_status_fails(self):
         r = self.receipt(); r["status"] = "INCOMPLETE"; self.write_receipt(r)
         self.assertTrue(any("status is not VALIDATED" in e for e in self.errors()))
 
+    def test_rejected_status_fails(self):
+        r = self.receipt(); r["status"] = "REJECTED"; self.write_receipt(r)
+        self.assertTrue(any("status is not VALIDATED" in e for e in self.errors()))
+
+    def test_wrong_runtime_after_fails(self):
+        r = self.receipt(); r["runtime_after"] = "wrong-runtime"; self.write_receipt(r)
+        self.assertTrue(any("runtime_after mismatch" in e for e in self.errors()))
+
     def test_wrong_before_binding_fails(self):
         r = self.receipt(); r["before_after_diagnostics"]["runtime_bound_before"]["foundry_sha256"] = "0" * 64; self.write_receipt(r)
         self.assertTrue(any("before binding mismatch: foundry_sha256" in e for e in self.errors()))
+
+    def test_wrong_after_binding_fails(self):
+        r = self.receipt(); r["before_after_diagnostics"]["runtime_bound_after"]["mastermind_sha256"] = "0" * 64; self.write_receipt(r)
+        self.assertTrue(any("after binding mismatch: mastermind_sha256" in e for e in self.errors()))
 
     def test_wrong_artifact_hash_fails(self):
         r = self.receipt(); r["artifact_hashes"]["foundry_sha256"] = "0" * 64; self.write_receipt(r)
