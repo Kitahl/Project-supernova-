@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Math Foundry MF02 E1 Execution Payload v2.5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "experiment_id", "source_identity", "evaluator_identity", "model_tools_identity", "same_total_budget_identity", "seed_set", "arms", "ranking_only_change_zero_credit", "origin_task_promotion"],
+  "properties": {
+    "schema_version": {"const": "PS-MF02-E1-PAYLOAD-2.5-1"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "source_identity": {"type": "string", "minLength": 1},
+    "evaluator_identity": {"type": "string", "minLength": 1},
+    "model_tools_identity": {"type": "string", "minLength": 1},
+    "same_total_budget_identity": {"type": "string", "minLength": 1},
+    "seed_set": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+    "arms": {
+      "type": "object", "additionalProperties": false,
+      "required": ["BASE", "SBS", "VBS_SINGLE", "AUTO", "VBS_SCHEDULE"],
+      "properties": {
+        "BASE": {"$ref": "#/$defs/arm"}, "SBS": {"$ref": "#/$defs/arm"}, "VBS_SINGLE": {"$ref": "#/$defs/arm"}, "AUTO": {"$ref": "#/$defs/arm"}, "VBS_SCHEDULE": {"$ref": "#/$defs/arm"}
+      }
+    },
+    "ranking_only_change_zero_credit": {"const": true},
+    "origin_task_promotion": {"const": false}
+  },
+  "$defs": {
+    "cost": {
+      "type": "object", "additionalProperties": false,
+      "required": ["wall_seconds", "cpu_seconds", "model_tokens", "tool_calls", "storage_bytes"],
+      "properties": {
+        "wall_seconds": {"type": "number", "minimum": 0}, "cpu_seconds": {"type": "number", "minimum": 0}, "model_tokens": {"type": "integer", "minimum": 0},
+        "tool_calls": {"type": "integer", "minimum": 0}, "storage_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "arm": {
+      "type": "object", "additionalProperties": false,
+      "required": ["route_availability", "recommended_action", "executed_action", "raw_outcome_ref", "complete_cost"],
+      "properties": {
+        "route_availability": {"enum": ["AVAILABLE", "UNAVAILABLE", "UNKNOWN"]},
+        "recommended_action": {"type": ["string", "null"]},
+        "executed_action": {"type": ["string", "null"]},
+        "raw_outcome_ref": {"type": ["string", "null"]},
+        "complete_cost": {"$ref": "#/$defs/cost"}
+      }
+    }
+  }
+}
