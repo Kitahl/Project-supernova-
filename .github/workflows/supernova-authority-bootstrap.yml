@@ -66,12 +66,14 @@ jobs:
           git fetch --no-tags origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
       - name: Install trusted validation environment
         run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock"
-      - name: Publish trusted bootstrap decision
+      - name: Publish trusted bootstrap decision bound to diagnosed bytes
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           CANDIDATE_DIAGNOSTICS_RESULT: ${{ needs.candidate-diagnostics.result }}
+          DIAGNOSED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DIAGNOSED_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: cd trusted && python3 scripts/reconcile_authority_bootstrap.py
       - name: Reconcile normal required contexts after bootstrap approval
         env:
