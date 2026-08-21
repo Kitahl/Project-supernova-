@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import json,os,pathlib,subprocess,sys
-from liveness_contract_guard import validate as validate_liveness
 TRUSTED_ROOT=pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(TRUSTED_ROOT/'scripts'))
+from liveness_contract_guard import validate as validate_liveness
 ROOT=pathlib.Path(os.environ.get("SUPERNOVA_VALIDATE_ROOT",str(TRUSTED_ROOT))).resolve()
 CONTROL_PREFIXES=("state/","control/","assignments/","liveness/","superseded/","benchmark/registry.json","plan/PLAN.json","PROTOCOL.md","WORKER_PROTOCOL.md","SESSION_STANDARD.md","config/","schemas/","scripts/","tests/",".github/workflows/")
 def git(*args):
@@ -17,11 +18,9 @@ def validate(base=None,head=None):
  if s.get("active_parent_state_git_identity")!=c.get("parent_state_git_identity") or s.get("active_parent_state_git_identity")!=a.get("parent_state_git_identity"):e.append("parent binding mismatch")
  if s.get("generation_seq")!=c.get("generation_seq") or s.get("generation_seq")!=a.get("generation_seq"):e.append("generation binding mismatch")
  if s.get("active_cohort_id")!=c.get("cohort_id") or s.get("active_cohort_id")!=a.get("cohort_id"):e.append("cohort binding mismatch")
- if s.get("calibration_countable_current") is True:
-  e.extend(validate_liveness(ROOT,s["active_cohort_id"]))
+ if s.get("calibration_countable_current") is True:e.extend(validate_liveness(ROOT,s["active_cohort_id"]))
  if base and head:
-  names=changed(base,head)
-  mut=any(n=="state/CURRENT.json" for n in names)
+  names=changed(base,head);mut=any(n=="state/CURRENT.json" for n in names)
   if mut:
    required={s["active_control_manifest_path"],s["active_assignment_path"],"state/CURRENT.json"}
    if s.get("calibration_countable_current") is True:required.add(f"liveness/{s['active_cohort_id']}.json")
@@ -30,8 +29,7 @@ def validate(base=None,head=None):
    if s.get("expected_base_head")!=base:e.append(f"stale/wrong expected base head {s.get('expected_base_head')} != {base}")
  return e
 def main():
- base=os.getenv("SUPERNOVA_BASE_SHA");head=os.getenv("SUPERNOVA_HEAD_SHA")
- e=validate(base,head)
+ base=os.getenv("SUPERNOVA_BASE_SHA");head=os.getenv("SUPERNOVA_HEAD_SHA");e=validate(base,head)
  if e:
   print("SUPERNOVA TRANSITION ADMISSION FAILED");[print("-",x) for x in e];return 1
  print("SUPERNOVA TRANSITION ADMISSION PASS");return 0
