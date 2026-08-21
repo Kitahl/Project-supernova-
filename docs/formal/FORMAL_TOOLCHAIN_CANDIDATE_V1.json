@@ -1,0 +1,95 @@
+{
+  "schema_version": "PS-FORMAL-TOOLCHAIN-MANIFEST-1",
+  "authority": "NONE_ENGINEERING_ONLY",
+  "admission_status": "ENGINEERING_ONLY",
+  "compatibility_status": "PARTIAL",
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "components": {
+    "lean4": {
+      "repository": "leanprover/lean4",
+      "ref_type": "tag",
+      "ref": "v4.31.0",
+      "source_commit": null,
+      "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
+      "role": "KERNEL",
+      "license_status": "UNVERIFIED",
+      "build_status": "NOT_RUN",
+      "qualification_status": "UNQUALIFIED"
+    },
+    "mathlib": {
+      "repository": "leanprover-community/mathlib4",
+      "ref_type": "commit",
+      "ref": "fabf563a7c95a166b8d7b6efca11c8b4dc9d911f",
+      "source_commit": "fabf563a7c95a166b8d7b6efca11c8b4dc9d911f",
+      "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
+      "role": "LIBRARY",
+      "license_status": "UNVERIFIED",
+      "build_status": "NOT_RUN",
+      "qualification_status": "UNQUALIFIED"
+    },
+    "pantograph": {
+      "repository": "leanprover/Pantograph",
+      "ref_type": "commit",
+      "ref": "d704b851542b1d2caf1287f65c49f5011f687c05",
+      "source_commit": "d704b851542b1d2caf1287f65c49f5011f687c05",
+      "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
+      "role": "RUNTIME_API",
+      "license_status": "UNVERIFIED",
+      "build_status": "NOT_RUN",
+      "qualification_status": "UNQUALIFIED"
+    },
+    "comparator": {
+      "repository": "leanprover/comparator",
+      "ref_type": "commit",
+      "ref": "fd2e25de155523dbce1f35d410511f9f63998461",
+      "source_commit": "fd2e25de155523dbce1f35d410511f9f63998461",
+      "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
+      "role": "STATEMENT_COMPARATOR",
+      "license_status": "UNVERIFIED",
+      "build_status": "NOT_RUN",
+      "qualification_status": "UNQUALIFIED"
+    },
+    "lean4export": {
+      "repository": "leanprover/lean4export",
+      "ref_type": "commit",
+      "ref": "8554815c2dc6b7abe99ec1f08849c9759ba77947",
+      "source_commit": "8554815c2dc6b7abe99ec1f08849c9759ba77947",
+      "declared_lean_toolchain": "leanprover/lean4:v4.31.0",
+      "role": "EXPORT_PIPELINE",
+      "license_status": "UNVERIFIED",
+      "build_status": "NOT_RUN",
+      "qualification_status": "UNQUALIFIED"
+    }
+  },
+  "environment": {
+    "os_image": "ubuntu-24.04",
+    "sandbox_status": "NOT_CONFIGURED",
+    "network_policy": "BUILD_PREFLIGHT_ONLY_NO_RUNTIME_AUTHORITY",
+    "cache_policy": "NO_SHARED_CACHE_FOR_QUALIFICATION",
+    "notes": "All selected upstream components declare Lean 4.31.0 at the pinned revisions. This is compatibility evidence only; no combined build, sandbox, or formal proof qualification has run."
+  },
+  "supernova_effects": {
+    "modifies_state": false,
+    "modifies_plan": false,
+    "consumes_fresh": false,
+    "changes_calibration": false,
+    "grants_authority": false
+  },
+  "missing_requirements": [
+    "resolve Lean v4.31.0 tag to exact source commit and source archive hash",
+    "record exact licence receipts for every component and all shipped dependencies",
+    "perform clean builds of all components under one pinned image",
+    "run Pantograph stateful theorem interaction smoke and negative tests",
+    "run Comparator plus lean4export positive, negative, statement-mutation and axiom-policy fixtures",
+    "freeze and qualify OS, kernel, privilege, filesystem, network, cache, landrun and systemd-run sandbox policy",
+    "run exploit, escape, malformed-input and mutation/fuzz regression suites",
+    "assess shared trusted-computing-base and different-implementation replay claims",
+    "produce deterministic package, source, environment and replay receipts"
+  ],
+  "evidence": [
+    "mathlib fabf563a7c95a166b8d7b6efca11c8b4dc9d911f declares leanprover/lean4:v4.31.0",
+    "Pantograph d704b851542b1d2caf1287f65c49f5011f687c05 declares leanprover/lean4:v4.31.0",
+    "Comparator fd2e25de155523dbce1f35d410511f9f63998461 declares leanprover/lean4:v4.31.0",
+    "lean4export 8554815c2dc6b7abe99ec1f08849c9759ba77947 declares leanprover/lean4:v4.31.0"
+  ]
+}
