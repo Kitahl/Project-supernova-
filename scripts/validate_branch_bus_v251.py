@@ -26,15 +26,18 @@ def execution_mode_errors(report,assignment):
   if hm!='SAFE_REPLAY_ONLY':e.append('calibration session execution_mode != SAFE_REPLAY_ONLY')
   if rm!='SAFE_REPLAY_ONLY':e.append('calibration report mode != SAFE_REPLAY_ONLY')
  return e
-def mm01_role_payload_errors(report):
+def typed_role_payload_errors(report):
  e=[]
- if report.get('worker_id')!='MM01' or report.get('mode')!='FRESH_EXECUTION':return e
+ if report.get('mode')!='FRESH_EXECUTION':return e
+ worker=report.get('worker_id');mapping={'MM01':'schemas/mastermind_react_proposal.schema.json','MM05':'schemas/mastermind_e3_payload.schema.json','MM07':'schemas/mastermind_mm07_payload.schema.json'}
+ path=mapping.get(worker)
+ if not path:return e
  payload=report.get('role_payload')
- if not isinstance(payload,dict):return ['MM01 FRESH_EXECUTION requires typed role_payload']
+ if not isinstance(payload,dict):return [f'{worker} FRESH_EXECUTION requires typed role_payload']
  try:
-  schema=sch('schemas/mastermind_react_proposal.schema.json');Draft202012Validator.check_schema(schema)
-  for x in Draft202012Validator(schema).iter_errors(payload):e.append('MM01 React proposal schema: '+x.message)
- except Exception as x:e.append('MM01 React proposal schema execution failed: '+repr(x))
+  schema=sch(path);Draft202012Validator.check_schema(schema)
+  for x in Draft202012Validator(schema).iter_errors(payload):e.append(f'{worker} role payload schema: '+x.message)
+ except Exception as x:e.append(f'{worker} role payload schema execution failed: '+repr(x))
  return e
 def issue_ledger_errors(report):
  e=[];ledger=report.get('issue_ledger')
@@ -48,6 +51,25 @@ def issue_ledger_errors(report):
   seen.add(issue_id)
  if not ledger and 'ZERO_DELTA' not in str(report.get('executive_status','')):e.append('empty issue_ledger requires explicit ZERO_DELTA executive_status')
  if ledger and 'ZERO_DELTA' in str(report.get('executive_status','')):e.append('ZERO_DELTA executive_status requires empty issue_ledger')
+ return e
+def model_binding_errors(report,control):
+ e=[];h=report.get('session_header',{});status=h.get('model_binding_status');path=report.get('model_binding_attestation_path');identity=report.get('model_binding_attestation_git_identity')
+ if status!='VERIFIED':
+  if path not in (None,'') or identity not in (None,''):e.append('non-VERIFIED report may not carry a qualifying model-binding attestation')
+  return e
+ if not isinstance(path,str) or not path.startswith('runtime/model_bindings/') or not path.endswith('.json') or '/' in path[len('runtime/model_bindings/'):]:return ['VERIFIED model binding requires confined runtime/model_bindings/*.json attestation path']
+ if not isinstance(identity,str) or len(identity)!=40:return ['VERIFIED model binding requires attestation Git blob identity']
+ if path not in set(control.get('required_control_paths',[])):e.append('VERIFIED model-binding attestation is not frozen in required_control_paths')
+ p=ROOT/path
+ if not p.is_file():return e+['VERIFIED model-binding attestation file missing']
+ if blob(p)!=identity:e.append('VERIFIED model-binding attestation blob mismatch')
+ try:
+  att=load(p);schema=sch('schemas/model_binding_attestation.schema.json');Draft202012Validator.check_schema(schema)
+  for x in Draft202012Validator(schema).iter_errors(att):e.append('model-binding attestation schema: '+x.message)
+  if att.get('runtime_state_id')!=report.get('runtime_state_id'):e.append('model-binding attestation runtime mismatch')
+  if att.get('model_target')!=h.get('model_target') or att.get('observed_model_id')!=h.get('model_target'):e.append('model-binding attestation model mismatch')
+  if att.get('reasoning_effort_target')!=h.get('reasoning_effort_target') or att.get('observed_reasoning_effort')!=h.get('reasoning_effort_target'):e.append('model-binding attestation reasoning mismatch')
+ except Exception as x:e.append('model-binding attestation execution failed: '+repr(x))
  return e
 def validate(branch,G):
  e=[];k,c,w=kind(branch)
@@ -83,7 +105,7 @@ def validate(branch,G):
   else:
    r=load(rp)
    for x in Draft202012Validator(sch('schemas/branch_report.schema.json')).iter_errors(r):e.append(f'report schema: {x.message}')
-   e.extend(mm01_role_payload_errors(r));e.extend(issue_ledger_errors(r))
+   e.extend(typed_role_payload_errors(r));e.extend(issue_ledger_errors(r));e.extend(model_binding_errors(r,co))
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')

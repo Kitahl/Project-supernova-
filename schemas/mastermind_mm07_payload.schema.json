@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mastermind MM07 Before-After / Improver Payload v2.5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "experiment_kind", "train_only", "generation_index", "source_identity",
+    "evaluator_identity", "model_tools_environment_identity", "budget_identity", "cache_retention_identity",
+    "solver_identity", "memory_control_identity", "improver_identity", "claim_status",
+    "improver_treatment_isolated", "complete_cost_binding", "origin_task_promotion"
+  ],
+  "properties": {
+    "schema_version": {"const": "PS-MM07-PAYLOAD-2.5-1"},
+    "experiment_kind": {"enum": ["BOUNDED_TRAIN_DIAGNOSTIC", "GOAL2_IMPROVER_COMPARISON"]},
+    "train_only": {"const": true},
+    "generation_index": {"type": "integer", "minimum": 1, "maximum": 4},
+    "source_identity": {"type": "string", "minLength": 1},
+    "evaluator_identity": {"type": "string", "minLength": 1},
+    "model_tools_environment_identity": {"type": "string", "minLength": 1},
+    "budget_identity": {"type": "string", "minLength": 1},
+    "cache_retention_identity": {"type": "string", "minLength": 1},
+    "solver_identity": {"type": "string", "minLength": 1},
+    "memory_control_identity": {"type": "string", "minLength": 1},
+    "improver_identity": {"type": "string", "minLength": 1},
+    "claim_status": {"enum": ["DIAGNOSTIC_NOT_GOAL2", "IMPROVER_COMPARISON_CANDIDATE"]},
+    "improver_treatment_isolated": {"type": "boolean"},
+    "complete_cost_binding": {"const": "REPORT_COST_LEDGER_COMPLETE"},
+    "origin_task_promotion": {"const": false}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"claim_status": {"const": "IMPROVER_COMPARISON_CANDIDATE"}}, "required": ["claim_status"]},
+      "then": {
+        "properties": {
+          "experiment_kind": {"const": "GOAL2_IMPROVER_COMPARISON"},
+          "improver_treatment_isolated": {"const": true}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"experiment_kind": {"const": "BOUNDED_TRAIN_DIAGNOSTIC"}}, "required": ["experiment_kind"]},
+      "then": {"properties": {"claim_status": {"const": "DIAGNOSTIC_NOT_GOAL2"}}}
+    }
+  ]
+}

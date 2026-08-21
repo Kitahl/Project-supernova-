@@ -68,6 +68,8 @@
     "negative_zero_outcomes": {"type": "array"},
     "research_questions": {"type": "array"},
     "role_payload": {"type": "object", "additionalProperties": true},
+    "model_binding_attestation_path": {"type": ["string", "null"]},
+    "model_binding_attestation_git_identity": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
     "cost_ledger": {
       "type": "object",
       "additionalProperties": false,
@@ -139,14 +141,23 @@
     },
     {
       "if": {"properties": {"worker_id": {"const": "MM03"}}, "required": ["worker_id"]},
+      "then": {"required": ["role_payload"], "properties": {"role_payload": {"type": "object", "required": ["slopcode_result"], "properties": {"slopcode_result": {"$ref": "#/$defs/metric_result"}}}}}
+    },
+    {
+      "if": {"properties": {"worker_id": {"const": "MM05"}, "mode": {"const": "FRESH_EXECUTION"}}, "required": ["worker_id", "mode"]},
+      "then": {"required": ["role_payload"]}
+    },
+    {
+      "if": {"properties": {"worker_id": {"const": "MM07"}, "mode": {"const": "FRESH_EXECUTION"}}, "required": ["worker_id", "mode"]},
+      "then": {"required": ["role_payload"]}
+    },
+    {
+      "if": {"properties": {"session_header": {"properties": {"model_binding_status": {"const": "VERIFIED"}}, "required": ["model_binding_status"]}}, "required": ["session_header"]},
       "then": {
-        "required": ["role_payload"],
+        "required": ["model_binding_attestation_path", "model_binding_attestation_git_identity"],
         "properties": {
-          "role_payload": {
-            "type": "object",
-            "required": ["slopcode_result"],
-            "properties": {"slopcode_result": {"$ref": "#/$defs/metric_result"}}
-          }
+          "model_binding_attestation_path": {"type": "string", "pattern": "^runtime/model_bindings/[^/]+\\.json$"},
+          "model_binding_attestation_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
         }
       }
     }
