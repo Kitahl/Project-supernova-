@@ -53,6 +53,10 @@ def generation_errors(state,G):
   files=changed_files(root,G) if isinstance(root,str) and HEX40.fullmatch(root) else []
   expected=expected_generation_paths(state,control)
   if set(files)!=expected:errors.append('generation root->G changed paths '+repr(files)+' expected '+repr(sorted(expected)))
+  if isinstance(root,str) and HEX40.fullmatch(root):
+   for p in control.get('required_control_paths',[]):
+    a,_=file_text(p,root);b,_=file_text(p,G)
+    if a['sha']!=b['sha']:errors.append('frozen control drift '+p)
   if state.get('calibration_countable_current') is True:
    lp=f"liveness/{state['active_cohort_id']}.json"
    try:lm,live=content(lp,G)
