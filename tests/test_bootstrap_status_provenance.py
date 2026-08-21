@@ -34,7 +34,7 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         s.update(overrides)
         return s
 
-    def run(self, **overrides):
+    def run_obj(self, **overrides):
         r = {
             "id": self.run_id,
             "path": self.mod.BOOTSTRAP_WORKFLOW,
@@ -48,7 +48,7 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         return r
 
     def fake_api(self, statuses, runs=None):
-        runs = dict(runs or {self.run_id: self.run()})
+        runs = dict(runs or {self.run_id: self.run_obj()})
         def call(path, method="GET", data=None):
             if path.startswith("/commits/"):
                 return statuses
@@ -61,7 +61,7 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         return call
 
     def check(self, statuses, run_obj=None, *, base=None, pr=None):
-        runs = {self.run_id: self.run() if run_obj is None else run_obj}
+        runs = {self.run_id: self.run_obj() if run_obj is None else run_obj}
         with mock.patch.object(self.mod, "api", side_effect=self.fake_api(statuses, runs)):
             return self.mod.trusted_bootstrap_success(self.head, self.base if base is None else base, self.pr if pr is None else pr)
 
@@ -69,14 +69,14 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         self.assertTrue(self.check([self.status()]))
 
     def test_same_github_actions_principal_wrong_workflow_is_rejected(self):
-        self.assertFalse(self.check([self.status()], self.run(path=".github/workflows/other-status-writer.yml")))
+        self.assertFalse(self.check([self.status()], self.run_obj(path=".github/workflows/other-status-writer.yml")))
 
     def test_wrong_event_is_rejected(self):
-        self.assertFalse(self.check([self.status()], self.run(event="push")))
+        self.assertFalse(self.check([self.status()], self.run_obj(event="push")))
 
     def test_incomplete_or_failed_run_is_rejected(self):
-        self.assertFalse(self.check([self.status()], self.run(status="in_progress", conclusion=None)))
-        self.assertFalse(self.check([self.status()], self.run(status="completed", conclusion="failure")))
+        self.assertFalse(self.check([self.status()], self.run_obj(status="in_progress", conclusion=None)))
+        self.assertFalse(self.check([self.status()], self.run_obj(status="completed", conclusion="failure")))
 
     def test_wrong_creator_is_rejected(self):
         self.assertFalse(self.check([self.status(creator={"login": "other-app[bot]"})]))
@@ -91,13 +91,13 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         self.assertFalse(self.check([self.status()], pr=43))
 
     def test_wrong_repository_or_actor_is_rejected(self):
-        self.assertFalse(self.check([self.status()], self.run(repository={"full_name": "other/repo"})))
-        self.assertFalse(self.check([self.status()], self.run(actor={"login": "other"})))
+        self.assertFalse(self.check([self.status()], self.run_obj(repository={"full_name": "other/repo"})))
+        self.assertFalse(self.check([self.status()], self.run_obj(actor={"login": "other"})))
 
     def test_ambiguous_multiple_successful_designated_runs_fail_closed(self):
         second_id = self.run_id + 1
         second = self.status(target_url=f"https://github.com/{self.mod.REPO}/actions/runs/{second_id}")
-        runs = {self.run_id: self.run(), second_id: self.run(id=second_id)}
+        runs = {self.run_id: self.run_obj(), second_id: self.run_obj(id=second_id)}
         with mock.patch.object(self.mod, "api", side_effect=self.fake_api([self.status(), second], runs)):
             self.assertFalse(self.mod.trusted_bootstrap_success(self.head, self.base, self.pr))
 
