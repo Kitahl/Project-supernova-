@@ -1,0 +1,20 @@
+{
+  "schema_version": "PS-ROOT-TCB-EPOCH-2.5-2",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "epoch": 2,
+  "seed_install_main_commit": "088139cca3fa308058dca72e2c67eb3f758624bc",
+  "seed_policy_blob": "9698216426dba4121de444d1800936e196e64163",
+  "seed_reconciler_blob": "7a7b1dc4cd88d98642f2ba933f004b09b36a1933",
+  "seed_workflow_blob": "10cf188aa27a8d799d48052cef8347238be43385",
+  "seed_disposition_after_acceptance": "PERMANENTLY_INERT_FOR_FURTHER_ROOT_ROTATION",
+  "root_repairs": [
+    "MM04-T0-BOOTSTRAP-TRANSITIVE-TCB-CLOSURE-001",
+    "MM04-T0-BOOTSTRAP-DIAGNOSTIC-HEAD-BINDING-001",
+    "MM04-T0-BOOTSTRAP-STATUS-PROVENANCE-001"
+  ],
+  "admission_rule": "Future normal automated bootstrap may modify only non-root authority-support bytes. Any member of the accepted-main derived root TCB requires a new separately trusted root-rotation authority.",
+  "bootstrap_status_rule": "A bootstrap context is insufficient by context/creator alone. The status must reference the completed successful designated bootstrap workflow run for the exact PR/head/base tuple.",
+  "fresh_science_effect": "NONE",
+  "calibration_credit_effect": "NONE_RETROACTIVE"
+}
