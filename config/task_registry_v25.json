@@ -52,8 +52,6 @@
     "canonical_hourly_registry": "READY_ON_HARDENING_BRANCH",
     "native_task_schedule": "OBSERVED_HOURLY_15_OF_15",
     "project_chat_placement": "UNVERIFIED_NONBLOCKING_OPERATIONAL_FALLBACK_GITHUB_CANONICAL",
-    "activation_snapshot_scope": "HISTORICAL_TASK_DEPLOYMENT_ONLY",
-    "countability_authority": "main:state/CURRENT.json + active control/assignment",
-    "countability_snapshot": "NOT_AUTHORITATIVE"
+    "countable_cohort_eligible": false
   }
 }
