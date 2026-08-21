@@ -1,0 +1,15 @@
+{
+  "schema_version": "PS-GEN9-RESET-COMPAT-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "epoch": 1,
+  "status": "CONSUMED_ON_ROOT_TCB_EPOCH_4",
+  "seed_install_commit_sha": "1239e232e11f9710c472a6dded6121833d84ddcb",
+  "seed_policy_blob": "61d1f2458833ba167a8200e40625e32336c150fd",
+  "seed_reconciler_blob": "0d7ac818dcc36d8257726b361d8fb0d7079a9448",
+  "seed_workflow_blob": "372d2b559feff260bb65f73fecd898d60cd228f1",
+  "previous_root_tcb_blob": "ef79f664aee73862f685134253dbdd284a5f6986",
+  "repair": "GEN9_ZERO_CREDIT_LIVENESS_SCHEMA_IDENTITY_BINDING",
+  "fresh_science_effect": "NONE",
+  "calibration_credit_effect": "NONE_GEN9_REMAINS_ZERO"
+}
