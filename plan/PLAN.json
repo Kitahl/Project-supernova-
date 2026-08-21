@@ -155,6 +155,79 @@
     "deep_research_only_open_lane": "T0-TRANSPORT-CLOSURE",
     "offline_h0_h1_ocn_retro_cid_tcb_work_must_use_separate_nonadmissible_session": true
   },
+  "t0_repair_and_integration": {
+    "scope": "REV4_PROTOCOL_2_5_T0_CONTROL_AND_TRANSPORT_HARDENING",
+    "root_cause_model": "CONTROL_PLANE_SEMANTIC_SPLIT_BRAIN_OR_UNENFORCED_CROSS_LAYER_CONTRACT",
+    "defect_ingress": [
+      "WORKER_ISSUE_LEDGER",
+      "MM06_VERIFIER_FINDING",
+      "MF06_INTEGRATION_FINDING",
+      "EXT01_TRANSPORT_LIVENESS_FINDING",
+      "GITHUB_CI_OR_RULESET_FAILURE"
+    ],
+    "issue_flow": [
+      "WORKER_WRITES_CREATE_ONCE_ROLE_BOUNDED_RECEIPT_WITH_TYPED_ISSUE_LEDGER",
+      "MM06_INDEPENDENTLY_REREADS_FALSIFIES_DEDUPLICATES_BY_ROOT_CAUSE_AND_OWNS_SAFE_QUARANTINED_MISSING_PARTITION",
+      "MF06_INTEGRATES_ONLY_MM06_SAFE_EVIDENCE_AND_PRESERVES_NEGATIVE_ZERO_UNKNOWN_COST_MODEL_BINDING_AND_FIDELITY_LIMITS",
+      "BIL00_MIRRORS_EVIDENCE_BACKED_PUBLIC_SAFE_DEFECTS_TO_GITHUB_AND_CREATES_SMALLEST_ADMISSIBLE_REPAIR_PR",
+      "REPAIR_RERUNS_ORIGINAL_FALSIFIER_PLUS_POSITIVE_AND_NEGATIVE_REGRESSIONS",
+      "CLOSE_ONLY_WITH_EXACT_HEAD_SOURCE_BOUND_EVIDENCE"
+    ],
+    "ownership": {
+      "deduplication_and_verification": "MM06",
+      "safe_evidence_integration": "MF06",
+      "transport_and_liveness_audit": "EXT01",
+      "repair_issue_and_transition_director": "BIL00",
+      "mathematical_runtime_semantics": "MATH_FOUNDRY",
+      "proposal_and_adversarial_pre_review": "MASTERMIND"
+    },
+    "repair_policy": [
+      "NO_IN_PLACE_MUTATION_OF_FROZEN_COHORT",
+      "NO_SYNTHETIC_OR_INVENTED_RECEIPTS",
+      "NO_BYPASS_FORCE_MERGE_OR_STATUS_TEXT_SUBSTITUTION",
+      "UNKNOWN_MISSING_PENDING_TIMEOUT_OR_AUTHORITY_MISMATCH_IS_NOT_PASS",
+      "AUTHORITATIVE_CONTROL_CHANGE_INVALIDATES_ACTIVE_COUNTABLE_COHORT_AND_RESETS_OR_PRESERVES_STREAK_AT_ZERO",
+      "ROOT_TCB_CHANGE_REQUIRES_SEPARATELY_INSTALLED_ONE_SHOT_INDEPENDENT_SEED",
+      "NON_ROOT_AUTHORITY_CHANGE_REQUIRES_READ_ONLY_CANDIDATE_DIAGNOSTICS_PLUS_SOURCE_VERIFIED_ACCEPTED_MAIN_BOOTSTRAP",
+      "ORIGINAL_FALSIFIER_MUST_PASS_BEFORE_CLOSED_WITH_EVIDENCE"
+    ],
+    "current_protocol_2_5_repair_bundle": {
+      "issue_ids": ["182", "183", "184"],
+      "additional_trust_repairs": [
+        "BOOTSTRAP_COMPLETION_RUN_ID_PLUS_EXACT_PR_HEAD_BASE_BINDING",
+        "FAIL_CLOSED_VALIDATOR_ENVIRONMENT_IDENTITY"
+      ],
+      "target_root_tcb_epoch": 5,
+      "active_cohort_disposition_on_acceptance": "ZERO_CREDIT_SUPERSEDED",
+      "replacement_countable_cohort_required": true,
+      "fresh_science_remains_disabled": true
+    },
+    "post_repair_countable_pipeline": [
+      "FREEZE_COMPLETE_REPLACEMENT_CONTROL_SET",
+      "FREEZE_CONTROL_ASSIGNMENT_AND_LIVENESS_BEFORE_WORKER_EXECUTION",
+      "EXACT_GENERATION_STRUCTURAL_ADMISSION",
+      "TWELVE_ISOLATED_WORKERS",
+      "MM06_EXHAUSTIVE_VERIFICATION",
+      "LATER_EXACT_HEAD_SOURCE_BOUND_REPORT_ADMISSION",
+      "MF06_SAFE_ONLY_INTEGRATION",
+      "BIL00_CAS_CONSOLIDATION",
+      "EXACT_CONSOLIDATION_HEAD_STATIC_CONTROL_REPORT_ADMISSION_TRANSITION_ADMISSION",
+      "PROTECTED_EXPECTED_HEAD_CAS_MERGE",
+      "CLEAN_STREAK_INCREMENT_ONLY_AFTER_COMPLETE_END_TO_END_PASS"
+    ],
+    "clean_cohort_rule": "Two consecutive countable replay-only cohorts must pass under the same frozen authoritative control, substrate, runtime and checker identities; any authoritative control change before closure invalidates the active cohort and resets the streak to zero.",
+    "bounded_automation_rule": "Default two audit/falsify/repair passes; hard maximum three only for lightweight deterministic work after a clean previous pass. Stop fail-closed on stale SHA, state drift, CI failure or pending authority, timeout, disconnect, API/rate-limit failure, malformed receipt or unexpected control change."
+  },
+  "control_plane_single_source_invariants": {
+    "generation_delta": "COUNTABLE_EXACTLY_CONTROL_ASSIGNMENT_LIVENESS_NONCOUNTABLE_EXACTLY_CONTROL_ASSIGNMENT_NO_EXTRA_PATHS",
+    "structural_status_writer_cardinality": 1,
+    "structural_status_writer_rule": "ONE_AUTHORITATIVE_WRITER_PER_CONTEXT; REST_OR_OTHER_OBSERVERS_USE_DISTINCT_DIAGNOSTIC_CONTEXTS",
+    "liveness_time_authority": "DIRECT_PREDEADLINE_OBSERVATION_OR_SOURCE_BOUND_GITHUB_SERVER_TIME_OR_SEPARATELY_TRUSTED_IMMUTABLE_CREATION_WITNESS; GIT_AUTHOR_AND_COMMITTER_TIMESTAMPS_ARE_NOT_AUTHORITY",
+    "negative_zero_outcomes": "NOT_MEASURED_UNKNOWN_NOT_APPLICABLE_REQUIRE_NULL; NUMERIC_ZERO_IS_ALLOWED_ONLY_FOR_TYPED_ACCOUNTING_ZERO; SCIENTIFIC_MEASUREMENTS_LIVE_IN_TYPED_ROLE_PAYLOADS",
+    "bootstrap_provenance": "DESIGNATED_COMPLETED_WORKFLOW_RUN_ID_AND_EXACT_PR_HEAD_BASE_REQUIRED",
+    "validator_environment": "FAIL_CLOSED_FROZEN_RUNNER_IMAGE_IMAGE_VERSION_PYTHON_VERSION_GIT_VERSION_SHA_PINNED_ACTIONS_AND_HASH_LOCKED_DEPENDENCIES",
+    "root_tcb_change": "SEPARATELY_INSTALLED_ONE_SHOT_SEED_USING_ACCEPTED_MAIN_BYTES; CANDIDATE_BYTES_ARE_DATA_ONLY_IN_PRIVILEGED_PHASE"
+  },
   "workers": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],
   "verifier": "MM06",
   "integrator": "MF06",
