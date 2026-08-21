@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mastermind MM05 E3 Replay Payload v2.5",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "learned_proposal", "random_admissible", "no_change_equal_compute", "comparison_status", "comparison_reason", "self_promotion"],
+  "properties": {
+    "schema_version": {"const": "PS-MM05-E3-REPLAY-PAYLOAD-2.5-1"},
+    "learned_proposal": {"$ref": "#/$defs/not_measured"},
+    "random_admissible": {"$ref": "#/$defs/not_measured"},
+    "no_change_equal_compute": {"$ref": "#/$defs/not_measured"},
+    "comparison_status": {"const": "NOT_MEASURED"},
+    "comparison_reason": {"type": "string", "minLength": 1},
+    "self_promotion": {"const": false}
+  },
+  "$defs": {
+    "not_measured": {
+      "type": "object", "additionalProperties": false,
+      "required": ["result_type", "status", "value", "reason"],
+      "properties": {
+        "result_type": {"const": "SCIENTIFIC_METRIC"}, "status": {"const": "NOT_MEASURED"}, "value": {"const": null},
+        "reason": {"type": "string", "minLength": 1}, "evidence_refs": {"type": "array", "items": {"type": "string"}}, "unit": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

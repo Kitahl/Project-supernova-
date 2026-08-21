@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Project Supernova Branch Verification v2.5 hardened",
+  "title": "Project Supernova Branch Verification v2.5 hardened r2",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "session_header", "task_network_plan_id", "cohort_id", "verification_id", "generation_head_sha", "verifier_branch", "runtime_state_id", "executive_status",
     "safe_report_refs", "quarantined_report_refs", "missing_workers", "worker_auth_verification", "partition_exhaustive_verified",
-    "lane_liveness_observations", "liveness_complete", "verifier_assurance_records", "checker_pin_bundle_ref", "statement_fidelity_policy",
+    "lane_liveness_observations", "liveness_complete", "verifier_assurance_disposition", "verifier_assurance_records", "checker_pin_bundle_ref", "statement_fidelity_policy",
     "task_ledger", "issue_ledger", "test_ledger", "plan_alignment", "research_questions", "calibration_pass", "verdict", "pre_ci_observation", "required_post_write_ci_context", "next_action"
   ],
   "properties": {
@@ -34,6 +34,7 @@
     "partition_exhaustive_verified": {"const": true},
     "lane_liveness_observations": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/liveness"}},
     "liveness_complete": {"type": "boolean"},
+    "verifier_assurance_disposition": {"enum": ["NOT_APPLICABLE_TRANSPORT_ONLY", "ASSURANCE_RECORDS_PRESENT"]},
     "verifier_assurance_records": {"type": "array", "items": {"$ref": "#/$defs/verifier_assurance"}},
     "checker_pin_bundle_ref": {"const": "config/checker_pins.json"},
     "statement_fidelity_policy": {"enum": ["NOT_APPLICABLE_TRANSPORT_ONLY", "REQUIRED_BY_SCIENTIFIC_MANIFEST"]},
@@ -74,7 +75,7 @@
       "properties": {
         "lane_id": {"$ref": "#/$defs/worker_id"}, "task_id": {"type": ["string", "null"]}, "associated_chat_ref": {"type": ["string", "null"]},
         "expected_window_start": {"type": "string"}, "expected_window_end": {"type": "string"}, "observation_time": {"type": "string"},
-        "receipt_status": {"enum": ["RUN_OBSERVED", "ZERO_DELTA_RECEIPT_OBSERVED", "RUN_LATE", "NO_RECEIPT"]},
+        "receipt_status": {"enum": ["RUN_OBSERVED", "ZERO_DELTA_RECEIPT_OBSERVED", "RUN_LATE", "RUN_TIMING_UNKNOWN", "NO_RECEIPT"]},
         "task_state": {"enum": ["ACTIVE", "TASK_PAUSED_INACTIVITY", "TASK_PAUSED_CHAT_DELETED", "TASK_PAUSED_MANUAL", "TASK_STATE_UNKNOWN"]},
         "observation_source": {"enum": ["GITHUB_RECEIPT_MONITOR", "AUTHORITATIVE_TASK_STATE", "MANUAL_AUDIT"]},
         "receipt_ref": {"type": ["string", "null"]}, "lateness_seconds": {"type": "integer", "minimum": 0}, "notes": {"type": "string"}
@@ -85,27 +86,31 @@
       "additionalProperties": false,
       "required": ["checker_id", "exact_version_or_commit", "assurance_type", "implementation_family", "shared_tcb", "statement_identity_scope", "independence_status", "known_advisories", "exploit_regression_digest", "mutation_fuzz_digest", "last_security_review", "scope"],
       "properties": {
-        "checker_id": {"type": "string"},
-        "exact_version_or_commit": {"type": "string"},
+        "checker_id": {"type": "string"}, "exact_version_or_commit": {"type": "string"},
         "assurance_type": {"enum": ["PRIMARY_KERNEL", "SAME_KERNEL_FRESH_REPLAY", "EXTERNAL_KERNEL_IMPLEMENTATION", "STATEMENT_IDENTITY_CHECKER", "STATEMENT_FIDELITY_AUTHORITY"]},
-        "implementation_family": {"type": "string"},
-        "language": {"type": ["string", "null"]},
-        "export_format": {"type": ["string", "null"]},
-        "shared_tcb": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
-        "shared_algorithmic_lineage": {"type": ["string", "null"]},
-        "statement_identity_scope": {"type": "string"},
-        "known_advisories": {"type": "array", "items": {"type": "string"}},
-        "exploit_regression_digest": {"type": "string"},
-        "mutation_fuzz_digest": {"type": "string"},
-        "last_security_review": {"type": "string"},
-        "scope": {"type": "string"},
+        "implementation_family": {"type": "string"}, "language": {"type": ["string", "null"]}, "export_format": {"type": ["string", "null"]},
+        "shared_tcb": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "shared_algorithmic_lineage": {"type": ["string", "null"]},
+        "statement_identity_scope": {"type": "string"}, "known_advisories": {"type": "array", "items": {"type": "string"}},
+        "exploit_regression_digest": {"type": "string"}, "mutation_fuzz_digest": {"type": "string"}, "last_security_review": {"type": "string"}, "scope": {"type": "string"},
         "independence_status": {"enum": ["NOT_ASSESSED", "SHARED_KERNEL", "SHARED_EXPORT_PIPELINE", "DIVERSE_IMPLEMENTATION_SHARED_SPEC", "JOINTLY_EXPLOITABLE_HISTORY", "NO_INDEPENDENCE_CLAIM"]}
       }
     }
   },
   "allOf": [
     {
-      "if": {"properties": {"verdict": {"const": "VERIFIED_COMPLETE"}}},
+      "if": {"properties": {"verifier_assurance_disposition": {"const": "NOT_APPLICABLE_TRANSPORT_ONLY"}}, "required": ["verifier_assurance_disposition"]},
+      "then": {"properties": {"verifier_assurance_records": {"maxItems": 0}, "statement_fidelity_policy": {"const": "NOT_APPLICABLE_TRANSPORT_ONLY"}}}
+    },
+    {
+      "if": {"properties": {"verifier_assurance_disposition": {"const": "ASSURANCE_RECORDS_PRESENT"}}, "required": ["verifier_assurance_disposition"]},
+      "then": {"properties": {"verifier_assurance_records": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"statement_fidelity_policy": {"const": "REQUIRED_BY_SCIENTIFIC_MANIFEST"}}, "required": ["statement_fidelity_policy"]},
+      "then": {"properties": {"verifier_assurance_disposition": {"const": "ASSURANCE_RECORDS_PRESENT"}, "verifier_assurance_records": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"verdict": {"const": "VERIFIED_COMPLETE"}}, "required": ["verdict"]},
       "then": {"properties": {"liveness_complete": {"const": true}, "missing_workers": {"maxItems": 0}, "quarantined_report_refs": {"maxItems": 0}, "safe_report_refs": {"minItems": 12, "maxItems": 12}}}
     }
   ]
