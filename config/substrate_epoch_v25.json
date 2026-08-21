@@ -1,1 +1,59 @@
-{"countable_freeze":{"blocking_reason":null,"mid_streak_substrate_change":"RESETS_CALIBRATION_STREAK_TO_ZERO","ready":true,"rule":"Freeze these exact Foundry and Mastermind substrate identities before countable cohort 1; no substrate swap is permitted mid-cohort or mid-streak."},"fresh_evidence_enabled":false,"mastermind":{"archive_bytes":595605,"authority":"PRE_REVIEW_ONLY","manifest_entries":210,"package":"MASTERMIND_v4.4.10_EXECUTION_CLOSURE_CANDIDATE_1_FULL.zip","python_files":81,"qualification":{"capability_broker_validation":"PASS","execution_closure_selftest":"PASS","manifest_integrity":"PASS_210_OF_210","mastermind_selftest":"PASS","package_verification":"PASS_SOURCE_ONLY_NO_UNEXPECTED_FILES","python_compile":"PASS","python_source_validation":"PASS_81_FILES"},"scheduled_runtime_mount_status":"NOT_REQUIRED_FOR_REPLAY_CALIBRATION","sha256":"026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d","version":"4.4.10-execution-closure-candidate.1"},"math_foundry":{"authority":"MATHEMATICAL_TRUTH_REQUIRES_INDEPENDENT_EXACT_CHECKER; SEARCH_REMAINS_SEARCH_ONLY_UNTIL_EXACT_VERIFICATION","candidate6_to_7_patch_sha256":"b76cdec382b5f67d9413181243952edf812753fd27e938d0982f7ff041458915","normalized_archive_content_sha256":"c1acbde5295676bd2a65509649e7ade65aaad1608490b22968c41d22869106c5","python_files":153,"qualification":{"architecture_controlled_negatives":"PASS_15_OF_15","architecture_gate":"PASS_20_OF_20","architecture_integration":"PASS_22_OF_22","audit_closure":"PASS_WITH_P2_REMAINING","clean_archive_replay":{"assertions_passed":852,"assertions_total":852,"authority":"SOFTWARE_QUALIFICATION_ONLY","status":"PASS","tests_passed":18,"tests_total":18}},"release_class":"EXPERIMENTAL_CANDIDATE_QUALIFIED_NOT_OFFICIAL_RELEASE","scheduled_runtime_mount_status":"NOT_REQUIRED_FOR_REPLAY_CALIBRATION","semantic_version":"3.0.1","source_archive_sha256":"5bfe4bf2cc7e8c4cb9751b831803e28eb45cebe22c0085310c8f00459caf994e","source_files":451,"version_label":"Math Foundry v3.0.1 Architecture-Integration Experimental Candidate 7"},"protocol_version":"2.5","schema_version":"PS-SUBSTRATE-EPOCH-2.5-2","scientific_status_changed":false,"specification_revision":4,"status":"FROZEN_FOR_COUNTABLE_CALIBRATION","task_network_plan_id":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"}
+{
+  "schema_version": "PS-SUBSTRATE-EPOCH-2.5-3",
+  "protocol_version": "2.5",
+  "specification_revision": 4,
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "status": "FROZEN_FOR_COUNTABLE_CALIBRATION",
+  "fresh_evidence_enabled": false,
+  "scientific_status_changed": false,
+  "countable_freeze": {
+    "ready": true,
+    "blocking_reason": null,
+    "rule": "Freeze these exact Foundry and Mastermind substrate identities before the replacement countable cohort; no substrate swap is permitted mid-cohort or mid-streak.",
+    "mid_streak_substrate_change": "RESETS_CALIBRATION_STREAK_TO_ZERO"
+  },
+  "math_foundry": {
+    "version_label": "Math Foundry 3.1.1 qualified release",
+    "semantic_version": "3.1.1",
+    "release_class": "QUALIFIED_RELEASE_SOFTWARE_ONLY",
+    "source_archive_sha256": "57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+    "archive_bytes": 1449504,
+    "source_files": 481,
+    "python_files": 174,
+    "manifest_sha256": "6d1220f99cc342be427fee0401db0259c90cceedf02ff8b684fc0dcfab41c743",
+    "canonical_content_manifest_sha256": "d422d6d5f76ae895649f688d1fab4f22c211887c327e1eb11e9646fdcd5a1bc8",
+    "sha256sums_sha256": "4cac3ee28414b07cebef32ffebcb9f297c5cb3b947d1e0916aa4780fd3e0400b",
+    "qualification": {
+      "status": "PASS",
+      "suites_passed": 28,
+      "suites_total": 28,
+      "qualification_result_sha256": "32c92aee61100fab918b60867be1fc873c274521a64ffbe1ffe10ed4529f1396",
+      "release_receipt_sha256": "13b323fa2c7dc24aa42358a26d918674d1b7558762109d9b729736a468f79b9e",
+      "qualification_watchdog": "FINITE_HARNESS_ONLY",
+      "runtime_default_wall_clock": "NONE",
+      "packaging_integrity": "PASS",
+      "supernova_substrate_authority_contract": "CLOSED"
+    },
+    "authority": "MATHEMATICAL_TRUTH_REQUIRES_INDEPENDENT_EXACT_CHECKER; SEARCH_REMAINS_SEARCH_ONLY_UNTIL_EXACT_VERIFICATION",
+    "scheduled_runtime_mount_status": "IDENTITY_BOUND_FOR_REPLAY_CALIBRATION; EXECUTABLE_MOUNT_REQUIRED_SEPARATELY_BEFORE_FRESH_EXECUTION"
+  },
+  "mastermind": {
+    "version": "4.4.10-execution-closure-candidate.1",
+    "package": "MASTERMIND_v4.4.10_EXECUTION_CLOSURE_CANDIDATE_1_FULL.zip",
+    "sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+    "archive_bytes": 595605,
+    "manifest_entries": 210,
+    "python_files": 81,
+    "qualification": {
+      "manifest_integrity": "PASS_210_OF_210",
+      "package_verification": "PASS_SOURCE_ONLY_NO_UNEXPECTED_FILES",
+      "python_compile": "PASS",
+      "python_source_validation": "PASS_81_FILES",
+      "mastermind_selftest": "PASS",
+      "execution_closure_selftest": "PASS",
+      "capability_broker_validation": "PASS"
+    },
+    "authority": "PRE_REVIEW_ONLY",
+    "scheduled_runtime_mount_status": "NOT_REQUIRED_FOR_REPLAY_CALIBRATION"
+  }
+}
