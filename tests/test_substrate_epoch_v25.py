@@ -30,8 +30,14 @@ class FrozenSubstrateEpochTests(unittest.TestCase):
             self.assertEqual(qualification["status"], "PASS")
             self.assertEqual(qualification["suites_passed"], 28)
             self.assertEqual(qualification["suites_total"], 28)
-            self.assertEqual(qualification["qualification_result_sha256"], "32c92aee61100fab918b60867be1fc873c274521a64ffbe1ffe10ed4529f1396")
-            self.assertEqual(qualification["release_receipt_sha256"], "13b323fa2c7dc24aa42358a26d918674d1b7558762109d9b729736a468f79b9e")
+            self.assertEqual(
+                qualification["qualification_result_sha256"],
+                "32c92aee61100fab918b60867be1fc873c274521a64ffbe1ffe10ed4529f1396",
+            )
+            self.assertEqual(
+                qualification["release_receipt_sha256"],
+                "13b323fa2c7dc24aa42358a26d918674d1b7558762109d9b729736a468f79b9e",
+            )
             self.assertEqual(qualification["qualification_watchdog"], "FINITE_HARNESS_ONLY")
             self.assertEqual(qualification["runtime_default_wall_clock"], "NONE")
             self.assertEqual(qualification["packaging_integrity"], "PASS")
@@ -49,7 +55,12 @@ class FrozenSubstrateEpochTests(unittest.TestCase):
     def test_countable_control_set_freezes_substrate_and_contract_tests(self):
         control = json.loads((ROOT / "config" / "countable_control_set_v25.json").read_text(encoding="utf-8"))
         paths = set(control["required_control_paths"])
-        required = {"config/substrate_epoch_v25.json","config/read_only_probe_parallelism_v25.json","tests/test_transition_expected_base_head.py","tests/test_substrate_epoch_v25.py"}
+        required = {
+            "config/substrate_epoch_v25.json",
+            "config/read_only_probe_parallelism_v25.json",
+            "tests/test_transition_expected_base_head.py",
+            "tests/test_substrate_epoch_v25.py",
+        }
         self.assertEqual(required - paths, set())
 
 
