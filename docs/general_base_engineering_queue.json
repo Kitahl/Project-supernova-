@@ -13,6 +13,9 @@
       "scripts/formal_",
       "tests/formal/"
     ],
+    "allowed_exact_paths": [
+      "docs/general_base_engineering_queue.json"
+    ],
     "forbidden_paths_or_prefixes": [
       "plan/PLAN.json",
       "state/",
@@ -43,36 +46,41 @@
       "id": "EGB-001",
       "name": "Formal toolchain manifest schema",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "PROPOSED_CURRENT_PR",
-      "dependencies": ["EGB-000"]
+      "status": "DONE",
+      "dependencies": ["EGB-000"],
+      "evidence": ["schemas/formal_toolchain_manifest.schema.json"]
     },
     {
       "id": "EGB-002",
       "name": "Typed formal verification receipt schema",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "PROPOSED_CURRENT_PR",
-      "dependencies": ["EGB-000"]
+      "status": "DONE",
+      "dependencies": ["EGB-000"],
+      "evidence": ["schemas/formal_verification_receipt.schema.json"]
     },
     {
       "id": "EGB-003",
       "name": "Coherent Lean 4.31 source candidate pins",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "PROPOSED_CURRENT_PR",
-      "dependencies": ["EGB-001"]
+      "status": "DONE",
+      "dependencies": ["EGB-001"],
+      "evidence": ["docs/formal/FORMAL_TOOLCHAIN_CANDIDATE_V1.json"]
     },
     {
       "id": "EGB-004",
       "name": "Fail-closed formal toolchain preflight",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "PROPOSED_CURRENT_PR",
-      "dependencies": ["EGB-001", "EGB-003"]
+      "status": "DONE",
+      "dependencies": ["EGB-001", "EGB-003"],
+      "evidence": ["scripts/formal_toolchain_preflight.py"]
     },
     {
       "id": "EGB-005",
       "name": "Phase-0 schema and preflight negative tests",
       "phase": "PHASE0_TRUST_FLOOR",
-      "status": "PROPOSED_CURRENT_PR",
-      "dependencies": ["EGB-001", "EGB-002", "EGB-004"]
+      "status": "DONE",
+      "dependencies": ["EGB-001", "EGB-002", "EGB-004"],
+      "evidence": ["tests/formal/test_formal_trust_floor.py"]
     },
     {
       "id": "EGB-006",
