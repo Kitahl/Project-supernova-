@@ -6,7 +6,8 @@
   "required": [
     "session_header", "task_network_plan_id", "cohort_id", "verification_id", "generation_head_sha", "verifier_branch", "runtime_state_id", "executive_status",
     "safe_report_refs", "quarantined_report_refs", "missing_workers", "worker_auth_verification", "partition_exhaustive_verified",
-    "lane_liveness_observations", "liveness_complete", "verifier_assurance_records", "checker_pin_bundle_ref", "statement_fidelity_policy",
+    "liveness_contract_path", "liveness_contract_git_identity", "liveness_contract_binding_verified", "lane_liveness_observations", "liveness_complete",
+    "verifier_assurance_records", "checker_pin_bundle_ref", "statement_fidelity_policy",
     "task_ledger", "issue_ledger", "test_ledger", "plan_alignment", "research_questions", "calibration_pass", "verdict", "pre_ci_observation", "required_post_write_ci_context", "next_action"
   ],
   "properties": {
@@ -32,6 +33,9 @@
       }
     },
     "partition_exhaustive_verified": {"const": true},
+    "liveness_contract_path": {"type": "string", "pattern": "^liveness/[^/]+\\.json$"},
+    "liveness_contract_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "liveness_contract_binding_verified": {"const": true},
     "lane_liveness_observations": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/liveness"}},
     "liveness_complete": {"type": "boolean"},
     "verifier_assurance_records": {"type": "array", "items": {"$ref": "#/$defs/verifier_assurance"}},
@@ -106,7 +110,7 @@
   "allOf": [
     {
       "if": {"properties": {"verdict": {"const": "VERIFIED_COMPLETE"}}},
-      "then": {"properties": {"liveness_complete": {"const": true}, "missing_workers": {"maxItems": 0}, "quarantined_report_refs": {"maxItems": 0}, "safe_report_refs": {"minItems": 12, "maxItems": 12}}}
+      "then": {"properties": {"liveness_complete": {"const": true}, "liveness_contract_binding_verified": {"const": true}, "missing_workers": {"maxItems": 0}, "quarantined_report_refs": {"maxItems": 0}, "safe_report_refs": {"minItems": 12, "maxItems": 12}}}
     }
   ]
 }
