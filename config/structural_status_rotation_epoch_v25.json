@@ -1,0 +1,25 @@
+{
+  "schema_version": "PS-STRUCTURAL-STATUS-ROTATION-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "epoch": 1,
+  "status": "ACTIVE_SINGLE_AUTHORITATIVE_STRUCTURAL_WRITER",
+  "accepted_seed_merge_commit_sha": "6deb07c129867efca6e4ecfefbffb17debd28e3b",
+  "seed_policy_blob": "4e13fcf30ba5e7ad4f4ff93faed0a1f3ed4bb90f",
+  "seed_reconciler_blob": "827ed86976876d8e2d0829f30ed2d165a538e9d3",
+  "seed_workflow_blob": "5de5a0a5928e835f732fb7adeb72495acdd520f4",
+  "authoritative_writer": "scripts/reconcile_branch_statuses.py",
+  "authoritative_workflow": ".github/workflows/supernova-branch-reconciler.yml",
+  "former_rest_writer_disposition": "READ_ONLY_NON_AUTHORITATIVE_DIAGNOSTIC",
+  "rest_diagnostic_contexts": [
+    "supernova/rest-branch-generation-diagnostic",
+    "supernova/rest-branch-worker-diagnostic",
+    "supernova/rest-branch-verify-diagnostic",
+    "supernova/rest-branch-integrate-diagnostic",
+    "supernova/rest-branch-consolidate-diagnostic"
+  ],
+  "authoritative_writer_cardinality": 1,
+  "one_shot_seed_disposition": "PERMANENTLY_INERT_AFTER_THIS_MARKER_IS_ACCEPTED",
+  "state_runtime_science_effect": "NONE",
+  "calibration_effect": "GEN9_REMAINS_ZERO_CREDIT; SUCCESSOR_STARTS_AT_STREAK_ZERO"
+}
