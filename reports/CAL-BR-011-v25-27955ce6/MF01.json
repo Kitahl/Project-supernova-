@@ -1,0 +1,206 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "T0 replay-only control-plane audit of MF01 representation/blocker responsibilities. No mathematical, scientific, benchmark, KERNEL_VALID or STATEMENT_FIDELITY claim.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay-only GitHub control audit. No protected/private/scientific execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "assignment_path": "assignments/CAL-BR-011-v25-27955ce6.json",
+    "canonical_pointer": "main:state/CURRENT.json",
+    "canonical_pointer_blob_at_execution_read": "ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9",
+    "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+    "control_manifest_path": "control/CAL-BR-011-v25-27955ce6.json",
+    "control_release_commit_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "control_release_tree_sha": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "liveness_contract_git_identity": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "liveness_contract_path": "liveness/CAL-BR-011-v25-27955ce6.json",
+    "mf01_deadline_utc": "2026-08-22T22:25:00Z",
+    "mf01_expected_window_start_utc": "2026-08-22T22:05:00Z",
+    "model_binding_observation": "The active product runtime identifies GPT-5.6 Sol, but no frozen receipt observes the requested EXTRA_HIGH reasoning-effort identity; PARTIAL_UNVERIFIED.",
+    "online_audit_reference": "GitHub official REST commit-status documentation and exact frozen GitHub repository objects were used; no scientific web research was performed.",
+    "origin_reread_scope": "Operational worker-side reads only; independent report-path/blob/creation/history reread belongs to MM06.",
+    "runtime_receipt_git_identity": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "runtime_receipt_qualification": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+    "runtime_receipt_status": "VALIDATED"
+  },
+  "evidence_tier": "T0_REPLAY_CONTROL_AUDIT",
+  "executive_status": "BLOCKING_REQUIRED_CONTROL_METADATA_DRIFT_FOUND_ZERO_CLEAN_COHORT_CREDIT_CLAIMED_BY_MF01",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [
+    {
+      "aliases": [
+        "MF01-T0-BRANCH-CONFIG-STRUCTURAL-WRITER-DRIFT-001"
+      ],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "FROZEN_CONTROL_CONSISTENCY",
+      "component": "Required branch transport control metadata / root8 structural-status authority",
+      "evidence_refs": [
+        "branch/CONFIG.json@3bb1425d18dbff2f83d69b0738c7151bf4a47355 blob:6e366efd9f401682265d8bea274b88655edb26a0",
+        "scripts/reconcile_branch_rest.py@3bb1425d18dbff2f83d69b0738c7151bf4a47355 blob:9488244cea6f4fd81f72950565f65830a17e0279",
+        "scripts/reconcile_branch_statuses.py@3bb1425d18dbff2f83d69b0738c7151bf4a47355 blob:de14f6f54387c410a2e1bc25b29ca04cd0fb7638",
+        "config/admission_authority.json@3bb1425d18dbff2f83d69b0738c7151bf4a47355 blob:c8025aa3e4b838d9dfab6e6b3ae72e2aac572dca",
+        "tests/test_structural_status_single_writer.py@3bb1425d18dbff2f83d69b0738c7151bf4a47355 blob:befdddafb3456881799331a893a32c6fc365d924",
+        "config/root_epoch8_status_writer_repair_epoch_v25.json@3bb1425d18dbff2f83d69b0738c7151bf4a47355 blob:51c75ddcbea1603f4d21b63f095c0414464ece19",
+        "GitHub Docs: REST API endpoints for commit statuses — creating a commit status requires a status-writing request (https://docs.github.com/en/rest/commits/statuses)"
+      ],
+      "exact_failure": "At frozen Gen11 G, branch/CONFIG.json structural_reconciler.primary is 'scripts/reconcile_branch_rest.py via supernova-rest-branch-reconciler.yml' and its rule says primary exact-head statuses are mechanical structural rejection. In the same required-control set, scripts/reconcile_branch_rest.py explicitly states it is GET-only, incapable of publishing commit statuses, and names scripts/reconcile_branch_statuses.py as the sole authoritative writer. config/admission_authority.json independently sets authoritative_structural_status_writer to scripts/reconcile_branch_statuses.py, non_authoritative_rest_diagnostic to scripts/reconcile_branch_rest.py, and structural_status_writer_cardinality to 1. The single-writer regression tests verify the latter authority but do not assert branch/CONFIG.json agrees, so static structural tests can pass while this required frozen control remains contradictory.",
+      "issue_id": "O-T0-BRANCH-CONFIG-STRUCTURAL-WRITER-DRIFT",
+      "next_action": "MM06/BIL00 independently confirm the frozen required-control contradiction. If confirmed, deny Gen11 clean-cohort credit, keep/reset the v2.5 streak at zero, repair branch/CONFIG.json plus cross-control regression in a new immutable protocol-2.5 generation, and rerun cohort 1.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "In a new immutable protocol-2.5 control root, change branch/CONFIG.json so structural_reconciler.primary is scripts/reconcile_branch_statuses.py via supernova-branch-reconciler.yml; represent scripts/reconcile_branch_rest.py only as non-authoritative diagnostics with its distinct diagnostic contexts; rewrite the rule so only the authoritative writer can produce structural rejection/status. Keep writer cardinality at one.",
+      "required_test": "Extend the root8 single-writer/control-consistency regression to load branch/CONFIG.json and config/admission_authority.json, assert the configured primary equals authoritative_structural_status_writer, assert the REST helper equals non_authoritative_rest_diagnostic, assert the primary workflow is the authoritative structural workflow, and fail if any required control again labels the REST diagnostic as structural primary or attributes exact-head structural status publication to it.",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Frozen branch/CONFIG.json describes the retired REST structural writer as primary even though root8 makes it non-authoritative diagnostics only."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No fresh evidence was consumed.",
+      "quantity": "fresh_evidence_units_consumed",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No protected/private manifest was read.",
+      "quantity": "protected_manifest_reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No benchmark execution occurred.",
+      "quantity": "benchmark_executions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No Project Supernova deep-research run was executed by MF01.",
+      "quantity": "deep_research_runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "MF01 does not claim clean-cohort credit.",
+      "quantity": "clean_cohort_credit_claimed_by_MF01",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently fetch the MF01 worker branch/report/blob/creation commit, verify schema/session/HMAC/public safety/one-path history and exact-head worker CI, and adjudicate O-T0-BRANCH-CONFIG-STRUCTURAL-WRITER-DRIFT. If confirmed, Gen11 must receive zero clean-cohort credit and be replaced by a new immutable protocol-2.5 cohort with branch/CONFIG aligned to the root8 single-writer authority; keep the calibration streak at zero.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    "Remains in Revision 4 / protocol 2.5 T0 countable replay cohort 1.",
+    "Does not adopt protocol 2.6 or Revision 5.",
+    "Does not consume fresh evidence, private manifests, benchmark executions or deep research.",
+    "Reports the evidence-backed root8 representation/blocker control defect without claiming scientific or runtime promotion.",
+    "MF01 claims zero clean-cohort credit; independent MM06/MF06/BIL00 adjudication remains required."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-MF01-CAL-BR-011-v25-27955ce6",
+  "research_questions": [],
+  "runtime_implementation_implication": "None. Math Foundry 3.1.1 is bound only as a validated software replay substrate identity; this receipt does not promote runtime or mathematical truth.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay accepted root8 representation/blocker controls under Math Foundry 3.1.1 and report all evidence-backed defects.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF01",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W01 | Representation Lab",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "details": "Protocol 2.5, expected plan, cohort/generation, parent-state identity, checkpoint, runtime identity, assignment/control blobs, MF01 token/branch/goal, replay-only mode, countability, source-bound repository policy and non-supersession agree across canonical state and the frozen generation.",
+      "status": "PASS",
+      "task": "canonical_lineage_and_assignment"
+    },
+    {
+      "details": "Generation G has the declared control-release root as sole parent and adds the active assignment/control/liveness freeze; the frozen 12-lane liveness contract binds MF01 to the assigned branch/report path and 2026-08-22T22:05:00Z through 22:25:00Z window.",
+      "status": "PASS",
+      "task": "immutable_generation_and_liveness_binding"
+    },
+    {
+      "details": "The prompt-private MF01 capability hashes to the frozen MF01 public commitment under PS-HMAC-SHA256-CANONICAL-REPORT-2. The private value is not persisted or exposed.",
+      "status": "PASS",
+      "task": "worker_auth_commitment"
+    },
+    {
+      "details": "Required control branch/CONFIG.json still names the GET-only REST diagnostic reconciler as structural primary and says primary exact-head statuses provide structural rejection, while root8 authority and executable code make scripts/reconcile_branch_statuses.py the sole structural status writer.",
+      "status": "FAIL_CONTROL_METADATA_DRIFT",
+      "task": "root8_representation_blocker_control_replay"
+    },
+    {
+      "details": "No fresh evidence, private manifest, benchmark execution, deep research, mathematical promotion, KERNEL_VALID claim or STATEMENT_FIDELITY claim was authorized or performed.",
+      "status": "NOT_PERFORMED",
+      "task": "scientific_execution"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "Plan/protocol/cohort/generation/parent/checkpoint/runtime, MF01 branch/token/goal, replay-only mode, countability and supersession checks agree.",
+      "status": "PASS",
+      "test": "canonical_state_assignment_control_equality"
+    },
+    {
+      "result": "Exact G currently exposes supernova/static-control=success, supernova/branch-generation=success and supernova/liveness=success; worker/verifier/integrator/consolidation and admission transition contexts remain pending as expected before worker fan-in.",
+      "status": "PASS_WITH_DOWNSTREAM_PENDING",
+      "test": "generation_exact_head_status"
+    },
+    {
+      "result": "scripts/reconcile_branch_rest.py has no status-write path and declares itself non-authoritative diagnostics; scripts/reconcile_branch_statuses.py contains the POST status writer and config/admission_authority.json names it as the sole structural writer.",
+      "status": "PASS",
+      "test": "single_structural_writer_executable_surface"
+    },
+    {
+      "result": "branch/CONFIG.json still identifies the REST diagnostic as structural primary and attributes primary exact-head structural rejection/status semantics to it, contradicting the root8 authority/code surface.",
+      "status": "FAIL",
+      "test": "required_branch_config_authority_alignment"
+    },
+    {
+      "result": "tests/test_structural_status_single_writer.py asserts REST non-authority and admission_authority writer cardinality, but does not assert branch/CONFIG.json is consistent with those facts.",
+      "status": "FAIL_GAP",
+      "test": "single_writer_regression_cross_control_coverage"
+    },
+    {
+      "result": "The report creation commit does not exist until this signed object is written; exact-head supernova/branch-worker is left for post-write observation and MM06 independent verification.",
+      "status": "NOT_OBSERVED_AT_SIGNING",
+      "test": "worker_structural_ci_at_signing"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "8d5b407f97a47979068b36ce8e831cc4",
+  "worker_auth_commitment": "74ae88fc0a346a423d7fe0e0dcd3787ab0b29fbe455ae4e8b17f30b96923d74f",
+  "worker_auth_proof": "76d82e164b0519af19aab83f5fe0904570248deb733977912a4ff8c04e7c1d21",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MF01",
+  "worker_id": "MF01"
+}
