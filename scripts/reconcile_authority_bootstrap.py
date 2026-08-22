@@ -24,9 +24,8 @@ ALLOWED_PREFIXES = ("config/", "schemas/", "scripts/", "tests/", ".github/workfl
 ALLOWED_EXACT = {"PROTOCOL.md", "WORKER_PROTOCOL.md", "BRANCH_PROTOCOL.md", "BRANCH_WORKER_PROTOCOL.md", "SESSION_STANDARD.md", "plan/PLAN.json", "requirements-validation.lock", "branch/CONFIG.json"}
 FORBIDDEN_EXACT = {"state/CURRENT.json", "config/worker_auth.json", "config/task_registry_v25.json", "benchmark/registry.json", "benchmark/pool_disposition.json", "research/open_lanes.json"}
 FORBIDDEN_PREFIXES = ("state/", "control/", "assignments/", "reports/", "verification/", "integration/", "history/", "transitions/", "superseded/", "benchmark/", "research/")
+STRONG_BOOTSTRAP_PROVENANCE = "DESIGNATED_COMPLETED_WORKFLOW_RUN_ID_AND_EXACT_PR_HEAD_BASE_REQUIRED"
 
-# Backward-visible minimum root retained for the v2.5 regression suite. The actual
-# epoch-2 root is the transitive set returned by bootstrap_root_paths().
 ROOT_BOOTSTRAP_PATHS = {
     "config/authority_bootstrap_v25.json",
     "scripts/reconcile_authority_bootstrap.py",
@@ -45,14 +44,17 @@ REQUIRED_INSTALLED_CONTROL_PATHS = {
     "config/authority_bootstrap_v25.json",
     "config/root_rotation_seed_v25.json",
     "config/root_tcb_epoch_v25.json",
+    "config/validator_environment_v25.json",
     "config/substrate_epoch_v25.json",
     "config/read_only_probe_parallelism_v25.json",
+    "scripts/assert_validator_environment.py",
     "scripts/reconcile_open_prs.py",
     "scripts/reconcile_authority_bootstrap.py",
     "scripts/reconcile_root_rotation_seed.py",
     "tests/test_authority_bootstrap.py",
     "tests/test_bootstrap_root_tcb_and_head_binding.py",
     "tests/test_bootstrap_status_provenance.py",
+    "tests/test_validator_environment_contract.py",
     ".github/workflows/supernova-authority-bootstrap.yml",
     ".github/workflows/supernova-bootstrap-completion-reconcile.yml",
     ".github/workflows/supernova-root-rotation-seed.yml",
@@ -105,6 +107,9 @@ def bootstrap_root_paths(trusted_root: pathlib.Path):
         "candidate_diagnostic_workflow",
         "bootstrap_completion_workflow",
         "root_tcb_epoch_path",
+        "validator_environment_contract",
+        "validator_environment_assertion",
+        "generation_delta_policy",
     ):
         value = admission.get(key)
         if isinstance(value, str) and value:
@@ -176,8 +181,11 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
             "trusted_authority_bootstrap_reconciler": "scripts/reconcile_authority_bootstrap.py",
             "authority_bootstrap_context": BOOTSTRAP_CONTEXT,
             "bootstrap_completion_workflow": ".github/workflows/supernova-bootstrap-completion-reconcile.yml",
-            "bootstrap_status_provenance": "DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_REQUIRED",
+            "bootstrap_status_provenance": STRONG_BOOTSTRAP_PROVENANCE,
+            "validator_environment_contract": "config/validator_environment_v25.json",
+            "validator_environment_assertion": "scripts/assert_validator_environment.py",
             "root_tcb_epoch_path": "config/root_tcb_epoch_v25.json",
+            "root_tcb_epoch": 5,
             "same_repository_required": True,
             "owner_authored_required_for_privileged_reconciliation": True,
             "exact_current_main_ancestor_required": True,
@@ -202,7 +210,11 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
             "candidate_diagnostics": "READ_ONLY_SEPARATE_JOB_REQUIRED",
             "diagnostic_binding": "EXACT_EVENT_HEAD_AND_BASE_REQUIRED",
             "bootstrap_status_target": "DESIGNATED_AUTHORITY_BOOTSTRAP_WORKFLOW_RUN_URL_REQUIRED",
-            "bootstrap_success_consumption": "COMPLETED_DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_ONLY",
+            "bootstrap_success_consumption": "COMPLETED_DESIGNATED_WORKFLOW_RUN_ID_AND_EXACT_PR_HEAD_BASE_ONLY",
+            "bootstrap_completion_workflow": ".github/workflows/supernova-bootstrap-completion-reconcile.yml",
+            "completion_run_id_environment": "COMPLETED_BOOTSTRAP_RUN_ID",
+            "validator_environment_contract": "config/validator_environment_v25.json",
+            "validator_environment_assertion": "scripts/assert_validator_environment.py",
             "same_repository_required": True,
             "owner_authored_required": True,
             "base_branch_required": "main",
@@ -211,6 +223,7 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
             "fresh_allowed_globally_required": False,
             "protocol_version_required": "2.5",
             "specification_revision_required": 4,
+            "root_tcb_epoch_required": 5,
             "worker_auth_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
             "state_or_scientific_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
             "root_tcb_change": "REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED",

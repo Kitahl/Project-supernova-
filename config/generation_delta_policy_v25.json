@@ -1,0 +1,24 @@
+{
+  "schema_version": "PS-GENERATION-DELTA-POLICY-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "authority": "SINGLE_MACHINE_READABLE_GENERATION_DELTA_POLICY",
+  "countable": {
+    "exact_path_templates": [
+      "control/{cohort}.json",
+      "assignments/{cohort}.json",
+      "liveness/{cohort}.json"
+    ],
+    "exact_cardinality": 3
+  },
+  "non_countable": {
+    "exact_path_templates": [
+      "control/{cohort}.json",
+      "assignments/{cohort}.json"
+    ],
+    "exact_cardinality": 2
+  },
+  "extra_paths": "FORBIDDEN",
+  "missing_paths": "FORBIDDEN",
+  "wrong_cohort_identity": "FORBIDDEN"
+}
