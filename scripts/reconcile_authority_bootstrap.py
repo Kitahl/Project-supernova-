@@ -37,6 +37,10 @@ ROOT_BOOTSTRAP_STATIC_PATHS = ROOT_BOOTSTRAP_PATHS | {
     "config/root_rotation_seed_v25.json",
     "scripts/reconcile_root_rotation_seed.py",
     ".github/workflows/supernova-root-rotation-seed.yml",
+    "config/root_epoch7_repair_seed_v25.json",
+    "scripts/reconcile_root_epoch7_repair_seed.py",
+    ".github/workflows/supernova-root-epoch7-repair-seed.yml",
+    "config/root_epoch7_repair_epoch_v25.json",
     "requirements-validation.lock",
 }
 REQUIRED_INSTALLED_CONTROL_PATHS = {
@@ -49,11 +53,14 @@ REQUIRED_INSTALLED_CONTROL_PATHS = {
     "config/read_only_probe_parallelism_v25.json",
     "config/root_epoch6_repair_seed_v25.json",
     "config/root_epoch6_repair_epoch_v25.json",
+    "config/root_epoch7_repair_seed_v25.json",
+    "config/root_epoch7_repair_epoch_v25.json",
     "scripts/assert_validator_environment.py",
     "scripts/reconcile_open_prs.py",
     "scripts/reconcile_authority_bootstrap.py",
     "scripts/reconcile_root_rotation_seed.py",
     "scripts/reconcile_root_epoch6_repair_seed.py",
+    "scripts/reconcile_root_epoch7_repair_seed.py",
     "tests/test_authority_bootstrap.py",
     "tests/test_bootstrap_root_tcb_and_head_binding.py",
     "tests/test_bootstrap_status_provenance.py",
@@ -64,6 +71,7 @@ REQUIRED_INSTALLED_CONTROL_PATHS = {
     ".github/workflows/supernova-bootstrap-completion-reconcile.yml",
     ".github/workflows/supernova-root-rotation-seed.yml",
     ".github/workflows/supernova-root-epoch6-repair-seed.yml",
+    ".github/workflows/supernova-root-epoch7-repair-seed.yml",
 }
 
 
@@ -191,7 +199,7 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
             "validator_environment_contract": "config/validator_environment_v25.json",
             "validator_environment_assertion": "scripts/assert_validator_environment.py",
             "root_tcb_epoch_path": "config/root_tcb_epoch_v25.json",
-            "root_tcb_epoch": 6,
+            "root_tcb_epoch": 7,
             "same_repository_required": True,
             "owner_authored_required_for_privileged_reconciliation": True,
             "exact_current_main_ancestor_required": True,
@@ -229,7 +237,7 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
             "fresh_allowed_globally_required": False,
             "protocol_version_required": "2.5",
             "specification_revision_required": 4,
-            "root_tcb_epoch_required": 6,
+            "root_tcb_epoch_required": 7,
             "worker_auth_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
             "state_or_scientific_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
             "root_tcb_change": "REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED",

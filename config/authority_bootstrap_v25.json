@@ -24,7 +24,7 @@
   "fresh_allowed_globally_required": false,
   "protocol_version_required": "2.5",
   "specification_revision_required": 4,
-  "root_tcb_epoch_required": 6,
+  "root_tcb_epoch_required": 7,
   "worker_auth_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "state_or_scientific_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "root_tcb_change": "REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED",
