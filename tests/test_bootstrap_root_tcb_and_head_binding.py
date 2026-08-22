@@ -1,4 +1,5 @@
 import importlib.util
+import json
 import pathlib
 import unittest
 
@@ -16,14 +17,14 @@ class BootstrapRootTcbAndHeadBindingTests(unittest.TestCase):
   mod=load_bootstrap_module();roots=mod.bootstrap_root_paths(ROOT)
   expected={
    'config/admission_authority.json','config/authority_bootstrap_v25.json','config/root_rotation_seed_v25.json','config/root_tcb_epoch_v25.json',
-   'config/t0_trust_repair_seed_v25.json','config/validator_environment_v25.json','config/generation_delta_policy_v25.json',
-   'scripts/assert_validator_environment.py','scripts/generation_delta_guard.py','scripts/reconcile_authority_bootstrap.py','scripts/reconcile_open_prs.py','scripts/reconcile_root_rotation_seed.py','scripts/reconcile_t0_trust_repair_seed.py','scripts/reconcile_branch_statuses.py','scripts/check_lane_liveness.py','scripts/validate_bus.py','scripts/parent_lineage_guard.py','scripts/transition_guard.py',
-   '.github/workflows/supernova-authority-bootstrap.yml','.github/workflows/supernova-bootstrap-completion-reconcile.yml','.github/workflows/supernova-pr-target-admission.yml','.github/workflows/supernova-comment-admission.yml','.github/workflows/supernova-open-pr-reconciler.yml','.github/workflows/supernova-root-rotation-seed.yml','.github/workflows/supernova-t0-trust-repair-seed.yml','.github/workflows/supernova-branch-reconciler.yml','.github/workflows/supernova-liveness-monitor.yml','requirements-validation.lock'
+   'config/t0_trust_repair_seed_v25.json','config/root_epoch6_repair_seed_v25.json','config/root_epoch6_repair_epoch_v25.json','config/validator_environment_v25.json','config/generation_delta_policy_v25.json',
+   'scripts/assert_validator_environment.py','scripts/generation_delta_guard.py','scripts/reconcile_authority_bootstrap.py','scripts/reconcile_open_prs.py','scripts/reconcile_root_rotation_seed.py','scripts/reconcile_t0_trust_repair_seed.py','scripts/reconcile_root_epoch6_repair_seed.py','scripts/reconcile_branch_statuses.py','scripts/check_lane_liveness.py','scripts/validate_bus.py','scripts/parent_lineage_guard.py','scripts/transition_guard.py',
+   '.github/workflows/supernova-authority-bootstrap.yml','.github/workflows/supernova-bootstrap-completion-reconcile.yml','.github/workflows/supernova-pr-target-admission.yml','.github/workflows/supernova-comment-admission.yml','.github/workflows/supernova-open-pr-reconciler.yml','.github/workflows/supernova-root-rotation-seed.yml','.github/workflows/supernova-t0-trust-repair-seed.yml','.github/workflows/supernova-root-epoch6-repair-seed.yml','.github/workflows/supernova-branch-reconciler.yml','.github/workflows/supernova-liveness-monitor.yml','requirements-validation.lock'
   }
   self.assertTrue(expected.issubset(roots),sorted(expected-roots))
  def test_each_privileged_class_is_rejected_as_root_drift(self):
   mod=load_bootstrap_module()
-  for path in ('scripts/reconcile_open_prs.py','scripts/reconcile_authority_bootstrap.py','scripts/assert_validator_environment.py','config/validator_environment_v25.json','config/generation_delta_policy_v25.json','.github/workflows/supernova-pr-target-admission.yml','.github/workflows/supernova-bootstrap-completion-reconcile.yml','requirements-validation.lock'):
+  for path in ('scripts/reconcile_open_prs.py','scripts/reconcile_authority_bootstrap.py','scripts/assert_validator_environment.py','scripts/reconcile_root_epoch6_repair_seed.py','config/root_epoch6_repair_seed_v25.json','config/root_epoch6_repair_epoch_v25.json','config/validator_environment_v25.json','config/generation_delta_policy_v25.json','.github/workflows/supernova-pr-target-admission.yml','.github/workflows/supernova-bootstrap-completion-reconcile.yml','.github/workflows/supernova-root-epoch6-repair-seed.yml','requirements-validation.lock'):
    with self.subTest(path=path):
     e=mod.bootstrap_invariant_errors(ROOT,ROOT,[path]);self.assertTrue(any('bootstrap root self-modification' in x for x in e),e)
  def test_non_tcb_support_path_is_not_rejected_as_root_drift(self):
@@ -33,6 +34,16 @@ class BootstrapRootTcbAndHeadBindingTests(unittest.TestCase):
   self.assertEqual(mod.diagnostic_binding_errors(pr,a,b),[])
   self.assertIn('diagnosed head SHA no longer matches current PR head',mod.diagnostic_binding_errors(pr,c,b))
   self.assertIn('diagnosed base SHA no longer matches current PR base',mod.diagnostic_binding_errors(pr,a,c))
+ def test_epoch6_policy_is_the_current_bootstrap_invariant(self):
+  mod=load_bootstrap_module();self.assertEqual(mod.DURABLE_BOOTSTRAP_PROVENANCE,'PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED')
+  admission=json.loads((ROOT/'config/admission_authority.json').read_text())
+  bootstrap=json.loads((ROOT/'config/authority_bootstrap_v25.json').read_text())
+  epoch=json.loads((ROOT/'config/root_tcb_epoch_v25.json').read_text())
+  self.assertEqual(admission['root_tcb_epoch'],6)
+  self.assertEqual(bootstrap['root_tcb_epoch_required'],6)
+  self.assertEqual(epoch['epoch'],6)
+  self.assertEqual(admission['bootstrap_status_provenance'],mod.DURABLE_BOOTSTRAP_PROVENANCE)
+  self.assertEqual(bootstrap['bootstrap_success_consumption'],mod.DURABLE_BOOTSTRAP_PROVENANCE)
  def test_privileged_workflow_passes_immutable_event_head_base_run_and_environment(self):
   text=WF.read_text()
   self.assertIn('DIAGNOSED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}',text)
