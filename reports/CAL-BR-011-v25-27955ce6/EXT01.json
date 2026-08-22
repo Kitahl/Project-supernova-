@@ -1,0 +1,184 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "Protocol-2.5 Rev4 T0 transport/liveness only; no protected/fresh benchmark, math, runtime-capability, science, Court, calibration-credit or promotion claim.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Public GitHub/control reads, scheduler/liveness observation, deterministic local falsifier, HMAC, one report write.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "G": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "assignment_blob": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "auth_blob": "9498d1d49b8636a3a313dc63be89f4433330c230",
+    "control_blob": "406f9692430a9d42c7af1455232c759423188e87",
+    "issue16": "https://github.com/Kitahl/Project-supernova-/issues/16",
+    "issue21": "https://github.com/Kitahl/Project-supernova-/issues/21",
+    "liveness_blob": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "loops_completed": 1,
+    "main_head": "c3f34a7a39e2a7887f74865af1618d9add6cf7f0",
+    "observation_time_utc": "2026-08-22T21:20:05Z",
+    "pr189": "https://github.com/Kitahl/Project-supernova-/pull/189",
+    "pr205": "https://github.com/Kitahl/Project-supernova-/pull/205",
+    "repo_policy_blob": "81e310ae87d65ac6a796d2dd9a963f30c62887ac",
+    "root_tcb_blob": "b98b3378ad90e9c35fd02017ea3a4a0f21320c52",
+    "runtime_receipt_blob": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "schema_blob": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "state_blob": "ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9"
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_TRANSPORT_LIVENESS_AUDIT",
+  "executive_status": "T0_CONTROL_BLOCKER_FOUND_NONFINITE_JSON; PREDEADLINE_LIVENESS_WAITING",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [
+    {
+      "aliases": [
+        "NONFINITE_JSON_SENTINEL_GAP"
+      ],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "CONTROL_TRANSPORT_PARSER_DIVERGENCE",
+      "component": "report transport/HMAC-2 parser-serializer",
+      "evidence_refs": [
+        "G:scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "G:schemas/branch_report.schema.json@d1534a848402c642e2d91adb1e65192bf0a49a52",
+        "ps/work/CAL-BR-011-v25-27955ce6/MF04@89079ae7bbd8c5720c3334b3566bb814a810da16"
+      ],
+      "exact_failure": "Frozen validator uses json.loads without rejecting parse_constant and json.dumps without allow_nan=False; task_ledger/test_ledger items are unconstrained. Local replay confirmed NaN emits, reparses and reserializes byte-identically.",
+      "issue_id": "PS-MF04-NONFINITEJSON-001",
+      "next_action": "MM06 reproduces; if confirmed block clean Gen11 credit. BIL00 mirrors/deduplicates in GitHub and repairs only in a new frozen v2.5 generation.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Reject NaN/Infinity/-Infinity on parse and use allow_nan=False for HMAC/committed serialization; freeze negative sentinels plus finite control.",
+      "required_test": "Every non-finite sentinel must fail before write/admission; finite control must pass deterministic bytes/HMAC.",
+      "severity": "HIGH",
+      "status": "OPEN_CONFIRMED_EXT01",
+      "summary": "Frozen Python transport accepts non-finite JSON sentinels."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No fresh evidence.",
+      "quantity": "fresh_evidence_units_consumed",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No private manifest.",
+      "quantity": "protected_manifest_reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No benchmark.",
+      "quantity": "benchmark_executions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No deep research.",
+      "quantity": "deep_research_runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No scientific result.",
+      "quantity": "scientific_effect",
+      "status": "NOT_MEASURED",
+      "value": null
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads EXT01 exact branch/head/blob, validates bytes/HMAC/schema/session/mode/public safety/liveness, reproduces PS-MF04-NONFINITEJSON-001, and preserves missing lanes WAITING until deadline; BIL00 mirrors/deduplicates confirmed issues.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    "SAFE_REPLAY_ONLY; zero fresh/private/benchmark/deep-research.",
+    "No runtime/scientific promotion.",
+    "Predeadline missing/pending remains WAITING/UNKNOWN.",
+    "Only EXT01 report written; MM06 owns reread."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "EXT01-CAL-BR-011-v25-27955ce6",
+  "research_questions": [],
+  "runtime_implementation_implication": "NONE; Foundry3.1.1 is replay-calibration substrate only; non-finite JSON is control-plane.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Independently audit generation freeze, 3.1.1 substrate binding, branch isolation, source binding, liveness, issue routing and public/private separation.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "EXT01",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-JOINT-A01 | Runtime & Transport Audit",
+    "target_program": "JOINT"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "detail": "Live main/frozen G/control/assignment/liveness/checkpoint/runtime/EXT01 bindings agree; exact G branch-generation=success.",
+      "status": "PASS"
+    },
+    {
+      "detail": "Exactly 15 native lanes observed enabled, MF02 enabled, no sixteenth lane; associated-chat liveness TASK_STATE_UNKNOWN.",
+      "status": "PASS_SNAPSHOT_ONLY"
+    },
+    {
+      "detail": "MF02,MF04,MM01,MM02,MM03 present; MF01,MF03,MF05,MM04,MM05,MM07 absent before frozen 2026-08-22T22:25:00Z deadline; never ZERO_DELTA.",
+      "status": "WAITING_PREDEADLINE"
+    },
+    {
+      "detail": "Loop1 observed downstream/worker contexts pending and no supernova/liveness status; no loop2.",
+      "status": "STOPPED_FAIL_CLOSED"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "detail": "Prompt-private capability commitment matched frozen EXT01 commitment; signed-field mutation changed HMAC.",
+      "id": "auth",
+      "status": "PASS"
+    },
+    {
+      "detail": "Root-TCB epoch8 names scripts/reconcile_branch_statuses.py sole authoritative structural writer.",
+      "id": "root",
+      "status": "PASS"
+    },
+    {
+      "detail": "main protected=true; state VERIFIED_PROTECTED_SOURCE_BOUND; accepted source-binding evidence is GitHub #16. Current branch endpoint shows classic checks empty/off and not the active ruleset source object.",
+      "id": "policy",
+      "status": "PASS_WITH_OBSERVATION_LIMIT"
+    },
+    {
+      "detail": "Foundry3.1.1/Mastermind4.4.10 software replay binding preserves runtime and claims no science/model-reasoning.",
+      "id": "runtime",
+      "status": "PASS_REPLAY_ONLY"
+    },
+    {
+      "detail": "GitHub #21 remains open; no PS-MF04-NONFINITEJSON-001 mirror found. PRs #205/#189 are non-authoritative, not T0 consolidation.",
+      "id": "watch",
+      "status": "PASS_WITH_OPEN_ITEMS"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "bb318a7de7c57bc031a8e34b8418ccc6",
+  "worker_auth_commitment": "74216d4e0414c15b747b329e4de2133dd2c9528fdf99d3e9a709136533f9d87b",
+  "worker_auth_proof": "b6b1af78e733f179e98e2c66bde8d1ffbdf39c941dabbf0c901a0f1bb02a7d6f",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/EXT01",
+  "worker_id": "EXT01"
+}
