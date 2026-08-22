@@ -1,0 +1,26 @@
+{
+  "schema_version": "PS-COHORT-LIVENESS-2.5-2",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "generation_seq": 11,
+  "generation_root_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "lanes": [
+    {"lane_id":"MF01","branch":"ps/work/CAL-BR-011-v25-27955ce6/MF01","path":"reports/CAL-BR-011-v25-27955ce6/MF01.json","expected_window_start_utc":"2026-08-22T22:05:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MF02","branch":"ps/work/CAL-BR-011-v25-27955ce6/MF02","path":"reports/CAL-BR-011-v25-27955ce6/MF02.json","expected_window_start_utc":"2026-08-22T22:06:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MF03","branch":"ps/work/CAL-BR-011-v25-27955ce6/MF03","path":"reports/CAL-BR-011-v25-27955ce6/MF03.json","expected_window_start_utc":"2026-08-22T22:07:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MF04","branch":"ps/work/CAL-BR-011-v25-27955ce6/MF04","path":"reports/CAL-BR-011-v25-27955ce6/MF04.json","expected_window_start_utc":"2026-08-22T22:08:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MF05","branch":"ps/work/CAL-BR-011-v25-27955ce6/MF05","path":"reports/CAL-BR-011-v25-27955ce6/MF05.json","expected_window_start_utc":"2026-08-22T22:09:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MM01","branch":"ps/work/CAL-BR-011-v25-27955ce6/MM01","path":"reports/CAL-BR-011-v25-27955ce6/MM01.json","expected_window_start_utc":"2026-08-22T22:10:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MM02","branch":"ps/work/CAL-BR-011-v25-27955ce6/MM02","path":"reports/CAL-BR-011-v25-27955ce6/MM02.json","expected_window_start_utc":"2026-08-22T22:11:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MM03","branch":"ps/work/CAL-BR-011-v25-27955ce6/MM03","path":"reports/CAL-BR-011-v25-27955ce6/MM03.json","expected_window_start_utc":"2026-08-22T22:12:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MM04","branch":"ps/work/CAL-BR-011-v25-27955ce6/MM04","path":"reports/CAL-BR-011-v25-27955ce6/MM04.json","expected_window_start_utc":"2026-08-22T22:13:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MM05","branch":"ps/work/CAL-BR-011-v25-27955ce6/MM05","path":"reports/CAL-BR-011-v25-27955ce6/MM05.json","expected_window_start_utc":"2026-08-22T22:14:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"MM07","branch":"ps/work/CAL-BR-011-v25-27955ce6/MM07","path":"reports/CAL-BR-011-v25-27955ce6/MM07.json","expected_window_start_utc":"2026-08-22T22:15:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true},
+    {"lane_id":"EXT01","branch":"ps/work/CAL-BR-011-v25-27955ce6/EXT01","path":"reports/CAL-BR-011-v25-27955ce6/EXT01.json","expected_window_start_utc":"2026-08-22T22:16:00Z","deadline_utc":"2026-08-22T22:25:00Z","eligible_before_deadline":true}
+  ]
+}
