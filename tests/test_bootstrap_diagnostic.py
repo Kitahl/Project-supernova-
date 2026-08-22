@@ -16,6 +16,13 @@ class BootstrapDiagnosticTests(unittest.TestCase):
         self.assertIn('CANDIDATE_DIAGNOSTICS_RESULT', text)
         self.assertIn("candidate diagnostics assumed PASS", text)
 
+    def test_diagnostic_binds_exact_live_pr_head_and_base_before_replay(self):
+        text = HELPER.read_text(encoding="utf-8")
+        self.assertIn('os.environ["DIAGNOSED_HEAD_SHA"] = sha', text)
+        self.assertIn('os.environ["DIAGNOSED_BASE_SHA"] = base_sha', text)
+        self.assertIn('cannot resolve exact PR head/base', text)
+        self.assertIn('exact PR head/base bound', text)
+
     def test_failure_reason_is_encoded_as_non_authoritative_context(self):
         text = HELPER.read_text(encoding="utf-8")
         self.assertIn("def reason_code", text)
@@ -23,6 +30,8 @@ class BootstrapDiagnosticTests(unittest.TestCase):
         self.assertIn("current-main-ancestor", text)
         self.assertIn("countable-control", text)
         self.assertIn("candidate-policy-check", text)
+        self.assertIn("diagnosed-head", text)
+        self.assertIn("diagnosed-base", text)
         self.assertNotIn("/issues/", text)
 
     def test_trusted_pr_target_invokes_helper_with_least_privilege(self):
