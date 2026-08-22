@@ -1,0 +1,181 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "Replay-only protocol-2.5 transport/control falsification. KERNEL_VALID != STATEMENT_FIDELITY_CONFIRMED. No scientific, benchmark, mathematical, model-binding, runtime-capability or promotion claim.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Public GitHub control-plane reads and local deterministic serializer/schema primitives only; no private-vault or scientific execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_blob_sha": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "branch_report_schema_blob_sha": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "branch_validator_blob_sha": "3c2992d5a9239897de9a1130deba65015c24372d",
+    "canonical_state_ref": "main:state/CURRENT.json",
+    "control_blob_sha": "406f9692430a9d42c7af1455232c759423188e87",
+    "control_release_tree_sha": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "generation_delta": [
+      "assignments/CAL-BR-011-v25-27955ce6.json",
+      "control/CAL-BR-011-v25-27955ce6.json",
+      "liveness/CAL-BR-011-v25-27955ce6.json"
+    ],
+    "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "generation_root_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "liveness_blob_sha": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "liveness_mf04": {
+      "deadline_utc": "2026-08-22T22:25:00Z",
+      "eligible_before_deadline": true,
+      "expected_window_start_utc": "2026-08-22T22:08:00Z"
+    },
+    "model_binding_observation": "Requested GPT-5.6 Sol / EXTRA_HIGH is not independently attested by the frozen runtime receipt; PARTIAL_UNVERIFIED retained.",
+    "parent_state_blob_sha": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+    "postwrite_worker_ci": "CI_NOT_OBSERVED",
+    "prewrite_generation_statuses": {
+      "supernova/branch-generation": "success",
+      "supernova/static-control": "success"
+    },
+    "report_contract_tests_blob_sha": "f325eb806da470c81df47232555273a4768d5099",
+    "required_control_integrity": "G is a direct child of the declared control release root and its commit changes exactly the cohort assignment/control/liveness paths; none are required_control_paths, so all required frozen control path blob identities inherit unchanged from the declared root.",
+    "roles_blob_sha": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "runtime_receipt_blob_sha": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "runtime_receipt_status": "VALIDATED_REPLAY_CALIBRATION_SUBSTRATE_MODEL_BINDING_NOT_CLAIMED",
+    "session_standard_blob_sha": "49a41c0f56b092c395bd71a36e66ecc2cda8ae04",
+    "worker_auth_blob_sha": "9498d1d49b8636a3a313dc63be89f4433330c230"
+  },
+  "evidence_tier": "T0_REPLAY_CONTROL_AUDIT",
+  "executive_status": "FINDING_HIGH_NONFINITE_JSON_TRANSPORT_GAP",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [
+    {
+      "aliases": [
+        "NONFINITE_JSON_SENTINEL_GAP"
+      ],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "CONTROL_TRANSPORT_PARSER_DIVERGENCE",
+      "component": "report transport / canonical HMAC-2",
+      "evidence_refs": [
+        "scripts/validate_branch_bus_v251.py blob 3c2992d5a9239897de9a1130deba65015c24372d: load() and report_transport_errors() use json.loads/json.dumps without non-finite rejection",
+        "schemas/branch_report.schema.json blob d1534a848402c642e2d91adb1e65192bf0a49a52: task_ledger and test_ledger are arrays with unrestricted items",
+        "tests/test_v25_report_contracts.py blob f325eb806da470c81df47232555273a4768d5099: canonical_payload() and deterministic transport tests use json.dumps without allow_nan=False"
+      ],
+      "exact_failure": "validate_branch_bus_v251.py parses reports with Python json.loads and derives both deterministic transport and the protocol test canonicalization with json.dumps defaults that permit NaN/Infinity. branch_report.schema.json leaves task_ledger/test_ledger array items unconstrained. Therefore an otherwise-valid report can carry a Python non-finite float in one of those ledgers, serialize as the non-RFC JSON token NaN/Infinity, be reparsed by Python, preserve PRETTY_SORTED_UTF8_JSON_V1 byte equality, and admit a canonical HMAC-2 proof under the same implementation. The frozen transport layer therefore does not fail closed on non-standard JSON and is parser-dependent.",
+      "issue_id": "PS-MF04-NONFINITEJSON-001",
+      "next_action": "Freeze the smallest protocol-2.5 parser/serializer hardening and regression before any clean countable credit; if accepted as authoritative, supersede this Gen11 control cohort rather than retrofitting frozen bytes.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Reject non-finite numbers recursively before HMAC/transport; call json.dumps(..., allow_nan=False) for both compact HMAC canonicalization and pretty committed transport; parse committed reports with parse_constant that raises on NaN/Infinity/-Infinity. Freeze a negative regression that injects each sentinel into an otherwise-valid unrestricted ledger field and requires schema/transport admission to fail closed.",
+      "required_test": "For each of NaN, Infinity and -Infinity, mutate only one otherwise-valid task_ledger/test_ledger value; signing/serialization/structural validation must reject the report before write/admission. A finite control report must still pass.",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Frozen Python report parsing/signing/transport accepts NaN/Infinity sentinels that are not standard JSON."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No fresh evidence was consumed.",
+      "quantity": "fresh_evidence_units_consumed",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No protected/private manifest was read.",
+      "quantity": "protected_manifest_reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No benchmark was executed.",
+      "quantity": "benchmark_executions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No deep research was run.",
+      "quantity": "deep_research_runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 should independently reread the immutable MF04 receipt, recompute HMAC-2, verify branch/history/CI/liveness, and adjudicate PS-MF04-NONFINITEJSON-001. If accepted, BIL00 should freeze allow_nan=False plus strict parse_constant regressions in a successor protocol-2.5 control generation.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    "MF04 stayed within replay-only adversarial control/auth/lineage/liveness/branch-isolation scope.",
+    "No fresh scientific evidence, protected/private manifest, benchmark execution or deep research was used.",
+    "Finding is transport/control only and makes no mathematical or runtime-capability claim."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "RPT-CAL-BR-011-v25-27955ce6-MF04",
+  "research_questions": [],
+  "runtime_implementation_implication": "None. The frozen runtime receipt validates only the Math Foundry 3.1.1 replay-calibration substrate identity and explicitly does not claim GPT model/reasoning binding.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Attack one accepted control, auth, lineage, liveness or branch-isolation assumption using replay-only evidence.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF04",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W04 | Adversarial Falsifier",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "evidence_refs": [
+        "state/CURRENT.json@main",
+        "control/CAL-BR-011-v25-27955ce6.json@3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+        "assignments/CAL-BR-011-v25-27955ce6.json@3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+        "BRANCH_WORKER_PROTOCOL.md@3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+        "SESSION_STANDARD.md@3bb1425d18dbff2f83d69b0738c7151bf4a47355"
+      ],
+      "status": "PASS",
+      "task": "Verify frozen Gen11 control/auth/session/schema/lineage/branch/liveness bindings."
+    },
+    {
+      "evidence_refs": [
+        "scripts/validate_branch_bus_v251.py@3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+        "schemas/branch_report.schema.json@3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+        "tests/test_v25_report_contracts.py@3bb1425d18dbff2f83d69b0738c7151bf4a47355"
+      ],
+      "status": "FINDING",
+      "task": "Run one cheap deterministic adversarial serialization falsifier without protected or benchmark work."
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "details": "Python Draft202012Validator accepts float('nan') where the frozen report schema imposes no item type; json.dumps emits NaN by default; json.loads accepts NaN; re-dumping reproduces the same pretty bytes. The mutation was evaluated locally only and was not written to GitHub.",
+      "mutation": "Insert Python float('nan') into an otherwise-unconstrained test_ledger/task_ledger value of a schema-shaped report; recompute HMAC with the frozen Python canonicalization.",
+      "result": "FALSIFIER_SURVIVES_FROZEN_PYTHON_PRIMITIVES",
+      "target": "PRETTY_SORTED_UTF8_JSON_V1 plus HMAC-2 serializer/parser boundary",
+      "test_id": "MF04-T-NONFINITE-001",
+      "type": "DETERMINISTIC_REPLAY_MUTATION"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "a5c288ca0b3a422694f1dd6ca74b3897",
+  "worker_auth_commitment": "13883f3aecfc1454c4ac040e86201a0038e36df96893b455f60ee93a2bb24213",
+  "worker_auth_proof": "db8c552ba7f4108d961f5c9a8ee55afe53115bdee53a6bce5de010987e3efb08",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MF04",
+  "worker_id": "MF04"
+}
