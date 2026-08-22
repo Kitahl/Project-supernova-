@@ -6,9 +6,9 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 DURABLE='PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED'
 EPOCH6_BLOB='5a087dead0572390565bfe8bfb8f2ce69a80fc7c'
-EPOCH7_SEED_INSTALL='f14cfdae019f2692867353fea53ca50c4e163278'
-EPOCH7_SEED_POLICY='80302d1c078ccb3cb40995b9e0809f07257f284c'
-EPOCH7_SEED_RECONCILER='3110fc027173dbe5483bff6dcf32b04e49621c55'
+EPOCH7_SEED_INSTALL='7af2eba8687b17fe8a3be4569dba02024b3e1d2b'
+EPOCH7_SEED_POLICY='795a325cc22ea4d5142d4d2e171e66360e75358e'
+EPOCH7_SEED_RECONCILER='1104237e8df009b4bec73056afacac671d3ea719'
 EPOCH7_SEED_WORKFLOW='3cd9481fd185f3c1db94e78983bb5687fa7ad73e'
 
 
@@ -37,6 +37,8 @@ class RootEpoch6RepairTests(unittest.TestCase):
   self.assertEqual(new['previous_root_epoch'],6);self.assertEqual(new['new_root_epoch'],7)
   self.assertEqual(new['root_epoch7_repair_seed_install_commit_sha'],EPOCH7_SEED_INSTALL)
   self.assertEqual(new['root_epoch7_repair_seed_policy_blob'],EPOCH7_SEED_POLICY)
+  self.assertEqual(new['root_epoch7_repair_seed_reconciler_blob'],EPOCH7_SEED_RECONCILER)
+  self.assertEqual(new['root_epoch7_repair_seed_workflow_blob'],EPOCH7_SEED_WORKFLOW)
   self.assertEqual(new['calibration_credit_effect'],0)
   self.assertEqual(new['fresh_science_effect'],'NONE');self.assertEqual(new['runtime_effect'],'NONE');self.assertEqual(new['scientific_state_effect'],'NONE')
   self.assertIn('GEN10_ZERO_CREDIT_TERMINAL_SUCCESSOR_ADMISSION',new['repair_scope'])
@@ -47,7 +49,8 @@ class RootEpoch6RepairTests(unittest.TestCase):
   self.assertEqual(seed['one_shot_marker_path'],'config/root_epoch7_repair_epoch_v25.json')
   self.assertTrue((ROOT/seed['one_shot_marker_path']).is_file())
   self.assertEqual(seed['target_root_epoch'],7)
-  self.assertEqual(len(seed['required_root_candidate_paths']),8)
+  self.assertEqual(len(seed['required_root_candidate_paths']),11)
+  self.assertEqual(set(seed['required_root_candidate_paths']),set(seed['allowed_root_candidate_paths']))
   self.assertEqual(epoch['root_change_rule'],'NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED')
 
  def test_terminal_nonclean_receipts_are_evidence_not_calibration_pass(self):

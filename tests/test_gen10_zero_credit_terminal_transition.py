@@ -77,7 +77,7 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
         self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-7")
         self.assertEqual(root["epoch"], 7)
         self.assertEqual(root["previous_epoch_blob"], "5a087dead0572390565bfe8bfb8f2ce69a80fc7c")
-        self.assertEqual(root["root_epoch7_repair_seed_install_commit_sha"], "f14cfdae019f2692867353fea53ca50c4e163278")
+        self.assertEqual(root["root_epoch7_repair_seed_install_commit_sha"], "7af2eba8687b17fe8a3be4569dba02024b3e1d2b")
         self.assertEqual(marker["stable_issue_id"], "O-T0-GEN10-ZERO-CREDIT-PR-ADMISSION-GAP")
         self.assertEqual(marker["calibration_credit_effect"], 0)
         self.assertEqual(marker["fresh_science_effect"], "NONE")
