@@ -13,6 +13,7 @@ class RootEpoch7RepairSeedTests(unittest.TestCase):
         self.policy = json.loads(POLICY.read_text(encoding="utf-8"))
 
     def test_seed_is_one_shot_epoch6_to_epoch7(self):
+        self.assertEqual(self.policy["schema_version"], "PS-ROOT-EPOCH7-REPAIR-SEED-2.5-2")
         self.assertEqual(self.policy["required_current_root_epoch"], 6)
         self.assertEqual(self.policy["target_root_epoch"], 7)
         self.assertEqual(self.policy["calibration_streak_required"], 0)
@@ -23,14 +24,17 @@ class RootEpoch7RepairSeedTests(unittest.TestCase):
         allowed = set(self.policy["allowed_root_candidate_paths"])
         required = set(self.policy["required_root_candidate_paths"])
         self.assertEqual(allowed, required)
-        self.assertEqual(len(required), 8)
+        self.assertEqual(len(required), 11)
         for path in (
             "config/admission_authority.json",
+            "config/authority_bootstrap_v25.json",
             "config/countable_control_set_v25.json",
             "config/root_tcb_epoch_v25.json",
             "config/root_epoch7_repair_epoch_v25.json",
             "scripts/reconcile_open_prs.py",
+            "scripts/reconcile_authority_bootstrap.py",
             "tests/test_gen10_zero_credit_terminal_transition.py",
+            "tests/test_bootstrap_root_tcb_and_head_binding.py",
             "tests/test_gen9_reset_compat_root.py",
             "tests/test_root_epoch6_repair.py",
         ):
@@ -68,9 +72,15 @@ class RootEpoch7RepairSeedTests(unittest.TestCase):
     def test_future_control_set_must_freeze_seed_and_repair(self):
         text = SCRIPT.read_text(encoding="utf-8")
         self.assertIn("PS-COUNTABLE-CONTROL-SET-2.5-22", text)
-        self.assertIn("tests/test_gen10_zero_credit_terminal_transition.py", text)
-        self.assertIn("tests/test_gen9_reset_compat_root.py", text)
-        self.assertIn("tests/test_root_epoch6_repair.py", text)
+        for path in (
+            "config/authority_bootstrap_v25.json",
+            "scripts/reconcile_authority_bootstrap.py",
+            "tests/test_bootstrap_root_tcb_and_head_binding.py",
+            "tests/test_gen10_zero_credit_terminal_transition.py",
+            "tests/test_gen9_reset_compat_root.py",
+            "tests/test_root_epoch6_repair.py",
+        ):
+            self.assertIn(path, text)
 
 
 if __name__ == "__main__":
