@@ -238,7 +238,7 @@
     "model": "GPT-5.6 Sol",
     "reasoning_effort": "EXTRA_HIGH",
     "automation_api_can_enforce": false,
-    "rule": "Request target; report observed binding honestly; model-sensitive fresh promotion requires frozen observed binding proof."
+    "rule": "Request target; report observed binding honestly; VERIFIED requires affirmative runtime evidence; unavailable reasoning-effort attestation alone is provenance-only and nonblocking for safety, admission, calibration credit, fresh eligibility, or scientific promotion."
   },
   "transport": {
     "mode":"BRANCH_GITOPS",
