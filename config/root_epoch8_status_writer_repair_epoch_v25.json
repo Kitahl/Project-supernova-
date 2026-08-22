@@ -1,0 +1,26 @@
+{
+  "schema_version": "PS-ROOT-EPOCH8-STATUS-WRITER-REPAIR-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "previous_root_epoch": 7,
+  "new_root_epoch": 8,
+  "stable_issue_id": "O-T0-GEN10-HISTORICAL-INTEGRATION-STATUS-DRIFT",
+  "issue_ref": "#217",
+  "repair_scope": [
+    "REST_ADMISSION_HELPER_STOPS_PUBLISHING_STRUCTURAL_BRANCH_INTEGRATE",
+    "CURRENT_MAIN_INTEGRATION_SEMANTICS_REMAIN_INTERNAL_REPORT_ADMISSION_FAN_IN",
+    "SINGLE_AUTHORITATIVE_STRUCTURAL_WRITER_REMAINS_RECONCILE_BRANCH_STATUSES",
+    "STRUCTURAL_SINGLE_WRITER_REGRESSION_STRENGTHENED",
+    "ROOT_AND_BOOTSTRAP_INVENTORIES_MIGRATED_THROUGH_EPOCH8",
+    "GEN10_HISTORICAL_FROZEN_VALIDATOR_FAILURE_REMAINS_PRESERVED"
+  ],
+  "root_epoch8_status_writer_repair_seed_install_commit_sha": "1e4967a8783b9d2fdc0d76080aba3e7acc31a0cf",
+  "root_epoch8_status_writer_repair_seed_policy_blob": "62a68682380741ed2a32e97b0412cbbd6f20f217",
+  "root_epoch8_status_writer_repair_seed_reconciler_blob": "e46611a9e6085d53d8e4f4ec53ea6b7f4291ae35",
+  "root_epoch8_status_writer_repair_seed_workflow_blob": "5b7999063894a491f122d232639c4bc4d8855f32",
+  "seed_one_shot_disposition": "PERMANENTLY_INERT_AFTER_THIS_MARKER_IS_ACCEPTED",
+  "calibration_credit_effect": 0,
+  "fresh_science_effect": "NONE",
+  "runtime_effect": "NONE",
+  "scientific_state_effect": "NONE"
+}
