@@ -3,6 +3,7 @@ import pathlib
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+EPOCH6_BLOB = "5a087dead0572390565bfe8bfb8f2ce69a80fc7c"
 
 
 def load(path):
@@ -10,12 +11,12 @@ def load(path):
 
 
 class Gen9ResetCompatRootTests(unittest.TestCase):
-    def test_root_epoch6_binds_epoch5_predecessor_and_preserves_gen9_compat(self):
+    def test_root_epoch7_binds_epoch6_predecessor_and_preserves_gen9_compat(self):
         root = load("config/root_tcb_epoch_v25.json")
         marker = load("config/gen9_reset_compat_epoch_v25.json")
-        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-6")
-        self.assertEqual(root["epoch"], 6)
-        self.assertEqual(root["previous_epoch_blob"], "48ad5eba0782dbae666f59d1c2365b138003b4e6")
+        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-7")
+        self.assertEqual(root["epoch"], 7)
+        self.assertEqual(root["previous_epoch_blob"], EPOCH6_BLOB)
         self.assertEqual(root["gen9_reset_liveness_binding"], "CONTROL_AND_ASSIGNMENT_GIT_BLOB_IDENTITIES")
         self.assertEqual(marker["schema_version"], "PS-GEN9-RESET-COMPAT-EPOCH-2.5-1")
         self.assertEqual(marker["seed_one_shot_disposition"], "PERMANENTLY_INERT_AFTER_THIS_MARKER_IS_ACCEPTED")
@@ -48,9 +49,9 @@ class Gen9ResetCompatRootTests(unittest.TestCase):
         for path in seed["seed_paths"] + [seed["one_shot_marker_path"], "tests/test_gen9_reset_compat_root.py"]:
             self.assertIn(path, controls)
 
-    def test_admission_inventory_is_epoch6_and_retains_gen9_compat_assets(self):
+    def test_admission_inventory_is_epoch7_and_retains_gen9_epoch6_epoch7_assets(self):
         authority = load("config/admission_authority.json")
-        self.assertEqual(authority["root_tcb_epoch"], 6)
+        self.assertEqual(authority["root_tcb_epoch"], 7)
         self.assertEqual(authority["gen9_reset_liveness_binding"], "CONTROL_AND_ASSIGNMENT_GIT_BLOB_IDENTITIES")
         helpers = set(authority["trusted_authority_helpers"])
         for path in (
@@ -58,13 +59,14 @@ class Gen9ResetCompatRootTests(unittest.TestCase):
             "scripts/reconcile_gen9_reset_compat_seed.py",
             ".github/workflows/supernova-gen9-reset-compat-seed.yml",
             "config/gen9_reset_compat_epoch_v25.json",
-        ):
-            self.assertIn(path, helpers)
-        for path in (
             "config/root_epoch6_repair_seed_v25.json",
             "scripts/reconcile_root_epoch6_repair_seed.py",
             ".github/workflows/supernova-root-epoch6-repair-seed.yml",
             "config/root_epoch6_repair_epoch_v25.json",
+            "config/root_epoch7_repair_seed_v25.json",
+            "scripts/reconcile_root_epoch7_repair_seed.py",
+            ".github/workflows/supernova-root-epoch7-repair-seed.yml",
+            "config/root_epoch7_repair_epoch_v25.json",
         ):
             self.assertIn(path, helpers)
 
