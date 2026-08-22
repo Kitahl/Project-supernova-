@@ -17,12 +17,14 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
     def setUp(self):
         self.mod=load_module(); self.head='a'*40; self.base='b'*40; self.pr=42; self.run_id=123456
 
-    def status(self,**overrides):
-        s={'context':self.mod.BOOTSTRAP_CONTEXT,'state':'success','creator':{'login':self.mod.BOOTSTRAP_CREATOR},'description':self.mod.expected_bootstrap_description(self.pr,self.head,self.base),'target_url':f'https://github.com/{self.mod.REPO}/actions/runs/{self.run_id}'}
+    def status(self,run_id=None,**overrides):
+        rid=self.run_id if run_id is None else run_id
+        s={'context':self.mod.BOOTSTRAP_CONTEXT,'state':'success','creator':{'login':self.mod.BOOTSTRAP_CREATOR},'description':self.mod.expected_bootstrap_description(self.pr,self.head,self.base),'target_url':f'https://github.com/{self.mod.REPO}/actions/runs/{rid}'}
         s.update(overrides); return s
 
-    def run_obj(self,**overrides):
-        r={'id':self.run_id,'path':self.mod.BOOTSTRAP_WORKFLOW,'event':'pull_request_target','status':'completed','conclusion':'success','repository':{'full_name':self.mod.REPO},'actor':{'login':self.mod.OWNER},'head_sha':self.head,'pull_requests':[{'number':self.pr,'head':{'sha':self.head},'base':{'sha':self.base}}]}
+    def run_obj(self,run_id=None,**overrides):
+        rid=self.run_id if run_id is None else run_id
+        r={'id':rid,'path':self.mod.BOOTSTRAP_WORKFLOW,'event':'pull_request_target','status':'completed','conclusion':'success','repository':{'full_name':self.mod.REPO},'actor':{'login':self.mod.OWNER},'head_sha':self.head,'pull_requests':[{'number':self.pr,'head':{'sha':self.head},'base':{'sha':self.base}}]}
         r.update(overrides); return r
 
     def fake_api(self,statuses,runs=None):
@@ -36,16 +38,17 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
             raise AssertionError(path)
         return call
 
-    def check(self,statuses,run_obj=None,*,base=None,pr=None,completed=None):
-        runs={self.run_id:self.run_obj() if run_obj is None else run_obj}
-        env={'COMPLETED_BOOTSTRAP_RUN_ID':str(self.run_id if completed is None else completed)}
-        with mock.patch.dict(os.environ,env,clear=False), mock.patch.object(self.mod,'api',side_effect=self.fake_api(statuses,runs)):
+    def check(self,statuses,run_obj=None,*,base=None,pr=None,completed='DEFAULT',runs=None):
+        if runs is None:
+            runs={self.run_id:self.run_obj() if run_obj is None else run_obj}
+        env={}
+        if completed=='DEFAULT': env['COMPLETED_BOOTSTRAP_RUN_ID']=str(self.run_id)
+        elif completed is not None: env['COMPLETED_BOOTSTRAP_RUN_ID']=str(completed)
+        with mock.patch.dict(os.environ,env,clear=True), mock.patch.object(self.mod,'api',side_effect=self.fake_api(statuses,runs)):
             return self.mod.trusted_bootstrap_success(self.head,self.base if base is None else base,self.pr if pr is None else pr)
 
     def test_exact_designated_completed_run_passes(self): self.assertTrue(self.check([self.status()]))
-    def test_missing_completion_run_id_fails(self):
-        with mock.patch.dict(os.environ,{},clear=True), mock.patch.object(self.mod,'api',side_effect=self.fake_api([self.status()])):
-            self.assertFalse(self.mod.trusted_bootstrap_success(self.head,self.base,self.pr))
+    def test_persistent_rederivation_without_completion_environment_passes(self): self.assertTrue(self.check([self.status()],completed=None))
     def test_wrong_completion_run_id_fails(self): self.assertFalse(self.check([self.status()],completed=self.run_id+1))
     def test_same_principal_wrong_workflow_rejected(self): self.assertFalse(self.check([self.status()],self.run_obj(path='.github/workflows/other.yml')))
     def test_wrong_event_rejected(self): self.assertFalse(self.check([self.status()],self.run_obj(event='push')))
@@ -69,5 +72,12 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
     def test_wrong_repository_or_actor_rejected(self):
         self.assertFalse(self.check([self.status()],self.run_obj(repository={'full_name':'other/repo'})))
         self.assertFalse(self.check([self.status()],self.run_obj(actor={'login':'other'})))
+    def test_ambiguous_multiple_valid_designated_runs_fail_closed(self):
+        other=self.run_id+9
+        statuses=[self.status(),self.status(run_id=other)]
+        runs={self.run_id:self.run_obj(),other:self.run_obj(run_id=other)}
+        self.assertFalse(self.check(statuses,completed=None,runs=runs))
+    def test_durable_policy_marker_is_explicit(self):
+        self.assertEqual(self.mod.DURABLE_BOOTSTRAP_PROVENANCE,'PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED')
 
 if __name__=='__main__':unittest.main()
