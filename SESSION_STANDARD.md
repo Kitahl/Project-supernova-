@@ -42,6 +42,6 @@ The associated task/chat is persistent. Stable session titles are:
 
 Every countable receipt uses the same logical framework: `session_header`, `executive_status`, `task_ledger`, `issue_ledger`, `test_ledger`, `plan_alignment`, `evidence_and_provenance`, `cost_ledger`, `research_questions` or `research_findings`, and `next_action`. Negative/zero/unknown evidence is preserved.
 
-Model target is requested, not presumed. `VERIFIED` is legal only when both model and reasoning identity are runtime-observed. Model-sensitive fresh evidence is non-promotable without the frozen binding receipt.
+Model and reasoning targets are requested scheduler metadata, not presumed runtime facts. `VERIFIED` is legal only when affirmative frozen runtime evidence supports the claimed model and reasoning identity. `PARTIAL_UNVERIFIED` or `UNVERIFIED` caused solely by unavailable reasoning-effort attestation is provenance-only and MUST NOT by itself block worker safety, MM06 SAFE partition membership, report admission, calibration credit, fresh eligibility, or scientific promotion. A frozen model-binding attestation remains optional provenance for truthful `VERIFIED`; an affirmative observed mismatch remains a real provenance fact and must not be rewritten as unobserved.
 
 A worker self-reread is never independent. MM06 later owns authoritative report-path/blob/creation-commit/history reread evidence.
