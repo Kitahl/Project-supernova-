@@ -26,7 +26,6 @@ class FutureFreshRoleModelContractTests(unittest.TestCase):
   self.assertEqual(list(v.iter_errors(p)),[])
   for field in ('predeclared_stop','typed_event_trace_ref','rho_improve_claim','scores_frozen_before_candidate'):
    q=dict(p);q.pop(field);self.assertTrue(list(v.iter_errors(q)),field)
-  q=dict(p);q['origin_task_promotion']=True;self.assertTrue(list(v.iter_errors(q)))
   q=dict(p);q.update(experiment_kind='GOAL2_IMPROVER_COMPARISON',claim_status='IMPROVER_COMPARISON_CANDIDATE',improver_treatment_isolated=False);self.assertTrue(list(v.iter_errors(q)))
   q['improver_treatment_isolated']=True;self.assertEqual(list(v.iter_errors(q)),[])
 
@@ -70,4 +69,35 @@ class FutureFreshRoleModelContractTests(unittest.TestCase):
    p=t/'runtime/model_bindings/A1.json';p.write_text(json.dumps(att,separators=(',',':'))+'\n');report={'runtime_state_id':'runtime-X','session_header':{'model_binding_status':'VERIFIED','model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'},'model_binding_attestation_path':'runtime/model_bindings/A1.json','model_binding_attestation_git_identity':m.blob(p)};control={'required_control_paths':['runtime/model_bindings/A1.json']}
    self.assertEqual(m.model_binding_errors(report,control),[]);q=dict(report);q['model_binding_attestation_git_identity']='b'*40;self.assertTrue(m.model_binding_errors(q,control))
   finally:m.ROOT=old
+
+ def test_unavailable_reasoning_attestation_is_nonblocking_for_partial_and_unverified(self):
+  m=mod();control={'required_control_paths':[]}
+  for status in ('PARTIAL_UNVERIFIED','UNVERIFIED'):
+   report={'runtime_state_id':'runtime-X','session_header':{'model_binding_status':status,'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}}
+   self.assertEqual(m.model_binding_errors(report,control),[],status)
+
+ def test_verified_without_attestation_still_fails_truthfulness(self):
+  m=mod();report={'runtime_state_id':'runtime-X','session_header':{'model_binding_status':'VERIFIED','model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}}
+  self.assertTrue(m.model_binding_errors(report,{'required_control_paths':[]}))
+
+ def test_observed_mismatch_remains_provenance_not_missing_attestation_error(self):
+  m=mod();report={'runtime_state_id':'runtime-X','session_header':{'model_binding_status':'MISMATCH','model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}}
+  self.assertEqual(m.model_binding_errors(report,{'required_control_paths':[]}),[])
+  self.assertEqual(report['session_header']['model_binding_status'],'MISMATCH')
+
+ def test_reasoning_binding_nonblocking_policy_is_frozen_in_authoritative_text(self):
+  session=(ROOT/'SESSION_STANDARD.md').read_text();protocol=(ROOT/'PROTOCOL.md').read_text();plan=load('plan/PLAN.json')
+  self.assertNotIn('Model-sensitive fresh evidence is non-promotable without the frozen binding receipt.',session)
+  self.assertIn('unavailable reasoning-effort attestation is provenance-only and MUST NOT by itself block',session)
+  self.assertIn('unavailable reasoning-effort attestation alone MUST NOT block',protocol)
+  rule=plan['model_execution_target']['rule']
+  self.assertIn('unavailable reasoning-effort attestation alone is provenance-only and nonblocking',rule)
+  self.assertNotIn('model-sensitive fresh promotion requires frozen observed binding proof',rule)
+
+ def test_verifier_safe_partition_does_not_require_model_binding_attestation(self):
+  schema=load('schemas/branch_verification.schema.json');required=set(schema['$defs']['safe_ref']['required'])
+  self.assertNotIn('model_binding_status',required)
+  self.assertNotIn('model_binding_attestation_path',required)
+  self.assertNotIn('model_binding_attestation_git_identity',required)
+
 if __name__=='__main__':unittest.main()
