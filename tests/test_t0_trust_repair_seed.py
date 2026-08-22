@@ -23,6 +23,7 @@ class T0TrustRepairSeedTests(unittest.TestCase):
         self.assertIn('scripts/reconcile_open_prs.py',required)
         self.assertIn('scripts/reconcile_authority_bootstrap.py',required)
         self.assertIn('config/root_tcb_epoch_v25.json',required)
+        self.assertIn('tests/test_gen9_reset_compat_root.py',required)
         self.assertIn('state/',self.p['forbidden_candidate_prefixes'])
 
     def test_seed_cannot_self_modify(self):
