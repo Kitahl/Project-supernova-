@@ -1,0 +1,23 @@
+{
+  "schema_version": "PS-ROOT-EPOCH7-REPAIR-EPOCH-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "previous_root_epoch": 6,
+  "new_root_epoch": 7,
+  "root_epoch7_repair_seed_install_commit_sha": "f14cfdae019f2692867353fea53ca50c4e163278",
+  "root_epoch7_repair_seed_policy_blob": "80302d1c078ccb3cb40995b9e0809f07257f284c",
+  "root_epoch7_repair_seed_reconciler_blob": "3110fc027173dbe5483bff6dcf32b04e49621c55",
+  "root_epoch7_repair_seed_workflow_blob": "3cd9481fd185f3c1db94e78983bb5687fa7ad73e",
+  "repair_scope": [
+    "GEN10_ZERO_CREDIT_TERMINAL_SUCCESSOR_ADMISSION",
+    "GENERIC_CLEAN_COHORT_ADMISSION_REMAINS_STRICT",
+    "GEN9_COMPATIBILITY_REGRESSION_MIGRATED_THROUGH_ROOT_EPOCH7",
+    "ROOT_EPOCH6_REPAIR_REGRESSION_MIGRATED_THROUGH_ROOT_EPOCH7"
+  ],
+  "stable_issue_id": "O-T0-GEN10-ZERO-CREDIT-PR-ADMISSION-GAP",
+  "issue_ref": "#211",
+  "calibration_credit_effect": 0,
+  "fresh_science_effect": "NONE",
+  "runtime_effect": "NONE",
+  "scientific_state_effect": "NONE"
+}
