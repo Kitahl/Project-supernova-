@@ -1,3 +1,4 @@
+# Retrigger exact-head accepted-main completion reconciliation for #195.
 import importlib.util,json,pathlib,tempfile,unittest
 from jsonschema import Draft202012Validator
 ROOT=pathlib.Path(__file__).resolve().parents[1]
