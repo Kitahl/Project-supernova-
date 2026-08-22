@@ -1,0 +1,243 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "Replay-only architecture/TCB audit; no Senior SWE performance, scientific improvement, mathematical correctness, or promotion claim.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "GitHub-only replay audit plus public GitHub documentation; no private-vault read, benchmark/evaluator execution, or deep research.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "admission_authority_blob_sha": "c8025aa3e4b838d9dfab6e6b3ae72e2aac572dca",
+    "assignment_blob_sha": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "control_manifest_blob_sha": "406f9692430a9d42c7af1455232c759423188e87",
+    "control_release_commit_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "control_release_tree_sha": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "liveness_blob_sha": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "mm04_replay_schema_blob_sha": "0abfa123ef58e3b457f6a1ec2b2a7b41f9864810",
+    "observed_model_binding_status": "PARTIAL_UNVERIFIED",
+    "online_audit_refs": [
+      "GitHub Docs: GitHub-hosted runners reference",
+      "actions/setup-python advanced usage: major.minor selects most recent patch"
+    ],
+    "prewrite_branch": "IDENTICAL_TO_G",
+    "prewrite_branch_generation_status": "success",
+    "prewrite_branch_worker_status": "pending",
+    "prewrite_liveness_status": "success",
+    "prewrite_report": "ABSENT",
+    "prewrite_report_admission_status": "pending",
+    "prewrite_static_control_status": "success",
+    "prewrite_transition_admission_status": "pending",
+    "report_schema_blob_sha": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "runtime_receipt_model_binding": "MODEL_BINDING_NOT_CLAIMED",
+    "runtime_update_receipt_blob_sha": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_update_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "source_scope": "GITHUB_ONLY_PLUS_PUBLIC_GITHUB_DOCUMENTATION",
+    "validator_blob_sha": "3c2992d5a9239897de9a1130deba65015c24372d",
+    "validator_environment_assertion_blob_sha": "3c758d76bdfded07cfc9fdee00a5168b1f1a378c",
+    "validator_environment_blob_sha": "ffe3df23dc79c9c4a9bc3439429da8c19b1f6257",
+    "worker_auth_metadata_blob_sha": "9498d1d49b8636a3a313dc63be89f4433330c230"
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL_AUDIT",
+  "executive_status": "FINDINGS_BLOCKING_COUNTABLE_T0_RECEIPT_WAITING_MM06",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [
+    {
+      "aliases": [],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "SEMANTIC_NONVACUITY_UNDERCONSTRAINED",
+      "component": "MM04 replay payload semantic nonvacuity",
+      "evidence_refs": [
+        "schemas/mastermind_mm04_replay_payload.schema.json@G#0abfa123ef58e3b457f6a1ec2b2a7b41f9864810",
+        "scripts/validate_branch_bus_v251.py@G#3c2992d5a9239897de9a1130deba65015c24372d",
+        "tests/test_future_fresh_role_model_contracts.py@G#2bf0e1f39954776de3f4dba586911f352716dccb",
+        "config/roles.json@G#04a7e3edeb394507a7dc8e6ee697c65ed05db01d"
+      ],
+      "exact_failure": "schemas/mastermind_mm04_replay_payload.schema.json requires nonempty architecture_checks, nonvacuity_checks and provenance_checks, but each element is only a nonempty string. scripts/validate_branch_bus_v251.py delegates replay MM04 validation to that schema without additional semantic coverage checks. The frozen regression test explicitly treats architecture_checks=['a'], nonvacuity_checks=['n'], provenance_checks=['p'] as valid. A countable MM04 receipt can therefore satisfy the machine contract without naming architecture surfaces, exclusions/N/A dispositions, falsifiers, mutation/ablation outcomes or evidence refs.",
+      "issue_id": "MM04-T0-MM04-ROLE-NONVACUITY-SCHEMA-001",
+      "next_action": "Repair and freeze the MM04 replay schema/validator/tests before assigning clean calibration credit to this cohort.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Replace free-form string arrays with closed typed check records containing stable check_id, architecture surface/category, result/disposition, evidence_refs, falsifier or negative-control result, mutation/ablation status where applicable, and typed N/A/exclusion reason. Keep evaluator NOT_EXECUTED and architecture NOT_MEASURED for replay.",
+      "required_test": "Placeholder/evidence-free records and omitted required surfaces FAIL; evidence-backed architecture/nonvacuity/provenance records PASS; explicit typed N/A/exclusion is distinguishable from omission.",
+      "severity": "HIGH",
+      "status": "OPEN_PERSISTENT",
+      "summary": "MM04 role payload is mandatory but its evidence-bearing checks remain placeholder-string satisfiable."
+    },
+    {
+      "aliases": [],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "FAIL_CLOSED_ENVIRONMENT_ASSERTION_GAP",
+      "component": "privileged admission validator environment",
+      "evidence_refs": [
+        "config/validator_environment_v25.json@G#ffe3df23dc79c9c4a9bc3439429da8c19b1f6257",
+        "scripts/assert_validator_environment.py@G#3c758d76bdfded07cfc9fdee00a5168b1f1a378c",
+        "config/admission_authority.json@G#c8025aa3e4b838d9dfab6e6b3ae72e2aac572dca",
+        ".github/workflows/supernova-branch-reconciler.yml@G#af41e926dec85c64f6ff7984274870f657a89592",
+        ".github/workflows/supernova-pr-target-admission.yml@G#1a7e223d641a3c303804ebe3f8a3524b3a14ffa8",
+        ".github/workflows/supernova-comment-admission.yml@G#cb25e0280c10cd483ba2c6cdafa5a6d91686ab51",
+        ".github/workflows/supernova-open-pr-reconciler.yml@G#524c51d7375c33a1975c048929443358c3b65868",
+        "tests/test_privileged_admission_workflows.py@G#83840a7881ccfe519d9ec0812f7c4aae8e279902",
+        "github-docs:actions/setup-python-major-minor-selects-latest-patch",
+        "github-docs:github-hosted-runner-latest-label-is-a-moving-image-label"
+      ],
+      "exact_failure": "config/validator_environment_v25.json says every countable or privileged validation workflow covered by the root TCB must execute scripts/assert_validator_environment.py before trusted validation or status publication. The authoritative branch reconciler does so and pins ubuntu-24.04 plus Python 3.13.15, but supernova-pr-target-admission.yml, supernova-comment-admission.yml and supernova-open-pr-reconciler.yml use statuses:write, run the trusted reconcile_open_prs.py admission authority, select mutable ubuntu-latest and Python '3.13', install only the wheel lock, and never invoke assert_validator_environment.py. The frozen privileged-workflow regression checks the mutable '3.13' selector but does not require the environment assertion. These paths can therefore publish the three admission contexts under an environment that the frozen contract says must fail closed on exact runner/Python/Git drift.",
+      "issue_id": "MM04-T0-PRIVILEGED-VALIDATOR-ENV-ASSERTION-001",
+      "next_action": "Patch the trusted admission environment gate on accepted main, freeze a successor cohort, and do not count Gen11 clean while this frozen authority gap is present.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Make the exact environment assertion unavoidable for every authoritative admission publisher: preferably invoke assert_validator_environment.py inside the trusted admission entrypoint before any three-context publication, and also pin wrappers to ubuntu-24.04 and Python 3.13.15. Keep diagnostic heartbeats non-authoritative.",
+      "required_test": "For every workflow or entrypoint capable of publishing static-control/report-admission/transition-admission, exact frozen environment PASS is required before publication; simulated runner-image/Python/Git drift must produce no authoritative success context. A regression must enumerate all statuses-write authoritative workflows and fail if the assertion is absent/unreachable.",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "summary": "Several statuses-write admission workflows execute the trusted reconciler without the frozen exact environment assertion."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "model_binding_attestation_git_identity": null,
+  "model_binding_attestation_path": null,
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No Senior SWE evaluator was executed.",
+      "quantity": "architecture_evaluator_execution",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No architecture performance metric was measured.",
+      "quantity": "architecture_performance",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "Fresh evidence consumption accounting.",
+      "quantity": "fresh_evidence_units_consumed",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Protected/private manifest read accounting.",
+      "quantity": "protected_manifest_reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Benchmark execution accounting.",
+      "quantity": "benchmark_executions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Deep-research execution accounting.",
+      "quantity": "deep_research_runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads the exact worker head/blob/history, verifies deterministic transport, Draft-2020-12 report and MM04 role schemas, strict session/mode equality, public safety, HMAC-2 and exact-head branch-worker status. BIL00 should repair the MM04 semantic nonvacuity schema and make the frozen validator-environment assertion unavoidable for every authoritative admission publisher before clean cohort credit.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    "Mastermind remains PRE_REVIEW_ONLY; no proposal execution, self-grading or promotion.",
+    "SAFE_REPLAY_ONLY with zero fresh evidence, private-manifest reads, benchmark executions and deep-research runs.",
+    "Architecture result remains NOT_MEASURED because no evaluator executed.",
+    "Three admission contexts are treated as non-substitutable; branch-local diagnostics are not admission evidence.",
+    "Statement fidelity and mathematical correctness are not inferred from CI/transport success.",
+    "No Foundry/Court/Tribunal/scientific/runtime/benchmark state mutation."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-MM04-CAL-BR-011-v25-27955ce6-R1",
+  "research_questions": [],
+  "role_payload": {
+    "architecture_checks": [
+      "Verified machine-readable generation-delta policy and exact release-to-G topology.",
+      "Audited three-context authority separation and single structural status writer declarations.",
+      "Audited privileged admission environment enforcement and found the exact assertion gap."
+    ],
+    "architecture_result": {
+      "evidence_refs": [
+        "assignments/CAL-BR-011-v25-27955ce6.json@G#eefcbc10b98cd3e069eb44756e06c2bed306abea",
+        "mode:SAFE_REPLAY_ONLY",
+        "benchmark_executions=0"
+      ],
+      "reason": "Replay-only T0 architecture/TCB audit; no Senior SWE evaluator or benchmark execution was authorized.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    },
+    "evaluator_execution_status": "NOT_EXECUTED",
+    "nonvacuity_checks": [
+      "Preserved evaluator absence as NOT_EXECUTED and architecture result as NOT_MEASURED/null.",
+      "Confirmed the frozen MM04 schema/test still accepts placeholder-only check strings and reported this as a blocker.",
+      "Distinguished environment configuration text from mechanically enforced fail-closed execution."
+    ],
+    "provenance_checks": [
+      "Read canonical state from main and frozen control/assignment/liveness at exact G.",
+      "Verified release tree and required-control immutability via exact release-to-G three-path diff.",
+      "Verified worker branch==G, report absent, liveness eligibility, public secret commitment, and HMAC-2 metadata."
+    ],
+    "schema_version": "PS-MM04-REPLAY-PAYLOAD-2.5-1",
+    "self_promotion": false
+  },
+  "runtime_implementation_implication": "No runtime or scientific implementation change is authorized by MM04. Both findings require BIL00-controlled protocol-2.5 control repair and a newly frozen cohort for clean credit.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay evaluator-execution validity, nonvacuity, authority provenance and architecture controls without protected work.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM04",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W04 | Senior SWE Architecture",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    "Fetched canonical main state and exact immutable Gen11 control/assignment/liveness objects.",
+    "Verified active cohort is non-superseded, MM04 liveness window is eligible, assigned branch is exactly at G, and assigned report path was absent prewrite.",
+    "Verified control release tree identity and exact release-to-G delta is control+assignment+liveness only; required frozen-control surface is unchanged from the release.",
+    "Verified MM04 public HMAC commitment and HMAC-2 metadata consistency without exposing the private capability.",
+    "Audited MM04 replay schema/validator nonvacuity and privileged admission validator-environment enforcement.",
+    "No Senior SWE evaluator/benchmark or protected/private/deep-research work executed."
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    "PASS: main state plan/protocol/runtime/cohort/control/assignment identities match frozen Gen11.",
+    "PASS: release 27955ce6b9c848510b17004a892d7c3278b0bd6e tree is 83daae5281e49b95721dd7a67216e3a1cea79956.",
+    "PASS: exact release-to-G diff is only control/CAL-BR-011-v25-27955ce6.json, assignments/CAL-BR-011-v25-27955ce6.json, liveness/CAL-BR-011-v25-27955ce6.json, matching generation_delta_policy_v25 countable cardinality 3.",
+    "PASS: prewrite MM04 branch identical to G and report absent.",
+    "PASS: MM04 liveness window opened at 2026-08-22T22:13:00Z and deadline is 2026-08-22T22:25:00Z; this run is eligible.",
+    "PASS: SHA-256(private capability) equals frozen MM04 public commitment.",
+    "PASS: HMAC-2 metadata is consistent across state/control/auth/worker protocol.",
+    "PASS: header.execution_mode and report.mode are both SAFE_REPLAY_ONLY.",
+    "PASS: current G statuses observed prewrite: branch-generation=success, liveness=success, static-control=success; report-admission and transition-admission pending; branch-worker pending prewrite.",
+    "FAIL: MM04 replay semantic nonvacuity remains placeholder-string satisfiable.",
+    "FAIL: three privileged admission writer workflows omit the exact validator-environment assertion required by frozen authority policy.",
+    "PASS: no claim of statistical independence is made for same-kernel or shared-TCB implementations."
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "fd255ddf4bc5e99a8052ab9ee2851c8b",
+  "worker_auth_commitment": "836768b1672cc8639cfeb3fe06ebd8ce1667cdb0dc5ce1c7a6cd6c263f1521d0",
+  "worker_auth_proof": "6f61dfdd8412994267707ee4dff53d04c3ee4729c2ea46e788c401bf44c72405",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MM04",
+  "worker_id": "MM04"
+}
