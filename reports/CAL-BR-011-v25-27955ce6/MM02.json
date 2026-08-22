@@ -1,0 +1,189 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "Replay-only MM02 control and authority-separation evidence for the active T0 cohort. No fresh DeepSWE task, evaluator payload, private manifest, benchmark execution, external prior sweep, proposal execution, grading or scientific-state mutation.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "T0 SAFE_REPLAY_ONLY. GitHub control-plane reads, replay checks, HMAC construction and one create-once receipt write only.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment": "assignments/CAL-BR-011-v25-27955ce6.json@eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "branch_worker_protocol_blob": "c32aa5988ed28efa411d78b56ad5cc5d995c4c00",
+    "canonical_state": "main:state/CURRENT.json@ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9",
+    "control": "control/CAL-BR-011-v25-27955ce6.json@406f9692430a9d42c7af1455232c759423188e87",
+    "control_release_commit": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "control_release_tree": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "countable_control_set_blob": "6d3ef8edb30d2cdc5926e2b6023b50beb1240889",
+    "generation": "ps/gen/CAL-BR-011-v25-27955ce6@3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "liveness": "liveness/CAL-BR-011-v25-27955ce6.json@019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "liveness_schema_blob": "2bffe22b12c2efee31c8b43f2e7a79842e814dd7",
+    "plan_blob": "197f9199475fd210b0e7b77b4e3160174c28e0f2",
+    "prewrite_structural_status": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "report_schema_blob": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "role_registry_blob": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "session_standard_blob": "49a41c0f56b092c395bd71a36e66ecc2cda8ae04",
+    "worker_auth_blob": "9498d1d49b8636a3a313dc63be89f4433330c230"
+  },
+  "evidence_tier": "CONTROL_PLANE_REPLAY_ONLY",
+  "executive_status": "ZERO_DELTA — MM02 replayed the frozen DeepSWE authority-separation contract for Gen11; no evidence-backed defect was found in the assigned replay surface and no scientific work was opened.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No fresh evidence was consumed.",
+      "quantity": "fresh_evidence_units_consumed",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No protected/private manifest was read.",
+      "quantity": "protected_manifest_reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No benchmark was executed.",
+      "quantity": "benchmark_executions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No deep research was run by this worker.",
+      "quantity": "deep_research_runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No DeepSWE scientific metric was measured in T0 replay.",
+      "quantity": "deepswe_scientific_metric",
+      "status": "NOT_MEASURED",
+      "value": null
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently fetches the exact MM02 worker branch and verifies branch head/diff, complete deterministic transport, Draft-2020-12 schema, HMAC-2, public safety, lineage, liveness, zero-consumption ledger and exact-head structural status before Gen11 receives worker credit.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    "Mastermind remains PRE_REVIEW_ONLY; MM02 neither executed nor graded proposals and made no Foundry, Court or scientific-state mutation.",
+    "T0 countable replay is SAFE_REPLAY_ONLY with zero fresh/private/benchmark/research consumption.",
+    "No origin-task promotion or generalized mechanism update is claimed.",
+    "Scientific authority separation is preserved: task contract, primary technical authority and evaluator are distinct.",
+    "The report is create-once on the assigned MM02 branch and path; no main/control/benchmark/scientific-state write is permitted."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "MM02-CAL-BR-011-v25-27955ce6",
+  "research_questions": [],
+  "runtime_implementation_implication": "NONE",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay DeepSWE mechanism/contract separation and preserve task-contract, technical-authority and evaluator separation.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM02",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W02 | DeepSWE Mechanisms",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "result": "ZERO_DELTA",
+      "scope": "Frozen control, assignment, liveness, branch isolation, authentication, deterministic transport and DeepSWE authority-separation replay only.",
+      "status": "COMPLETE",
+      "task_id": "MM02-T0-REPLAY"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "main state resolves protocol 2.5 / BRANCH_GITOPS / plan / active Gen11 cohort; cohort is not superseded; fresh remains false and repo policy is source-bound/protected.",
+      "status": "PASS",
+      "test_id": "MM02-STATE-POINTER"
+    },
+    {
+      "result": "Generation branch is identical to frozen G=3bb1425d18dbff2f83d69b0738c7151bf4a47355; control-release tree matches the manifest and control-release→G adds only cohort control, assignment and liveness artifacts.",
+      "status": "PASS",
+      "test_id": "MM02-GENERATION-IMMUTABILITY"
+    },
+    {
+      "result": "Active manifest and countable-control v23 freeze the same required control surface; root tree contains the required frozen paths, and the generation delta changes none of them.",
+      "status": "PASS",
+      "test_id": "MM02-FROZEN-CONTROL-CLOSURE"
+    },
+    {
+      "result": "MM02 role, target program, exact phase, goal, branch, token, checkpoint, runtime, parent/control lineage and SAFE_REPLAY_ONLY constraints match the immutable assignment.",
+      "status": "PASS",
+      "test_id": "MM02-ASSIGNMENT-BINDING"
+    },
+    {
+      "result": "Frozen liveness contract is blob-bound to the active control and assignment, binds the exact MM02 branch/report path, marks the lane eligible before its deadline, and this run is before the frozen deadline.",
+      "status": "PASS",
+      "test_id": "MM02-LIVENESS"
+    },
+    {
+      "result": "SHA-256 of the prompt-private capability equals the frozen public MM02 commitment; the raw capability was not exposed or persisted.",
+      "status": "PASS",
+      "test_id": "MM02-AUTH-COMMITMENT"
+    },
+    {
+      "result": "Assigned MM02 worker branch is identical to G and the assigned report path does not exist before write.",
+      "status": "PASS",
+      "test_id": "MM02-PREWRITE-ISOLATION"
+    },
+    {
+      "result": "TASK CONTRACT != PRIMARY TECHNICAL AUTHORITY != EVALUATOR remained explicit; no benchmark, evaluator, private manifest or primary technical source was opened.",
+      "status": "PASS",
+      "test_id": "MM02-DEEPSWE-AUTHORITY-SEPARATION"
+    },
+    {
+      "result": "Fresh evidence, protected-manifest reads, benchmark executions and deep research are all zero.",
+      "status": "PASS",
+      "test_id": "MM02-ZERO-CONSUMPTION"
+    },
+    {
+      "result": "Final signed receipt bytes are generated only as sorted-key, 2-space-indented UTF-8 JSON plus one terminal newline; no tabs or oversized lines are permitted before create-file.",
+      "status": "PASS",
+      "test_id": "MM02-TRANSPORT-BYTES"
+    },
+    {
+      "result": "Frozen G has branch-generation=success and static-control=success; worker/verify/integrate/consolidate/report-admission/transition contexts are pending before this worker receipt exists.",
+      "status": "PENDING_EXPECTED",
+      "test_id": "MM02-STRUCTURAL-STATUS-PREWRITE"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "67386f32430555ea99871246dc493ef5",
+  "worker_auth_commitment": "7b9b613a2030974f31a9f33e258c8fc47ffb70def450fc498e144f30d72c4f3a",
+  "worker_auth_proof": "c95c5940ac093e618f15ce30a6440857e3bdce1fb1290a5902f838abe716f117",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MM02",
+  "worker_id": "MM02"
+}
