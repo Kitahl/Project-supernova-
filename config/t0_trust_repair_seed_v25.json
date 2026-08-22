@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-T0-TRUST-REPAIR-SEED-2.5-2",
+  "schema_version": "PS-T0-TRUST-REPAIR-SEED-2.5-3",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "seed_context": "supernova/t0-trust-repair-seed",
@@ -51,7 +51,8 @@
     "tests/test_negative_zero_outcomes.py",
     "tests/test_bootstrap_root_tcb_and_head_binding.py",
     "tests/test_bootstrap_status_provenance.py",
-    "tests/test_validator_environment_contract.py"
+    "tests/test_validator_environment_contract.py",
+    "tests/test_gen9_reset_compat_root.py"
   ],
   "required_root_candidate_paths": [
     "BRANCH_PROTOCOL.md",
@@ -78,7 +79,8 @@
     "tests/test_negative_zero_outcomes.py",
     "tests/test_bootstrap_root_tcb_and_head_binding.py",
     "tests/test_bootstrap_status_provenance.py",
-    "tests/test_validator_environment_contract.py"
+    "tests/test_validator_environment_contract.py",
+    "tests/test_gen9_reset_compat_root.py"
   ],
   "forbidden_candidate_prefixes": [
     "state/",
