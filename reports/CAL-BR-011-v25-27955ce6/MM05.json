@@ -1,0 +1,303 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "Gen11 T0 MM05 transport/control replay only; no E3 effectiveness, superiority, fresh evidence, mechanism grading, or promotion claim.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "SAFE_REPLAY_ONLY; zero fresh/private/benchmark/research consumption and no E3 execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "canonical_pointer": "main:state/CURRENT.json",
+    "canonical_state_git_identity": "ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9",
+    "control_release_commit_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "control_release_tree_sha": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "e3_schema_git_identity": "13c8be27c0338b63140d0c6128dab41802a60969",
+    "fresh_contract_tests_git_identity": "2bf0e1f39954776de3f4dba586911f352716dccb",
+    "generation_delta": [
+      "assignments/CAL-BR-011-v25-27955ce6.json",
+      "control/CAL-BR-011-v25-27955ce6.json",
+      "liveness/CAL-BR-011-v25-27955ce6.json"
+    ],
+    "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "liveness_git_identity": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "mm05_replay_schema_git_identity": "ca6cfdc70e83bf4fe9c465dc85ebf24ed90e61d9",
+    "prewrite_status": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "protected_references_read": false,
+    "report_schema_git_identity": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "roles_git_identity": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "runtime_receipt_git_identity": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "scientific_evidence_consumed": false,
+    "session_standard_git_identity": "49a41c0f56b092c395bd71a36e66ecc2cda8ae04",
+    "validator_git_identity": "3c2992d5a9239897de9a1130deba65015c24372d",
+    "worker_auth_git_identity": "9498d1d49b8636a3a313dc63be89f4433330c230",
+    "worker_protocol_git_identity": "c32aa5988ed28efa411d78b56ad5cc5d995c4c00",
+    "worker_self_reread_authority": false
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_ONLY_COHORT_1",
+  "executive_status": "FINDINGS_NON_T0: Gen11 replay gating is mechanically typed and structural generation status is success; E3 remains unexecuted with all replay outcomes NOT_MEASURED. Two deferred future-fresh E3 control gaps persist and do not block this T0 replay receipt.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [
+    {
+      "authoritative_control_change": true,
+      "blocker": false,
+      "classification": "CONTROL_GAP",
+      "component": "schemas/mastermind_e3_payload.schema.json",
+      "evidence_refs": [
+        "config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+        "schemas/mastermind_e3_payload.schema.json@13c8be27c0338b63140d0c6128dab41802a60969",
+        "scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "issue:157#issuecomment-5376309306"
+      ],
+      "exact_failure": "The frozen fresh E3 arm schema still permits artifact_sha256=null for each arm. MM05 requires prospective comparison only on actual executable assigned candidates and missing executable artifact/evaluator must remain NOT_MEASURED. The trusted fresh validator applies this schema without a separate non-null artifact existence/identity check.",
+      "issue_id": "O-E3-FRESH-ARTIFACT-NULLABILITY-GAP",
+      "next_action": "Repair in a successor frozen control before any E3 FRESH_EXECUTION; do not mutate Gen11 or infer an E3 result.",
+      "owner": "MM05_CONTROL_SCHEMA_MAINTAINER",
+      "proposed_protocol_2_5_fix_test": "For MM05 FRESH_EXECUTION, require a non-null 64-hex executable artifact hash for every learned/random/no-change arm and bind each hash to an executable artifact existence/identity check before evaluation.",
+      "required_test": "A fresh three-arm fixture with any artifact_sha256=null must fail; all three non-null hashes plus valid artifact identity checks must pass; missing artifact/evaluator must route to NOT_MEASURED rather than fresh scoring.",
+      "severity": "HIGH_BLOCKING_FOR_E3",
+      "status": "OPEN_FUTURE_FRESH",
+      "summary": "Fresh E3 arm artifacts remain nullable despite the role requiring actual executable candidates."
+    },
+    {
+      "authoritative_control_change": true,
+      "blocker": false,
+      "classification": "CONTROL_GAP",
+      "component": "MM05 fresh E3 schema/validator/tests",
+      "evidence_refs": [
+        "schemas/mastermind_e3_payload.schema.json@13c8be27c0338b63140d0c6128dab41802a60969",
+        "scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "tests/test_future_fresh_role_model_contracts.py@2bf0e1f39954776de3f4dba586911f352716dccb",
+        "issue:157#issuecomment-5376309306"
+      ],
+      "exact_failure": "The frozen E3 schema requires per-arm complete_cost objects and matched_envelope_verified=true, but neither the schema nor trusted validator compares arm cost components or enforces a frozen equality/tolerance rule. The frozen regression test reuses an identical arm object for its positive fixture and has no negative mismatched-cost case, so materially different per-arm costs can remain structurally valid while matched_envelope_verified=true.",
+      "issue_id": "O-E3-MATCHED-COMPLETE-COST-SELF-ATTESTATION-GAP",
+      "next_action": "Keep E3 fresh execution disabled until trusted cross-arm cost matching and negative mismatched-cost regressions are frozen.",
+      "owner": "MM05_CONTROL_VALIDATOR_MAINTAINER",
+      "proposed_protocol_2_5_fix_test": "Define the exact per-component complete-cost matching rule or frozen tolerance and enforce it in trusted validation instead of accepting matched_envelope_verified as a bare assertion.",
+      "required_test": "Mutate one arm's proposal_compute, execution_compute, model_tokens, tool_calls, feature_probe_compute, selection_compute, or wall_seconds beyond the frozen tolerance and require validation failure; a fully matched fixture must pass.",
+      "severity": "HIGH_BLOCKING_FOR_E3",
+      "status": "OPEN_FUTURE_FRESH",
+      "summary": "Matched complete cost is recorded and self-attested but not mechanically compared across the three arms."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "model_binding_attestation_git_identity": null,
+  "model_binding_attestation_path": null,
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No executable learned proposal arm was assigned or executed; this scientific result remains typed missing.",
+      "quantity": "LEARNED_PROPOSAL",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No matched random admissible arm was assigned or executed; this scientific result remains typed missing.",
+      "quantity": "RANDOM_ADMISSIBLE",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No no-change scientific arm was executed; this scientific result remains typed missing.",
+      "quantity": "NO_CHANGE",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No equal-compute no-change arm was assigned or executed; this scientific result remains typed missing.",
+      "quantity": "NO_CHANGE_EQUAL_COMPUTE",
+      "status": "NOT_MEASURED",
+      "value": null
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently verifies immutable branch/report/schema/HMAC/lineage. Gen11 replay receipt may proceed through cohort admission; keep E3 fresh execution disabled until the two recorded future-fresh gaps are repaired under a successor frozen control.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    {
+      "requirement": "SAFE_REPLAY_ONLY and zero fresh/private/benchmark/research",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "header.execution_mode == report.mode",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "Mastermind PRE_REVIEW_ONLY; no self-score/promotion",
+      "status": "ALIGNED"
+    },
+    {
+      "requirement": "learned/random/no-change replay outcomes remain NOT_MEASURED without executable artifacts",
+      "status": "ALIGNED_AND_MACHINE_ENFORCED"
+    },
+    {
+      "requirement": "create-once assigned branch + HMAC-2 + origin_reread_claim=false",
+      "status": "ALIGNED"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "CAL-BR-011-v25-27955ce6-MM05",
+  "research_questions": [],
+  "role_payload": {
+    "comparison_reason": "No executable three-arm E3 artifact/evaluator/matched complete-cost evidence was supplied; SAFE_REPLAY_ONLY forbids scoring.",
+    "comparison_status": "NOT_MEASURED",
+    "learned_proposal": {
+      "evidence_refs": [],
+      "reason": "No executable learned artifact/evaluator was assigned or executed in T0 replay.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    },
+    "no_change_equal_compute": {
+      "evidence_refs": [],
+      "reason": "No equal-compute no-change arm was assigned or executed in T0 replay.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    },
+    "random_admissible": {
+      "evidence_refs": [],
+      "reason": "No matched random admissible arm was assigned or executed in T0 replay.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    },
+    "schema_version": "PS-MM05-E3-REPLAY-PAYLOAD-2.5-1",
+    "self_promotion": false
+  },
+  "runtime_implementation_implication": "The frozen GEN8 runtime receipt validates the Math Foundry 3.1.1 / Mastermind 4.4.10 software substrate for replay calibration only and explicitly does not attest model/reasoning identity or E3 execution.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay E3 executable-envelope and learned/random/no-change gating semantics; unexecuted outcomes remain NOT_MEASURED.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM05",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W05 | E3 Mechanism Controls",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "detail": "Active Gen11 is non-superseded; generation and MM05 worker branches were identical to G before first receipt; assigned report was absent; frozen liveness marks MM05 eligible before the deadline.",
+      "status": "PASS",
+      "task": "freeze_branch_liveness"
+    },
+    {
+      "detail": "Control/assignment blobs match canonical state; the control-release tree matches the frozen control; release-to-G changes only assignment/control/liveness cohort objects; the MM05 public commitment and replay-only runtime receipt were verified.",
+      "status": "PASS",
+      "task": "control_auth_runtime"
+    },
+    {
+      "detail": "Frozen validator requires the closed MM05 replay payload in SAFE_REPLAY_ONLY; learned/random/equal-compute no-change outcomes are typed NOT_MEASURED with null values and self-promotion is false.",
+      "status": "PASS",
+      "task": "replay_role_contract"
+    },
+    {
+      "detail": "At exact G before write: supernova/liveness=success, supernova/static-control=success, supernova/branch-generation=success; report/transition/worker/verify/integrate/consolidate contexts remained pending.",
+      "status": "PASS_WITH_PENDING_DOWNSTREAM",
+      "task": "structural_status"
+    },
+    {
+      "detail": "No executable three-arm E3 artifacts/evaluator/matched complete-cost evidence was supplied or executed; T0 SAFE_REPLAY_ONLY forbids scoring.",
+      "status": "NOT_MEASURED",
+      "task": "e3_execution"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "PASS",
+      "test": "active_cohort_not_superseded"
+    },
+    {
+      "result": "PASS",
+      "test": "generation_branch_equals_G"
+    },
+    {
+      "result": "PASS",
+      "test": "worker_branch_equals_G_prewrite"
+    },
+    {
+      "result": "PASS",
+      "test": "assigned_report_absent_prewrite"
+    },
+    {
+      "result": "PASS",
+      "test": "control_blob_matches_state"
+    },
+    {
+      "result": "PASS",
+      "test": "assignment_blob_matches_state"
+    },
+    {
+      "result": "PASS",
+      "test": "control_release_tree_matches_manifest"
+    },
+    {
+      "result": "PASS",
+      "test": "release_to_G_only_cohort_delta"
+    },
+    {
+      "result": "PASS",
+      "test": "mm05_liveness_eligible"
+    },
+    {
+      "result": "PASS",
+      "test": "worker_auth_commitment_sha256"
+    },
+    {
+      "result": "PASS",
+      "test": "header_execution_mode_equals_report_mode"
+    },
+    {
+      "result": "PASS",
+      "test": "mm05_replay_payload_typed_not_measured"
+    },
+    {
+      "result": "FAIL_FUTURE_FRESH_CONTROL",
+      "test": "fresh_artifact_nonnull_machine_enforcement"
+    },
+    {
+      "result": "FAIL_FUTURE_FRESH_CONTROL",
+      "test": "matched_complete_cost_cross_arm_machine_enforcement"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "49261e36a1f92df8c98dd2b50ff0bbcb",
+  "worker_auth_commitment": "9cb54215a604da9aea1570e7ccfc757435aed4643e2a94931a51cdf877c75739",
+  "worker_auth_proof": "b160f62b14f0b5e536ed9c0432faeb611fdbd52201037c767d8123ace31b87bb",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MM05",
+  "worker_id": "MM05"
+}
