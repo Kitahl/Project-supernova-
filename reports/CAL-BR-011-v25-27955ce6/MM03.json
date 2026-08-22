@@ -1,0 +1,195 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "Replay-only transport/report-contract evidence. No SlopCode benchmark outcome or scientific mechanism effect is measured.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "SAFE_REPLAY_ONLY T0 countable calibration. Zeroes are accounting quantities only; SlopCode scientific effect is NOT_MEASURED/null.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_blob": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "branch_report_schema_blob": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "branch_validator_blob": "3c2992d5a9239897de9a1130deba65015c24372d",
+    "canonical_state_source": "main:state/CURRENT.json",
+    "control_manifest_blob": "406f9692430a9d42c7af1455232c759423188e87",
+    "control_release_commit_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "control_release_tree_sha": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "generation_source": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "liveness_contract_blob": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "model_binding_observation": "Model target/identity is GPT-5.6 Sol in the active runtime context; reasoning-effort identity is unavailable, so binding is PARTIAL_UNVERIFIED and nonblocking under the frozen Gen11 policy.",
+    "negative_zero_tests_blob": "d0d480644e8517f6a2525d3cbfda17baf39d449f",
+    "origin_reread_authority": "MM06",
+    "reasoning_nonblocking_tests_blob": "2bf0e1f39954776de3f4dba586911f352716dccb",
+    "roles_blob": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "session_standard_blob": "49a41c0f56b092c395bd71a36e66ecc2cda8ae04",
+    "worker_auth_blob": "9498d1d49b8636a3a313dc63be89f4433330c230",
+    "worker_protocol_blob": "c32aa5988ed28efa411d78b56ad5cc5d995c4c00"
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL_AUDIT",
+  "executive_status": "FINDINGS_OPEN_REPORT_CONTRACT_DEFECT; scientific SlopCode effect remains NOT_MEASURED.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [
+    {
+      "aliases": [
+        "ISSUE_184_RESIDUAL_ACCOUNTING_ZERO_MISCLASSIFICATION"
+      ],
+      "authoritative_control_change": true,
+      "blocker": true,
+      "classification": "ACCOUNTING_ZERO_SEMANTIC_MISCLASSIFICATION_SURFACE",
+      "component": "schemas/branch_report.schema.json negative_zero_record semantics",
+      "evidence_refs": [
+        "schemas/branch_report.schema.json@G#blob:d1534a848402c642e2d91adb1e65192bf0a49a52",
+        "scripts/validate_branch_bus_v251.py@G#blob:3c2992d5a9239897de9a1130deba65015c24372d",
+        "tests/test_negative_zero_outcomes.py@G#blob:d0d480644e8517f6a2525d3cbfda17baf39d449f"
+      ],
+      "exact_failure": "The Gen11 repair correctly forces NOT_MEASURED/UNKNOWN/NOT_APPLICABLE negative_zero_outcomes records to value:null and ACCOUNTING_ZERO records to value:0, but it does not bind ACCOUNTING_ZERO to an accounting quantity class or cross-check quantity semantics against canonical role_payload results. Therefore {quantity:'SlopCode scientific metric',status:'ACCOUNTING_ZERO',value:0,...} is Draft-2020-12-valid even while role_payload.slopcode_result is SCIENTIFIC_METRIC/NOT_MEASURED/null. validate_branch_bus_v251.py does not reject this cross-field semantic contradiction, and test_negative_zero_outcomes.py permits an accounting-zero record but has no falsifier that rejects ACCOUNTING_ZERO applied to a scientific metric.",
+      "issue_id": "MM03-RPT-TYPED-MISSING-006",
+      "next_action": "Repair prospectively through the normal BIL00 v2.5 control path; preserve this receipt's canonical SlopCode NOT_MEASURED/null result and do not infer science from negative_zero_outcomes.",
+      "owner": "BIL00",
+      "proposed_protocol_2_5_fix_test": "Type the quantity class for negative_zero_outcomes. ACCOUNTING_ZERO must be permitted only for an explicit closed set/type of accounting counters, never for SCIENTIFIC_METRIC quantities; scientific missingness must remain null-valued and canonical role payloads remain authoritative. Add a validator cross-check or a schema discriminator strong enough to reject a SlopCode scientific metric mislabeled ACCOUNTING_ZERO.",
+      "required_test": "An otherwise valid MM03 report with role_payload.slopcode_result={result_type:SCIENTIFIC_METRIC,status:NOT_MEASURED,value:null,...} and negative_zero_outcomes containing {quantity:'SlopCode scientific metric',status:'ACCOUNTING_ZERO',value:0,...} must fail trusted validation; a typed resource counter such as benchmark_executions with ACCOUNTING_ZERO/value:0 must pass.",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "summary": "Gen11 closes NOT_MEASURED/0 directly, but ACCOUNTING_ZERO can still be semantically misapplied to a scientific metric and recreate a shadow numeric zero."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "model_binding_attestation_git_identity": null,
+  "model_binding_attestation_path": null,
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No fresh SlopCode measurement was authorized or executed; scientific missingness is null, not numeric zero.",
+      "quantity": "SlopCode scientific metric",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "These are resource-consumption counters, not scientific effect sizes.",
+      "quantity": "fresh evidence / protected reads / benchmark executions / deep research runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 should independently reread/authenticate this immutable receipt, validate exact branch/head/blob/HMAC/schema/session/cost bindings, reproduce MM03-RPT-TYPED-MISSING-006, and let BIL00 deduplicate/repair it prospectively before clean cohort credit.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    "Mastermind remained PRE_REVIEW_ONLY.",
+    "No fresh SlopCode evidence, private-manifest read, benchmark execution, deep research, Foundry/Court mutation, scientific-state mutation, self-grading or promotion occurred.",
+    "Missing scientific evidence is represented canonically as typed NOT_MEASURED with null value, never numeric zero.",
+    "Only the assigned create-once MM03 report path is eligible for write."
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "RPT-CAL-BR-011-v25-27955ce6-MM03",
+  "research_questions": [],
+  "role_payload": {
+    "slopcode_result": {
+      "evidence_refs": [
+        "assignments/CAL-BR-011-v25-27955ce6.json@G#blob:eefcbc10b98cd3e069eb44756e06c2bed306abea",
+        "schemas/branch_report.schema.json@G#blob:d1534a848402c642e2d91adb1e65192bf0a49a52"
+      ],
+      "reason": "T0 countable replay forbids fresh SlopCode evidence and benchmark execution; missing scientific evidence must remain typed missing rather than zero.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    }
+  },
+  "runtime_implementation_implication": "None for scientific performance. The finding concerns the frozen v2.5 report-contract semantic surface only.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay typed missing and NOT_MEASURED semantics; never collapse missing scientific metrics to zero.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM03",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W03 | SlopCode Contracts",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "details": "Canonical main, exact G, frozen control/assignment identities, role/token/branch, supersession state, countability, zero-fresh constraints and pre-write worker-branch identity were checked. Release-to-G adds only assignment/control/liveness and the MM03 branch is identical to G before write.",
+      "status": "PASS",
+      "task": "Frozen lineage and worker eligibility"
+    },
+    {
+      "details": "The required MM03 slopcode_result is SCIENTIFIC_METRIC/NOT_MEASURED with value:null; no benchmark or fresh SlopCode evidence was executed.",
+      "status": "PASS_FOR_CANONICAL_SLOPCODE_RESULT",
+      "task": "Typed missingness replay"
+    },
+    {
+      "details": "The Gen10 direct NOT_MEASURED/0 and arbitrary-field shadow cases are repaired, but ACCOUNTING_ZERO remains semantically unbound to an accounting quantity class and can be applied to a scientific metric.",
+      "status": "FINDING",
+      "task": "Report-contract adversarial audit"
+    },
+    {
+      "details": "Frozen Gen11 policy makes unavailable reasoning-effort attestation provenance-only/nonblocking; no stronger runtime binding claim is made.",
+      "status": "PASS",
+      "task": "Reasoning-binding nonblocking policy replay"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "main binds generation 11, exact G, expected plan/runtime/checkpoint, control/assignment blobs and a non-superseded countable cohort.",
+      "status": "PASS",
+      "test_id": "MM03-GEN11-LINEAGE-01"
+    },
+    {
+      "result": "Control release -> G changes only cohort assignment, control and liveness; MM03 worker branch is identical to G immediately before write.",
+      "status": "PASS",
+      "test_id": "MM03-GEN11-FROZEN-CLOSURE-02"
+    },
+    {
+      "result": "Prompt-private capability SHA-256 matches the frozen MM03 public commitment; raw secret is not persisted.",
+      "status": "PASS",
+      "test_id": "MM03-GEN11-AUTH-03"
+    },
+    {
+      "result": "Frozen schema/tests reject NOT_MEASURED with numeric zero and reject arbitrary extra fields in negative_zero_outcomes.",
+      "status": "PASS",
+      "test_id": "MM03-GEN11-DIRECT-TYPED-MISSING-04"
+    },
+    {
+      "result": "Frozen negative_zero_record accepts status=ACCOUNTING_ZERO,value=0 for any nonempty quantity string, including 'SlopCode scientific metric'; validator has no semantic cross-check against canonical role_payload.",
+      "status": "FAIL_CONTROL_GAP",
+      "test_id": "MM03-GEN11-ACCOUNTING-ZERO-MISCLASSIFICATION-05"
+    },
+    {
+      "result": "Frozen session/protocol/tests explicitly make unavailable reasoning-effort attestation nonblocking for PARTIAL_UNVERIFIED/UNVERIFIED while preserving evidence requirements for VERIFIED.",
+      "status": "PASS",
+      "test_id": "MM03-GEN11-REASONING-NONBLOCKING-06"
+    },
+    {
+      "result": "Exact G currently reports supernova/branch-generation=success and supernova/static-control=success; worker status is pending at G before the receipt write, as expected.",
+      "status": "PASS_WITH_EXPECTED_PREWRITE_PENDING",
+      "test_id": "MM03-GEN11-STRUCTURAL-PREWRITE-07"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "a173e5444d7656f1865ed1798e1ae3c3",
+  "worker_auth_commitment": "d5d29c40c01d773210aa8bcd880ad7db3d56d79d4552c58c9183410c79dda197",
+  "worker_auth_proof": "fbfbb1320f3c145f81231bf68d7c40a5ecb32586a8db47bc1e3556244ea0c519",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MM03",
+  "worker_id": "MM03"
+}
