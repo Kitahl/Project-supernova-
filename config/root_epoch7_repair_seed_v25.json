@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-ROOT-EPOCH7-REPAIR-SEED-2.5-1",
+  "schema_version": "PS-ROOT-EPOCH7-REPAIR-SEED-2.5-2",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "seed_context": "supernova/root-epoch7-repair-seed",
@@ -29,21 +29,27 @@
   ],
   "allowed_root_candidate_paths": [
     "config/admission_authority.json",
+    "config/authority_bootstrap_v25.json",
     "config/countable_control_set_v25.json",
     "config/root_tcb_epoch_v25.json",
     "config/root_epoch7_repair_epoch_v25.json",
     "scripts/reconcile_open_prs.py",
+    "scripts/reconcile_authority_bootstrap.py",
     "tests/test_gen10_zero_credit_terminal_transition.py",
+    "tests/test_bootstrap_root_tcb_and_head_binding.py",
     "tests/test_gen9_reset_compat_root.py",
     "tests/test_root_epoch6_repair.py"
   ],
   "required_root_candidate_paths": [
     "config/admission_authority.json",
+    "config/authority_bootstrap_v25.json",
     "config/countable_control_set_v25.json",
     "config/root_tcb_epoch_v25.json",
     "config/root_epoch7_repair_epoch_v25.json",
     "scripts/reconcile_open_prs.py",
+    "scripts/reconcile_authority_bootstrap.py",
     "tests/test_gen10_zero_credit_terminal_transition.py",
+    "tests/test_bootstrap_root_tcb_and_head_binding.py",
     "tests/test_gen9_reset_compat_root.py",
     "tests/test_root_epoch6_repair.py"
   ],
