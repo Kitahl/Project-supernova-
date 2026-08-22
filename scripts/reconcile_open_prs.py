@@ -10,6 +10,7 @@ CONTEXTS=("supernova/static-control","supernova/report-admission","supernova/tra
 BOOTSTRAP_CONTEXT="supernova/bootstrap-admission"; BOOTSTRAP_CREATOR="github-actions[bot]"
 BOOTSTRAP_WORKFLOW=".github/workflows/supernova-authority-bootstrap.yml"
 RUN_URL_RE=re.compile(r"^https://github\.com/"+re.escape(REPO)+r"/actions/runs/([0-9]+)$"); HEX40=re.compile(r"^[0-9a-f]{40}$")
+DURABLE_BOOTSTRAP_PROVENANCE="PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED"
 # Backward source-contract markers retained for frozen protocol-2.5 tests:
 # BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
 # BOOTSTRAP_CREATOR = "github-actions[bot]"
@@ -60,15 +61,22 @@ def _run_binds_exact_pr(r,head_sha,base_sha,pr_number):
     return len(matches)==1
 
 def trusted_bootstrap_success(head_sha,base_sha=None,pr_number=None):
+    """Re-derive durable bootstrap provenance from persistent GitHub objects.
+
+    COMPLETED_BOOTSTRAP_RUN_ID is an additional exact-equality constraint when the
+    workflow_run completion bridge supplies it; later reconciler runs remain able
+    to verify the already-published bootstrap status by dereferencing its run URL.
+    """
     if not(isinstance(base_sha,str) and HEX40.fullmatch(base_sha) and isinstance(pr_number,int) and pr_number>0): return False
     completed=os.environ.get("COMPLETED_BOOTSTRAP_RUN_ID","")
-    if not completed.isdigit():return False
+    if completed and not completed.isdigit():return False
     expected=expected_bootstrap_description(pr_number,head_sha,base_sha); valid=[]
     for s in api("/commits/"+head_sha+"/statuses?per_page=100") or []:
         if s.get("context")!=BOOTSTRAP_CONTEXT or s.get("state")!="success" or (s.get("creator") or {}).get("login")!=BOOTSTRAP_CREATOR or s.get("description")!=expected: continue
         m=RUN_URL_RE.fullmatch(str(s.get("target_url") or ""))
-        if not m or m.group(1)!=completed: continue
+        if not m:continue
         rid=m.group(1)
+        if completed and rid!=completed:continue
         try:r=api("/actions/runs/"+rid) or {}
         except Exception:continue
         if r.get("id")!=int(rid) or r.get("path")!=BOOTSTRAP_WORKFLOW or r.get("event")!="pull_request_target" or r.get("status")!="completed" or r.get("conclusion")!="success":continue
