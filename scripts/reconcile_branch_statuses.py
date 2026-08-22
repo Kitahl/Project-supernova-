@@ -16,6 +16,16 @@ def validate(branch,generation_head):
  p=subprocess.run([sys.executable,'scripts/validate_branch_bus_v251.py','--branch',branch,'--generation-head',generation_head],cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
  line=(p.stdout.strip().splitlines()[-1] if p.stdout.strip() else 'validator failed')
  return p.returncode==0,line
+def validate_generation_delta(cohort,generation_head):
+ try:
+  co=json.loads((ROOT/f'control/{cohort}.json').read_text())
+  root=co['control_release_commit_sha'];countable=co.get('calibration_countable') is True
+ except Exception as exc:return False,'generation policy input error '+repr(exc)
+ cmd=[sys.executable,'scripts/generation_delta_guard.py','--root-sha',root,'--generation-head',generation_head,'--cohort',cohort]
+ if countable:cmd.append('--countable')
+ p=subprocess.run(cmd,cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
+ line=(p.stdout.strip().splitlines()[-1] if p.stdout.strip() else 'generation delta guard failed')
+ return p.returncode==0,line
 def validate_liveness(cohort):
  p=subprocess.run([sys.executable,'scripts/liveness_contract_guard.py','--root',str(ROOT),'--cohort',cohort],cwd=ROOT,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False)
  line=(p.stdout.strip().splitlines()[-1] if p.stdout.strip() else 'liveness guard failed')
@@ -31,6 +41,7 @@ def main():
  if h!=G:post(G,'supernova/branch-generation','failure','generation branch missing or moved')
  else:
   ok,msg=validate(gen,G)
+  if ok:ok,msg=validate_generation_delta(cohort,G)
   if ok and state.get('calibration_countable_current') is True:ok,msg=validate_liveness(cohort)
   post(G,'supernova/branch-generation','success' if ok else 'failure',msg)
  for worker,branch in state['worker_branches'].items():

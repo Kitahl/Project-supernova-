@@ -2,15 +2,19 @@
 """Out-of-band receipt-deadline monitor for Revision-4 cohorts.
 
 The monitor consumes an explicit frozen cohort liveness contract. A receipt is on
-time only when it was either observed before the deadline or its immutable branch
-head commit has a GitHub-reported committer timestamp at/before the deadline.
-A receipt first observed after the deadline without trustworthy creation timing is
-fail-closed as RUN_TIMING_UNKNOWN. Missing GitHub receipt is NO_RECEIPT.
+time only when it is directly observed before the deadline, has a separately
+trusted immutable creation-time witness at/before the deadline, or has an
+expected-source exact-head structural status whose GitHub server timestamp proves
+the report existed by the deadline. Git author/committer timestamps are never
+treated as authoritative receipt-creation time. Missing, late, or timing-unknown
+GitHub receipts fail closed after the frozen deadline.
 """
 from __future__ import annotations
 import argparse, datetime as dt, json, os, pathlib, urllib.error, urllib.parse, urllib.request
 from typing import Any, Callable
 UTC=dt.timezone.utc
+EXPECTED_STATUS_CONTEXT='supernova/branch-worker'
+EXPECTED_STATUS_CREATOR='github-actions[bot]'
 
 def parse_time(s: str) -> dt.datetime:
     x=dt.datetime.fromisoformat(s.replace('Z','+00:00'))
@@ -21,40 +25,71 @@ def _observed(meta: Any) -> bool:
     if isinstance(meta,bool): return meta
     return isinstance(meta,dict) and meta.get('exists') is True
 
-def _created(meta: Any) -> dt.datetime | None:
+def _time(meta: Any,key: str) -> dt.datetime | None:
     if not isinstance(meta,dict): return None
-    raw=meta.get('created_at_utc')
+    raw=meta.get(key)
     if not isinstance(raw,str) or not raw: return None
     try: return parse_time(raw)
     except Exception: return None
+
+def _branch_worker_status_witness(statuses: Any) -> dict[str,Any] | None:
+    """Return a server-time witness only from the latest branch-worker status.
+
+    GitHub returns commit statuses in reverse chronological order. We fail closed
+    on a latest wrong-source/non-success/malformed branch-worker status instead
+    of searching past it for an older success.
+    """
+    if not isinstance(statuses,list): return None
+    for status in statuses:
+        if not isinstance(status,dict) or status.get('context')!=EXPECTED_STATUS_CONTEXT:
+            continue
+        creator=(status.get('creator') or {}) if isinstance(status.get('creator'),dict) else {}
+        if status.get('state')!='success' or creator.get('login')!=EXPECTED_STATUS_CREATOR:
+            return None
+        raw=status.get('created_at')
+        if not isinstance(raw,str): return None
+        try: parse_time(raw)
+        except Exception: return None
+        return {
+            'trusted_observed_at_utc':raw,
+            'witness_status_id':status.get('id'),
+            'witness_creator_login':creator.get('login'),
+            'witness_context':EXPECTED_STATUS_CONTEXT,
+        }
+    return None
 
 def evaluate(contract: dict, now: dt.datetime, observe_fn: Callable[[str,str], Any]) -> dict:
     if now.tzinfo is None: raise ValueError('now must be timezone-aware')
     now=now.astimezone(UTC); observations=[]; blocking=[]
     for lane in contract['lanes']:
-        deadline=parse_time(lane['deadline_utc']); meta=observe_fn(lane['branch'],lane['path']); exists=_observed(meta); created=_created(meta)
-        notes=[]
+        deadline=parse_time(lane['deadline_utc']); meta=observe_fn(lane['branch'],lane['path']); exists=_observed(meta)
+        created=_time(meta,'trusted_created_at_utc'); witnessed=_time(meta,'trusted_observed_at_utc'); notes=[]
         if exists:
             if created is not None and created>deadline:
                 receipt_status='RUN_LATE'; late=max(1,int((created-deadline).total_seconds())); blocking.append(lane['lane_id'])
-                notes.append('GitHub branch-head commit timestamp is after frozen deadline.')
+                notes.append('Trusted receipt creation timestamp is after frozen deadline.')
             elif created is not None:
                 receipt_status='RUN_OBSERVED'; late=0
-                notes.append('GitHub branch-head commit timestamp is at/before frozen deadline.')
+                notes.append('Trusted receipt creation timestamp is at/before frozen deadline.')
             elif now<=deadline:
                 receipt_status='RUN_OBSERVED'; late=0
-                notes.append('Receipt was observed before frozen deadline; immutable creation timestamp unavailable.')
+                notes.append('Receipt was directly observed before frozen deadline.')
+            elif witnessed is not None and witnessed<=deadline:
+                receipt_status='RUN_OBSERVED'; late=0
+                notes.append('Expected-source exact-head branch-worker status proves receipt existed by frozen deadline.')
             else:
                 receipt_status='RUN_TIMING_UNKNOWN'; late=max(1,int((now-deadline).total_seconds())); blocking.append(lane['lane_id'])
-                notes.append('Receipt exists after deadline but immutable creation timestamp is unavailable; fail closed.')
+                if witnessed is not None:
+                    notes.append('First trusted exact-head structural witness is after frozen deadline; creation time is unproven.')
+                else:
+                    notes.append('Receipt exists after deadline without a trusted pre-deadline server-time witness; fail closed.')
         elif now>deadline:
             receipt_status='NO_RECEIPT'; late=int((now-deadline).total_seconds()); blocking.append(lane['lane_id']); notes.append('No receipt after frozen deadline.')
         else:
             receipt_status='NO_RECEIPT'; late=0; notes.append('No receipt yet; frozen deadline has not passed.')
         if isinstance(meta,dict):
-            if meta.get('head_sha'): notes.append('head='+str(meta['head_sha']))
-            if meta.get('blob_sha'): notes.append('blob='+str(meta['blob_sha']))
-            if meta.get('created_at_utc'): notes.append('created_at='+str(meta['created_at_utc']))
+            for key,label in [('head_sha','head'),('blob_sha','blob'),('trusted_created_at_utc','trusted_created_at'),('trusted_observed_at_utc','trusted_observed_at'),('witness_creator_login','witness_creator')]:
+                if meta.get(key): notes.append(label+'='+str(meta[key]))
         observations.append({'lane_id':lane['lane_id'],'task_id':None,'associated_chat_ref':None,'expected_window_start':lane['expected_window_start_utc'],'expected_window_end':lane['deadline_utc'],'observation_time':now.isoformat().replace('+00:00','Z'),'receipt_status':receipt_status,'task_state':'TASK_STATE_UNKNOWN','observation_source':'GITHUB_RECEIPT_MONITOR','receipt_ref':f"{lane['branch']}:{lane['path']}" if exists else None,'lateness_seconds':late,'notes':' '.join(notes)})
     return {'schema_version':'PS-LIVENESS-MONITOR-3','cohort_id':contract['cohort_id'],'generation_root_sha':contract['generation_root_sha'],'observation_time':now.isoformat().replace('+00:00','Z'),'observations':observations,'blocking_lanes':blocking,'transition_liveness_pass':not blocking}
 
@@ -75,9 +110,9 @@ def github_observer(repo: str, token: str):
         try:
             b=req(api+'/branches/'+urllib.parse.quote(branch,safe='')); head=(b.get('commit') or {}).get('sha'); meta['head_sha']=head
             if isinstance(head,str):
-                c=req(api+'/commits/'+head); raw=((c.get('commit') or {}).get('committer') or {}).get('date')
-                if isinstance(raw,str): meta['created_at_utc']=raw
-                meta['committer_login']=((c.get('committer') or {}).get('login'))
+                statuses=req(api+'/commits/'+head+'/statuses?per_page=100')
+                witness=_branch_worker_status_witness(statuses)
+                if witness: meta.update(witness)
         except Exception as exc:
             meta['timing_error']=type(exc).__name__
         return meta

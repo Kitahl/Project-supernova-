@@ -20,7 +20,9 @@ For active cohort `<C>`:
 Permanent per-worker forks are not used unless a genuinely separate security principal is required. Branch isolation is sufficient for ordinary write separation without creating a competing repository truth.
 
 ## Git-native freeze
-A generation control manifest freezes a `control_release_commit_sha`, its exact Git tree SHA, and a closed list of required control paths. Git object identity therefore commits to exact file bytes; workers and validators compare every required path against that frozen commit/tree. The generation branch may add only its immutable control and assignment before final head `G` is recorded.
+A generation control manifest freezes a `control_release_commit_sha`, its exact Git tree SHA, and a closed list of required control paths. Git object identity therefore commits to exact file bytes; workers and validators compare every required path against that frozen commit/tree.
+
+The exact release-to-generation delta is governed by `config/generation_delta_policy_v25.json` and enforced by the authoritative structural writer. For a **countable** v2.5 replay cohort, final generation head `G` must add exactly three immutable cohort objects and nothing else: `control/<C>.json`, `assignments/<C>.json`, and `liveness/<C>.json`. For a non-countable diagnostic generation, `G` adds exactly `control/<C>.json` and `assignments/<C>.json`. Missing, extra, duplicate, or wrong-cohort paths fail closed. Human protocol wording, tests, and structural reconciliation must mechanically agree with that policy.
 
 Every **countable** v2.5 control release must include `config/protocol_freeze.json`, `benchmark/pool_disposition.json`, the v2.5 three-context admission workflow, verifier/integrator schemas, branch reconcilers and their negative tests in the required-control set. GitHub Actions in the countable path are pinned by full commit SHA; validation dependencies are hash-locked or equivalently frozen.
 

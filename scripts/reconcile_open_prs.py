@@ -48,17 +48,33 @@ def changed_files(repo,base,head):
 def authority_path_changes(changed): return sorted(p for p in changed if p in AUTHORITY_PATHS or p.startswith(AUTHORITY_PREFIXES))
 def expected_bootstrap_description(pr_number,head_sha,base_sha): return f"trusted-main bootstrap PASS pr={pr_number} head={head_sha} base={base_sha}"[:140]
 
+def _run_binds_exact_pr(r,head_sha,base_sha,pr_number):
+    if r.get("head_sha")!=head_sha:return False
+    prs=r.get("pull_requests") or []
+    if not isinstance(prs,list):return False
+    matches=[]
+    for p in prs:
+        if not isinstance(p,dict) or p.get("number")!=pr_number:continue
+        ph=p.get("head") or {}; pb=p.get("base") or {}
+        if ph.get("sha")==head_sha and pb.get("sha")==base_sha:matches.append(p)
+    return len(matches)==1
+
 def trusted_bootstrap_success(head_sha,base_sha=None,pr_number=None):
     if not(isinstance(base_sha,str) and HEX40.fullmatch(base_sha) and isinstance(pr_number,int) and pr_number>0): return False
+    completed=os.environ.get("COMPLETED_BOOTSTRAP_RUN_ID","")
+    if not completed.isdigit():return False
     expected=expected_bootstrap_description(pr_number,head_sha,base_sha); valid=[]
     for s in api("/commits/"+head_sha+"/statuses?per_page=100") or []:
         if s.get("context")!=BOOTSTRAP_CONTEXT or s.get("state")!="success" or (s.get("creator") or {}).get("login")!=BOOTSTRAP_CREATOR or s.get("description")!=expected: continue
         m=RUN_URL_RE.fullmatch(str(s.get("target_url") or ""))
-        if not m: continue
+        if not m or m.group(1)!=completed: continue
         rid=m.group(1)
         try:r=api("/actions/runs/"+rid) or {}
         except Exception:continue
-        if r.get("id")==int(rid) and r.get("path")==BOOTSTRAP_WORKFLOW and r.get("event")=="pull_request_target" and r.get("status")=="completed" and r.get("conclusion")=="success" and (r.get("repository") or {}).get("full_name")==REPO and (r.get("actor") or {}).get("login")==OWNER: valid.append(rid)
+        if r.get("id")!=int(rid) or r.get("path")!=BOOTSTRAP_WORKFLOW or r.get("event")!="pull_request_target" or r.get("status")!="completed" or r.get("conclusion")!="success":continue
+        if (r.get("repository") or {}).get("full_name")!=REPO or (r.get("actor") or {}).get("login")!=OWNER:continue
+        if not _run_binds_exact_pr(r,head_sha,base_sha,pr_number):continue
+        valid.append(rid)
     return len(set(valid))==1
 
 def pr_metadata_errors(pr):

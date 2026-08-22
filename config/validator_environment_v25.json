@@ -1,0 +1,18 @@
+{
+  "schema_version": "PS-VALIDATOR-ENVIRONMENT-2.5-1",
+  "protocol_version": "2.5",
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "status": "FROZEN_FAIL_CLOSED",
+  "runner_image": "ubuntu-24.04",
+  "runner_image_version": "20260816.277.1",
+  "runner_os_release": "24.04.4",
+  "runner_agent_version_observed": "2.336.0",
+  "python_version": "3.13.15",
+  "git_version": "2.55.0",
+  "actions_checkout_sha": "11bd71901bbe5b1630ceea73d27597364c9af683",
+  "actions_setup_python_sha": "a26af69be951a213d495a4c3e4e4022e16d87065",
+  "dependency_contract": "requirements-validation.lock --require-hashes --only-binary=:all:",
+  "reference_observation": "GitHub Actions Candidate Diagnostics run 32536188456 / job 96937453514 on 2026-08-21",
+  "enforcement": "Every countable or privileged validation workflow covered by root TCB epoch 5 must execute scripts/assert_validator_environment.py before trusted validation or status publication. Any image/Python/Git drift fails closed and requires a reviewed protocol-2.5 control update before new countable credit.",
+  "environment_drift_is_pass": false
+}
