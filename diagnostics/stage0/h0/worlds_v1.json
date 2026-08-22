@@ -1,0 +1,150 @@
+{
+  "schema_version": "PS-H0-EXACT-WORLDS-1",
+  "authority": "NONE_SYNTHETIC_QUALIFICATION_ONLY",
+  "protocol_version": "2.5",
+  "specification_revision": 4,
+  "fresh_evidence": false,
+  "scientific_credit": 0,
+  "worlds": [
+    {
+      "world_id": "H0-NILPOTENT-CHAIN",
+      "state_id": "s-nilpotent",
+      "horizon": 3,
+      "budget": 10,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"chain_start": 8.0, "static": 2.0},
+      "sound_bounds": {
+        "chain_start": [[7.5, 8.5]],
+        "static": [[1.5, 2.5]]
+      },
+      "expected_certified_winner": "chain_start",
+      "properties": {"pairwise_branching_projection_spectral_radius": 0.0, "valuable_acyclic_chain": true}
+    },
+    {
+      "world_id": "H0-DEAD-ALTERNATIVE",
+      "state_id": "s-dead",
+      "horizon": 2,
+      "budget": 8,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"useful": 5.0, "dead": -4.0},
+      "sound_bounds": {
+        "useful": [[4.5, 5.5]],
+        "dead": [[-4.0, -4.0]]
+      },
+      "expected_certified_winner": "useful",
+      "properties": {"certified_dead_alternative": "dead"}
+    },
+    {
+      "world_id": "H0-MULTI-PARENT",
+      "state_id": "s-multiparent",
+      "horizon": 4,
+      "budget": 12,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"collect_both": 9.0, "single_parent": 1.0},
+      "sound_bounds": {
+        "collect_both": [[8.4, 9.5]],
+        "single_parent": [[0.5, 1.5]]
+      },
+      "expected_certified_winner": "collect_both",
+      "properties": {"requires_joint_parent_set": ["p1", "p2"], "pairwise_credit_is_incomplete": true}
+    },
+    {
+      "world_id": "H0-EXPENSIVE-OPTIMAL",
+      "state_id": "s-cost",
+      "horizon": 2,
+      "budget": 10,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"expensive_optimal": 7.0, "cheap_distractor": 5.0},
+      "sound_bounds": {
+        "expensive_optimal": [[6.6, 7.4]],
+        "cheap_distractor": [[4.5, 5.5]]
+      },
+      "expected_certified_winner": "expensive_optimal",
+      "properties": {"complete_cost": {"expensive_optimal": 9.0, "cheap_distractor": 1.0}}
+    },
+    {
+      "world_id": "H0-MISLEADING-LOW-FIDELITY",
+      "state_id": "s-fidelity",
+      "horizon": 2,
+      "budget": 10,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"true_good": 9.0, "true_bad": 2.0},
+      "sound_bounds": {
+        "true_good": [[8.5, 9.5]],
+        "true_bad": [[1.5, 2.5]]
+      },
+      "expected_certified_winner": "true_good",
+      "properties": {"low_fidelity_score": {"true_good": 0.1, "true_bad": 0.9}, "low_fidelity_is_non_authoritative": true}
+    },
+    {
+      "world_id": "H0-CORRELATED-CALIBRATED",
+      "state_id": "s-correlated",
+      "horizon": 2,
+      "budget": 10,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"a": 6.0, "b": 5.5},
+      "sound_bounds": {
+        "a": [[5.0, 7.0]],
+        "b": [[4.5, 6.5]]
+      },
+      "expected_certified_winner": null,
+      "properties": {"calibrated_estimator_correlation": 0.95, "independence_claim": false}
+    },
+    {
+      "world_id": "H0-INTERVAL-WIDENING",
+      "state_id": "s-widen",
+      "horizon": 2,
+      "budget": 10,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"a": 4.0, "b": 3.8},
+      "sound_bounds": {
+        "a": [[3.0, 5.0]],
+        "b": [[3.0, 4.6]]
+      },
+      "expected_certified_winner": null,
+      "properties": {"calibrated_interval_sequence": [[3.6, 4.4], [3.1, 4.9]], "widening_is_legal": true}
+    },
+    {
+      "world_id": "H0-SEMANTIC-EXPIRY",
+      "state_id": "s-expiry",
+      "horizon": 2,
+      "budget": 10,
+      "semantic_version": "lambda-h0-v2",
+      "q_star": {"new_semantics": 6.0, "fallback": 3.0},
+      "sound_bounds": {
+        "new_semantics": [[5.5, 6.5]],
+        "fallback": [[2.5, 3.5]]
+      },
+      "expected_certified_winner": "new_semantics",
+      "properties": {"stale_semantic_version": "lambda-h0-v1", "stale_bound_must_fail_scope": true}
+    },
+    {
+      "world_id": "H0-CONTRADICTORY-SOUND",
+      "state_id": "s-contradiction",
+      "horizon": 1,
+      "budget": 5,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"a": 2.0, "b": 1.0},
+      "sound_bounds": {
+        "a": [[1.5, 2.5], [3.0, 3.5]],
+        "b": [[0.5, 1.5]]
+      },
+      "expected_error": "BOUND_CONTRADICTION",
+      "properties": {"contradiction_must_fail_closed": true}
+    },
+    {
+      "world_id": "H0-UNEQUAL-HEURISTIC-ALLOCATION",
+      "state_id": "s-heuristic",
+      "horizon": 2,
+      "budget": 10,
+      "semantic_version": "lambda-h0-v1",
+      "q_star": {"a": 5.0, "b": 4.9},
+      "sound_bounds": {
+        "a": [[4.0, 6.0]],
+        "b": [[4.0, 5.9]]
+      },
+      "expected_certified_winner": null,
+      "properties": {"heuristic_priority": {"a": 100.0, "b": -100.0}, "heuristic_must_not_narrow_sound_interval": true}
+    }
+  ]
+}
