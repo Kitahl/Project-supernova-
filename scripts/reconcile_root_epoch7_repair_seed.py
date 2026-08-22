@@ -188,6 +188,14 @@ def main():
         admission = load(tmp, "config/admission_authority.json")
         if admission.get("root_tcb_epoch") != 7:
             return fail(sha, "admission authority root epoch not 7", policy)
+        bootstrap_policy = load(tmp, "config/authority_bootstrap_v25.json")
+        if bootstrap_policy.get("root_tcb_epoch_required") != 7:
+            return fail(sha, "authority bootstrap policy root epoch not 7", policy)
+        bootstrap_checker = (tmp / "scripts/reconcile_authority_bootstrap.py").read_text(encoding="utf-8")
+        if '"root_tcb_epoch": 7' not in bootstrap_checker or '"root_tcb_epoch_required": 7' not in bootstrap_checker:
+            return fail(sha, "authority bootstrap checker did not migrate to root epoch 7", policy)
+        if not (tmp / "tests/test_bootstrap_root_tcb_and_head_binding.py").is_file():
+            return fail(sha, "bootstrap root/head regression migration missing", policy)
         helpers = set(admission.get("trusted_authority_helpers") or [])
         if not set(policy["seed_paths"][:3]).issubset(helpers):
             return fail(sha, "epoch7 authority does not protect installed seed", policy)
@@ -203,7 +211,10 @@ def main():
         frozen = set(control_set.get("required_control_paths") or [])
         required_frozen = set(policy["seed_paths"]) | {
             policy["one_shot_marker_path"],
+            "config/authority_bootstrap_v25.json",
             "scripts/reconcile_open_prs.py",
+            "scripts/reconcile_authority_bootstrap.py",
+            "tests/test_bootstrap_root_tcb_and_head_binding.py",
             "tests/test_gen10_zero_credit_terminal_transition.py",
             "tests/test_gen9_reset_compat_root.py",
             "tests/test_root_epoch6_repair.py",
