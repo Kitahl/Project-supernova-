@@ -21,6 +21,7 @@ class T0TrustRepairSeedTests(unittest.TestCase):
         self.assertEqual(allowed,required)
         self.assertIn('scripts/check_lane_liveness.py',required)
         self.assertIn('scripts/reconcile_open_prs.py',required)
+        self.assertIn('scripts/reconcile_authority_bootstrap.py',required)
         self.assertIn('config/root_tcb_epoch_v25.json',required)
         self.assertIn('state/',self.p['forbidden_candidate_prefixes'])
 
@@ -37,11 +38,13 @@ class T0TrustRepairSeedTests(unittest.TestCase):
         self.assertIn('statuses: write',text)
         self.assertIn('cd trusted && python3 scripts/reconcile_t0_trust_repair_seed.py',text)
 
-    def test_seed_requires_provenance_environment_and_generation_repairs(self):
+    def test_seed_requires_provenance_environment_generation_and_bootstrap_checker_repairs(self):
         text=SCRIPT.read_text()
         self.assertIn('COMPLETED_BOOTSTRAP_RUN_ID',text)
         self.assertIn('validator_environment_v25.json',text)
         self.assertIn('generation_delta_policy_v25.json',text)
         self.assertIn('negative_zero_outcomes remains untyped',text)
+        self.assertIn('bootstrap invariant checker does not accept strengthened provenance contract',text)
+        self.assertIn('bootstrap invariant checker does not protect validator environment contract',text)
 
 if __name__=='__main__': unittest.main()
