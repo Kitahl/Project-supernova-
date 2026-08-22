@@ -1,0 +1,253 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "T0 replay-only Mastermind PRE_REVIEW_ONLY control audit; no benchmark outcome, self-improvement, promotion or Goal-2 gain.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "GitHub control reads and deterministic report/HMAC construction only; no private-vault, benchmark, fresh evidence or deep research.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment": "assignments/CAL-BR-011-v25-27955ce6.json@eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "branch_report_schema": "schemas/branch_report.schema.json@d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "canonical_state": "main:state/CURRENT.json@ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9",
+    "control_manifest": "control/CAL-BR-011-v25-27955ce6.json@406f9692430a9d42c7af1455232c759423188e87",
+    "control_release_commit": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "control_release_tree": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "countable_control_set": "config/countable_control_set_v25.json@6d3ef8edb30d2cdc5926e2b6023b50beb1240889",
+    "future_contract_tests": "tests/test_future_fresh_role_model_contracts.py@2bf0e1f39954776de3f4dba586911f352716dccb",
+    "generation_head": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "liveness_contract": "liveness/CAL-BR-011-v25-27955ce6.json@019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "mm07_fresh_schema": "schemas/mastermind_mm07_payload.schema.json@5e21ca60605f5975d3603c91f3a1ed25884f30b5",
+    "mm07_replay_schema": "schemas/mastermind_mm07_replay_payload.schema.json@23f2cc956e0e591ebee30b6c19d8f682390394b5",
+    "prewrite_ci_snapshot": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "roles": "config/roles.json@04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "runtime_receipt": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json@ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "session_standard": "SESSION_STANDARD.md@49a41c0f56b092c395bd71a36e66ecc2cda8ae04",
+    "trusted_validator": "scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+    "typed_event_schema": "schemas/typed_event.schema.json@ed9fec7b52fd4c43e9698b2150314aa5b35d3414",
+    "worker_auth": "config/worker_auth.json@9498d1d49b8636a3a313dc63be89f4433330c230"
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_PUBLIC_CONTROL_AUDIT",
+  "executive_status": "CONTROL_DEFECT_FOUND_PRE_REVIEW_ONLY",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [
+    {
+      "aliases": [
+        "MM07_STAGE0_TYPED_TRACE_AND_BOUNDED_CANDIDATE_NOT_VERIFIED"
+      ],
+      "authoritative_control_change": true,
+      "blocker": false,
+      "classification": "FUTURE_FRESH_ROLE_CONTRACT_INCOMPLETE",
+      "component": "future Stage0-LOOP MM07 typed-event and bounded-candidate admission",
+      "evidence_refs": [
+        "schemas/mastermind_mm07_payload.schema.json@5e21ca60605f5975d3603c91f3a1ed25884f30b5",
+        "scripts/validate_branch_bus_v251.py@3c2992d5a9239897de9a1130deba65015c24372d",
+        "tests/test_future_fresh_role_model_contracts.py@2bf0e1f39954776de3f4dba586911f352716dccb",
+        "schemas/typed_event.schema.json@ed9fec7b52fd4c43e9698b2150314aa5b35d3414",
+        "config/countable_control_set_v25.json@6d3ef8edb30d2cdc5926e2b6023b50beb1240889"
+      ],
+      "exact_failure": "The fresh MM07 schema accepts typed_event_trace_ref as any non-empty string and next_candidate as an unconstrained string-or-null. The trusted validator validates only the role_payload schema; it does not dereference the trace, validate it against the typed-event schema, bind an immutable trace blob, or validate a candidate against a frozen mutation/security/cost envelope. The typed-event schema is not in required_control_paths, and the regression fixture accepts typed_event_trace_ref='events' without a trace artifact.",
+      "issue_id": "MM07-V25-004",
+      "next_action": "Carry through MM06/MF06/BIL00; repair only in a newly frozen control generation before fresh Stage0-LOOP.",
+      "owner": "BIL00+MM06",
+      "proposed_protocol_2_5_fix_test": "Freeze typed-event trace and bounded-candidate contracts in required_control_paths; require the trusted validator to resolve immutable identities and reject missing/invalid/unbound traces or out-of-envelope candidates.",
+      "required_test": "FRESH_EXECUTION with typed_event_trace_ref='events' but no frozen trace artifact, or an unbounded candidate, must fail trusted branch validation.",
+      "severity": "HIGH",
+      "status": "OPEN_PARTIAL_REPAIR",
+      "summary": "Most Stage0 bounds are typed, but trace and candidate bounds are still not proven by trusted validation."
+    }
+  ],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No benchmark program/suite is assigned and T0 replay forbids benchmark execution.",
+      "quantity": "BEFORE_AFTER_DELTA",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No score was generated or frozen, so no bounded next candidate was proposed.",
+      "quantity": "NEXT_SELF_CANDIDATE_COUNT",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Mastermind is PRE_REVIEW_ONLY and self-promotion is forbidden.",
+      "quantity": "SELF_PROMOTION_COUNT",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Goal 2 is blocked by Goal 1 and F/M/I were not prospectively compared.",
+      "quantity": "GOAL2_IMPROVER_GAIN",
+      "status": "NOT_MEASURED",
+      "value": null
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 should independently verify the exact branch/report transport, schema, HMAC-2, history and CI; carry MM07-V25-004 through MF06/BIL00.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    {
+      "detail": "Zero fresh/private/benchmark/research consumption.",
+      "item": "T0_COUNTABLE_REPLAY_ONLY",
+      "status": "PASS"
+    },
+    {
+      "detail": "Mastermind did not execute, self-grade or promote.",
+      "item": "MASTERMIND_PRE_REVIEW_ONLY",
+      "status": "PASS"
+    },
+    {
+      "detail": "No suite is assigned; BEFORE/AFTER is NOT_MEASURED.",
+      "item": "SAME_SUITE_BEFORE_AFTER_DIAGNOSTIC_ONLY",
+      "status": "PASS_NOT_MEASURED"
+    },
+    {
+      "detail": "No score was frozen and NEXT_SELF_CANDIDATE is NONE.",
+      "item": "BOUNDED_SELF_PROPOSAL",
+      "status": "PASS_NONE"
+    },
+    {
+      "detail": "Future Stage0-LOOP remains TRAIN-only, <=4 generations, predeclared stop, complete costs, typed events and descriptive rho_improve; not run here.",
+      "item": "STAGE0_LOOP_BOUND",
+      "status": "PRESERVED_NOT_RUN"
+    },
+    {
+      "detail": "Goal 2 remains T3_RW -> T5 -> DR27/E5B with F/M/I separation; not run here.",
+      "item": "GOAL2_F_M_I_SEPARATION",
+      "status": "PRESERVED_NOT_RUN"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6-MM07",
+  "research_questions": [],
+  "role_payload": {
+    "after_result": {
+      "evidence_refs": [
+        "assignments/CAL-BR-011-v25-27955ce6.json@eefcbc10b98cd3e069eb44756e06c2bed306abea",
+        "schemas/mastermind_mm07_replay_payload.schema.json@23f2cc956e0e591ebee30b6c19d8f682390394b5"
+      ],
+      "reason": "SAFE_REPLAY_ONLY with no assigned benchmark; no after score executed or inferred.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    },
+    "before_result": {
+      "evidence_refs": [
+        "assignments/CAL-BR-011-v25-27955ce6.json@eefcbc10b98cd3e069eb44756e06c2bed306abea",
+        "schemas/mastermind_mm07_replay_payload.schema.json@23f2cc956e0e591ebee30b6c19d8f682390394b5"
+      ],
+      "reason": "SAFE_REPLAY_ONLY with no assigned benchmark; no before score executed or inferred.",
+      "result_type": "SCIENTIFIC_METRIC",
+      "status": "NOT_MEASURED",
+      "unit": null,
+      "value": null
+    },
+    "claim_scope": "Replay-only diagnostic/control semantics; no numeric gain, candidate, promotion or Goal-2 credit.",
+    "goal2_credit": false,
+    "next_self_candidate": null,
+    "numeric_delta": null,
+    "schema_version": "PS-MM07-REPLAY-PAYLOAD-2.5-1",
+    "self_promotion": false,
+    "solver_memory_improver_separated": true
+  },
+  "runtime_implementation_implication": "None beyond frozen replay substrate binding; qualified software/transport does not establish solver, memory, improver or self-improvement gain.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay typed before/after diagnostics and bounded self-proposal while preserving solver, memory and improver separation.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MM07",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MM-W07 | Before/After Self-Bench",
+    "target_program": "MASTERMIND"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "result": "Canonical main, exact G, control/assignment identities, release/tree freeze, branch isolation/token, liveness/supersession and report absence verified.",
+      "status": "PASS",
+      "task_id": "MM07-GEN11-TRANSPORT"
+    },
+    {
+      "result": "No benchmark assigned; no numeric before/after executed or inferred.",
+      "status": "NOT_MEASURED",
+      "task_id": "MM07-GEN11-BEFORE-AFTER"
+    },
+    {
+      "result": "No score frozen; no next self-candidate proposed.",
+      "status": "NOT_PROPOSED",
+      "task_id": "MM07-GEN11-SELF-PROPOSAL"
+    },
+    {
+      "result": "F/M/I not prospectively compared; no Goal-2 improver claim.",
+      "status": "NOT_MEASURED",
+      "task_id": "MM07-GEN11-GOAL2"
+    },
+    {
+      "result": "MM07-V25-004 remains open under the frozen fresh-role contract.",
+      "status": "CONTROL_DEFECT_FOUND",
+      "task_id": "MM07-GEN11-FUTURE-CONTRACT-AUDIT"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "result": "Release 27955ce6... tree 83daae52...; release-to-G adds only cohort control, assignment and liveness.",
+      "status": "PASS",
+      "test_id": "CONTROL_RELEASE_BINDING"
+    },
+    {
+      "result": "Generation and MM07 worker branches were identical to G and report path absent immediately pre-write.",
+      "status": "PASS",
+      "test_id": "BRANCH_PREWRITE"
+    },
+    {
+      "result": "Prompt-private capability matched the public commitment; raw capability omitted.",
+      "status": "PASS",
+      "test_id": "AUTH_COMMITMENT"
+    },
+    {
+      "result": "branch-generation/static-control/liveness success; worker/verifier/integrator/consolidation/report-admission/transition-admission pending and not treated as PASS.",
+      "status": "OBSERVED",
+      "test_id": "PREWRITE_CI"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "decafe804bf50a41e7c6c1a1ef5c03a8",
+  "worker_auth_commitment": "8381570a96782767ac210b67645196c3b7018059f9e0aae5aa104e10d70098d2",
+  "worker_auth_proof": "7a1c26e452c73c7add802695e1da1eb6d10530840417360f22c9835bd5d681fd",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MM07",
+  "worker_id": "MM07"
+}
