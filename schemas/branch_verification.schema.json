@@ -1,13 +1,38 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Project Supernova Branch Verification v2.5 hardened r2",
+  "title": "Project Supernova Branch Verification v2.5 hardened r3",
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "session_header", "task_network_plan_id", "cohort_id", "verification_id", "generation_head_sha", "verifier_branch", "runtime_state_id", "executive_status",
-    "safe_report_refs", "quarantined_report_refs", "missing_workers", "worker_auth_verification", "partition_exhaustive_verified",
-    "lane_liveness_observations", "liveness_complete", "verifier_assurance_disposition", "verifier_assurance_records", "checker_pin_bundle_ref", "statement_fidelity_policy",
-    "task_ledger", "issue_ledger", "test_ledger", "plan_alignment", "research_questions", "calibration_pass", "verdict", "pre_ci_observation", "required_post_write_ci_context", "next_action"
+    "session_header",
+    "task_network_plan_id",
+    "cohort_id",
+    "verification_id",
+    "generation_head_sha",
+    "verifier_branch",
+    "runtime_state_id",
+    "executive_status",
+    "safe_report_refs",
+    "quarantined_report_refs",
+    "missing_workers",
+    "worker_auth_verification",
+    "partition_exhaustive_verified",
+    "lane_liveness_observations",
+    "liveness_complete",
+    "verifier_assurance_disposition",
+    "verifier_assurance_records",
+    "checker_pin_bundle_ref",
+    "statement_fidelity_policy",
+    "task_ledger",
+    "issue_ledger",
+    "test_ledger",
+    "plan_alignment",
+    "research_questions",
+    "calibration_pass",
+    "verdict",
+    "pre_ci_observation",
+    "required_post_write_ci_context",
+    "next_action"
   ],
   "properties": {
     "session_header": {"type": "object"},
@@ -82,8 +107,7 @@
       }
     },
     "verifier_assurance": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["checker_id", "exact_version_or_commit", "assurance_type", "implementation_family", "shared_tcb", "statement_identity_scope", "independence_status", "known_advisories", "exploit_regression_digest", "mutation_fuzz_digest", "last_security_review", "scope"],
       "properties": {
         "checker_id": {"type": "string"}, "exact_version_or_commit": {"type": "string"},
@@ -112,6 +136,18 @@
     {
       "if": {"properties": {"verdict": {"const": "VERIFIED_COMPLETE"}}, "required": ["verdict"]},
       "then": {"properties": {"liveness_complete": {"const": true}, "missing_workers": {"maxItems": 0}, "quarantined_report_refs": {"maxItems": 0}, "safe_report_refs": {"minItems": 12, "maxItems": 12}}}
+    },
+    {
+      "if": {"properties": {"verdict": {"const": "VERIFIED_WITH_QUARANTINES"}}, "required": ["verdict"]},
+      "then": {"properties": {"calibration_pass": {"const": false}, "missing_workers": {"maxItems": 0}, "quarantined_report_refs": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"verdict": {"const": "INCOMPLETE"}}, "required": ["verdict"]},
+      "then": {"properties": {"calibration_pass": {"const": false}, "missing_workers": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"verdict": {"const": "INVALID"}}, "required": ["verdict"]},
+      "then": {"properties": {"calibration_pass": {"const": false}}}
     }
   ]
 }

@@ -9,6 +9,7 @@ PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
 ACTIONS_CREATOR='github-actions[bot]'
 WORKERS={'MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01'}
+TERMINAL_VERDICTS={'VERIFIED_COMPLETE','VERIFIED_WITH_QUARANTINES','INCOMPLETE','INVALID'}
 HEX40=re.compile(r'^[0-9a-f]{40}$')
 MINIMUM_HARDENED_CONTROL={
     'PROTOCOL.md','BRANCH_PROTOCOL.md','BRANCH_WORKER_PROTOCOL.md','SESSION_STANDARD.md','plan/PLAN.json',
@@ -126,52 +127,108 @@ def generation_check(state):
     except Exception as x:e.append('generation '+str(x))
     return e
 
+def verification_semantic_errors(v,state):
+    e=[]
+    verdict=v.get('verdict')
+    if verdict not in TERMINAL_VERDICTS:e.append('invalid terminal verifier verdict')
+    if v.get('partition_exhaustive_verified') is not True:e.append('partition not exhaustive')
+    refs=v.get('safe_report_refs',[])
+    qrefs=v.get('quarantined_report_refs',[])
+    missing=v.get('missing_workers',[])
+    if not isinstance(refs,list) or not isinstance(qrefs,list) or not isinstance(missing,list):
+        return e+['verifier partition fields must be arrays']
+    safe_ids=[r.get('worker_id') for r in refs if isinstance(r,dict)]
+    q_ids=[r.get('worker_id') for r in qrefs if isinstance(r,dict)]
+    missing_ids=[x for x in missing if isinstance(x,str)]
+    all_ids=safe_ids+q_ids+missing_ids
+    if any(x not in WORKERS for x in all_ids):e.append('verifier partition contains unknown worker')
+    if len(all_ids)!=len(WORKERS) or set(all_ids)!=WORKERS:e.append('worker partition is not exhaustive over 12 workers')
+    if len(set(all_ids))!=len(all_ids):e.append('worker partition is not disjoint')
+    for r in refs:
+        if not isinstance(r,dict):
+            e.append('safe ref is not object');continue
+        wid=str(r.get('worker_id'))
+        if r.get('path_change_commit_count')!=1:e.append(wid+' path-change count')
+        if r.get('immutable_history_valid') is not True:e.append(wid+' immutable history')
+        if r.get('auth_valid') is not True or r.get('schema_valid') is not True or r.get('strict_session_valid') is not True:e.append(wid+' verification flags')
+        if r.get('execution_mode_valid') is not True and state.get('calibration_countable_current') is True:e.append(wid+' execution mode not verified')
+        if r.get('structural_ci_status')!='PASS':e.append(wid+' worker structural status')
+        if not HEX40.fullmatch(str(r.get('report_creation_commit_sha',''))):e.append(wid+' creation commit')
+    for r in qrefs:
+        if not isinstance(r,dict):
+            e.append('quarantine ref is not object');continue
+        wid=str(r.get('worker_id'))
+        h=r.get('observed_head_sha');b=r.get('observed_blob_sha')
+        if h is not None and not HEX40.fullmatch(str(h)):e.append(wid+' quarantine head')
+        if b is not None and not HEX40.fullmatch(str(b)):e.append(wid+' quarantine blob')
+        if not r.get('reason_code'):e.append(wid+' quarantine reason missing')
+    if verdict=='VERIFIED_COMPLETE':
+        if qrefs or missing or set(safe_ids)!=WORKERS or len(safe_ids)!=len(WORKERS):e.append('complete verdict requires 12 SAFE and zero quarantine/missing')
+    elif verdict=='VERIFIED_WITH_QUARANTINES':
+        if not qrefs or missing:e.append('quarantine verdict requires nonempty quarantine and zero missing')
+        if v.get('calibration_pass') is not False:e.append('nonclean verifier verdict cannot grant calibration pass')
+    elif verdict=='INCOMPLETE':
+        if not missing:e.append('incomplete verdict requires missing workers')
+        if v.get('calibration_pass') is not False:e.append('nonclean verifier verdict cannot grant calibration pass')
+    elif verdict=='INVALID':
+        if v.get('calibration_pass') is not False:e.append('nonclean verifier verdict cannot grant calibration pass')
+    if state.get('calibration_countable_current') is True:
+        liv=v.get('lane_liveness_observations',[])
+        if not isinstance(liv,list) or len(liv)!=12:e.append('liveness partition size')
+        else:
+            lane_ids=[o.get('lane_id') for o in liv if isinstance(o,dict)]
+            if len(lane_ids)!=12 or set(lane_ids)!=WORKERS:e.append('liveness workers do not exhaust 12 lanes')
+            if verdict=='VERIFIED_COMPLETE':
+                if v.get('liveness_complete') is not True:e.append('complete verdict requires liveness complete')
+                for o in liv:
+                    if not isinstance(o,dict) or o.get('receipt_status') in ('NO_RECEIPT','RUN_LATE','RUN_TIMING_UNKNOWN'):
+                        e.append(str(o.get('lane_id') if isinstance(o,dict) else 'unknown')+' liveness not clean')
+        if v.get('checker_pin_bundle_ref')!='config/checker_pins.json':e.append('checker pins not bound')
+        if v.get('statement_fidelity_policy')!='NOT_APPLICABLE_TRANSPORT_ONLY':e.append('transport fidelity policy mismatch')
+    if v.get('pre_ci_observation') not in ('PRE_CI','CI_NOT_OBSERVED'):e.append('invalid temporal CI field')
+    if v.get('required_post_write_ci_context')!='supernova/report-admission':e.append('wrong required report context')
+    return e
+
 def verification_check(state):
     e=[];cohort=state['active_cohort_id'];G=state['generation_head_sha'];vb=state['verifier_branch'];H=branch_head(vb)
     if not H or H==G:return H,['verifier receipt absent']
     try:
         _,v=content(f'verification/{cohort}.json',H)
         if v.get('task_network_plan_id')!=PLAN or v.get('cohort_id')!=cohort or v.get('generation_head_sha')!=G:e.append('verifier identity mismatch')
-        if v.get('verdict')!='VERIFIED_COMPLETE':e.append('verdict not complete')
-        if v.get('partition_exhaustive_verified') is not True:e.append('partition not exhaustive')
-        if v.get('quarantined_report_refs') or v.get('missing_workers'):e.append('quarantine/missing nonempty')
-        refs=v.get('safe_report_refs',[]);ids=[r.get('worker_id') for r in refs if isinstance(r,dict)]
-        if set(ids)!=WORKERS or len(ids)!=len(WORKERS):e.append('safe worker partition mismatch')
-        for r in refs:
-            wid=str(r.get('worker_id'))
-            if r.get('path_change_commit_count')!=1:e.append(wid+' path-change count')
-            if r.get('immutable_history_valid') is not True:e.append(wid+' immutable history')
-            if r.get('auth_valid') is not True or r.get('schema_valid') is not True or r.get('strict_session_valid') is not True:e.append(wid+' verification flags')
-            if r.get('execution_mode_valid') is not True and state.get('calibration_countable_current') is True:e.append(wid+' execution mode not verified')
-            if r.get('structural_ci_status')!='PASS':e.append(wid+' worker structural status')
-            if not HEX40.fullmatch(str(r.get('report_creation_commit_sha',''))):e.append(wid+' creation commit')
-        if state.get('calibration_countable_current') is True:
-            if v.get('liveness_complete') is not True:e.append('liveness incomplete')
-            liv=v.get('lane_liveness_observations',[])
-            if len(liv)!=12:e.append('liveness partition size')
-            for o in liv:
-                if o.get('receipt_status') in ('NO_RECEIPT','RUN_LATE'):e.append(str(o.get('lane_id'))+' liveness '+str(o.get('receipt_status')))
-            if v.get('checker_pin_bundle_ref')!='config/checker_pins.json':e.append('checker pins not bound')
-            if v.get('statement_fidelity_policy')!='NOT_APPLICABLE_TRANSPORT_ONLY':e.append('transport fidelity policy mismatch')
-        if v.get('pre_ci_observation') not in ('PRE_CI','CI_NOT_OBSERVED'):e.append('invalid temporal CI field')
-        if v.get('required_post_write_ci_context')!='supernova/report-admission':e.append('wrong required report context')
+        e.extend(verification_semantic_errors(v,state))
     except Exception as x:e.append('verifier '+str(x))
     return H,e
+
+def integration_semantic_errors(i,v,state):
+    e=[]
+    if i.get('verification_verdict')!=v.get('verdict'):e.append('integration verification verdict mismatch')
+    if i.get('verification_partition_exhaustive')!=v.get('partition_exhaustive_verified'):e.append('integration partition flag mismatch')
+    if i.get('verification_liveness_complete')!=v.get('liveness_complete'):e.append('integration liveness flag mismatch')
+    if i.get('safe_report_refs')!=v.get('safe_report_refs'):e.append('integration safe refs differ from MM06 safe refs')
+    if i.get('quarantines')!=v.get('quarantined_report_refs'):e.append('integration quarantines differ from MM06 quarantine refs')
+    if i.get('missing_workers')!=v.get('missing_workers'):e.append('integration missing workers differ from MM06')
+    if i.get('calibration_pass') is True:
+        clean=(v.get('verdict')=='VERIFIED_COMPLETE' and v.get('calibration_pass') is True and
+               not v.get('quarantined_report_refs') and not v.get('missing_workers') and
+               len(v.get('safe_report_refs',[]))==len(WORKERS) and v.get('liveness_complete') is True)
+        if not clean:e.append('integration calibration pass requires clean MM06 verdict/partition/liveness')
+    if v.get('verdict')!='VERIFIED_COMPLETE' and i.get('calibration_pass') is not False:
+        e.append('diagnostic integration must force calibration pass false')
+    return e
 
 def integration_check(state,verifier_head):
     e=[];cohort=state['active_cohort_id'];G=state['generation_head_sha'];ib=state['integrator_branch'];H=branch_head(ib)
     if not H or H==G:return H,['integration receipt absent']
     try:
         _,i=content(f'integration/{cohort}.json',H)
+        _,v=content(f'verification/{cohort}.json',verifier_head)
         if i.get('task_network_plan_id')!=PLAN or i.get('cohort_id')!=cohort or i.get('generation_head_sha')!=G:e.append('integration identity mismatch')
         if i.get('verification_head_sha')!=verifier_head:e.append('verification head mismatch')
         if i.get('verification_external_ci_context')!='supernova/report-admission' or i.get('verification_external_ci_status')!='PASS' or i.get('verification_external_ci_observed_after_receipt') is not True:e.append('later verifier CI not bound in receipt')
         if i.get('verification_external_ci_source')!=ACTIONS_CREATOR:e.append('integration CI source field is not github-actions[bot]')
         ok,msg=source_bound_pass(verifier_head,'supernova/report-admission')
         if not ok:e.append('later verifier CI source check '+msg)
-        if state.get('calibration_countable_current') is True:
-            if i.get('verification_verdict')!='VERIFIED_COMPLETE' or i.get('verification_partition_exhaustive') is not True or i.get('verification_liveness_complete') is not True:e.append('integration does not bind complete verifier+liveness')
-            if i.get('quarantines'):e.append('integration quarantine nonempty')
+        e.extend(integration_semantic_errors(i,v,state))
     except Exception as x:e.append('integration '+str(x))
     return H,e
 
