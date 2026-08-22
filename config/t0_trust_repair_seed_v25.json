@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-T0-TRUST-REPAIR-SEED-2.5-1",
+  "schema_version": "PS-T0-TRUST-REPAIR-SEED-2.5-2",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "seed_context": "supernova/t0-trust-repair-seed",
@@ -38,6 +38,7 @@
     "scripts/assert_validator_environment.py",
     "scripts/check_lane_liveness.py",
     "scripts/generation_delta_guard.py",
+    "scripts/reconcile_authority_bootstrap.py",
     "scripts/reconcile_branch_statuses.py",
     "scripts/reconcile_open_prs.py",
     ".github/workflows/supernova-authority-bootstrap.yml",
@@ -64,6 +65,7 @@
     "scripts/assert_validator_environment.py",
     "scripts/check_lane_liveness.py",
     "scripts/generation_delta_guard.py",
+    "scripts/reconcile_authority_bootstrap.py",
     "scripts/reconcile_branch_statuses.py",
     "scripts/reconcile_open_prs.py",
     ".github/workflows/supernova-authority-bootstrap.yml",
