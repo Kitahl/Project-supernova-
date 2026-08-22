@@ -1,24 +1,89 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"Project Supernova Branch Integration v2.5 hardened",
-  "type":"object",
-  "additionalProperties":false,
-  "required":[
-    "session_header","task_network_plan_id","cohort_id","integration_id","generation_head_sha","integrator_branch","verification_branch","verification_head_sha",
-    "verification_external_ci_context","verification_external_ci_status","verification_external_ci_source","verification_external_ci_observed_after_receipt",
-    "verification_verdict","verification_partition_exhaustive","verification_liveness_complete","runtime_state_id","executive_status","safe_report_refs",
-    "task_ledger","issue_ledger","test_ledger","plan_alignment","research_questions","quarantines","costs_regressions_unknowns","calibration_pass","next_action"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Supernova Branch Integration v2.5 terminal-safe",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_header",
+    "task_network_plan_id",
+    "cohort_id",
+    "integration_id",
+    "generation_head_sha",
+    "integrator_branch",
+    "verification_branch",
+    "verification_head_sha",
+    "verification_external_ci_context",
+    "verification_external_ci_status",
+    "verification_external_ci_source",
+    "verification_external_ci_observed_after_receipt",
+    "verification_verdict",
+    "verification_partition_exhaustive",
+    "verification_liveness_complete",
+    "runtime_state_id",
+    "executive_status",
+    "safe_report_refs",
+    "task_ledger",
+    "issue_ledger",
+    "test_ledger",
+    "plan_alignment",
+    "research_questions",
+    "quarantines",
+    "missing_workers",
+    "costs_regressions_unknowns",
+    "calibration_pass",
+    "next_action"
   ],
-  "properties":{
-    "session_header":{"type":"object"},
-    "task_network_plan_id":{"const":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
-    "cohort_id":{"type":"string"},"integration_id":{"type":"string"},"generation_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},
-    "integrator_branch":{"type":"string"},"verification_branch":{"type":"string"},"verification_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},
-    "verification_external_ci_context":{"const":"supernova/report-admission"},"verification_external_ci_status":{"const":"PASS"},
-    "verification_external_ci_source":{"const":"github-actions[bot]"},"verification_external_ci_observed_after_receipt":{"const":true},
-    "verification_verdict":{"const":"VERIFIED_COMPLETE"},"verification_partition_exhaustive":{"const":true},"verification_liveness_complete":{"const":true},
-    "runtime_state_id":{"type":"string"},"executive_status":{"type":"string"},"safe_report_refs":{"type":"array","minItems":12,"maxItems":12},
-    "task_ledger":{"type":"array"},"issue_ledger":{"type":"array"},"test_ledger":{"type":"array"},"plan_alignment":{"type":"array"},"research_questions":{"type":"array"},
-    "quarantines":{"type":"array","maxItems":0},"costs_regressions_unknowns":{"type":"object"},"calibration_pass":{"type":"boolean"},"next_action":{"type":"string"}
-  }
+  "properties": {
+    "session_header": {"type": "object"},
+    "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
+    "cohort_id": {"type": "string"},
+    "integration_id": {"type": "string"},
+    "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "integrator_branch": {"type": "string"},
+    "verification_branch": {"type": "string"},
+    "verification_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "verification_external_ci_context": {"const": "supernova/report-admission"},
+    "verification_external_ci_status": {"const": "PASS"},
+    "verification_external_ci_source": {"const": "github-actions[bot]"},
+    "verification_external_ci_observed_after_receipt": {"const": true},
+    "verification_verdict": {"enum": ["VERIFIED_COMPLETE", "VERIFIED_WITH_QUARANTINES", "INCOMPLETE", "INVALID"]},
+    "verification_partition_exhaustive": {"const": true},
+    "verification_liveness_complete": {"type": "boolean"},
+    "runtime_state_id": {"type": "string"},
+    "executive_status": {"type": "string"},
+    "safe_report_refs": {"type": "array", "maxItems": 12},
+    "task_ledger": {"type": "array"},
+    "issue_ledger": {"type": "array"},
+    "test_ledger": {"type": "array"},
+    "plan_alignment": {"type": "array"},
+    "research_questions": {"type": "array"},
+    "quarantines": {"type": "array", "maxItems": 12},
+    "missing_workers": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 12,
+      "items": {"enum": ["MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"]}
+    },
+    "costs_regressions_unknowns": {"type": "object"},
+    "calibration_pass": {"type": "boolean"},
+    "next_action": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"verification_verdict": {"const": "VERIFIED_COMPLETE"}}, "required": ["verification_verdict"]},
+      "then": {"properties": {"verification_liveness_complete": {"const": true}, "safe_report_refs": {"minItems": 12, "maxItems": 12}, "quarantines": {"maxItems": 0}, "missing_workers": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"verification_verdict": {"const": "VERIFIED_WITH_QUARANTINES"}}, "required": ["verification_verdict"]},
+      "then": {"properties": {"calibration_pass": {"const": false}, "quarantines": {"minItems": 1}, "missing_workers": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"verification_verdict": {"const": "INCOMPLETE"}}, "required": ["verification_verdict"]},
+      "then": {"properties": {"calibration_pass": {"const": false}, "missing_workers": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"verification_verdict": {"const": "INVALID"}}, "required": ["verification_verdict"]},
+      "then": {"properties": {"calibration_pass": {"const": false}}}
+    }
+  ]
 }
