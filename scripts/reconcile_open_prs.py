@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import json, os, pathlib, re, shutil, subprocess, sys, tempfile, urllib.request
+import base64
+import json
+import os
+import pathlib
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import urllib.parse
+import urllib.request
 
 REPO=os.environ.get("GITHUB_REPOSITORY","Kitahl/Project-supernova-"); TOKEN=os.environ.get("GITHUB_TOKEN","")
 API="https://api.github.com/repos/"+REPO; OWNER=REPO.split("/",1)[0]
@@ -24,6 +34,18 @@ MF311="57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f"; MM4410
 RUNTIME="9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf"; STAGING_RECEIPT="runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json"
 GEN9_ZERO_CREDIT_RESET="config/gen9_repair_reset_epoch_v25.json"; GEN9_COHORT="CAL-BR-009-v25-b53ab205"; GEN9_G="67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f"; GEN9_STATE_BLOB="31071464144bde197aca0e3f13153be2d85208d7"
 GEN9_SUPERSESSION_PATH=f"superseded/{GEN9_COHORT}.json"; GEN9_SUPERSESSION_DISPOSITION="INVALIDATED_ZERO_CREDIT_MUTABLE_DUAL_WRITER_STRUCTURAL_STATUS"; GEN10_COHORT_PREFIX="CAL-BR-010-v25-"
+
+GEN10_TERMINAL_COHORT="CAL-BR-010-v25-fe539297-r2"
+GEN10_TERMINAL_G="25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f"
+GEN10_TERMINAL_STATE_BLOB="72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6"
+GEN10_MM06_HEAD="500837400c093b0dd53071f649efc022c9314201"
+GEN10_MF06_HEAD="9631e36f289ca8d7bc750eaa01790171419636ef"
+GEN10_SUPERSESSION_PATH=f"superseded/{GEN10_TERMINAL_COHORT}.json"
+GEN10_CONSOLIDATION_PATH=f"history/{GEN10_TERMINAL_COHORT}/CONSOLIDATION.json"
+GEN10_SUPERSESSION_DISPOSITION="INVALIDATED_ZERO_CREDIT_POST_START_AUTHORITATIVE_CONTROL_REPAIR"
+GEN11_COHORT_PREFIX="CAL-BR-011-v25-"
+GEN10_HISTORICAL_INTEGRATION_ISSUE="O-T0-GEN10-HISTORICAL-INTEGRATION-SCHEMA"
+
 AUTHORITY_PREFIXES=("scripts/","tests/","schemas/","config/",".github/workflows/")
 AUTHORITY_PATHS={"PROTOCOL.md","BRANCH_PROTOCOL.md","BRANCH_WORKER_PROTOCOL.md","SESSION_STANDARD.md","plan/PLAN.json","requirements-validation.lock","branch/CONFIG.json","research/open_lanes.json","benchmark/pool_disposition.json"}
 WORKERS={"MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"}
@@ -61,12 +83,7 @@ def _run_binds_exact_pr(r,head_sha,base_sha,pr_number):
     return len(matches)==1
 
 def trusted_bootstrap_success(head_sha,base_sha=None,pr_number=None):
-    """Re-derive durable bootstrap provenance from persistent GitHub objects.
-
-    COMPLETED_BOOTSTRAP_RUN_ID is an additional exact-equality constraint when the
-    workflow_run completion bridge supplies it; later reconciler runs remain able
-    to verify the already-published bootstrap status by dereferencing its run URL.
-    """
+    """Re-derive durable bootstrap provenance from persistent GitHub objects."""
     if not(isinstance(base_sha,str) and HEX40.fullmatch(base_sha) and isinstance(pr_number,int) and pr_number>0): return False
     completed=os.environ.get("COMPLETED_BOOTSTRAP_RUN_ID","")
     if completed and not completed.isdigit():return False
@@ -118,6 +135,32 @@ def _state_blob(root,base): return run(["git","rev-parse",base+":state/CURRENT.j
 def _receipt(cohort,g,blob,disposition,seq,countable):
     return {"schema_version":"PS-COHORT-SUPERSESSION-1","cohort_id":cohort,"generation_head_sha":g,"state_blob_sha":blob,"disposition":disposition,"calibration_credit":0,"fresh_evidence_consumed":False,"replacement_generation_seq":seq,"replacement_countable":countable}
 
+def branch_head_api(branch):
+    try:return api("/branches/"+urllib.parse.quote(branch,safe=""))["commit"]["sha"]
+    except Exception:return None
+
+def github_file(path,ref):
+    obj=api("/contents/"+urllib.parse.quote(path,safe="/")+"?ref="+urllib.parse.quote(ref,safe=""))
+    if not isinstance(obj,dict) or obj.get("type")!="file":raise RuntimeError(f"{path}@{ref}: not file")
+    return obj
+
+def github_json(path,ref):
+    obj=github_file(path,ref)
+    return json.loads(base64.b64decode(obj["content"]).decode("utf-8"))
+
+def latest_status(sha,context):
+    for row in api("/commits/"+sha+"/statuses?per_page=100") or []:
+        if row.get("context")==context:return row
+    return None
+
+def source_bound_status(sha,context,state):
+    row=latest_status(sha,context)
+    return bool(row and row.get("state")==state and (row.get("creator") or {}).get("login")==BOOTSTRAP_CREATOR)
+
+def compare_paths_api(base,head):
+    obj=api("/compare/"+base+"..."+head) or {}
+    return [x.get("filename") for x in obj.get("files",[]) if x.get("status")!="unchanged"]
+
 def exact_noncountable_gen6_bootstrap_parent(root,base,old):
     rc,b=_state_blob(root,base)
     return not rc and b.strip()==GEN6_BOOTSTRAP_STATE_BLOB and _matches(old,{"generation_seq":6,"active_cohort_id":GEN6_BOOTSTRAP_COHORT,"calibration_countable_current":False,"calibration_streak":0,"fresh_allowed_globally":False,"repo_policy_status":"UNVERIFIED_BLOCKING","generation_head_sha":"c86c091c3be840559a46670218705be1277acd8f"})
@@ -164,6 +207,109 @@ def exact_gen9_zero_credit_reset_parent(root,base,old,changed):
     live_expected={"cohort_id":cohort,"generation_seq":10,"generation_root_sha":root_sha,"control_manifest_id":control.get("control_manifest_id"),"control_manifest_git_identity":control_blob,"assignment_id":assignment.get("assignment_id"),"assignment_git_identity":assignment_blob}
     return _matches(control,common) and _matches(assignment,common) and assignment.get("generation_branch")==new.get("generation_branch") and assignment.get("generation_root_sha")==root_sha and assignment.get("control_manifest_git_identity")==control_blob and _matches(live,live_expected) and receipt==_receipt(GEN9_COHORT,GEN9_G,GEN9_STATE_BLOB,GEN9_SUPERSESSION_DISPOSITION,10,True)
 
+def exact_gen10_zero_credit_terminal_parent(root,base,old,changed):
+    rc,b=_state_blob(root,base)
+    old_expected={
+        "protocol_version":"2.5","task_network_plan_id":PLAN,"transport_mode":"BRANCH_GITOPS",
+        "generation_seq":10,"active_cohort_id":GEN10_TERMINAL_COHORT,"generation_head_sha":GEN10_TERMINAL_G,
+        "calibration_countable_current":True,"calibration_required_clean_cohorts":2,"calibration_streak":0,
+        "fresh_allowed_globally":False,"repo_policy_status":"VERIFIED_PROTECTED_SOURCE_BOUND",
+        "network_mode":"GITHUB_BRANCH_CALIBRATION","foundry_sha256":MF311,"mastermind_sha256":MM4410,
+        "runtime_state_id":RUNTIME,"runtime_update_receipt_path":STAGING_RECEIPT,
+    }
+    if rc or b.strip()!=GEN10_TERMINAL_STATE_BLOB or not _matches(old,old_expected) or GEN10_TERMINAL_COHORT in set(old.get("superseded_cohorts") or []):return False
+    try:
+        new=_load_json(root,"state/CURRENT.json")
+        receipt=_load_json(root,GEN10_SUPERSESSION_PATH)
+        con=_load_json(root,GEN10_CONSOLIDATION_PATH)
+    except Exception:return False
+    cohort=new.get("active_cohort_id")
+    if not isinstance(cohort,str) or not cohort.startswith(GEN11_COHORT_PREFIX):return False
+    cp=f"control/{cohort}.json"; ap=f"assignments/{cohort}.json"; lp=f"liveness/{cohort}.json"
+    expected_changed={"state/CURRENT.json",GEN10_SUPERSESSION_PATH,GEN10_CONSOLIDATION_PATH,cp,ap,lp}
+    if set(changed)!=expected_changed:return False
+    if set(new.get("superseded_cohorts") or [])!=set(old.get("superseded_cohorts") or [])|{GEN10_TERMINAL_COHORT}:return False
+    new_expected={
+        "protocol_version":"2.5","task_network_plan_id":PLAN,"transport_mode":"BRANCH_GITOPS",
+        "generation_seq":11,"active_parent_state_git_identity":GEN10_TERMINAL_STATE_BLOB,
+        "generation_branch":f"ps/gen/{cohort}","calibration_countable_current":True,
+        "calibration_required_clean_cohorts":2,"calibration_streak":0,"fresh_allowed_globally":False,
+        "repo_policy_status":"VERIFIED_PROTECTED_SOURCE_BOUND","network_mode":"GITHUB_BRANCH_CALIBRATION",
+        "foundry_sha256":MF311,"mastermind_sha256":MM4410,"runtime_state_id":RUNTIME,
+        "runtime_update_receipt_path":STAGING_RECEIPT,"expected_base_head":base,
+        "current_runtime_blocker":"O-T0-TWO_CLEAN_COUNTABLE_V25_COHORTS",
+        "goal1_status":"BLOCKED_T0","goal2_status":"BLOCKED_BY_GOAL1",
+        "verifier_branch":f"ps/verify/{cohort}","integrator_branch":f"ps/integrate/{cohort}",
+        "consolidation_branch":f"ps/consolidate/{cohort}",
+    }
+    if not _matches(new,new_expected):return False
+    G=new.get("generation_head_sha")
+    if not isinstance(G,str) or not HEX40.fullmatch(G):return False
+    branches=new.get("worker_branches") or {}
+    if set(branches)!=WORKERS or any(branches[w]!=f"ps/work/{cohort}/{w}" for w in WORKERS):return False
+
+    try:
+        control=_load_json(root,cp); assignment=_load_json(root,ap); live=_load_json(root,lp)
+        control_set=_load_json(root,"config/countable_control_set_v25.json")
+    except Exception:return False
+    rc_cb,control_blob=run(["git","rev-parse","HEAD:"+cp],root); rc_ab,assignment_blob=run(["git","rev-parse","HEAD:"+ap],root)
+    control_blob=control_blob.strip(); assignment_blob=assignment_blob.strip()
+    if rc_cb or rc_ab or not HEX40.fullmatch(control_blob) or not HEX40.fullmatch(assignment_blob):return False
+    if new.get("active_control_manifest_git_identity")!=control_blob or new.get("active_assignment_git_identity")!=assignment_blob:return False
+    common={"task_network_plan_id":PLAN,"cohort_id":cohort,"generation_seq":11,"parent_state_git_identity":GEN10_TERMINAL_STATE_BLOB,"expected_base_head":base,"calibration_countable":True}
+    if not _matches(control,common) or not _matches(assignment,common):return False
+    if control.get("protocol_version")!="2.5" or control.get("control_release_commit_sha")!=base or control.get("fresh_allowed") is not False or control.get("worker_auth_scheme")!="PS-HMAC-SHA256-CANONICAL-REPORT-2":return False
+    if set(control.get("required_control_paths") or [])!=set(control_set.get("required_control_paths") or []):return False
+    if assignment.get("generation_branch")!=new.get("generation_branch") or assignment.get("generation_root_sha")!=base or assignment.get("control_manifest_git_identity")!=control_blob:return False
+    live_expected={"cohort_id":cohort,"generation_seq":11,"generation_root_sha":base,"control_manifest_id":control.get("control_manifest_id"),"control_manifest_git_identity":control_blob,"assignment_id":assignment.get("assignment_id"),"assignment_git_identity":assignment_blob}
+    if not _matches(live,live_expected):return False
+
+    if branch_head_api(new["generation_branch"])!=G:return False
+    if set(compare_paths_api(base,G))!={cp,ap,lp}:return False
+    try:
+        if github_file(cp,G).get("sha")!=control_blob or github_file(ap,G).get("sha")!=assignment_blob:return False
+        if github_file(lp,G).get("sha")!=run(["git","rev-parse","HEAD:"+lp],root)[1].strip():return False
+    except Exception:return False
+    role_branches=list(branches.values())+[new["verifier_branch"],new["integrator_branch"],new["consolidation_branch"]]
+    if any(branch_head_api(branch)!=G for branch in role_branches):return False
+
+    workers=assignment.get("workers") or {}
+    if set(workers)!=WORKERS:return False
+    for wid in WORKERS:
+        constraints=workers[wid].get("constraints") or []
+        if not any("HMAC input contract is separate from committed-file byte contract" in str(x) for x in constraints):return False
+        if not any("outgoing committed bytes MUST equal json.dumps(report,sort_keys=True,indent=2,ensure_ascii=False)+'\\n'" in str(x) and "abort without write on mismatch" in str(x) for x in constraints):return False
+
+    try:
+        ver=github_json(f"verification/{GEN10_TERMINAL_COHORT}.json",GEN10_MM06_HEAD)
+        integ=github_json(f"integration/{GEN10_TERMINAL_COHORT}.json",GEN10_MF06_HEAD)
+    except Exception:return False
+    if not _matches(ver,{"task_network_plan_id":PLAN,"cohort_id":GEN10_TERMINAL_COHORT,"generation_head_sha":GEN10_TERMINAL_G,"verdict":"VERIFIED_WITH_QUARANTINES","partition_exhaustive_verified":True,"calibration_pass":False,"liveness_complete":True,"required_post_write_ci_context":"supernova/report-admission"}):return False
+    safe=ver.get("safe_report_refs") or []; quarantine=ver.get("quarantined_report_refs") or []; missing=ver.get("missing_workers") or []
+    if len(safe)!=11 or {r.get("worker_id") for r in safe if isinstance(r,dict)}!=WORKERS-{"MM02"}:return False
+    if len(quarantine)!=1 or quarantine[0].get("worker_id")!="MM02" or missing:return False
+    if not source_bound_status(GEN10_MM06_HEAD,"supernova/branch-verify","success"):return False
+    if not source_bound_status(GEN10_MM06_HEAD,"supernova/report-admission","success"):return False
+
+    if not _matches(integ,{"task_network_plan_id":PLAN,"cohort_id":GEN10_TERMINAL_COHORT,"generation_head_sha":GEN10_TERMINAL_G,"verification_head_sha":GEN10_MM06_HEAD,"verification_external_ci_context":"supernova/report-admission","verification_external_ci_status":"PASS","verification_external_ci_source":"github-actions[bot]","verification_external_ci_observed_after_receipt":True,"verification_verdict":"VERIFIED_WITH_QUARANTINES","verification_partition_exhaustive":True,"calibration_pass":False}):return False
+    if integ.get("safe_report_refs")!=safe or integ.get("quarantines")!=quarantine or integ.get("missing_workers")!=missing:return False
+    if not source_bound_status(GEN10_MF06_HEAD,"supernova/branch-integrate","failure"):return False
+
+    if con.get("task_network_plan_id")!=PLAN or con.get("cohort_id")!=GEN10_TERMINAL_COHORT or con.get("generation_head_sha")!=GEN10_TERMINAL_G:return False
+    if con.get("verification_head_sha")!=GEN10_MM06_HEAD or con.get("integration_head_sha")!=GEN10_MF06_HEAD:return False
+    if con.get("expected_main_head")!=base or con.get("calibration_counted") is not False:return False
+    if con.get("repo_policy_observed_protected") is not True or con.get("repo_policy_source_bound_contexts_verified") is not True:return False
+    if (con.get("static_control_context") or {}).get("status")!="PASS":return False
+    rac=con.get("report_admission_context") or {}
+    if rac.get("status")!="PASS" or rac.get("verification_head_sha")!=GEN10_MM06_HEAD:return False
+    if (con.get("transition_admission_context") or {}).get("required_on_exact_consolidation_head") is not True:return False
+    refs=set(con.get("safe_history_refs") or [])
+    if f"github-status:{GEN10_MF06_HEAD}:supernova/branch-integrate=failure" not in refs:return False
+    if f"issue:#209:{GEN10_HISTORICAL_INTEGRATION_ISSUE}" not in refs:return False
+
+    if receipt!=_receipt(GEN10_TERMINAL_COHORT,GEN10_TERMINAL_G,GEN10_TERMINAL_STATE_BLOB,GEN10_SUPERSESSION_DISPOSITION,11,True):return False
+    return True
+
 def report_admission(root,base,changed):
     if "state/CURRENT.json" not in changed:return []
     rc,text=run(["git","show",base+":state/CURRENT.json"],root)
@@ -172,7 +318,7 @@ def report_admission(root,base,changed):
         old=json.loads(text)
         for predicate in (exact_noncountable_gen6_bootstrap_parent,):
             if predicate(root,base,old):return []
-        for predicate in (exact_invalidated_gen7_repair_parent,exact_noncountable_substrate_staging_parent,exact_gen9_zero_credit_reset_parent):
+        for predicate in (exact_invalidated_gen7_repair_parent,exact_noncountable_substrate_staging_parent,exact_gen9_zero_credit_reset_parent,exact_gen10_zero_credit_terminal_parent):
             if predicate(root,base,old,changed):return []
         cohort=old["active_cohort_id"]; h=root/"history"/cohort
         con=_load_json(h,"CONSOLIDATION.json"); ver=_load_json(h,"verification.json"); integ=_load_json(h,"integration.json"); e=[]
