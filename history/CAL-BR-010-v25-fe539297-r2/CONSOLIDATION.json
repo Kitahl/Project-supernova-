@@ -1,0 +1,45 @@
+{
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "consolidation_id": "PS-BIL00-CAL-BR-010-v25-fe539297-r2-INVALIDATED_ZERO_CREDIT_POST_START_AUTHORITATIVE_CONTROL_REPAIR",
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "verification_branch": "ps/verify/CAL-BR-010-v25-fe539297-r2",
+  "verification_head_sha": "500837400c093b0dd53071f649efc022c9314201",
+  "integration_branch": "ps/integrate/CAL-BR-010-v25-fe539297-r2",
+  "integration_head_sha": "9631e36f289ca8d7bc750eaa01790171419636ef",
+  "expected_main_head": "32587e884004a39e326710d2a21ae449eed4f836",
+  "safe_history_refs": [
+    "verification/CAL-BR-010-v25-fe539297-r2.json@500837400c093b0dd53071f649efc022c9314201#fffaa0fca67d3cb1fd724c3dd57bc717fc0d36de",
+    "integration/CAL-BR-010-v25-fe539297-r2.json@9631e36f289ca8d7bc750eaa01790171419636ef#f7ef7983a45a7ba614f22717a25f451254c893f5",
+    "github-status:500837400c093b0dd53071f649efc022c9314201:supernova/branch-verify=success",
+    "github-status:500837400c093b0dd53071f649efc022c9314201:supernova/report-admission=success",
+    "github-status:9631e36f289ca8d7bc750eaa01790171419636ef:supernova/branch-integrate=failure",
+    "issue:#182",
+    "issue:#183",
+    "issue:#184",
+    "issue:#194",
+    "issue:#195",
+    "issue:#197",
+    "issue:#199",
+    "issue:#209:O-T0-GEN10-HISTORICAL-INTEGRATION-SCHEMA"
+  ],
+  "next_state_path": "state/CURRENT.json",
+  "calibration_counted": false,
+  "repo_policy_observed_protected": true,
+  "repo_policy_source_bound_contexts_verified": true,
+  "static_control_context": {
+    "context": "supernova/static-control",
+    "status": "PASS"
+  },
+  "report_admission_context": {
+    "context": "supernova/report-admission",
+    "status": "PASS",
+    "verification_head_sha": "500837400c093b0dd53071f649efc022c9314201"
+  },
+  "transition_admission_context": {
+    "context": "supernova/transition-admission",
+    "required_on_exact_consolidation_head": true
+  },
+  "benchmark_actions": [],
+  "next_action": "Preserve Gen10 as INVALIDATED_ZERO_CREDIT_POST_START_AUTHORITATIVE_CONTROL_REPAIR with SAFE=11, MM02 quarantined, missing=0, calibration streak unchanged at 0, fresh=false, and historical branch-integrate=failure preserved under #209; construct the replacement countable protocol-2.5 cohort from exact accepted main under root-TCB epoch 6 / countable-control-set v20."
+}
