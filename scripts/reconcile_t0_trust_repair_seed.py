@@ -16,6 +16,8 @@ EXPECTED_ENV={
  'python_version':'3.13.15',
  'git_version':'2.55.0'
 }
+STRONG_BOOTSTRAP_PROVENANCE='DESIGNATED_COMPLETED_WORKFLOW_RUN_ID_AND_EXACT_PR_HEAD_BASE_REQUIRED'
+
 
 def api(path,method='GET',data=None):
  req=urllib.request.Request(API+path,data=(json.dumps(data).encode() if data is not None else None),method=method)
@@ -24,22 +26,27 @@ def api(path,method='GET',data=None):
  with urllib.request.urlopen(req,timeout=30) as r:
   raw=r.read();return json.loads(raw) if raw else None
 
+
 def run(cmd,cwd=ROOT):
  p=subprocess.run(cmd,cwd=str(cwd),text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False);return p.returncode,p.stdout
+
 
 def load(root,path):return json.loads((root/path).read_text(encoding='utf-8'))
 def blob_at(ref,path):
  rc,out=run(['git','rev-parse',f'{ref}:{path}']);return out.strip() if rc==0 else None
 
+
 def post(sha,ctx,state,desc):
  target=f"https://github.com/{REPO}/actions/runs/{os.environ.get('GITHUB_RUN_ID','')}"
  api('/statuses/'+sha,'POST',{'state':state,'context':ctx,'description':desc[:140],'target_url':target})
+
 
 def fail(sha,reason,policy):
  if isinstance(sha,str) and HEX40.fullmatch(sha):
   post(sha,policy['seed_context'],'failure','trust seed refused: '+reason)
   for ctx in policy['required_status_contexts']:post(sha,ctx,'failure','trust seed refused: '+reason)
  print('T0 TRUST SEED REFUSED:',reason);return 1
+
 
 def main():
  policy=load(ROOT,POLICY_PATH)
@@ -92,7 +99,7 @@ def main():
    if not isinstance(v,str) or epoch.get(k)!=v:return fail(sha,'epoch5 does not bind accepted seed '+k,policy)
   adm=load(tmp,'config/admission_authority.json')
   if adm.get('root_tcb_epoch')!=5:return fail(sha,'admission authority root epoch not 5',policy)
-  if adm.get('bootstrap_status_provenance')!='DESIGNATED_COMPLETED_WORKFLOW_RUN_ID_AND_EXACT_PR_HEAD_BASE_REQUIRED':return fail(sha,'bootstrap provenance strengthening missing',policy)
+  if adm.get('bootstrap_status_provenance')!=STRONG_BOOTSTRAP_PROVENANCE:return fail(sha,'bootstrap provenance strengthening missing',policy)
   if adm.get('validator_environment_contract')!='config/validator_environment_v25.json':return fail(sha,'validator environment contract not designated',policy)
   envc=load(tmp,'config/validator_environment_v25.json')
   for k,v in EXPECTED_ENV.items():
@@ -104,6 +111,9 @@ def main():
   if not isinstance(nzo.get('items'),dict):return fail(sha,'negative_zero_outcomes remains untyped',policy)
   reconciler=(tmp/'scripts/reconcile_open_prs.py').read_text(encoding='utf-8')
   if 'COMPLETED_BOOTSTRAP_RUN_ID' not in reconciler:return fail(sha,'completion run id is not consumed by bootstrap verifier',policy)
+  bootstrap_checker=(tmp/'scripts/reconcile_authority_bootstrap.py').read_text(encoding='utf-8')
+  if STRONG_BOOTSTRAP_PROVENANCE not in bootstrap_checker:return fail(sha,'bootstrap invariant checker does not accept strengthened provenance contract',policy)
+  if 'config/validator_environment_v25.json' not in bootstrap_checker:return fail(sha,'bootstrap invariant checker does not protect validator environment contract',policy)
   for wf in policy['required_root_candidate_paths']:
    if wf.startswith('.github/workflows/'):
     text=(tmp/wf).read_text(encoding='utf-8')
