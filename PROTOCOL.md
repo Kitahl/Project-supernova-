@@ -119,7 +119,7 @@ Three status contexts are non-substitutable:
 
 Missing, pending, failing, unobservable, wrong-source or wrong-commit is not PASS. MM06 cannot self-attest future CI; MF06 must later observe `report-admission=success` on the exact verifier head. Countable workflows pin Actions by full commit SHA and freeze direct/transitive dependencies by hashes or an equivalent immutable environment receipt.
 
-Every fresh/scientifically model-sensitive receipt records requested model/effort and observed binding status. A request string is not a binding receipt. Fresh G1/G8/Goal-2 evidence is non-promotable without the frozen model/tools/environment binding required by the manifest.
+Every fresh/scientifically model-sensitive receipt records requested model/effort and observed binding status. Request strings are scheduler metadata, not observed facts. A frozen model-binding attestation is optional provenance used to support a truthful `VERIFIED` claim; unavailable reasoning-effort attestation alone MUST NOT block structural/auth safety, MM06 SAFE partitioning, report admission, calibration credit, fresh eligibility, or scientific promotion. `PARTIAL_UNVERIFIED`/`UNVERIFIED` caused solely by unavailable reasoning effort is therefore non-blocking. An affirmative observed mismatch remains provenance and must not be rewritten as merely unobserved.
 
 Verifier assurance is typed: primary kernel, same-kernel fresh replay, external implementation, statement identity checker and statement-fidelity authority. Default independence status is `NO_INDEPENDENCE_CLAIM`. Exact versions, shared TCB, advisories, exploit regressions and mutation/fuzz evidence are recorded. Same-kernel replay is never labelled external verification.
 
@@ -167,7 +167,7 @@ Control ladder: `B0` current Foundry; `B1` exact structural controller; `B2` rea
 
 ## 15. Fresh work
 
-`FRESH_ENABLED` is transport eligibility only. Fresh work additionally requires exact assignment ownership and a private `FROZEN_PRE_OUTCOME` manifest binding plan/cohort/checkpoint/runtime, task/evaluator/checker, observed model/tools/environment, complete budget, randomization/repeats, cache/context/retention, accounting, contamination exclusions and ownership.
+`FRESH_ENABLED` is transport eligibility only. Fresh work additionally requires exact assignment ownership and a private `FROZEN_PRE_OUTCOME` manifest binding plan/cohort/checkpoint/runtime, task/evaluator/checker, the scientifically relevant model/tools/environment facts that are actually observable, complete budget, randomization/repeats, cache/context/retention, accounting, contamination exclusions and ownership. Requested model/reasoning strings are metadata. Unavailable reasoning-effort attestation alone MUST NOT invalidate the manifest or prevent fresh execution/promotion when all other scientific and provenance gates pass.
 
 ## 16. Fail closed
 
