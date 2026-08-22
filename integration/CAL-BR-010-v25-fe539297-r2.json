@@ -1,0 +1,428 @@
+{
+  "calibration_pass": false,
+  "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+  "costs_regressions_unknowns": {
+    "benchmark_executions": 0,
+    "calibration_credit": 0,
+    "calibration_streak_effect": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "missing_workers": 0,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "protected_manifest_reads": 0,
+    "quarantined_reports_preserved": 1,
+    "regressions": [
+      "MM02 deterministic stored-report serialization failure is preserved as transport evidence.",
+      "Gen10 remains diagnostic zero-credit because accepted authority repairs occurred after the cohort start."
+    ],
+    "runtime_mutation": "NONE",
+    "safe_reports_integrated": 11,
+    "scientific_promotion": "NONE",
+    "scientific_results": "NOT_MEASURED",
+    "statement_fidelity": "NOT_MEASURED",
+    "unknowns": [
+      "No fresh scientific outcome was measured.",
+      "Requested reasoning-effort identity is not independently attested; this alone is nonblocking under accepted #195/#196 semantics."
+    ]
+  },
+  "executive_status": "TERMINAL_DIAGNOSTIC_INTEGRATION_WITH_QUARANTINE: 11 MM06 SAFE refs independently reread and integrated; MM02 quarantine preserved verbatim; 0 missing; Gen10 remains zero-credit with calibration_pass=false.",
+  "generation_head_sha": "25c7c4e4732a5635ae8f47a9194d59a3f5a58e8f",
+  "integration_id": "PS-MF06-CAL-BR-010-v25-fe539297-r2-TERMINAL-R1",
+  "integrator_branch": "ps/integrate/CAL-BR-010-v25-fe539297-r2",
+  "issue_ledger": [
+    {
+      "disposition": "PRESERVED_COHORT_LEVEL_ZERO_CREDIT_EVIDENCE",
+      "issue_ref": "#182",
+      "note": "Liveness timing-authority defect was repaired prospectively; Gen10 remains zero-credit."
+    },
+    {
+      "disposition": "PRESERVED_COHORT_LEVEL_ZERO_CREDIT_EVIDENCE",
+      "issue_ref": "#183"
+    },
+    {
+      "disposition": "PRESERVED_COHORT_LEVEL_ZERO_CREDIT_EVIDENCE",
+      "issue_ref": "#184"
+    },
+    {
+      "disposition": "PRESERVED_HISTORICAL_COMPATIBILITY_EVIDENCE",
+      "issue_ref": "#194",
+      "note": "Historical branch-generation display failure is not a worker-authenticity or scientific failure."
+    },
+    {
+      "disposition": "PRESERVED_NONBLOCKING_REASONING_ATTESTATION_SEMANTICS",
+      "issue_ref": "#195/#196",
+      "note": "Unavailable reasoning-effort attestation alone is nonblocking; no false VERIFIED claim is made."
+    },
+    {
+      "disposition": "MM02_QUARANTINED_PRESERVED",
+      "issue_ref": "#197",
+      "note": "Deterministic stored-report serialization contract failed on immutable MM02; evidence is preserved but excluded from SAFE integration.",
+      "stable_issue_id": "O-T0-GEN10-MM02-TRANSPORT-SERIALIZATION"
+    },
+    {
+      "disposition": "REPAIRED_PROSPECTIVELY_ON_ACCEPTED_MAIN",
+      "issue_ref": "#199/#207",
+      "note": "Root TCB epoch 6 admits exhaustive terminal nonclean MM06 evidence without awarding clean calibration credit, enabling this safe-only diagnostic integration.",
+      "stable_issue_id": "O-T0-DIAGNOSTIC-QUARANTINE-ADMISSION-GAP"
+    },
+    {
+      "disposition": "PRESERVED_BY_EXACT_SAFE_REPORT_REFERENCE",
+      "issue_ref": "SAFE_WORKER_ISSUE_LEDGERS",
+      "note": "Evidence-backed control/future-fresh issues inside the 11 SAFE worker reports remain preserved by immutable report reference. MF06 does not reinterpret them as measured scientific outcomes."
+    }
+  ],
+  "missing_workers": [],
+  "next_action": "BIL00 should consolidate the immutable MM06 and MF06 terminal receipts, close Gen10 at zero calibration credit with streak unchanged at 0, and construct the replacement countable cohort under accepted root-TCB epoch 6 controls. MF06 has no authority to mutate canonical state or create the successor.",
+  "plan_alignment": [
+    "SAFE_REPLAY_ONLY preserved; no fresh/private/benchmark/deep-research execution was performed by MF06.",
+    "Only MM06 SAFE report refs were reread and integrated.",
+    "MM02 quarantine is preserved exactly as non-admitted evidence; no quarantine bypass or repair occurred.",
+    "No missing worker was treated as a zero outcome; MM06 missing_workers is empty.",
+    "VERIFIED_WITH_QUARANTINES is terminal diagnostic evidence only and cannot earn clean calibration credit.",
+    "All scientific E1/G1/C1/E3, mathematical, mechanism-efficacy, benchmark and statement-fidelity results remain NOT_MEASURED.",
+    "KERNEL_VALID is not treated as STATEMENT_FIDELITY_CONFIRMED.",
+    "MF06 does not write main, generation, worker or verifier branches and does not construct the successor cohort."
+  ],
+  "quarantines": [
+    {
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM02",
+      "disposition": "QUARANTINED_PRESERVE_IMMUTABLE_EVIDENCE_NO_REWRITE",
+      "evidence_refs": [
+        "reports/CAL-BR-010-v25-fe539297-r2/MM02.json@59f0a07a1414153a3aba0f38758f589f8f26bc82#28616cab4ee1deb4065b75222a46226a21aee12a",
+        "github-status:59f0a07a1414153a3aba0f38758f589f8f26bc82:supernova/branch-worker=failure",
+        "GitHub issue #197",
+        "BRANCH_WORKER_PROTOCOL.md@G deterministic transport rule",
+        "scripts/validate_branch_bus_v251.py@G"
+      ],
+      "expected_path": "reports/CAL-BR-010-v25-fe539297-r2/MM02.json",
+      "observed_blob_sha": "28616cab4ee1deb4065b75222a46226a21aee12a",
+      "observed_head_sha": "59f0a07a1414153a3aba0f38758f589f8f26bc82",
+      "observed_path_change_commits": [
+        "59f0a07a1414153a3aba0f38758f589f8f26bc82"
+      ],
+      "reason_code": "O-T0-GEN10-MM02-TRANSPORT-SERIALIZATION",
+      "summary": "Immutable MM02 report authenticates and is correctly isolated, but committed bytes violate PRETTY_SORTED_UTF8_JSON_V1 because top-level mode is serialized after worker_id; authoritative exact-head supernova/branch-worker is failure.",
+      "worker_id": "MM02"
+    }
+  ],
+  "research_questions": [],
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "safe_report_refs": [
+    {
+      "auth_valid": true,
+      "blob_sha": "95ba5414daeb6a15a2abddeeae5c4bdafa39ce71",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF01",
+      "branch_head_sha": "bbd63bc23ca9331c043435a1cdeab44d3a5968b8",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MF01.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "bbd63bc23ca9331c043435a1cdeab44d3a5968b8",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MF01"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "20a404f6e331b79d4bd0299dab6fe78bbcd6a3d8",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF02",
+      "branch_head_sha": "a0ab744a984c1a9bcf455d113dc1d7f75b879dac",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MF02.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "a0ab744a984c1a9bcf455d113dc1d7f75b879dac",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MF02"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "77c3f587e9c45085b1ce65764d1a8e2d5b97fbcc",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF03",
+      "branch_head_sha": "810c46b6a57e8caa0f1a2c0ccf36cdecc813ee63",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MF03.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "810c46b6a57e8caa0f1a2c0ccf36cdecc813ee63",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MF03"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "7d467bbc2cd5291c650b34fbc7183a68055a4c5b",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF04",
+      "branch_head_sha": "200ea206a88daee078ce51192ed31d799ca383f9",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MF04.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "200ea206a88daee078ce51192ed31d799ca383f9",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MF04"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "507b7d4eb540c3847debe34630865c831e3c812d",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MF05",
+      "branch_head_sha": "6a5a21350ce37ba7174a0cd21307995905e467ae",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MF05.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "6a5a21350ce37ba7174a0cd21307995905e467ae",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MF05"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "d205eda5d985d1c72014f05b7d168ab470a9bbf3",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM01",
+      "branch_head_sha": "0efc1a5ab4b70a343a200474013e1df4a21e5159",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MM01.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "0efc1a5ab4b70a343a200474013e1df4a21e5159",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MM01"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "2285d7bfbf208ad8ad5133565dbb56434d8363bc",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM03",
+      "branch_head_sha": "56cf6ddee8fa522e9b034cc0881dd1a812c7bf62",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MM03.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "56cf6ddee8fa522e9b034cc0881dd1a812c7bf62",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MM03"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "a237ac8b676883fc966daf772ee35a836619a97d",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM04",
+      "branch_head_sha": "99cb7f07a1fd9136b7e886771fb2803560ebd7c8",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MM04.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "99cb7f07a1fd9136b7e886771fb2803560ebd7c8",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MM04"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "ce0f9c93b39126f138d2bbee47db904f1b1a5af9",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM05",
+      "branch_head_sha": "d6d1069094f86128ab116f5d7d544b8b87006b0c",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MM05.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "d6d1069094f86128ab116f5d7d544b8b87006b0c",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MM05"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "b796a0688a286fc9eb7a0f6dbb0b62334e19c62f",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/MM07",
+      "branch_head_sha": "9e53196188b032171bbfd026a6ea436e62022c51",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/MM07.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "9e53196188b032171bbfd026a6ea436e62022c51",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "MM07"
+    },
+    {
+      "auth_valid": true,
+      "blob_sha": "6c437678b01927d9194f67d22c5fa2d1ac3bbaa1",
+      "branch": "ps/work/CAL-BR-010-v25-fe539297-r2/EXT01",
+      "branch_head_sha": "aefe51be9553c8585f378a7ba3162bb09aa26c57",
+      "execution_mode_valid": true,
+      "generation_ancestry_valid": true,
+      "immutable_history_valid": true,
+      "path": "reports/CAL-BR-010-v25-fe539297-r2/EXT01.json",
+      "path_change_commit_count": 1,
+      "public_safety_valid": true,
+      "report_creation_commit_sha": "aefe51be9553c8585f378a7ba3162bb09aa26c57",
+      "schema_valid": true,
+      "single_path_diff_valid": true,
+      "strict_session_valid": true,
+      "structural_ci_context": "supernova/branch-worker",
+      "structural_ci_status": "PASS",
+      "verifier_reread_verified": true,
+      "worker_id": "EXT01"
+    }
+  ],
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Integrate only MM06-verified evidence for the active cohort",
+    "iteration_id": "CAL-BR-010-v25-fe539297-r2",
+    "iteration_number": 10,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF06",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-JOINT-I01 | Evidence Integrator",
+    "target_program": "JOINT"
+  },
+  "task_ledger": [
+    {
+      "detail": "Live main remained Gen10; verifier branch resolved exactly to 500837400c093b0dd53071f649efc022c9314201; terminal MM06 receipt was stable and report-admission was success.",
+      "status": "PASS",
+      "task": "bounded_consistency_pass_1"
+    },
+    {
+      "detail": "Second independent reread found unchanged main/cohort/verifier head, unchanged terminal partition, unchanged accepted terminal-safe integration schema, and unchanged report-admission success.",
+      "status": "PASS",
+      "task": "bounded_consistency_pass_2"
+    },
+    {
+      "detail": "Each MM06 SAFE ref was fetched from its exact report creation commit; every observed Git blob matched the MM06 safe_report_refs blob_sha. No raw worker outside the SAFE set was integrated.",
+      "status": "PASS_11_OF_11",
+      "task": "safe_ref_reread"
+    },
+    {
+      "detail": "MM02 quarantine was copied exactly from MM06 and was not fetched as admitted evidence, rewritten, repaired, or promoted.",
+      "status": "PASS",
+      "task": "quarantine_preservation"
+    },
+    {
+      "detail": "Accepted root TCB epoch 6 requires nonclean terminal partitions to remain zero calibration credit; Gen10 calibration_pass is forced false.",
+      "status": "PASS",
+      "task": "zero_credit_terminalization"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "status": "PASS",
+      "test": "live_state_two_pass_stability"
+    },
+    {
+      "detail": "500837400c093b0dd53071f649efc022c9314201",
+      "status": "PASS",
+      "test": "exact_verifier_head_identity"
+    },
+    {
+      "status": "PASS_11_SAFE_1_QUARANTINED_0_MISSING",
+      "test": "verifier_partition_unique_disjoint_exhaustive"
+    },
+    {
+      "status": "PASS",
+      "test": "verifier_structural_ci"
+    },
+    {
+      "status": "PASS_SOURCE_BOUND",
+      "test": "later_exact_head_report_admission"
+    },
+    {
+      "status": "PASS_11_OF_11",
+      "test": "safe_ref_blob_reread"
+    },
+    {
+      "status": "PASS",
+      "test": "quarantine_exact_copy"
+    },
+    {
+      "status": "PASS",
+      "test": "zero_fresh_private_benchmark_research_cost"
+    },
+    {
+      "status": "PASS",
+      "test": "scientific_results_remain_not_measured"
+    },
+    {
+      "status": "PASS",
+      "test": "diagnostic_calibration_credit_forced_zero"
+    }
+  ],
+  "verification_branch": "ps/verify/CAL-BR-010-v25-fe539297-r2",
+  "verification_external_ci_context": "supernova/report-admission",
+  "verification_external_ci_observed_after_receipt": true,
+  "verification_external_ci_source": "github-actions[bot]",
+  "verification_external_ci_status": "PASS",
+  "verification_head_sha": "500837400c093b0dd53071f649efc022c9314201",
+  "verification_liveness_complete": true,
+  "verification_partition_exhaustive": true,
+  "verification_verdict": "VERIFIED_WITH_QUARANTINES"
+}
