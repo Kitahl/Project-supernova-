@@ -19,7 +19,7 @@ class RootEpoch6RepairSeedTests(unittest.TestCase):
         self.assertFalse(self.policy["fresh_allowed_globally_required"])
         self.assertEqual(self.policy["one_shot_marker_path"], "config/root_epoch6_repair_epoch_v25.json")
 
-    def test_candidate_diff_is_exact_and_covers_both_repairs(self):
+    def test_candidate_diff_is_exact_and_covers_both_repairs_and_epoch_history_regression(self):
         allowed = set(self.policy["allowed_root_candidate_paths"])
         required = set(self.policy["required_root_candidate_paths"])
         self.assertEqual(allowed, required)
@@ -32,8 +32,10 @@ class RootEpoch6RepairSeedTests(unittest.TestCase):
             "scripts/diagnose_authority_bootstrap.py",
             "config/root_tcb_epoch_v25.json",
             "config/root_epoch6_repair_epoch_v25.json",
+            "tests/test_gen9_reset_compat_root.py",
         ):
             self.assertIn(path, required)
+        self.assertEqual(len(required), 17)
         self.assertIn("state/", self.policy["forbidden_candidate_prefixes"])
         self.assertIn("runtime/", self.policy["forbidden_candidate_prefixes"])
         self.assertIn("benchmark/", self.policy["forbidden_candidate_prefixes"])
