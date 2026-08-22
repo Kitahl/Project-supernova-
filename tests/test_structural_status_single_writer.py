@@ -1,14 +1,51 @@
 import ast
 import json
 import pathlib
-import re
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 REST = ROOT / "scripts/reconcile_branch_rest.py"
+ADMISSION = ROOT / "scripts/reconcile_v25_admission.py"
+STRUCTURAL = ROOT / "scripts/reconcile_branch_statuses.py"
 REST_WORKFLOW = ROOT / ".github/workflows/supernova-rest-branch-reconciler.yml"
 AUTHORITY = ROOT / "config/admission_authority.json"
 EPOCH = ROOT / "config/structural_status_rotation_epoch_v25.json"
+STRUCTURAL_CONTEXTS = {
+    "supernova/branch-generation",
+    "supernova/branch-worker",
+    "supernova/branch-verify",
+    "supernova/branch-integrate",
+    "supernova/branch-consolidate",
+}
+STATUS_CALL_NAMES = {"status", "post", "post_status", "publish_status"}
+
+
+def published_structural_contexts(path):
+    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    found = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        name = None
+        if isinstance(node.func, ast.Name):
+            name = node.func.id
+        elif isinstance(node.func, ast.Attribute):
+            name = node.func.attr
+        if name not in STATUS_CALL_NAMES:
+            continue
+        for arg in list(node.args) + [kw.value for kw in node.keywords]:
+            if isinstance(arg, ast.Constant) and isinstance(arg.value, str) and arg.value in STRUCTURAL_CONTEXTS:
+                found.add(arg.value)
+            if isinstance(arg, ast.Dict):
+                for key, value in zip(arg.keys, arg.values):
+                    if (
+                        isinstance(key, ast.Constant)
+                        and key.value == "context"
+                        and isinstance(value, ast.Constant)
+                        and value.value in STRUCTURAL_CONTEXTS
+                    ):
+                        found.add(value.value)
+    return found
 
 
 class StructuralStatusSingleWriterTests(unittest.TestCase):
@@ -43,6 +80,30 @@ class StructuralStatusSingleWriterTests(unittest.TestCase):
             text.index("python3 /tmp/reconcile_branch_rest.py"),
             text.index("python3 /tmp/reconcile_v25_admission.py"),
         )
+
+    def test_admission_helper_preserves_fan_in_but_never_publishes_structural_context(self):
+        text = ADMISSION.read_text(encoding="utf-8")
+        self.assertIn("ih,ie=integration_check(state,vh)", text)
+        self.assertIn("rs=result_state(ve+ie,ri_wait)", text)
+        self.assertIn("integration_semantic_errors", text)
+        self.assertIn("supernova/report-admission", text)
+        self.assertNotIn("supernova/branch-integrate", text)
+        self.assertEqual(published_structural_contexts(ADMISSION), set())
+
+    def test_all_non_structural_reconcilers_are_rejected_if_they_publish_structural_contexts(self):
+        offenders = {}
+        for path in sorted((ROOT / "scripts").glob("reconcile*.py")):
+            if path == STRUCTURAL:
+                continue
+            contexts = published_structural_contexts(path)
+            if contexts:
+                offenders[path.name] = sorted(contexts)
+        self.assertEqual(offenders, {}, offenders)
+
+    def test_authoritative_structural_writer_contains_the_structural_contexts(self):
+        text = STRUCTURAL.read_text(encoding="utf-8")
+        for context in STRUCTURAL_CONTEXTS:
+            self.assertIn(context, text)
 
     def test_authority_names_exactly_one_structural_writer(self):
         authority = json.loads(AUTHORITY.read_text(encoding="utf-8"))
