@@ -1,0 +1,266 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "Countable T0 replay-only transport and C1/product-gating semantics audit. No mathematical result, C1 score, VerifiedProduct admission, ProductUseCertificate decision, StatementFidelityCertificate, Stage0G activation, or scientific promotion is claimed.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "Replay/control-plane audit only. No protected or fresh scientific work and no C1 arm execution.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+    "assignment_path": "assignments/CAL-BR-011-v25-27955ce6.json",
+    "auth_commitment_check": "PASS",
+    "benchmark_registry_git_identity": "461c5bd695df5ac849e27df80799ed12871d281a",
+    "branch_report_schema_git_identity": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+    "branch_worker_protocol_git_identity": "c32aa5988ed28efa411d78b56ad5cc5d995c4c00",
+    "canonical_pointer": "main:state/CURRENT.json",
+    "cohort_liveness_schema_git_identity": "2bffe22b12c2efee31c8b43f2e7a79842e814dd7",
+    "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+    "control_manifest_path": "control/CAL-BR-011-v25-27955ce6.json",
+    "control_release_commit_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+    "control_release_tree_sha": "83daae5281e49b95721dd7a67216e3a1cea79956",
+    "foundry_sha256": "57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+    "generation_branch_prewrite_relation": "IDENTICAL_TO_G",
+    "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+    "hmac_whole_report_check": "PASS",
+    "liveness_contract_git_identity": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+    "liveness_contract_path": "liveness/CAL-BR-011-v25-27955ce6.json",
+    "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d",
+    "model_binding_observation": "NO_OBSERVED_MODEL_OR_REASONING_BINDING; REQUEST_TEXT_ONLY",
+    "origin_reread": "NOT_PERFORMED_MM06_AUTHORITY",
+    "parent_state_blob_readable": "PASS",
+    "plan_git_identity": "197f9199475fd210b0e7b77b4e3160174c28e0f2",
+    "release_to_generation_delta": [
+      "assignments/CAL-BR-011-v25-27955ce6.json",
+      "control/CAL-BR-011-v25-27955ce6.json",
+      "liveness/CAL-BR-011-v25-27955ce6.json"
+    ],
+    "report_path_prewrite": "ABSENT",
+    "required_control_tree_scan": "NONTRUNCATED_RELEASE_TREE_ALL_REQUIRED_PATHS_PRESENT",
+    "rev4_execution_git_identity": "5f1fa850274ae771e6880c232875cc8f9c8e5503",
+    "rev4_lane_ownership_git_identity": "aa35ea40cffbae4cf5b9cdb982a55ac31b335b8f",
+    "roles_git_identity": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+    "runtime_update_receipt_git_identity": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+    "runtime_update_receipt_path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+    "schema_validation_runtime": "jsonschema==4.26.0",
+    "session_standard_git_identity": "49a41c0f56b092c395bd71a36e66ecc2cda8ae04",
+    "signed_field_mutation_check": "PASS",
+    "structural_status_prewrite": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "supersession_status": "ACTIVE_NOT_SUPERSEDED",
+    "task_registry_semantics_git_identity": "02550e45afa075e70de0cd6244f3c54ac9ee3e76",
+    "validation_lock_git_identity": "9475996659114e684f0b6dcbb67d83af3bde431c",
+    "worker_auth_git_identity": "9498d1d49b8636a3a313dc63be89f4433330c230",
+    "worker_branch_prewrite_relation": "IDENTICAL_TO_G"
+  },
+  "evidence_tier": "T0_REPLAY_CONTROL_PLANE",
+  "executive_status": "ZERO_DELTA: MF05 replay found no evidence-backed stable defect in the Gen11 C1/product-gating control surface; C1 remains gated and NOT_MEASURED.",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [],
+  "mode": "SAFE_REPLAY_ONLY",
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No eligible C1 scientific execution occurred in this T0 replay.",
+      "quantity": "C1 scientific result",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No VerifiedProduct admission decision was attempted or claimed.",
+      "quantity": "VerifiedProduct admission",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No ProductUseCertificate compatibility decision was evaluated.",
+      "quantity": "ProductUseCertificate evaluation",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "No StatementFidelityCertificate was produced in this replay-only lane.",
+      "quantity": "StatementFidelityCertificate production",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "Stage0G future ownership does not authorize activation during the current T0 assignment.",
+      "quantity": "Stage0G activation",
+      "status": "NOT_MEASURED",
+      "value": null
+    },
+    {
+      "meaning": "Replay-only accounting counter.",
+      "quantity": "fresh evidence units consumed",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Replay-only accounting counter.",
+      "quantity": "protected manifest reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Replay-only accounting counter.",
+      "quantity": "benchmark executions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "Replay-only accounting counter.",
+      "quantity": "deep research runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "Wait for MM06 independent branch/report/blob/history reread and HMAC/schema verification; MF05 performs no second write, integration, promotion, or scientific-state mutation.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    {
+      "details": "session_header.execution_mode and report.mode are both SAFE_REPLAY_ONLY.",
+      "requirement": "SAFE_REPLAY_ONLY",
+      "status": "PASS"
+    },
+    {
+      "details": "No fresh evidence, private-manifest reads, benchmark executions, or deep research were consumed.",
+      "requirement": "ZERO_FRESH_PRIVATE_BENCHMARK_RESEARCH",
+      "status": "PASS"
+    },
+    {
+      "details": "C1 remains BLOCKED_UNTIL_JUSTIFIED after E1/G1 succession; no C1 benchmark or score was produced.",
+      "requirement": "NO_C1_SCORE",
+      "status": "PASS"
+    },
+    {
+      "details": "KERNEL_VALID, software qualification, independent verification, statement fidelity, and product admission were not collapsed into one claim.",
+      "requirement": "PRODUCT_ADMISSION_SEPARATION",
+      "status": "PASS"
+    },
+    {
+      "details": "Future C1 evaluation must charge statement-fidelity/checker costs symmetrically across applicable arms; no arm was executed here.",
+      "requirement": "SYMMETRIC_FIDELITY_COST",
+      "status": "PASS"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "PS-MF05-CAL-BR-011-v25-27955ce6",
+  "research_questions": [],
+  "runtime_implementation_implication": "Math Foundry 3.1.1 is bound as a qualified software replay substrate only. This receipt does not establish an eligible VerifiedProduct/ProductUseCertificate runtime instance, statement-fidelity admission, or C1 execution support.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay C1 closure prerequisites and VerifiedProduct gating semantics under Math Foundry 3.1.1 without C1 scoring.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF05",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W05 | Product Closure",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "status": "PASS",
+      "summary": "Replayed the frozen C1 prerequisite and VerifiedProduct gating semantics only; no C1 score or product-closure claim was made.",
+      "task_id": "MF05-T0-C1-GATING-REPLAY"
+    },
+    {
+      "status": "PASS",
+      "summary": "Confirmed the frozen authority order requires real Foundry execution, independent verification, statement fidelity, and then product admission; software replay qualification alone is insufficient.",
+      "task_id": "MF05-T0-PRODUCT-ADMISSION-REPLAY"
+    },
+    {
+      "status": "PASS",
+      "summary": "Confirmed Stage0G remains a non-admissible future/cross-cutting input rather than an active MF05 T0 execution authorization.",
+      "task_id": "MF05-T0-STAGE0G-OWNERSHIP-REPLAY"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "details": "Main pointer resolved active non-superseded Gen11 and exact G; frozen control and assignment Git identities matched the canonical pointer.",
+      "status": "PASS",
+      "test_id": "POINTER_AND_ASSIGNMENT_IDENTITY"
+    },
+    {
+      "details": "Declared control-release commit resolved to the declared release tree. Its recursive tree was non-truncated and contained every required control path; release-to-G changed only the Gen11 assignment, control manifest, and liveness contract, leaving the required frozen control set unchanged.",
+      "status": "PASS",
+      "test_id": "CONTROL_RELEASE_FREEZE"
+    },
+    {
+      "details": "Generation branch and MF05 worker branch were both identical to exact G before the first receipt; assigned report path was absent.",
+      "status": "PASS",
+      "test_id": "BRANCH_ISOLATION_PREWRITE"
+    },
+    {
+      "details": "Frozen Gen11 liveness contract exists, blob-binds the exact control/assignment identities, and binds MF05 to the assigned branch/path with a 2026-08-22T22:09:00Z start and 2026-08-22T22:25:00Z deadline; this run began at the eligible-window start.",
+      "status": "PASS",
+      "test_id": "LIVENESS_CONTRACT"
+    },
+    {
+      "details": "Referenced Gen10 parent-state blob was independently readable and its lineage matches the Gen11 parent pointer.",
+      "status": "PASS",
+      "test_id": "PARENT_STATE_READABILITY"
+    },
+    {
+      "details": "SHA-256 of the prompt-private capability bytes matched the frozen MF05 public commitment; the secret was not printed or persisted.",
+      "status": "PASS",
+      "test_id": "AUTH_COMMITMENT"
+    },
+    {
+      "details": "Whole-report HMAC-2 was computed over sorted-key compact UTF-8 JSON with only worker_auth_proof removed.",
+      "status": "PASS",
+      "test_id": "HMAC2_CANONICAL_REPORT"
+    },
+    {
+      "details": "Mutating a signed report field changed the recomputed HMAC, so the original proof does not authenticate the mutated report.",
+      "status": "PASS",
+      "test_id": "SIGNED_FIELD_MUTATION"
+    },
+    {
+      "details": "Candidate report validated with Draft 2020-12 semantics under pinned jsonschema==4.26.0 before the create-once write.",
+      "status": "PASS",
+      "test_id": "SCHEMA_VALIDATION"
+    },
+    {
+      "details": "At exact G, supernova/liveness, supernova/static-control and supernova/branch-generation were success; report-admission, transition-admission, worker, verify, integrate and consolidate contexts were pending pre-write. Pending contexts were not reinterpreted as PASS.",
+      "status": "OBSERVED",
+      "test_id": "STRUCTURAL_STATUS_OBSERVATION"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "50a694ac2ebece0013cd611f74b64571",
+  "worker_auth_commitment": "473363d1e1fc0aae9e9df22da0cbd5f8695491863ff6cf82f2bc0a6ba86326f4",
+  "worker_auth_proof": "3b1dded04b2a3683f204d45f38bcaf7a1768bba9a35a879bf2c6a9e69c5e760e",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MF05",
+  "worker_id": "MF05"
+}
