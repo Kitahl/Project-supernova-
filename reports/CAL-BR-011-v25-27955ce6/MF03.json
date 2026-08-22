@@ -1,0 +1,321 @@
+{
+  "assignment_git_identity": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+  "assignment_id": "PS-BRANCH-CAL-BR-011-v25-27955ce6",
+  "claim_scope": "T0 countable replay-control semantics only. No fresh theorem/operator/intermediate-object claim was made. Any future MF03 candidate remains hypothetical/external and non-promoted until exact Math Foundry execution, independent verification and statement-fidelity checks.",
+  "cohort_id": "CAL-BR-011-v25-27955ce6",
+  "control_manifest_git_identity": "406f9692430a9d42c7af1455232c759423188e87",
+  "control_manifest_id": "CTRL-CAL-BR-011-v25-27955ce6",
+  "cost_ledger": {
+    "benchmark_executions": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "notes": "SAFE_REPLAY_ONLY countable T0 worker execution. No private-manifest read, fresh evidence, benchmark execution, deep research, mathematical promotion, ProductStore mutation or runtime-state mutation.",
+    "protected_manifest_reads": 0
+  },
+  "evidence_and_provenance": {
+    "assignment": {
+      "blob_sha": "eefcbc10b98cd3e069eb44756e06c2bed306abea",
+      "path": "assignments/CAL-BR-011-v25-27955ce6.json"
+    },
+    "canonical_main_pointer": {
+      "blob_sha": "ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9",
+      "path": "state/CURRENT.json"
+    },
+    "control_manifest": {
+      "blob_sha": "406f9692430a9d42c7af1455232c759423188e87",
+      "path": "control/CAL-BR-011-v25-27955ce6.json"
+    },
+    "control_release": {
+      "commit_sha": "27955ce6b9c848510b17004a892d7c3278b0bd6e",
+      "relation_to_generation": "AHEAD_BY_1_ONLY_COHORT_CONTROL_ASSIGNMENT_LIVENESS_ADDED",
+      "tree_sha": "83daae5281e49b95721dd7a67216e3a1cea79956"
+    },
+    "frozen_generation": {
+      "branch": "ps/gen/CAL-BR-011-v25-27955ce6",
+      "head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+      "relation_to_worker_branch_prewrite": "IDENTICAL",
+      "tree_sha": "375f7c5e15eeb7e92e4227d1ac15c699016e0a22"
+    },
+    "frozen_key_blobs": {
+      "BRANCH_WORKER_PROTOCOL.md": "c32aa5988ed28efa411d78b56ad5cc5d995c4c00",
+      "PROTOCOL.md": "cdd2c5cdd9b8a3ddc214006ffc44b669ca913c68",
+      "SESSION_STANDARD.md": "49a41c0f56b092c395bd71a36e66ecc2cda8ae04",
+      "config/countable_control_set_v25.json": "6d3ef8edb30d2cdc5926e2b6023b50beb1240889",
+      "config/roles.json": "04a7e3edeb394507a7dc8e6ee697c65ed05db01d",
+      "config/worker_auth.json": "9498d1d49b8636a3a313dc63be89f4433330c230",
+      "plan/PLAN.json": "197f9199475fd210b0e7b77b4e3160174c28e0f2",
+      "schemas/branch_report.schema.json": "d1534a848402c642e2d91adb1e65192bf0a49a52",
+      "scripts/check_lane_liveness.py": "e0bd9b11df3314afea602241a06a4a415da8a87c",
+      "scripts/validate_branch_bus_v251.py": "3c2992d5a9239897de9a1130deba65015c24372d"
+    },
+    "liveness_contract": {
+      "blob_sha": "019d6ba0a8ec105391de8f793828aad44fe8a418",
+      "eligible_before_deadline": true,
+      "mf03_deadline_utc": "2026-08-22T22:25:00Z",
+      "mf03_expected_window_start_utc": "2026-08-22T22:07:00Z",
+      "path": "liveness/CAL-BR-011-v25-27955ce6.json",
+      "schema_version": "PS-COHORT-LIVENESS-2.5-2"
+    },
+    "origin_reread_authority": "MM06",
+    "parent_state": {
+      "blob_sha": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+      "cohort_id": "CAL-BR-010-v25-fe539297-r2",
+      "generation_seq": 10
+    },
+    "required_control_resolution": {
+      "method": "EXACT_CONTROL_RELEASE_TREE_PLUS_RELEASE_TO_G_DIFF_PLUS_FROZEN_KEY_BLOB_RESOLUTION",
+      "note": "Release-to-G adds only the cohort control, assignment and liveness objects; required pre-existing control paths therefore remain release-identical. Exact source-bound static-control and generation statuses were successful before write.",
+      "result": "PASS"
+    },
+    "runtime_update_receipt": {
+      "blob_sha": "ffcae5b57a43e3ad81a0506f62ce6dcdb02fe511",
+      "fresh_evidence_consumed": false,
+      "path": "runtime/updates/GEN8-FOUNDRY-3.1.1-REPLAY-BINDING.json",
+      "qualification_class": "SOFTWARE_REPLAY_CALIBRATION_ONLY",
+      "scientific_status_changed": false,
+      "status": "VALIDATED"
+    },
+    "structural_ci_prewrite": {
+      "supernova/branch-consolidate": "pending",
+      "supernova/branch-generation": "success",
+      "supernova/branch-integrate": "pending",
+      "supernova/branch-verify": "pending",
+      "supernova/branch-worker": "pending",
+      "supernova/liveness": "success",
+      "supernova/report-admission": "pending",
+      "supernova/static-control": "success",
+      "supernova/transition-admission": "pending"
+    },
+    "substrate": {
+      "execution_authority": "No fresh execution authorized in this cohort; exact Foundry execution is separately required for mathematical/operator truth.",
+      "foundry_sha256": "57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f",
+      "foundry_version": "3.1.1",
+      "mastermind_sha256": "026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d"
+    }
+  },
+  "evidence_tier": "T0_COUNTABLE_REPLAY_CONTROL_ONLY",
+  "executive_status": "ZERO_DELTA_TERMINAL_WORKER_RECEIPT; COUNTABILITY_PENDING_MM06_MF06_BIL00; NO_PROMOTION",
+  "fresh_evidence_ids": [],
+  "generation_head_sha": "3bb1425d18dbff2f83d69b0738c7151bf4a47355",
+  "generation_seq": 11,
+  "issue_ledger": [],
+  "mode": "SAFE_REPLAY_ONLY",
+  "model_binding_attestation_git_identity": null,
+  "model_binding_attestation_path": null,
+  "negative_zero_outcomes": [
+    {
+      "meaning": "No fresh evidence consumed",
+      "quantity": "fresh_evidence_units_consumed",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No protected manifest read",
+      "quantity": "protected_manifest_reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No private manifest read",
+      "quantity": "private_manifest_reads",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No benchmark execution",
+      "quantity": "benchmark_executions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No deep research run",
+      "quantity": "deep_research_runs",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No new mathematical claim",
+      "quantity": "new_mathematical_claims",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No new operator claim",
+      "quantity": "new_operator_claims",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No new intermediate-object claim",
+      "quantity": "new_intermediate_object_claims",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No runtime or scientific promotion",
+      "quantity": "runtime_scientific_promotions",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    },
+    {
+      "meaning": "No issue-ledger finding",
+      "quantity": "issue_ledger_findings",
+      "status": "ACCOUNTING_ZERO",
+      "value": 0
+    }
+  ],
+  "network_checkpoint_id": "59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905",
+  "next_action": "MM06 independently rereads the exact MF03 branch/report, verifies deterministic transport, schema, whole-report HMAC-2, creation history and liveness timing, public safety, assignment/control/runtime bindings and exact-head structural status. Only MM06 -> MF06 -> BIL00 may determine clean-cohort credit.",
+  "origin_reread_claim": false,
+  "parent_state_git_identity": "72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6",
+  "plan_alignment": [
+    {
+      "obligation": "T0 countable cohort remains replay-only",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "header execution_mode equals report.mode",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "zero fresh/private/benchmark/deep-research cost",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "MF03 performs only frozen operator/intermediate-object control replay",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "candidate or mathematical truth cannot be promoted from worker emission",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "no Foundry path or five-operator contract is invented without source availability and fresh authorization",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "NO_RECEIPT is not used as a null result",
+      "status": "SATISFIED"
+    },
+    {
+      "obligation": "model binding is reported from observation rather than request text",
+      "status": "SATISFIED"
+    }
+  ],
+  "private_manifest_git_identity": null,
+  "private_manifest_id": null,
+  "public_safety_status": "PASS",
+  "report_id": "RPT-CAL-BR-011-v25-27955ce6-MF03",
+  "research_questions": [],
+  "role_payload": {
+    "candidate_disposition": "NONE_EMITTED",
+    "candidate_emitted": false,
+    "fresh_execution_authorized": false,
+    "future_candidate_authority": "EXTERNAL_NOT_PROMOTED_UNTIL_EXACT_FOUNDRY_EXECUTION_PLUS_INDEPENDENT_VERIFICATION_PLUS_STATEMENT_FIDELITY",
+    "future_gated_ownership": [
+      "OCN_0A",
+      "FIVE_OPERATOR_CONTRACT_PILOT",
+      "PRODUCT_OUTPUT_SCHEMAS",
+      "ACTION_ONTOLOGY",
+      "C1_PREP"
+    ],
+    "note": "No lemma, operator, intermediate object, Foundry path or five-operator contract was invented in this replay-only cohort.",
+    "replay_semantics_status": "PASS"
+  },
+  "runtime_implementation_implication": "NONE. This receipt does not alter Math Foundry runtime truth, ProductStore content, VerifiedProduct status, benchmark state, Tribunal scientific state, protocol state or promotion state.",
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "goal": "Replay operator and intermediate-object control semantics under Math Foundry 3.1.1 without theorem promotion.",
+    "iteration_id": "CAL-BR-011-v25-27955ce6",
+    "iteration_number": 11,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF03",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-MF-W03 | Lemma & Operator Lab",
+    "target_program": "MATH_FOUNDRY"
+  },
+  "status": "VALID_ASSIGNED_REPORT",
+  "task_ledger": [
+    {
+      "detail": "main:state/CURRENT.json selects protocol 2.5 / BRANCH_GITOPS, generation 11, active cohort CAL-BR-011-v25-27955ce6, immutable generation 3bb1425d18dbff2f83d69b0738c7151bf4a47355, parent 72d5aa0c0f9144bb0cb2faa19ad8300bd38c8ad6, checkpoint 59e43885d42bf8da755acb0792272913d95d50f7ed013c702364f38ce2eef905, runtime 9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf, countable replay status and source-bound repository policy. Gen11 is not superseded.",
+      "status": "PASS",
+      "task": "Resolve canonical state and immutable Gen11 lineage"
+    },
+    {
+      "detail": "Frozen control and assignment blobs match CURRENT. Control release 27955ce6b9c848510b17004a892d7c3278b0bd6e has frozen tree 83daae5281e49b95721dd7a67216e3a1cea79956. Release-to-G is one commit adding only the Gen11 control, assignment and liveness contract. MF03 worker branch was identical to G and assigned report path was absent before creation.",
+      "status": "PASS",
+      "task": "Verify frozen control/assignment and branch isolation"
+    },
+    {
+      "detail": "Frozen role/protocol/plan keep MF03 candidate-only at T0: no fresh theorem/operator/intermediate-object claim, no runtime/ProductStore truth from specification alone, and no promotion without exact Math Foundry execution, independent verification and statement fidelity.",
+      "status": "PASS",
+      "task": "Replay MF03 operator/intermediate-object authority semantics"
+    },
+    {
+      "detail": "Frozen MF03 liveness contract binds the assigned branch/path, window start 2026-08-22T22:07:00Z, deadline 2026-08-22T22:25:00Z and eligible_before_deadline=true. Exact G structural statuses observed pre-write include branch-generation=success, liveness=success and static-control=success; downstream statuses remain pending.",
+      "status": "PASS",
+      "task": "Check frozen liveness eligibility and structural prerequisites"
+    },
+    {
+      "detail": "Prompt-private capability commitment matches frozen MF03 public commitment. HMAC-2 covers the entire report with worker_auth_proof removed; a signed-field mutation changes the proof. Committed bytes use pretty sorted UTF-8 JSON with trailing newline, no tabs and bounded line length.",
+      "status": "PASS",
+      "task": "Authenticate complete report and deterministic committed bytes"
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "status": "PASS",
+      "test": "PLAN_PROTOCOL_COHORT_GENERATION_BINDING"
+    },
+    {
+      "status": "PASS",
+      "test": "CONTROL_ASSIGNMENT_BLOB_BINDING"
+    },
+    {
+      "status": "PASS",
+      "test": "CONTROL_RELEASE_TREE_AND_RELEASE_TO_G_DELTA"
+    },
+    {
+      "status": "PASS",
+      "test": "WORKER_BRANCH_EQUALS_G_PREWRITE"
+    },
+    {
+      "status": "PASS",
+      "test": "REPORT_PATH_ABSENT_PREWRITE"
+    },
+    {
+      "status": "PASS",
+      "test": "MF03_PUBLIC_COMMITMENT"
+    },
+    {
+      "status": "PASS",
+      "test": "HMAC2_SIGNED_FIELD_MUTATION_REJECTION"
+    },
+    {
+      "status": "PASS",
+      "test": "HEADER_EXECUTION_MODE_EQUALS_REPORT_MODE"
+    },
+    {
+      "status": "PASS",
+      "test": "ZERO_FRESH_PRIVATE_BENCHMARK_RESEARCH_COST"
+    },
+    {
+      "status": "PASS",
+      "test": "MF03_NO_PROMOTION_BOUNDARY"
+    }
+  ],
+  "transport_serialization": "PRETTY_SORTED_UTF8_JSON_V1",
+  "visibility_token": "815e44842b57bdd1ef7b565bf02f19d2",
+  "worker_auth_commitment": "060c3457b8ad4895f1f980a51bdea1a3d9ceca7eec2908c9a270b076bb4b8fb0",
+  "worker_auth_proof": "f3c5733e38617e18c80f62add2a8c61f982480d09f3c97daca29be24c6798e72",
+  "worker_auth_scheme": "PS-HMAC-SHA256-CANONICAL-REPORT-2",
+  "worker_branch": "ps/work/CAL-BR-011-v25-27955ce6/MF03",
+  "worker_id": "MF03"
+}
