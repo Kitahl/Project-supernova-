@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-AUTHORITY-BOOTSTRAP-2.5-4",
+  "schema_version": "PS-AUTHORITY-BOOTSTRAP-2.5-5",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "enabled_after_install": true,
@@ -24,7 +24,7 @@
   "fresh_allowed_globally_required": false,
   "protocol_version_required": "2.5",
   "specification_revision_required": 4,
-  "root_tcb_epoch_required": 7,
+  "root_tcb_epoch_required": 8,
   "worker_auth_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "state_or_scientific_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "root_tcb_change": "REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED",
