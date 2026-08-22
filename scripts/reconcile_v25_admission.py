@@ -262,10 +262,6 @@ def main():
         status(vh,'supernova/report-admission',vs,vd)
     ih,ie=integration_check(state,vh)
     i_wait=bool(ih and ih==G)
-    if ih:
-        is_=result_state(ie,i_wait)
-        idesc='awaiting integration receipt' if i_wait else (('FAIL '+ie[0]) if ie else 'MF06 exact-head integration PASS')
-        status(ih,'supernova/branch-integrate',is_,idesc)
     ch,ce=consolidation_check(state,vh,ih)
     c_wait=bool(ch and ch==G)
     if ch:
