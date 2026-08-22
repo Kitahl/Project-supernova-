@@ -39,6 +39,8 @@ def reason_code(reason):
         ("same-repository owner-authored", "same-repo-owner"),
         ("head prefix", "head-prefix"),
         ("invalid head SHA", "head-sha"),
+        ("diagnosed head SHA", "diagnosed-head"),
+        ("diagnosed base SHA", "diagnosed-base"),
         ("calibration streak", "streak-zero"),
         ("fresh work", "fresh-off"),
         ("resolve exact accepted main", "accepted-main"),
@@ -80,27 +82,34 @@ def main():
     if not PR_NUMBER.isdigit() or int(PR_NUMBER) <= 0:
         raise SystemExit("PR_NUMBER required")
     pr = api("/pulls/" + PR_NUMBER)
-    sha = ((pr or {}).get("head") or {}).get("sha")
-    if not isinstance(sha, str):
-        raise SystemExit("cannot resolve PR head")
+    head = (pr or {}).get("head") or {}
+    base = (pr or {}).get("base") or {}
+    sha = head.get("sha")
+    base_sha = base.get("sha")
+    if not isinstance(sha, str) or not isinstance(base_sha, str):
+        raise SystemExit("cannot resolve exact PR head/base")
 
     mod = load_bootstrap()
     captured = []
     mod.post = lambda state, target_sha, description: captured.append((state, target_sha, description))
-    old = os.environ.get("CANDIDATE_DIAGNOSTICS_RESULT")
+    keys = ("CANDIDATE_DIAGNOSTICS_RESULT", "DIAGNOSED_HEAD_SHA", "DIAGNOSED_BASE_SHA")
+    previous = {key: os.environ.get(key) for key in keys}
     os.environ["CANDIDATE_DIAGNOSTICS_RESULT"] = "success"
+    os.environ["DIAGNOSED_HEAD_SHA"] = sha
+    os.environ["DIAGNOSED_BASE_SHA"] = base_sha
     out = io.StringIO()
     try:
         with contextlib.redirect_stdout(out):
             rc = mod.main()
     finally:
-        if old is None:
-            os.environ.pop("CANDIDATE_DIAGNOSTICS_RESULT", None)
-        else:
-            os.environ["CANDIDATE_DIAGNOSTICS_RESULT"] = old
+        for key, value in previous.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
     if rc == 0:
-        status(sha, "success", "structural bootstrap eligible; candidate diagnostics assumed PASS for diagnostic replay")
+        status(sha, "success", "structural bootstrap eligible; exact PR head/base bound; candidate diagnostics assumed PASS")
         status(sha, "success", "structural bootstrap eligibility PASS", "supernova/bootstrap-diagnostic/eligible")
         return 0
 
