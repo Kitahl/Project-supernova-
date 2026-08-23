@@ -66,8 +66,7 @@ REQUIRED_INSTALLED_CONTROL_PATHS = {
     "tests/test_validator_environment_contract.py","tests/test_root_epoch6_repair_seed.py","tests/test_root_epoch6_repair.py",
     "tests/test_root_epoch8_status_writer_repair_seed.py","tests/test_root_epoch9_integrity_repair.py","tests/test_strict_json_contract.py",
     ".github/workflows/supernova-authority-bootstrap.yml",".github/workflows/supernova-bootstrap-completion-reconcile.yml",
-    ".github/workflows/supernova-root-rotation-seed.yml",".github/workflows/supernova-root-epoch6-repair-seed.yml",
-    ".github/workflows/supernova-root-epoch7-repair-seed.yml",".github/workflows/supernova-root-epoch8-status-writer-repair-seed.yml",
+    ".github/workflows/supernova-root-rotation-seed.yml",".github/workflows/supernova-root-epoch6-repair-seed.yml",".github/workflows/supernova-root-epoch7-repair-seed.yml",".github/workflows/supernova-root-epoch8-status-writer-repair-seed.yml",
     ".github/workflows/supernova-root-epoch9-integrity-repair-seed.yml",
 }
 
@@ -177,7 +176,7 @@ def main():
     if not isinstance(head_ref,str) or not head_ref.startswith(ALLOWED_HEAD_PREFIXES):return fail(head_sha,"head prefix not bootstrap-eligible")
     if not isinstance(head_sha,str) or not HEX40.fullmatch(head_sha):return fail(None,"invalid head SHA")
     state=load_json(root,"state/CURRENT.json")
-    if state.get("calibration_streak")!=0:return fail(head_sha,"calibration streak must be zero before authority bootstrap")
+    if state.get("calibration_streak") != 0:return fail(head_sha,"calibration streak must be zero before authority bootstrap")
     if state.get("fresh_allowed_globally") is not False:return fail(head_sha,"fresh work must be disabled before authority bootstrap")
     rc,out=run(["git","rev-parse","HEAD"],root);trusted=out.strip()
     if rc or not HEX40.fullmatch(trusted):return fail(head_sha,"cannot resolve exact accepted main")
