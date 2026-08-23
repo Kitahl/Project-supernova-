@@ -155,6 +155,15 @@ class V25ReportContractTests(unittest.TestCase):
             p.write_text(json.dumps(report,sort_keys=True,separators=(',',':'),ensure_ascii=False)+'\n',encoding='utf-8')
             self.assertIn('report transport must be multi-line JSON',report_transport_errors(p,report))
 
+    def test_integration_plan_binding_is_single_frozen_constant(self):
+        schema=json.loads((ROOT/'schemas/branch_integration.schema.json').read_text(encoding='utf-8'))
+        self.assertEqual(schema['properties']['task_network_plan_id']['const'],PLAN)
+        self.assertEqual(schema['properties']['session_header']['properties']['plan_id']['const'],PLAN)
+        stale='0aa341106cfc4654d5de358526716cadba8c9199b31e9eb15a90f488757cc30d7'
+        self.assertNotEqual(stale,PLAN)
+        self.assertNotEqual(schema['properties']['task_network_plan_id']['const'],stale)
+        self.assertNotEqual(schema['properties']['session_header']['properties']['plan_id']['const'],stale)
+
     def test_hourly_registry_has_exact_fifteen_staggered_lanes(self):
         reg=json.loads((ROOT/"config"/"task_registry_v25.json").read_text(encoding="utf-8"));self.assertEqual(reg["schedule_hours_local"],list(range(24)));self.assertEqual(reg["minimum_recurrence_per_task"],"PT1H");self.assertEqual(reg["active_task_count"],15);self.assertTrue(reg["no_sixteenth_lane"]);self.assertEqual(len(reg["tasks"]),15)
         minutes={x["role_id"]:x["minute"] for x in reg["tasks"]};workers=["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"]
