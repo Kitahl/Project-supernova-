@@ -16,19 +16,23 @@ class NegativeZeroOutcomeTests(unittest.TestCase):
         self.assertEqual(self.schema['properties']['negative_zero_outcomes']['items']['$ref'],'#/$defs/negative_zero_record')
 
     def test_scientific_not_measured_null_passes(self):
-        obj={'meaning':'No fresh measurement.','quantity':'SlopCode scientific metric','status':'NOT_MEASURED','value':None}
+        obj={'meaning':'No fresh measurement.','quantity':'scientific_metric','status':'NOT_MEASURED','value':None}
         self.assertEqual(self.errors(obj),[])
 
     def test_scientific_not_measured_numeric_zero_fails(self):
-        obj={'meaning':'Shadow zero.','quantity':'SlopCode scientific metric','status':'NOT_MEASURED','value':0}
+        obj={'meaning':'Shadow zero.','quantity':'scientific_metric','status':'NOT_MEASURED','value':0}
         self.assertTrue(self.errors(obj))
 
     def test_accounting_zero_passes(self):
-        obj={'meaning':'Resource counter.','quantity':'benchmark executions','status':'ACCOUNTING_ZERO','value':0}
+        obj={'meaning':'Resource counter.','quantity':'benchmark_executions','status':'ACCOUNTING_ZERO','value':0}
         self.assertEqual(self.errors(obj),[])
 
     def test_accounting_nonzero_fails(self):
-        obj={'meaning':'Resource counter.','quantity':'benchmark executions','status':'ACCOUNTING_ZERO','value':1}
+        obj={'meaning':'Resource counter.','quantity':'benchmark_executions','status':'ACCOUNTING_ZERO','value':1}
+        self.assertTrue(self.errors(obj))
+
+    def test_scientific_metric_cannot_be_accounting_zero(self):
+        obj={'meaning':'Scientific result must remain typed missing.','quantity':'scientific_metric','status':'ACCOUNTING_ZERO','value':0}
         self.assertTrue(self.errors(obj))
 
     def test_arbitrary_untyped_item_fails(self):

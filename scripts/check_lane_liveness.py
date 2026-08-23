@@ -8,13 +8,23 @@ expected-source exact-head structural status whose GitHub server timestamp prove
 the report existed by the deadline. Git author/committer timestamps are never
 treated as authoritative receipt-creation time. Missing, late, or timing-unknown
 GitHub receipts fail closed after the frozen deadline.
+
+Root9's minimum publication-window rule is a prospective cohort-construction
+eligibility invariant enforced by liveness_contract_guard before a countable
+cohort starts. This runtime observer must not reinterpret an already-frozen or
+historical contract merely because its publication window is shorter.
 """
 from __future__ import annotations
-import argparse, datetime as dt, json, os, pathlib, urllib.error, urllib.parse, urllib.request
+import argparse, datetime as dt, os, pathlib, urllib.error, urllib.parse, urllib.request
 from typing import Any, Callable
+try:
+    from scripts import strict_json
+except ImportError:
+    import strict_json
 UTC=dt.timezone.utc
 EXPECTED_STATUS_CONTEXT='supernova/branch-worker'
 EXPECTED_STATUS_CREATOR='github-actions[bot]'
+minimum_worker_liveness_window_minutes=45
 
 def parse_time(s: str) -> dt.datetime:
     x=dt.datetime.fromisoformat(s.replace('Z','+00:00'))
@@ -33,12 +43,6 @@ def _time(meta: Any,key: str) -> dt.datetime | None:
     except Exception: return None
 
 def _branch_worker_status_witness(statuses: Any) -> dict[str,Any] | None:
-    """Return a server-time witness only from the latest branch-worker status.
-
-    GitHub returns commit statuses in reverse chronological order. We fail closed
-    on a latest wrong-source/non-success/malformed branch-worker status instead
-    of searching past it for an older success.
-    """
     if not isinstance(statuses,list): return None
     for status in statuses:
         if not isinstance(status,dict) or status.get('context')!=EXPECTED_STATUS_CONTEXT:
@@ -50,12 +54,7 @@ def _branch_worker_status_witness(statuses: Any) -> dict[str,Any] | None:
         if not isinstance(raw,str): return None
         try: parse_time(raw)
         except Exception: return None
-        return {
-            'trusted_observed_at_utc':raw,
-            'witness_status_id':status.get('id'),
-            'witness_creator_login':creator.get('login'),
-            'witness_context':EXPECTED_STATUS_CONTEXT,
-        }
+        return {'trusted_observed_at_utc':raw,'witness_status_id':status.get('id'),'witness_creator_login':creator.get('login'),'witness_context':EXPECTED_STATUS_CONTEXT}
     return None
 
 def evaluate(contract: dict, now: dt.datetime, observe_fn: Callable[[str,str], Any]) -> dict:
@@ -66,23 +65,16 @@ def evaluate(contract: dict, now: dt.datetime, observe_fn: Callable[[str,str], A
         created=_time(meta,'trusted_created_at_utc'); witnessed=_time(meta,'trusted_observed_at_utc'); notes=[]
         if exists:
             if created is not None and created>deadline:
-                receipt_status='RUN_LATE'; late=max(1,int((created-deadline).total_seconds())); blocking.append(lane['lane_id'])
-                notes.append('Trusted receipt creation timestamp is after frozen deadline.')
+                receipt_status='RUN_LATE'; late=max(1,int((created-deadline).total_seconds())); blocking.append(lane['lane_id']); notes.append('Trusted receipt creation timestamp is after frozen deadline.')
             elif created is not None:
-                receipt_status='RUN_OBSERVED'; late=0
-                notes.append('Trusted receipt creation timestamp is at/before frozen deadline.')
+                receipt_status='RUN_OBSERVED'; late=0; notes.append('Trusted receipt creation timestamp is at/before frozen deadline.')
             elif now<=deadline:
-                receipt_status='RUN_OBSERVED'; late=0
-                notes.append('Receipt was directly observed before frozen deadline.')
+                receipt_status='RUN_OBSERVED'; late=0; notes.append('Receipt was directly observed before frozen deadline.')
             elif witnessed is not None and witnessed<=deadline:
-                receipt_status='RUN_OBSERVED'; late=0
-                notes.append('Expected-source exact-head branch-worker status proves receipt existed by frozen deadline.')
+                receipt_status='RUN_OBSERVED'; late=0; notes.append('Expected-source exact-head branch-worker status proves receipt existed by frozen deadline.')
             else:
                 receipt_status='RUN_TIMING_UNKNOWN'; late=max(1,int((now-deadline).total_seconds())); blocking.append(lane['lane_id'])
-                if witnessed is not None:
-                    notes.append('First trusted exact-head structural witness is after frozen deadline; creation time is unproven.')
-                else:
-                    notes.append('Receipt exists after deadline without a trusted pre-deadline server-time witness; fail closed.')
+                notes.append('First trusted exact-head structural witness is after frozen deadline; creation time is unproven.' if witnessed is not None else 'Receipt exists after deadline without a trusted pre-deadline server-time witness; fail closed.')
         elif now>deadline:
             receipt_status='NO_RECEIPT'; late=int((now-deadline).total_seconds()); blocking.append(lane['lane_id']); notes.append('No receipt after frozen deadline.')
         else:
@@ -91,14 +83,15 @@ def evaluate(contract: dict, now: dt.datetime, observe_fn: Callable[[str,str], A
             for key,label in [('head_sha','head'),('blob_sha','blob'),('trusted_created_at_utc','trusted_created_at'),('trusted_observed_at_utc','trusted_observed_at'),('witness_creator_login','witness_creator')]:
                 if meta.get(key): notes.append(label+'='+str(meta[key]))
         observations.append({'lane_id':lane['lane_id'],'task_id':None,'associated_chat_ref':None,'expected_window_start':lane['expected_window_start_utc'],'expected_window_end':lane['deadline_utc'],'observation_time':now.isoformat().replace('+00:00','Z'),'receipt_status':receipt_status,'task_state':'TASK_STATE_UNKNOWN','observation_source':'GITHUB_RECEIPT_MONITOR','receipt_ref':f"{lane['branch']}:{lane['path']}" if exists else None,'lateness_seconds':late,'notes':' '.join(notes)})
-    return {'schema_version':'PS-LIVENESS-MONITOR-3','cohort_id':contract['cohort_id'],'generation_root_sha':contract['generation_root_sha'],'observation_time':now.isoformat().replace('+00:00','Z'),'observations':observations,'blocking_lanes':blocking,'transition_liveness_pass':not blocking}
+    blocking=list(dict.fromkeys(blocking))
+    return {'schema_version':'PS-LIVENESS-MONITOR-4','cohort_id':contract['cohort_id'],'generation_root_sha':contract['generation_root_sha'],'minimum_worker_liveness_window_minutes':minimum_worker_liveness_window_minutes,'observation_time':now.isoformat().replace('+00:00','Z'),'observations':observations,'blocking_lanes':blocking,'transition_liveness_pass':not blocking}
 
 def github_observer(repo: str, token: str):
     api='https://api.github.com/repos/'+repo
     def req(url: str):
         r=urllib.request.Request(url); r.add_header('Accept','application/vnd.github+json'); r.add_header('X-GitHub-Api-Version','2022-11-28')
         if token: r.add_header('Authorization','Bearer '+token)
-        with urllib.request.urlopen(r,timeout=20) as z: return json.loads(z.read())
+        with urllib.request.urlopen(r,timeout=20) as z: return strict_json.loads(z.read().decode('utf-8'))
     def observe(branch,path):
         url=api+'/contents/'+urllib.parse.quote(path,safe='/')+'?ref='+urllib.parse.quote(branch,safe='')
         try: obj=req(url)
@@ -110,18 +103,16 @@ def github_observer(repo: str, token: str):
         try:
             b=req(api+'/branches/'+urllib.parse.quote(branch,safe='')); head=(b.get('commit') or {}).get('sha'); meta['head_sha']=head
             if isinstance(head,str):
-                statuses=req(api+'/commits/'+head+'/statuses?per_page=100')
-                witness=_branch_worker_status_witness(statuses)
+                statuses=req(api+'/commits/'+head+'/statuses?per_page=100'); witness=_branch_worker_status_witness(statuses)
                 if witness: meta.update(witness)
-        except Exception as exc:
-            meta['timing_error']=type(exc).__name__
+        except Exception as exc: meta['timing_error']=type(exc).__name__
         return meta
     return observe
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--contract',required=True); ap.add_argument('--out',required=True); ap.add_argument('--now'); ap.add_argument('--repo',default=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-')); ns=ap.parse_args()
-    contract=json.loads(pathlib.Path(ns.contract).read_text()); now=parse_time(ns.now) if ns.now else dt.datetime.now(UTC)
+    contract=strict_json.loads(pathlib.Path(ns.contract).read_text(encoding='utf-8')); now=parse_time(ns.now) if ns.now else dt.datetime.now(UTC)
     result=evaluate(contract,now,github_observer(ns.repo,os.environ.get('GITHUB_TOKEN','')))
-    pathlib.Path(ns.out).write_text(json.dumps(result,indent=2,sort_keys=True)+'\n'); print(json.dumps(result,sort_keys=True))
+    pathlib.Path(ns.out).write_text(strict_json.pretty_dumps(result),encoding='utf-8'); print(strict_json.canonical_dumps(result))
     return 0 if result['transition_liveness_pass'] else 3
 if __name__=='__main__': raise SystemExit(main())

@@ -9,6 +9,7 @@ def blob(p):
 class FrozenLivenessContractTests(unittest.TestCase):
  def fixture(self):
   t=pathlib.Path(tempfile.mkdtemp());(t/'schemas').mkdir();(t/'schemas/cohort_liveness_contract.schema.json').write_text((ROOT/'schemas/cohort_liveness_contract.schema.json').read_text())
+  write(t/'branch/CONFIG.json',{'minimum_worker_liveness_window_minutes':45})
   cohort='CAL-X';root='a'*40
   c={'control_manifest_id':'CTRL-X','cohort_id':cohort,'generation_seq':8,'control_release_commit_sha':root}
   a={'assignment_id':'ASSIGN-X','cohort_id':cohort,'generation_seq':8,'generation_root_sha':root,'workers':{w:{'worker_branch':f'ps/work/{cohort}/{w}'} for w in WORKERS}}
@@ -32,4 +33,8 @@ class FrozenLivenessContractTests(unittest.TestCase):
    write(t/f'liveness/{c}.json',l);self.assertTrue(validate(t,c),mutate)
  def test_bad_window_fails(self):
   t,c,l=self.fixture();l['lanes'][0]['deadline_utc']=l['lanes'][0]['expected_window_start_utc'];write(t/f'liveness/{c}.json',l);self.assertTrue(validate(t,c))
+ def test_countable_publication_window_below_root9_minimum_fails(self):
+  t,c,l=self.fixture();l['lanes'][0]['deadline_utc']='2026-08-21T08:44:59Z';write(t/f'liveness/{c}.json',l);self.assertTrue(validate(t,c))
+ def test_configured_minimum_below_root9_floor_fails(self):
+  t,c,_=self.fixture();write(t/'branch/CONFIG.json',{'minimum_worker_liveness_window_minutes':44});self.assertTrue(validate(t,c))
 if __name__=='__main__':unittest.main()

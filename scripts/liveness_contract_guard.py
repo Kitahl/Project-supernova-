@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, hashlib, json, pathlib
+import argparse, hashlib, pathlib
 from datetime import datetime
 from jsonschema import Draft202012Validator, FormatChecker
+try:
+    from scripts import strict_json
+except ImportError:
+    import strict_json
 
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 WORKERS={'MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01'}
 
-def load(p): return json.loads(pathlib.Path(p).read_text(encoding='utf-8'))
+def load(p): return strict_json.loads(pathlib.Path(p).read_text(encoding='utf-8'))
 def blob(p):
     b=pathlib.Path(p).read_bytes()
     return hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest()
@@ -29,6 +33,11 @@ def validate(root:pathlib.Path, cohort:str):
     if l.get('generation_root_sha')!=c.get('control_release_commit_sha') or l.get('generation_root_sha')!=a.get('generation_root_sha'):e.append('liveness generation-root mismatch')
     if l.get('control_manifest_id')!=c.get('control_manifest_id') or l.get('control_manifest_git_identity')!=blob(cp):e.append('liveness control binding mismatch')
     if l.get('assignment_id')!=a.get('assignment_id') or l.get('assignment_git_identity')!=blob(ap):e.append('liveness assignment binding mismatch')
+    cfg=load(root/'branch/CONFIG.json')
+    minimum_worker_liveness_window_minutes=cfg.get('minimum_worker_liveness_window_minutes')
+    if not isinstance(minimum_worker_liveness_window_minutes,int) or minimum_worker_liveness_window_minutes < 45:
+        e.append('minimum_worker_liveness_window_minutes must be an integer >= 45')
+        minimum_worker_liveness_window_minutes=45
     lanes=l.get('lanes',[]); ids=[x.get('lane_id') for x in lanes if isinstance(x,dict)]
     if len(ids)!=12 or set(ids)!=WORKERS or len(ids)!=len(set(ids)):e.append('liveness lane set is not exact unique 12-worker set')
     aw=a.get('workers',{})
@@ -38,7 +47,12 @@ def validate(root:pathlib.Path, cohort:str):
         if row.get('branch')!=expected.get('worker_branch'):e.append(f'{w} liveness branch mismatch')
         if row.get('path')!=f'reports/{cohort}/{w}.json':e.append(f'{w} liveness report path mismatch')
         try:
-            if dt(row.get('expected_window_start_utc',''))>=dt(row.get('deadline_utc','')):e.append(f'{w} liveness window is not strictly increasing')
+            start=dt(row.get('expected_window_start_utc','')); deadline=dt(row.get('deadline_utc',''))
+            if start>=deadline:e.append(f'{w} liveness window is not strictly increasing')
+            else:
+                minutes=(deadline-start).total_seconds()/60.0
+                if minutes < minimum_worker_liveness_window_minutes:
+                    e.append(f'{w} liveness publication window {minutes:.1f}m < {minimum_worker_liveness_window_minutes}m')
         except Exception:e.append(f'{w} liveness time parse failed')
     return e
 

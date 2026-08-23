@@ -6,6 +6,8 @@ import unittest
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 WF = ROOT / ".github" / "workflows"
 SETUP_PYTHON = "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
+PYTHON_VERSION = "python-version: '3.13.15'"
+ENV_ASSERT = "scripts/assert_validator_environment.py"
 
 
 class PrivilegedAdmissionWorkflowTests(unittest.TestCase):
@@ -49,25 +51,34 @@ class PrivilegedAdmissionWorkflowTests(unittest.TestCase):
         self.assertNotIn("supernova/report-admission", text)
         self.assertNotIn("supernova/transition-admission", text)
 
-    def test_pr_target_writer_runs_trusted_reconciler_with_pinned_python(self):
+    def assert_privileged_environment_is_frozen(self, text):
+        self.assertIn(SETUP_PYTHON, text)
+        self.assertIn("runs-on: ubuntu-24.04", text)
+        self.assertIn(PYTHON_VERSION, text)
+        self.assertIn(ENV_ASSERT, text)
+
+    def test_pr_target_writer_runs_trusted_reconciler_with_exact_validator_environment(self):
         text = self.text("supernova-pr-target-admission.yml")
         self.assertIn("pull_request_target:", text)
         self.assertIn("statuses: write", text)
         self.assertIn("git clone --filter=blob:none", text)
         self.assertIn("cd trusted && python scripts/reconcile_open_prs.py", text)
-        self.assertIn(SETUP_PYTHON, text)
-        self.assertIn("python-version: '3.13'", text)
+        self.assert_privileged_environment_is_frozen(text)
         self.assertNotIn("actions/checkout@", text)
 
-    def test_comment_writer_runs_trusted_reconciler_with_pinned_python(self):
+    def test_comment_writer_runs_trusted_reconciler_with_exact_validator_environment(self):
         text = self.text("supernova-comment-admission.yml")
         self.assertIn("issue_comment:", text)
         self.assertIn("statuses: write", text)
         self.assertIn("git clone --filter=blob:none", text)
         self.assertIn("cd repo && python scripts/reconcile_open_prs.py", text)
-        self.assertIn(SETUP_PYTHON, text)
-        self.assertIn("python-version: '3.13'", text)
+        self.assert_privileged_environment_is_frozen(text)
         self.assertNotIn("actions/checkout@", text)
+
+    def test_open_pr_reconciler_uses_exact_validator_environment(self):
+        text = self.text("supernova-open-pr-reconciler.yml")
+        self.assertIn("statuses: write", text)
+        self.assert_privileged_environment_is_frozen(text)
 
     def test_authority_bootstrap_separates_candidate_and_privileged_jobs(self):
         text = self.text("supernova-authority-bootstrap.yml")

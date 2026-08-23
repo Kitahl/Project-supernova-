@@ -15,29 +15,27 @@ class CountableControlFreezeTests(unittest.TestCase):
         missing = sorted(path for path in self.required if not (ROOT / path).exists())
         self.assertEqual(missing, [], f"required countable-control files missing: {missing}")
 
-    def test_workaround_and_liveness_are_in_frozen_set(self):
+    def test_root9_integrity_surface_and_liveness_are_frozen(self):
+        self.assertEqual(self.contract["schema_version"], "PS-COUNTABLE-CONTROL-SET-2.5-24")
         must = {
             "scripts/reconcile_open_prs.py",
             ".github/workflows/supernova-open-pr-reconciler.yml",
             ".github/workflows/supernova-actions-heartbeat.yml",
             ".github/workflows/supernova-liveness-monitor.yml",
             "scripts/check_lane_liveness.py",
+            "scripts/liveness_contract_guard.py",
+            "scripts/strict_json.py",
+            "config/root_epoch9_integrity_repair_seed_v25.json",
+            "config/root_epoch9_integrity_repair_epoch_v25.json",
             "config/worker_auth.json",
             "config/checker_pins.json",
             "tests/test_v25_report_contracts.py",
+            "tests/test_gen11_zero_credit_terminal_transition.py",
         }
         self.assertTrue(must.issubset(self.required), sorted(must - self.required))
 
     def test_active_countable_generation_freeze_or_explicit_hardening_supersession(self):
-        """Do not require a historical frozen generation to contain future hardening files.
-
-        If the candidate countable-control set is unchanged relative to the active frozen
-        generation, the active control must freeze the entire set. If a hardening change
-        deliberately enlarges the future control set, the current generation remains
-        immutable historical evidence and the only admissible state is streak=0,
-        fresh=false, with the contract explicitly requiring a new generation/reset before
-        any countable credit can be earned under the changed control.
-        """
+        """Historical Gen11 stays immutable; root9/v24 starts a replacement at streak zero."""
         state = json.loads((ROOT / "state/CURRENT.json").read_text(encoding="utf-8"))
         if state.get("calibration_countable_current") is not True:
             self.skipTest("current generation is intentionally non-countable")
@@ -57,6 +55,9 @@ class CountableControlFreezeTests(unittest.TestCase):
                 self.contract.get("authoritative_change_after_cohort1"),
                 "RESETS_CALIBRATION_STREAK_TO_ZERO",
             )
+            marker=json.loads((ROOT/'config/root_epoch9_integrity_repair_epoch_v25.json').read_text(encoding='utf-8'))
+            self.assertEqual(marker['calibration_credit_effect'],0)
+            self.assertEqual(marker['next_calibration_streak'],0)
             return
 
         self.assertTrue(self.required.issubset(frozen), sorted(self.required - frozen))

@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, hashlib, json, pathlib, subprocess, sys
+import argparse, hashlib, pathlib, subprocess, sys
 from jsonschema import Draft202012Validator
+try:
+ from scripts import strict_json
+except ImportError:
+ import strict_json
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
@@ -9,7 +13,7 @@ TRANSPORT='PRETTY_SORTED_UTF8_JSON_V1'
 SESS={'MF01':'PS-MF-W01 | Representation Lab','MF02':'PS-MF-W02 | E1 Solver Routing','MF03':'PS-MF-W03 | Lemma & Operator Lab','MF04':'PS-MF-W04 | Adversarial Falsifier','MF05':'PS-MF-W05 | Product Closure','MM01':'PS-MM-W01 | React Mechanisms','MM02':'PS-MM-W02 | DeepSWE Mechanisms','MM03':'PS-MM-W03 | SlopCode Contracts','MM04':'PS-MM-W04 | Senior SWE Architecture','MM05':'PS-MM-W05 | E3 Mechanism Controls','MM07':'PS-MM-W07 | Before/After Self-Bench','EXT01':'PS-JOINT-A01 | Runtime & Transport Audit'}
 def git(*a):
  p=subprocess.run(['git','-C',str(ROOT),*a],text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False);return p.returncode,p.stdout.strip(),p.stderr.strip()
-def load(p):return json.loads(p.read_text(encoding='utf-8'))
+def load(p):return strict_json.loads(p.read_text(encoding='utf-8'))
 def blob(p):
  b=p.read_bytes();return hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest()
 def kind(branch):
@@ -36,8 +40,8 @@ def report_transport_errors(path,report):
  lines=raw.splitlines()
  if len(lines)<2:e.append('report transport must be multi-line JSON')
  if any(len(line)>8192 for line in lines):e.append('report transport line exceeds 8192 UTF-8 bytes')
- try: expected=(json.dumps(report,sort_keys=True,indent=2,ensure_ascii=False)+'\n').encode('utf-8')
- except Exception as x:return e+['cannot derive deterministic report transport: '+repr(x)]
+ try: expected=strict_json.pretty_dumps(report).encode('utf-8')
+ except Exception as x:return e+['cannot derive deterministic strict report transport: '+repr(x)]
  if raw!=expected:e.append('report transport != PRETTY_SORTED_UTF8_JSON_V1')
  if report.get('transport_serialization')!=TRANSPORT:e.append('report transport_serialization binding mismatch')
  return e

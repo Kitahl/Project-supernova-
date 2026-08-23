@@ -43,11 +43,15 @@ class FutureFreshRoleModelContractTests(unittest.TestCase):
   self.assertEqual(list(v.iter_errors(p)),[])
   q=json.loads(json.dumps(p));q['learned_proposal']['value']=0;self.assertTrue(list(v.iter_errors(q)))
 
- def test_mm04_replay_nonvacuity_requires_checks(self):
+ def test_mm04_replay_nonvacuity_requires_typed_evidence_checks(self):
   s=load('schemas/mastermind_mm04_replay_payload.schema.json');v=Draft202012Validator(s)
-  p={'schema_version':'PS-MM04-REPLAY-PAYLOAD-2.5-1','architecture_result':metric(),'evaluator_execution_status':'NOT_EXECUTED','architecture_checks':['a'],'nonvacuity_checks':['n'],'provenance_checks':['p'],'self_promotion':False}
+  def check(cid,category,surface):
+   return {'check_id':cid,'category':category,'surface':surface,'disposition':'PASS','evidence_refs':['ref:'+cid],'falsifier_result':'PASS','mutation_or_ablation':'PASS','na_reason':None}
+  p={'schema_version':'PS-MM04-REPLAY-PAYLOAD-2.5-2','architecture_result':{'result_type':'SCIENTIFIC_METRIC','status':'NOT_MEASURED','value':None,'reason':'replay only','evidence_refs':['ref:metric'],'unit':None},'evaluator_execution_status':'NOT_EXECUTED','architecture_checks':[check('MM04-ARCH-0001','ARCHITECTURE','schema closure'),check('MM04-ARCH-0002','ARCHITECTURE','authority boundary')],'nonvacuity_checks':[check('MM04-NONV-0001','NONVACUITY','placeholder rejection'),check('MM04-NONV-0002','NONVACUITY','typed evidence')],'provenance_checks':[check('MM04-PROV-0001','PROVENANCE','source identity'),check('MM04-PROV-0002','PROVENANCE','environment identity')],'self_promotion':False}
   self.assertEqual(list(v.iter_errors(p)),[])
-  q=dict(p);q['architecture_checks']=[];self.assertTrue(list(v.iter_errors(q)))
+  q=json.loads(json.dumps(p));q['architecture_checks']=[];self.assertTrue(list(v.iter_errors(q)))
+  q=json.loads(json.dumps(p));q['nonvacuity_checks'][0]='placeholder';self.assertTrue(list(v.iter_errors(q)))
+  q=json.loads(json.dumps(p));q['provenance_checks'][0]['evidence_refs']=[];self.assertTrue(list(v.iter_errors(q)))
 
  def test_mf02_e1_fresh_schema_requires_all_arms(self):
   s=load('schemas/math_foundry_e1_payload.schema.json');v=Draft202012Validator(s);cost={'wall_seconds':1,'cpu_seconds':1,'model_tokens':1,'tool_calls':1,'storage_bytes':1};arm={'route_availability':'AVAILABLE','recommended_action':'r','executed_action':'r','raw_outcome_ref':'o','complete_cost':cost}
