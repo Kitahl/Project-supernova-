@@ -1,9 +1,9 @@
 {
-  "schema_version": "PS-TASK-REGISTRY-SEMANTICS-2.5-1",
+  "schema_version": "PS-TASK-REGISTRY-SEMANTICS-2.5-2",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "registry_path": "config/task_registry_v25.json",
-  "registry_role": "FROZEN_SCHEDULE_AND_DEPLOYMENT_SNAPSHOT",
+  "registry_role": "FROZEN_SCHEDULE_DEPLOYMENT_AND_CANONICAL_TASK_IDENTITY_CONTRACT",
   "registry_activation_status_authority": "HISTORICAL_INFORMATIONAL_ONLY",
   "countability_authority": [
     "state/CURRENT.json:calibration_countable_current",
@@ -17,6 +17,39 @@
     "value_may_be_stale": true,
     "must_not_be_used_for_current_eligibility": true
   },
-  "task_registry_mutation_policy": "The frozen registry is not rewritten merely to refresh current cohort eligibility. Current eligibility is resolved from canonical state/control/assignment; schedule-registry changes require their own separately authorised lifecycle.",
-  "fail_closed_rule": "If canonical state, active control and active assignment disagree on countability, validation fails and no calibration credit is allowed."
+  "task_registry_mutation_policy": "Schedule/task-registry changes are prospective only and require scheduler admission before a countable successor is promoted.",
+  "same_task_session_rule": "SAME_TASK_SESSION",
+  "replacement_task_rule": "FORBIDDEN_FOR_EXISTING_15_ROLES",
+  "canonical_task_count": 15,
+  "sixteenth_lane": "FORBIDDEN",
+  "preactivation_rule": "PREACTIVATION_USING_SAME_CANONICAL_TASK_BEFORE_ACTIVE_PRODUCTION",
+  "preactivation_write_scope": "DEDICATED_PREACTIVATION_BRANCH_AND_PATH_ONLY",
+  "production_activation_rule": "CURRENT_EXACT_COHORT_G_PLUS_PRODUCTION_NOT_BEFORE",
+  "scheduler_readback_rule": "NORMALIZED_SCHEDULER_READBACK",
+  "scheduler_mutation_postcondition": "READBACK_REQUIRED_AFTER_EVERY_CREATE_OR_UPDATE",
+  "active_cohort_repair_rule": "NO_POST_ACTIVATION_CONSTRUCTIVE_REPAIR",
+  "active_cohort_allowed_repair": "REJECTION_ONLY_DISABLE_UNSAFE_DUPLICATE_OR_WRITER",
+  "stage_admit_promote_rule": "DISTINCT_TRANSACTIONS_AND_LATER_BIL00_PROMOTION_ONLY",
+  "behavioral_config_projection": [
+    "task_id",
+    "title",
+    "prompt_sha256",
+    "normalized_schedule",
+    "timing_mode",
+    "default_timezone",
+    "enabled"
+  ],
+  "mutable_runtime_fields_excluded": [
+    "last_run_time",
+    "updated_at",
+    "next_run_time",
+    "last_error",
+    "last_result"
+  ],
+  "time_authority": "OFFSET_AWARE_NORMALIZED_INSTANTS_WITH_EXPLICIT_AMERICA_VANCOUVER_TZID",
+  "retry_budget_formula": "deadline_minus_first_production >= cadence + max_attempt_duration + jitter AND deadline_minus_second_production >= max_attempt_duration + jitter",
+  "api_success_semantics": "NOT_PROOF_OF_POSTCONDITION",
+  "unknown_semantics": "BLOCKED",
+  "raw_auth_publication": "FORBIDDEN",
+  "fail_closed_rule": "If canonical state/control/assignment disagree, task identity or normalized scheduler readback drifts, preactivation admission is absent, or any required evidence is unknown, validation fails and no calibration credit is allowed."
 }
