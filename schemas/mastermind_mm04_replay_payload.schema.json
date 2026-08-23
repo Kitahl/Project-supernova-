@@ -1,23 +1,44 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Mastermind MM04 Replay Architecture Payload v2.5",
+  "title": "Mastermind MM04 Replay Architecture Payload v2.5 r2",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "architecture_result", "evaluator_execution_status", "architecture_checks", "nonvacuity_checks", "provenance_checks", "self_promotion"],
   "properties": {
-    "schema_version": {"const": "PS-MM04-REPLAY-PAYLOAD-2.5-1"},
+    "schema_version": {"const": "PS-MM04-REPLAY-PAYLOAD-2.5-2"},
     "architecture_result": {
       "type": "object", "additionalProperties": false,
       "required": ["result_type", "status", "value", "reason"],
       "properties": {
         "result_type": {"const": "SCIENTIFIC_METRIC"}, "status": {"const": "NOT_MEASURED"}, "value": {"const": null},
-        "reason": {"type": "string", "minLength": 1}, "evidence_refs": {"type": "array", "items": {"type": "string"}}, "unit": {"type": ["string", "null"]}
+        "reason": {"type": "string", "minLength": 1}, "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}, "unit": {"type": ["string", "null"]}
       }
     },
     "evaluator_execution_status": {"const": "NOT_EXECUTED"},
-    "architecture_checks": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-    "nonvacuity_checks": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-    "provenance_checks": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "architecture_checks": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"allOf": [{"$ref": "#/$defs/check_record"}, {"properties": {"category": {"const": "ARCHITECTURE"}}}]}},
+    "nonvacuity_checks": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"allOf": [{"$ref": "#/$defs/check_record"}, {"properties": {"category": {"const": "NONVACUITY"}}}]}},
+    "provenance_checks": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"allOf": [{"$ref": "#/$defs/check_record"}, {"properties": {"category": {"const": "PROVENANCE"}}}]}},
     "self_promotion": {"const": false}
+  },
+  "$defs": {
+    "check_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check_id", "category", "surface", "disposition", "evidence_refs", "falsifier_result", "mutation_or_ablation", "na_reason"],
+      "properties": {
+        "check_id": {"type": "string", "pattern": "^MM04-[A-Z0-9_-]{4,80}$"},
+        "category": {"enum": ["ARCHITECTURE", "NONVACUITY", "PROVENANCE"]},
+        "surface": {"type": "string", "minLength": 3},
+        "disposition": {"enum": ["PASS", "FAIL", "NOT_APPLICABLE"]},
+        "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 3}},
+        "falsifier_result": {"enum": ["PASS", "FAIL", "NOT_RUN", "NOT_APPLICABLE"]},
+        "mutation_or_ablation": {"enum": ["PASS", "FAIL", "NOT_RUN", "NOT_APPLICABLE"]},
+        "na_reason": {"type": ["string", "null"]}
+      },
+      "allOf": [
+        {"if": {"properties": {"disposition": {"const": "NOT_APPLICABLE"}}, "required": ["disposition"]}, "then": {"properties": {"na_reason": {"type": "string", "minLength": 3}}}, "else": {"properties": {"na_reason": {"const": null}}}},
+        {"if": {"properties": {"disposition": {"const": "PASS"}}, "required": ["disposition"]}, "then": {"not": {"properties": {"falsifier_result": {"const": "FAIL"}}}}}
+      ]
+    }
   }
 }
