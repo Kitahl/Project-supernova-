@@ -3,7 +3,10 @@ from __future__ import annotations
 import argparse, hashlib, pathlib
 from datetime import datetime
 from jsonschema import Draft202012Validator, FormatChecker
-import strict_json
+try:
+    from scripts import strict_json
+except ImportError:
+    import strict_json
 
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 WORKERS={'MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01'}
