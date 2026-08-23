@@ -10,7 +10,7 @@ REPO=os.environ.get("GITHUB_REPOSITORY","Kitahl/Project-supernova-"); TOKEN=os.e
 API="https://api.github.com/repos/"+REPO; OWNER=REPO.split("/",1)[0]
 ALLOWED_HEAD_PREFIXES=("hardening/","transition/","ps/consolidate/","rev4/")
 CONTEXTS=("supernova/static-control","supernova/report-admission","supernova/transition-admission")
-BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"; BOOTSTRAP_CREATOR="github-actions[bot]"
+BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"; BOOTSTRAP_CREATOR = "github-actions[bot]"
 BOOTSTRAP_WORKFLOW=".github/workflows/supernova-authority-bootstrap.yml"
 RUN_URL_RE=re.compile(r"^https://github\.com/"+re.escape(REPO)+r"/actions/runs/([0-9]+)$"); HEX40=re.compile(r"^[0-9a-f]{40}$")
 DURABLE_BOOTSTRAP_PROVENANCE="PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED"
