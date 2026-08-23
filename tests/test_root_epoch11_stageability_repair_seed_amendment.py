@@ -129,7 +129,7 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         self.assertEqual(p["schema_version"], "PS-ROOT-EPOCH11-STAGEABILITY-REPAIR-SEED-AMENDMENT-2.5-1")
         self.assertEqual(p["required_amendment_base_main_sha"], "49748265ab8afff2f53b4fa306c2b96d9d7e798c")
         self.assertEqual(p["original_seed_install_commit_sha"], p["required_amendment_base_main_sha"])
-        self.assertEqual(p["reviewed_candidate_source_commit_sha"], "023cc2a543105c1a84a09d90fe681c08b343a024")
+        self.assertEqual(p["reviewed_candidate_source_commit_sha"], "3bdefc9dd2382e46d56cb139160a6703fd50b599")
         self.assertEqual(len(p["original_seed_paths"]), 4)
         self.assertEqual(len(p["amendment_paths"]), 4)
         self.assertEqual(p["seed_context"], "supernova/root-epoch11-stageability-repair-seed-amendment")
@@ -221,6 +221,8 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         candidates = (ROOT, ROOT.parent / "Project-supernova-root11-repair")
         source_tree = None
         for repo in candidates:
+            if not repo.is_dir():
+                continue
             probe = subprocess.run(["git", "cat-file", "-e", source + "^{commit}"], cwd=repo, capture_output=True, text=True)
             if probe.returncode == 0:
                 source_repo = repo

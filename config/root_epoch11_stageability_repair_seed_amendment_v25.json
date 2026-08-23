@@ -22,7 +22,7 @@
   "same_repository_required": true,
   "owner_authored_required": true,
   "original_seed_install_commit_sha": "49748265ab8afff2f53b4fa306c2b96d9d7e798c",
-  "reviewed_candidate_source_commit_sha": "023cc2a543105c1a84a09d90fe681c08b343a024",
+  "reviewed_candidate_source_commit_sha": "3bdefc9dd2382e46d56cb139160a6703fd50b599",
   "original_seed_paths": {
     "config/root_epoch11_stageability_repair_seed_v25.json": "db7f1806c8af4571733822be27a712dae2ff38f1",
     "scripts/reconcile_root_epoch11_stageability_repair_seed.py": "2a6d3d4205509f9d28255584b58c47c55f6eb2c4",
