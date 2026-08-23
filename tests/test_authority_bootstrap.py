@@ -101,7 +101,7 @@ class AuthorityBootstrapTests(unittest.TestCase):
         text = OPEN.read_text(encoding="utf-8")
         self.assertIn('BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"', text)
         self.assertIn('BOOTSTRAP_CREATOR = "github-actions[bot]"', text)
-        self.assertIn("trusted_bootstrap_success(sha,base,n)", text)
+        self.assertIn("trusted_bootstrap_success(head_sha)", text)
         self.assertIn("authority bytes changed without source-verified bootstrap", text)
 
     def test_admission_contract_names_bootstrap_components(self):
