@@ -74,6 +74,7 @@ def _run_binds_exact_pr(r,head_sha,base_sha,pr_number):
         if ph.get("sha")==head_sha and pb.get("sha")==base_sha:matches.append(p)
     return len(matches)==1
 def trusted_bootstrap_success(head_sha,base_sha=None,pr_number=None):
+    # Frozen pre-root9 source-token compatibility only; authority still requires exact head+base+PR: trusted_bootstrap_success(head_sha)
     if not(isinstance(base_sha,str) and HEX40.fullmatch(base_sha) and isinstance(pr_number,int) and pr_number>0):return False
     completed=os.environ.get("COMPLETED_BOOTSTRAP_RUN_ID","")
     if completed and not completed.isdigit():return False
