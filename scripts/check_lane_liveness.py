@@ -13,7 +13,10 @@ must also reserve the root9 minimum publication slack before they are eligible.
 from __future__ import annotations
 import argparse, datetime as dt, os, pathlib, urllib.error, urllib.parse, urllib.request
 from typing import Any, Callable
-import strict_json
+try:
+    from scripts import strict_json
+except ImportError:
+    import strict_json
 UTC=dt.timezone.utc
 EXPECTED_STATUS_CONTEXT='supernova/branch-worker'
 EXPECTED_STATUS_CREATOR='github-actions[bot]'
@@ -47,12 +50,7 @@ def _branch_worker_status_witness(statuses: Any) -> dict[str,Any] | None:
         if not isinstance(raw,str): return None
         try: parse_time(raw)
         except Exception: return None
-        return {
-            'trusted_observed_at_utc':raw,
-            'witness_status_id':status.get('id'),
-            'witness_creator_login':creator.get('login'),
-            'witness_context':EXPECTED_STATUS_CONTEXT,
-        }
+        return {'trusted_observed_at_utc':raw,'witness_status_id':status.get('id'),'witness_creator_login':creator.get('login'),'witness_context':EXPECTED_STATUS_CONTEXT}
     return None
 
 def _slack_minutes(lane: dict) -> float:
@@ -65,29 +63,20 @@ def evaluate(contract: dict, now: dt.datetime, observe_fn: Callable[[str,str], A
         deadline=parse_time(lane['deadline_utc']); meta=observe_fn(lane['branch'],lane['path']); exists=_observed(meta)
         created=_time(meta,'trusted_created_at_utc'); witnessed=_time(meta,'trusted_observed_at_utc'); notes=[]
         if _slack_minutes(lane) < minimum_worker_liveness_window_minutes:
-            receipt_status='RUN_TIMING_UNKNOWN' if exists else 'NO_RECEIPT'
-            late=max(1,int((now-deadline).total_seconds())) if now>deadline else 0
-            blocking.append(lane['lane_id'])
+            receipt_status='RUN_TIMING_UNKNOWN' if exists else 'NO_RECEIPT'; late=max(1,int((now-deadline).total_seconds())) if now>deadline else 0; blocking.append(lane['lane_id'])
             notes.append(f'Frozen countable liveness publication window is below {minimum_worker_liveness_window_minutes} minutes; fail closed.')
         elif exists:
             if created is not None and created>deadline:
-                receipt_status='RUN_LATE'; late=max(1,int((created-deadline).total_seconds())); blocking.append(lane['lane_id'])
-                notes.append('Trusted receipt creation timestamp is after frozen deadline.')
+                receipt_status='RUN_LATE'; late=max(1,int((created-deadline).total_seconds())); blocking.append(lane['lane_id']); notes.append('Trusted receipt creation timestamp is after frozen deadline.')
             elif created is not None:
-                receipt_status='RUN_OBSERVED'; late=0
-                notes.append('Trusted receipt creation timestamp is at/before frozen deadline.')
+                receipt_status='RUN_OBSERVED'; late=0; notes.append('Trusted receipt creation timestamp is at/before frozen deadline.')
             elif now<=deadline:
-                receipt_status='RUN_OBSERVED'; late=0
-                notes.append('Receipt was directly observed before frozen deadline.')
+                receipt_status='RUN_OBSERVED'; late=0; notes.append('Receipt was directly observed before frozen deadline.')
             elif witnessed is not None and witnessed<=deadline:
-                receipt_status='RUN_OBSERVED'; late=0
-                notes.append('Expected-source exact-head branch-worker status proves receipt existed by frozen deadline.')
+                receipt_status='RUN_OBSERVED'; late=0; notes.append('Expected-source exact-head branch-worker status proves receipt existed by frozen deadline.')
             else:
                 receipt_status='RUN_TIMING_UNKNOWN'; late=max(1,int((now-deadline).total_seconds())); blocking.append(lane['lane_id'])
-                if witnessed is not None:
-                    notes.append('First trusted exact-head structural witness is after frozen deadline; creation time is unproven.')
-                else:
-                    notes.append('Receipt exists after deadline without a trusted pre-deadline server-time witness; fail closed.')
+                notes.append('First trusted exact-head structural witness is after frozen deadline; creation time is unproven.' if witnessed is not None else 'Receipt exists after deadline without a trusted pre-deadline server-time witness; fail closed.')
         elif now>deadline:
             receipt_status='NO_RECEIPT'; late=int((now-deadline).total_seconds()); blocking.append(lane['lane_id']); notes.append('No receipt after frozen deadline.')
         else:
@@ -116,11 +105,9 @@ def github_observer(repo: str, token: str):
         try:
             b=req(api+'/branches/'+urllib.parse.quote(branch,safe='')); head=(b.get('commit') or {}).get('sha'); meta['head_sha']=head
             if isinstance(head,str):
-                statuses=req(api+'/commits/'+head+'/statuses?per_page=100')
-                witness=_branch_worker_status_witness(statuses)
+                statuses=req(api+'/commits/'+head+'/statuses?per_page=100'); witness=_branch_worker_status_witness(statuses)
                 if witness: meta.update(witness)
-        except Exception as exc:
-            meta['timing_error']=type(exc).__name__
+        except Exception as exc: meta['timing_error']=type(exc).__name__
         return meta
     return observe
 
