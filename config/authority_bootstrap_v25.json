@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-AUTHORITY-BOOTSTRAP-2.5-5",
+  "schema_version": "PS-AUTHORITY-BOOTSTRAP-2.5-6",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "enabled_after_install": true,
@@ -16,6 +16,7 @@
   "completion_run_id_rule": "WHEN_PRESENT_MUST_EQUAL_DESIGNATED_STATUS_TARGET_RUN; ABSENCE_REQUIRES_PERSISTENT_RUN_REDERIVATION",
   "validator_environment_contract": "config/validator_environment_v25.json",
   "validator_environment_assertion": "scripts/assert_validator_environment.py",
+  "strict_json_contract": "scripts/strict_json.py",
   "same_repository_required": true,
   "owner_authored_required": true,
   "base_branch_required": "main",
@@ -24,7 +25,7 @@
   "fresh_allowed_globally_required": false,
   "protocol_version_required": "2.5",
   "specification_revision_required": 4,
-  "root_tcb_epoch_required": 8,
+  "root_tcb_epoch_required": 9,
   "worker_auth_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "state_or_scientific_change": "FORBIDDEN_IN_AUTOMATED_BOOTSTRAP",
   "root_tcb_change": "REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED",
