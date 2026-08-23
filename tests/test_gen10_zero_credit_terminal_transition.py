@@ -47,7 +47,7 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
         ):
             self.assertIn(token, SOURCE)
 
-    def test_successor_requires_complete_v23_freeze_and_exact_branch_topology(self):
+    def test_successor_uses_current_v24_freeze_and_exact_branch_topology(self):
         for token in (
             "_remote_compare_paths(base,G)",
             "_remote_branch_head(new.get('generation_branch'))",
@@ -58,35 +58,41 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
         ):
             self.assertIn(token, SOURCE)
         contract = load("config/countable_control_set_v25.json")
-        self.assertEqual(contract["schema_version"], "PS-COUNTABLE-CONTROL-SET-2.5-23")
+        self.assertEqual(contract["schema_version"], "PS-COUNTABLE-CONTROL-SET-2.5-24")
         paths = set(contract["required_control_paths"])
         for path in (
             "config/root_epoch7_repair_seed_v25.json",
             "config/root_epoch7_repair_epoch_v25.json",
             "config/root_epoch8_status_writer_repair_seed_v25.json",
             "config/root_epoch8_status_writer_repair_epoch_v25.json",
+            "config/root_epoch9_integrity_repair_seed_v25.json",
+            "config/root_epoch9_integrity_repair_epoch_v25.json",
             "scripts/reconcile_root_epoch8_status_writer_repair_seed.py",
-            ".github/workflows/supernova-root-epoch8-status-writer-repair-seed.yml",
-            "tests/test_root_epoch8_status_writer_repair_seed.py",
+            "scripts/strict_json.py",
             "tests/test_structural_status_single_writer.py",
             "tests/test_gen10_zero_credit_terminal_transition.py",
+            "tests/test_gen11_zero_credit_terminal_transition.py",
         ):
             self.assertIn(path, paths)
 
-    def test_epoch8_is_zero_credit_and_binds_epoch7_and_status_writer_seed(self):
+    def test_current_root9_preserves_gen10_epoch7_epoch8_history(self):
         root = load("config/root_tcb_epoch_v25.json")
-        marker = load("config/root_epoch8_status_writer_repair_epoch_v25.json")
+        marker8 = load("config/root_epoch8_status_writer_repair_epoch_v25.json")
         epoch7 = load("config/root_epoch7_repair_epoch_v25.json")
+        marker9 = load("config/root_epoch9_integrity_repair_epoch_v25.json")
         authority = load("config/admission_authority.json")
-        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-8")
-        self.assertEqual(root["epoch"], 8)
-        self.assertEqual(root["previous_epoch_blob"], "12b70fd1c72ba1ede77509badab234c085de8b2b")
+        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-9")
+        self.assertEqual(root["epoch"], 9)
+        self.assertEqual(root["previous_epoch_blob"], "b98b3378ad90e9c35fd02017ea3a4a0f21320c52")
         self.assertEqual(root["root_epoch8_status_writer_repair_seed_install_commit_sha"], "1e4967a8783b9d2fdc0d76080aba3e7acc31a0cf")
+        self.assertEqual(root["root_epoch9_integrity_repair_seed_install_commit_sha"], "7c6cca62c51afd28c0554353331abe172dbee389")
         self.assertEqual(epoch7["stable_issue_id"], "O-T0-GEN10-ZERO-CREDIT-PR-ADMISSION-GAP")
-        self.assertEqual(marker["stable_issue_id"], "O-T0-GEN10-HISTORICAL-INTEGRATION-STATUS-DRIFT")
-        self.assertEqual(marker["calibration_credit_effect"], 0)
-        self.assertEqual(marker["fresh_science_effect"], "NONE")
-        self.assertEqual(authority["root_tcb_epoch"], 8)
+        self.assertEqual(marker8["stable_issue_id"], "O-T0-GEN10-HISTORICAL-INTEGRATION-STATUS-DRIFT")
+        self.assertEqual(marker8["calibration_credit_effect"], 0)
+        self.assertEqual(marker8["fresh_science_effect"], "NONE")
+        self.assertEqual(marker9["calibration_credit_effect"], 0)
+        self.assertEqual(marker9["fresh_science_effect"], "NONE")
+        self.assertEqual(authority["root_tcb_epoch"], 9)
         self.assertEqual(authority["structural_status_writer_cardinality"], 1)
 
 
