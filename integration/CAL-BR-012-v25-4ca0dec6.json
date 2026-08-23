@@ -1,0 +1,150 @@
+{
+  "calibration_pass": false,
+  "cohort_id": "CAL-BR-012-v25-4ca0dec6",
+  "costs_regressions_unknowns": {
+    "benchmark_executions": 0,
+    "calibration_credit": 0,
+    "deep_research_runs": 0,
+    "fresh_evidence_units_consumed": 0,
+    "protected_manifest_reads": 0,
+    "regressions": "NOT_MEASURED",
+    "scientific_outputs": "NOT_MEASURED",
+    "unknowns": [
+      "No MM06 SAFE evidence exists for this cohort; scientific effects are not measured by this integration receipt."
+    ]
+  },
+  "executive_status": "INTEGRATED_ZERO_CREDIT: MM06 terminal INCOMPLETE; 0 SAFE, 0 quarantined, 12 missing; calibration credit 0; T0 scientific outputs remain NOT_MEASURED.",
+  "generation_head_sha": "b366cf01e64e1a00a2e566e14e25cc7c15ce523f",
+  "integration_id": "PS-MF06-CAL-BR-012-v25-4ca0dec6-TERMINAL-R1",
+  "integrator_branch": "ps/integrate/CAL-BR-012-v25-4ca0dec6",
+  "issue_ledger": [
+    {
+      "classification": "UPSTREAM_TERMINAL_NONCLEAN",
+      "disposition": "INTEGRATE_TRUTHFULLY_AT_CALIBRATION_CREDIT_0",
+      "evidence_refs": [
+        "verification/CAL-BR-012-v25-4ca0dec6.json@da657eb8f839f565083d90e5f743472da2a6da63",
+        "liveness/CAL-BR-012-v25-4ca0dec6.json@684b008c2b2cbd8e7e7b398bc9498880ec75ca43"
+      ],
+      "issue_id": "GEN12-MM06-INCOMPLETE-ZERO-CREDIT"
+    }
+  ],
+  "missing_workers": [
+    "MF01",
+    "MF02",
+    "MF03",
+    "MF04",
+    "MF05",
+    "MM01",
+    "MM02",
+    "MM03",
+    "MM04",
+    "MM05",
+    "MM07",
+    "EXT01"
+  ],
+  "next_action": "After exact-head supernova/branch-integrate=success, downstream may consume this receipt only as a zero-credit terminal Gen12 integration; do not count this cohort as clean calibration.",
+  "plan_alignment": [
+    "candidate.task_network_plan_id == live.task_network_plan_id == 0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "candidate.cohort_id == live.active_cohort_id == CAL-BR-012-v25-4ca0dec6",
+    "candidate.generation_head_sha == live.generation_head_sha == b366cf01e64e1a00a2e566e14e25cc7c15ce523f",
+    "candidate.runtime_state_id == live.runtime_state_id == 9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "candidate.integrator_branch == live.integrator_branch == ps/integrate/CAL-BR-012-v25-4ca0dec6",
+    "candidate.verification_branch == live.verifier_branch == ps/verify/CAL-BR-012-v25-4ca0dec6",
+    "candidate.verification_head_sha == admitted MM06 exact head == da657eb8f839f565083d90e5f743472da2a6da63",
+    "candidate SAFE/quarantine/missing partition exactly equals MM06: 0/0/12.",
+    "Fresh work remains disabled; no runtime, scientific, benchmark, protected, deep-research, main, or control mutation is authorized."
+  ],
+  "quarantines": [],
+  "research_questions": [],
+  "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+  "safe_report_refs": [],
+  "session_header": {
+    "execution_mode": "SAFE_REPLAY_ONLY",
+    "iteration_id": "CAL-BR-012-v25-4ca0dec6",
+    "iteration_number": 12,
+    "model_binding_status": "PARTIAL_UNVERIFIED",
+    "model_target": "GPT-5.6 Sol",
+    "phase": "T0_COUNTABLE_REPLAY_COHORT_1",
+    "plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+    "reasoning_effort_target": "EXTRA_HIGH",
+    "role_id": "MF06",
+    "runtime_state_id": "9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf",
+    "schema_version": "PS-SESSION-2",
+    "session_name": "PS-JOINT-I01 | Evidence Integrator",
+    "target_program": "JOINT"
+  },
+  "task_ledger": [
+    {
+      "status": "PASS",
+      "task": "Read main:state/CURRENT.json twice with stable bytes and derived canonical bindings from live state."
+    },
+    {
+      "status": "PASS",
+      "task": "Verified frozen control, assignment, liveness, and integration-schema blobs at exact generation head G match live-state/frozen identities."
+    },
+    {
+      "status": "PASS",
+      "task": "Reread immutable MM06 receipt at exact verifier head; MM06 SAFE set is empty, so there were no SAFE worker blobs to reread."
+    },
+    {
+      "status": "PASS",
+      "task": "Observed exact verifier-head supernova/branch-verify=success and later exact-head supernova/report-admission=success under the frozen source-bound admission mechanism."
+    },
+    {
+      "status": "PASS",
+      "task": "Preserved MM06 SAFE/quarantine/missing partition exactly and forced nonclean calibration credit to 0."
+    },
+    {
+      "status": "PASS",
+      "task": "Prewrite candidate passed frozen branch integration schema plus explicit canonical binding and partition assertions."
+    }
+  ],
+  "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "test_ledger": [
+    {
+      "status": "PASS",
+      "test": "CURRENT_DOUBLE_READ_STABLE"
+    },
+    {
+      "status": "PASS",
+      "test": "LIVE_PLAN_COHORT_G_RUNTIME_BRANCH_BINDINGS"
+    },
+    {
+      "status": "PASS",
+      "test": "FROZEN_CONTROL_ASSIGNMENT_LIVENESS_SCHEMA_BLOBS_STABLE"
+    },
+    {
+      "status": "PASS",
+      "test": "MM06_EXACT_HEAD_REREAD"
+    },
+    {
+      "status": "PASS",
+      "test": "EXACT_HEAD_BRANCH_VERIFY_SUCCESS"
+    },
+    {
+      "status": "PASS",
+      "test": "LATER_SOURCE_BOUND_REPORT_ADMISSION_SUCCESS"
+    },
+    {
+      "status": "PASS",
+      "test": "PARTITION_0_SAFE_0_QUARANTINED_12_MISSING"
+    },
+    {
+      "status": "PASS",
+      "test": "FROZEN_BRANCH_INTEGRATION_SCHEMA"
+    },
+    {
+      "status": "PASS",
+      "test": "NONCLEAN_CREDIT_FORCED_ZERO"
+    }
+  ],
+  "verification_branch": "ps/verify/CAL-BR-012-v25-4ca0dec6",
+  "verification_external_ci_context": "supernova/report-admission",
+  "verification_external_ci_observed_after_receipt": true,
+  "verification_external_ci_source": "github-actions[bot]",
+  "verification_external_ci_status": "PASS",
+  "verification_head_sha": "da657eb8f839f565083d90e5f743472da2a6da63",
+  "verification_liveness_complete": false,
+  "verification_partition_exhaustive": true,
+  "verification_verdict": "INCOMPLETE"
+}
