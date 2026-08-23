@@ -629,8 +629,12 @@ def validate_mm06_scheduler_admission(
     staged: dict | None = None,
     observed_manifest_blob: str | None = None,
     require_inactive_production_fence: bool = False,
+    expected_generation_head: str | None = None,
 ) -> list[str]:
     errors = schema_errors(root, "schemas/scheduler_admission.schema.json", admission)
+    actual_candidate_head = expected_generation_head
+    if actual_candidate_head is None or admission.get("generation_head_sha") != actual_candidate_head:
+        errors.append("MM06 scheduler admission generation head does not match independently supplied expected generation head")
     _scan_public(admission, errors)
     for key in ("protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_root_sha"):
         if admission.get(key) != manifest.get(key):errors.append("MM06 scheduler admission/manifest mismatch: " + key)
@@ -678,9 +682,13 @@ def validate_scheduler_admission(
     source: dict | None = None,
     observed_manifest_blob: str | None = None,
     require_inactive_production_fence: bool = False,
+    expected_generation_head: str | None = None,
 ) -> list[str]:
     """Validate the create-once main envelope; it is intentionally not the MM06 source bytes."""
     errors = schema_errors(root, "schemas/scheduler_admission_copy.schema.json", admission)
+    actual_candidate_head = expected_generation_head
+    if actual_candidate_head is None or admission.get("generation_head_sha") != actual_candidate_head:
+        errors.append("scheduler admission copy generation head does not match independently supplied expected generation head")
     _scan_public(admission, errors)
     for key in ("protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_root_sha"):
         if admission.get(key) != manifest.get(key):errors.append("scheduler admission copy/manifest mismatch: " + key)
@@ -703,6 +711,7 @@ def validate_scheduler_admission(
             staged,
             observed_manifest_blob=observed_manifest_blob,
             require_inactive_production_fence=require_inactive_production_fence,
+            expected_generation_head=expected_generation_head,
         ))
         for key in ("protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_root_sha","generation_head_sha","staged_candidate_git_identity","scheduler_manifest_git_identity","admission_verdict"):
             if admission.get(key) != source.get(key):errors.append("scheduler admission copy/MM06 source semantic mismatch: " + key)
@@ -745,7 +754,7 @@ def validate_countable_scheduler(root: pathlib.Path, control: dict, assignment: 
             admission = load(root, f"scheduler_admission/{cohort}.json")
             source, source_errors = load_scheduler_admission_source(root, admission)
             errors.extend(source_errors)
-            errors.extend(validate_scheduler_admission(root, manifest, admission, staged=staged, source=source, observed_manifest_blob=git_blob_sha(path)))
+            errors.extend(validate_scheduler_admission(root, manifest, admission, staged=staged, source=source, observed_manifest_blob=git_blob_sha(path), expected_generation_head=staged.get("generation_head_sha") if staged else None))
     return errors
 
 

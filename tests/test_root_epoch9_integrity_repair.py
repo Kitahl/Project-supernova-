@@ -69,9 +69,13 @@ class RootEpoch9IntegrityRepairTests(unittest.TestCase):
             '.github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml',
             'scripts/scheduler_admission_guard.py',
             'config/root_epoch11_stageability_repair_seed_v25.json',
+            'config/root_epoch11_stageability_repair_seed_amendment_v25.json',
             'config/root_epoch11_stageability_repair_epoch_v25.json',
             'scripts/reconcile_root_epoch11_stageability_repair_seed.py',
+            'scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py',
             '.github/workflows/supernova-root-epoch11-stageability-repair-seed.yml',
+            '.github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml',
+            'tests/test_root_epoch11_stageability_repair_seed_amendment.py',
         }
         self.assertTrue(required.issubset(paths), sorted(required - paths))
 

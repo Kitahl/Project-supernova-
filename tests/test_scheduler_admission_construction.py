@@ -65,6 +65,8 @@ class SchedulerAdmissionConstructionTests(unittest.TestCase):
         self.assertIn("root11 scheduler admission must already exist in base unchanged", text)
         self.assertIn("root11 promotion must preserve exact staged pointer blob", text)
         self.assertIn("root11 promotion CAS must differ from generation root", text)
+        self.assertIn('staged.get("generation_head_sha")!=s.get("generation_head_sha")', text)
+        self.assertIn("root11 active state generation head differs from archived staged pointer", text)
 
     def test_pointer_only_admission_validates_observed_g_manifest_without_main_copy(self):
         guard = load_guard_module()
@@ -103,6 +105,7 @@ class SchedulerAdmissionConstructionTests(unittest.TestCase):
                 copy,
                 source=source,
                 observed_manifest_blob=observed,
+                expected_generation_head=source["generation_head_sha"],
             )
         self.assertNotIn("independently observed scheduler manifest blob is unavailable", errors)
         self.assertNotIn("scheduler admission copy/manifest mismatch: scheduler_manifest_git_identity", errors)

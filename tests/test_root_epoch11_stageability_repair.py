@@ -12,6 +12,26 @@ class RootEpoch11StageabilityRepairTests(unittest.TestCase):
         self.assignment = json.loads((ROOT / "schemas/assignment.schema.json").read_text())
         self.liveness = json.loads((ROOT / "schemas/cohort_liveness_contract.schema.json").read_text())
         self.manifest = json.loads((ROOT / "schemas/scheduler_manifest.schema.json").read_text())
+        self.tcb = json.loads((ROOT / "config/root_tcb_epoch_v25.json").read_text())
+        self.authority = json.loads((ROOT / "config/admission_authority.json").read_text())
+
+    def test_seed_completeness_amendment_is_durable_root_authority(self):
+        self.assertEqual(self.epoch["schema_version"], "PS-ROOT-EPOCH11-STAGEABILITY-REPAIR-EPOCH-2.5-1")
+        for key in (
+            "root_epoch11_stageability_repair_seed_amendment_install_commit_sha",
+            "root_epoch11_stageability_repair_seed_amendment_policy_blob",
+            "root_epoch11_stageability_repair_seed_amendment_reconciler_blob",
+            "root_epoch11_stageability_repair_seed_amendment_workflow_blob",
+        ):
+            self.assertRegex(self.tcb[key], r"^[0-9a-f]{40}$")
+        authority_paths = set(self.authority["authoritative_status_workflows"]) | set(self.authority["trusted_authority_helpers"]) | set(self.authority["trusted_validator_entrypoints"])
+        for path in (
+            "config/root_epoch11_stageability_repair_seed_amendment_v25.json",
+            "scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py",
+            ".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml",
+            "tests/test_root_epoch11_stageability_repair_seed_amendment.py",
+        ):
+            self.assertIn(path, authority_paths)
 
     def test_epoch_declares_constructable_one_commit_four_path_dag(self):
         self.assertEqual(self.epoch["previous_root_epoch"], 10)

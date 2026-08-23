@@ -68,5 +68,11 @@
     "verifier_branch": {"type": "string"}, "integrator_branch": {"type": "string"}, "consolidation_branch": {"type": "string"},
     "expected_base_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "sealed_slots": {"type": "array", "items": {"type": "string"}}
   },
-  "required": ["task_network_plan_id", "cohort_id", "assignment_id", "generation_seq", "parent_state_git_identity", "control_manifest_id", "control_manifest_path", "control_manifest_git_identity", "network_checkpoint_id", "runtime_state_id", "network_mode", "phase", "short_test", "calibration_countable", "repo_policy_required", "generation_branch", "generation_root_sha", "workers", "verifier_branch", "integrator_branch", "consolidation_branch", "sealed_slots"]
+  "allOf": [
+    {
+      "if": {"required": ["candidate_nonce"]},
+      "then": {"required": ["generation_root_sha"]}
+    }
+  ],
+  "required": ["task_network_plan_id", "cohort_id", "assignment_id", "generation_seq", "parent_state_git_identity", "control_manifest_id", "control_manifest_path", "control_manifest_git_identity", "network_checkpoint_id", "runtime_state_id", "network_mode", "phase", "short_test", "calibration_countable", "repo_policy_required", "generation_branch", "workers", "verifier_branch", "integrator_branch", "consolidation_branch", "sealed_slots"]
 }

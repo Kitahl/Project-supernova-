@@ -576,7 +576,7 @@ def exact_gen12_zero_credit_scheduler_repair_parent(root,base,old,changed):
             if admission.get(key)!=source.get(key):return False
         if admission.get('source_schema_version')!=source.get('schema_version'):return False
         rc_manifest_blob,manifest_blob=run(['git','rev-parse','HEAD:'+sp],root)
-        if rc_manifest_blob or validate_scheduler_admission(root,manifest,admission,staged=pointer,source=source,observed_manifest_blob=manifest_blob.strip(),require_inactive_production_fence=True):return False
+        if rc_manifest_blob or validate_scheduler_admission(root,manifest,admission,staged=pointer,source=source,observed_manifest_blob=manifest_blob.strip(),require_inactive_production_fence=True,expected_generation_head=pointer.get("generation_head_sha")):return False
         if _remote_worker_preactivation_errors(source,manifest,pointer):return False
     except Exception:return False
     return True
@@ -770,7 +770,7 @@ def exact_root11_successor_promotion(root,base,old,changed):
             if admission.get(key)!=source.get(key):return False
         if admission.get('source_schema_version')!=source.get('schema_version'):return False
         rc_manifest_blob,manifest_blob=run(['git','rev-parse','HEAD:'+sp],root)
-        if rc_manifest_blob or validate_scheduler_admission(root,manifest,admission,staged=archived,source=source,observed_manifest_blob=manifest_blob.strip(),require_inactive_production_fence=True):return False
+        if rc_manifest_blob or validate_scheduler_admission(root,manifest,admission,staged=archived,source=source,observed_manifest_blob=manifest_blob.strip(),require_inactive_production_fence=True,expected_generation_head=archived.get("generation_head_sha")):return False
         if _remote_worker_preactivation_errors(source,manifest,archived):return False
         if _remote_inactive_production_snapshot(manifest,G)!=production_snapshot:return False
     except Exception:return False
@@ -821,7 +821,7 @@ def scheduler_admission_transaction(root,pr,base,head,changed):
         for key in ('protocol_version','task_network_plan_id','candidate_nonce','cohort_id','generation_root_sha','generation_head_sha','staged_candidate_git_identity','scheduler_manifest_git_identity','admission_verdict'):
             if copy.get(key)!=source.get(key):return ['scheduler admission copy/MM06 semantic mismatch: '+key]
         if copy.get('source_schema_version')!=source.get('schema_version'):return ['scheduler admission source schema-version mismatch']
-        guard_errors=validate_scheduler_admission(root,manifest,copy,staged=pointer,source=source,observed_manifest_blob=manifest_blob,require_inactive_production_fence=True)
+        guard_errors=validate_scheduler_admission(root,manifest,copy,staged=pointer,source=source,observed_manifest_blob=manifest_blob,require_inactive_production_fence=True,expected_generation_head=pointer.get("generation_head_sha"))
         if guard_errors:return ['scheduler admission trusted guard: '+guard_errors[0]]
         remote_worker_errors=_remote_worker_preactivation_errors(source,manifest,pointer)
         if remote_worker_errors:return ['scheduler admission worker source: '+remote_worker_errors[0]]

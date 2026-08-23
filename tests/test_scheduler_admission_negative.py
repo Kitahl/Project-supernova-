@@ -71,6 +71,14 @@ class SchedulerAdmissionNegativeTests(unittest.TestCase):
         task["execution_mode"]="SAFE_REPLAY_ONLY";task["preactivation_inactive_result"]="RUN"
         self.assertTrue(list(validator.iter_errors(task)))
 
+    def test_root_and_head_placeholder_or_non_sha_values_fail_schema(self):
+        for path, field in (("schemas/scheduler_manifest.schema.json", "generation_root_sha"), ("schemas/staged_candidate.schema.json", "generation_head_sha")):
+            schema=json.loads((ROOT/path).read_text())
+            validator=Draft202012Validator(schema["properties"][field])
+            for invalid in ("__PLACEHOLDER__", "not-a-git-sha", "0"*39):
+                with self.subTest(path=path, field=field, invalid=invalid):
+                    self.assertTrue(list(validator.iter_errors(invalid)))
+
     def test_schemas_are_closed_and_do_not_expose_raw_auth_fields(self):
         for path in ("schemas/scheduler_manifest.schema.json","schemas/preactivation_receipt.schema.json","schemas/scheduler_admission.schema.json"):
             schema=json.loads((ROOT/path).read_text());self.assertFalse(schema["additionalProperties"]);raw=json.dumps(schema).lower()

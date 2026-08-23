@@ -26,6 +26,7 @@ def validate(base=None,head=None):
   if not staged_path or staged_path!=f"staging/{s.get('active_cohort_id')}.json":e.append("root11 active state lacks canonical archived staged pointer")
   rc_archive,archive_blob,_=git("rev-parse",f"HEAD:{staged_path}") if staged_path else (1,"","")
   if rc_archive or archive_blob!=s.get("active_staged_candidate_git_identity"):e.append("root11 archived staged pointer blob mismatch")
+  if staged.get("generation_head_sha")!=s.get("generation_head_sha"):e.append("root11 active state generation head differs from archived staged pointer")
   generation_root=staged.get("generation_root_sha")
   if c.get("expected_base_head")!=generation_root or a.get("expected_base_head")!=generation_root:e.append("root11 control/assignment generation-base mismatch")
   if s.get("expected_base_head")==generation_root:e.append("root11 promotion CAS must differ from generation root")

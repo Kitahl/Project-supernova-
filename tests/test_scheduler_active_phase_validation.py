@@ -52,6 +52,7 @@ class SchedulerActivePhaseValidationTests(unittest.TestCase):
                 self.manifest,
                 self.source,
                 observed_manifest_blob=HEX,
+                expected_generation_head=self.source["generation_head_sha"],
             )
         self.assertEqual(errors, [])
         sources.assert_called_once()
@@ -78,6 +79,7 @@ class SchedulerActivePhaseValidationTests(unittest.TestCase):
                 self.source,
                 observed_manifest_blob=HEX,
                 require_inactive_production_fence=True,
+                expected_generation_head=self.source["generation_head_sha"],
             )
         self.assertEqual(errors, [])
         fence.assert_called_once()
@@ -87,6 +89,7 @@ class SchedulerActivePhaseValidationTests(unittest.TestCase):
         source = pathlib.Path("scripts/reconcile_open_prs.py").read_text(encoding="utf-8")
         self.assertGreaterEqual(source.count("require_inactive_production_fence=True"), 3)
         self.assertIn("_remote_inactive_production_snapshot(manifest,G)!=production_snapshot", source)
+        self.assertEqual(source.count("expected_generation_head="), 3)
 
 
 if __name__ == "__main__":
