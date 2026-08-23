@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import hashlib,json,os,pathlib,re,sys
+import hashlib,os,pathlib,re,sys
 from jsonschema import Draft202012Validator
+import strict_json
 
 TRUSTED_ROOT=pathlib.Path(__file__).resolve().parents[1]
 ROOT=pathlib.Path(os.environ.get('SUPERNOVA_VALIDATE_ROOT',str(TRUSTED_ROOT))).resolve()
@@ -11,11 +12,11 @@ BAD={'hidden_task_name','hidden_task_id','protected_task_id','benchmark_item_id'
 E=[]
 def err(x):E.append(x)
 def load(p):
- try:return json.loads(p.read_text(encoding='utf-8'))
+ try:return strict_json.loads(p.read_text(encoding='utf-8'))
  except Exception as e:
   try: label=str(p.relative_to(ROOT))
   except Exception: label=str(p)
-  err(f'{label} invalid JSON: {e}');return None
+  err(f'{label} invalid strict JSON: {e}');return None
 def blob(p):
  b=p.read_bytes();return hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest()
 def walk(o,p):
@@ -38,7 +39,7 @@ parallel=load(ROOT/'config/read_only_probe_parallelism_v25.json') if (ROOT/'conf
 if not all([state,plan,auth,reg,policy,cfg,freeze,pools,lanes]):err('missing canonical v2.5 state/plan/auth/registry/policy/freeze/pools/research gate/branch config')
 if state:
  try:
-  s=json.loads((ROOT/'schemas/state.schema.json').read_text());Draft202012Validator.check_schema(s)
+  s=strict_json.loads((ROOT/'schemas/state.schema.json').read_text(encoding='utf-8'));Draft202012Validator.check_schema(s)
   for e in Draft202012Validator(s).iter_errors(state):err(f'state schema: {e.message}')
  except Exception as e:err(f'state schema execution failed: {e}')
 if plan and plan.get('task_network_plan_id')!=PLAN:err('plan ID mismatch')
