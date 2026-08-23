@@ -37,8 +37,11 @@ class RootEpoch10SchedulerAdmissionSeedAmendmentTests(unittest.TestCase):
             ".github/workflows/supernova-rest-branch-reconciler.yml",
             "tests/test_rest_admission_dependency.py",
             "tests/test_root_epoch9_integrity_repair.py",
+            "tests/test_root_epoch6_repair.py",
+            "tests/test_gen9_reset_compat_root.py",
             "tests/test_gen10_zero_credit_terminal_transition.py",
             "tests/test_gen11_zero_credit_terminal_transition.py",
+            "tests/test_structural_status_single_writer.py",
         ):
             self.assertIn(path, required)
         for path in (

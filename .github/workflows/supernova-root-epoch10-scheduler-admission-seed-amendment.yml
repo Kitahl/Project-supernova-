@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: '3.13.15'
       - name: Install hash-locked validation environment
-        run: python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements-validation.lock
+        run: "python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements-validation.lock"
       - name: Assert frozen validator environment
         run: python scripts/assert_validator_environment.py
       - name: Candidate diagnostics only
@@ -68,7 +68,7 @@ jobs:
           cd trusted
           git fetch --no-tags origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
       - name: Install trusted validation environment
-        run: python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock
+        run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r trusted/requirements-validation.lock"
       - name: Assert frozen trusted validator environment
         run: python3 trusted/scripts/assert_validator_environment.py
       - name: Publish one-shot root10 scheduler-admission seed amendment decision

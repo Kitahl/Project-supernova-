@@ -63,11 +63,14 @@
     "tests/test_countable_control_gate_consistency.py",
     "tests/test_gen10_zero_credit_terminal_transition.py",
     "tests/test_gen11_zero_credit_terminal_transition.py",
+    "tests/test_gen9_reset_compat_root.py",
     "tests/test_generation_delta_policy.py",
     "tests/test_rest_admission_dependency.py",
     "tests/test_root_epoch10_scheduler_admission.py",
+    "tests/test_root_epoch6_repair.py",
     "tests/test_root_epoch9_integrity_repair.py",
-    "tests/test_scheduler_admission_negative.py"
+    "tests/test_scheduler_admission_negative.py",
+    "tests/test_structural_status_single_writer.py"
   ],
   "required_root_candidate_paths": [
     ".github/workflows/supernova-rest-branch-reconciler.yml",
@@ -96,11 +99,14 @@
     "tests/test_countable_control_gate_consistency.py",
     "tests/test_gen10_zero_credit_terminal_transition.py",
     "tests/test_gen11_zero_credit_terminal_transition.py",
+    "tests/test_gen9_reset_compat_root.py",
     "tests/test_generation_delta_policy.py",
     "tests/test_rest_admission_dependency.py",
     "tests/test_root_epoch10_scheduler_admission.py",
+    "tests/test_root_epoch6_repair.py",
     "tests/test_root_epoch9_integrity_repair.py",
-    "tests/test_scheduler_admission_negative.py"
+    "tests/test_scheduler_admission_negative.py",
+    "tests/test_structural_status_single_writer.py"
   ],
   "forbidden_candidate_prefixes": ["state/","control/","assignments/","liveness/","scheduler/","scheduler_admission/","preactivation/","reports/","verification/","integration/","history/","transitions/","superseded/","runtime/","benchmark/","research/"],
   "repair_invariants": [

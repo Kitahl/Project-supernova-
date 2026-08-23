@@ -24,6 +24,7 @@ POLICY_PATH = "config/root_epoch10_scheduler_admission_seed_amendment_v25.json"
 STATE_PATH = "state/CURRENT.json"
 STATE_BLOB = "826fcdd01701eda04a177f86748878b3755badc0"
 ACTIONS_CREATOR = "github-actions[bot]"
+REQUIRED_IMPORT_TOKEN = "import strict_json"
 WORKERS = {"MF01", "MF02", "MF03", "MF04", "MF05", "MM01", "MM02", "MM03", "MM04", "MM05", "MM07", "EXT01"}
 FIRST_SEED_PATHS = {
     "config/root_epoch10_scheduler_admission_seed_v25.json",
@@ -156,7 +157,9 @@ def exact_gen12_mm06_terminal(policy: dict):
 def trusted_deadlock_present(root: pathlib.Path, policy: dict):
     wf = (root / policy["deadlock_proof"]["workflow_path"]).read_text(encoding="utf-8")
     reconciler = (root / policy["deadlock_proof"]["reconciler_path"]).read_text(encoding="utf-8")
-    if policy["deadlock_proof"]["required_import_token"] not in reconciler:
+    if policy["deadlock_proof"]["required_import_token"] != REQUIRED_IMPORT_TOKEN:
+        return False, "trusted deadlock policy import token mismatch"
+    if REQUIRED_IMPORT_TOKEN not in reconciler:
         return False, "trusted reconciler no longer imports strict_json"
     if "for name in ('reconcile_branch_rest.py','reconcile_v25_admission.py')" not in wf:
         return False, "trusted REST workflow no longer has the proven two-file /tmp loader"
@@ -210,7 +213,14 @@ def candidate_semantics(tmp: pathlib.Path, trusted: str, policy: dict):
     registry = load(tmp, "config/task_registry_v25.json")
     if registry.get("active_task_count") != 15 or registry.get("no_sixteenth_lane") is not True or registry.get("same_task_session_each_run") is not True:
         problems.append("task registry does not preserve exact 15 same sessions")
-    for path in ("tests/test_root_epoch9_integrity_repair.py", "tests/test_gen10_zero_credit_terminal_transition.py", "tests/test_gen11_zero_credit_terminal_transition.py"):
+    for path in (
+        "tests/test_root_epoch6_repair.py",
+        "tests/test_gen9_reset_compat_root.py",
+        "tests/test_gen10_zero_credit_terminal_transition.py",
+        "tests/test_gen11_zero_credit_terminal_transition.py",
+        "tests/test_root_epoch9_integrity_repair.py",
+        "tests/test_structural_status_single_writer.py",
+    ):
         text = (tmp / path).read_text(encoding="utf-8")
         if "root10" not in text.lower() and "epoch 10" not in text.lower():
             problems.append(path + " was not explicitly migrated while preserving historical assertions")
