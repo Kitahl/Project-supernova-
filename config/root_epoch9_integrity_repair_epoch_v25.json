@@ -10,15 +10,20 @@
   "source_verifier_verdict": "INVALID",
   "source_partition": "12_SAFE_0_QUARANTINED_0_MISSING",
   "source_liveness_complete": false,
+  "source_malformed_integrator_head": "61fb6c549c14d2f894daa2d418fe952334d49f12",
+  "source_malformed_integration_blob": "cb56b037fb47a5a2d07f876bfd80acd404e00f38",
+  "source_malformed_integration_status": "supernova/branch-integrate=failure",
+  "source_malformed_integration_defect": "O-GEN11-MF06-PLAN-BINDING",
   "confirmed_issue_ref": "#221",
-  "repairs": [
+  "repair_scope": [
     "STRICT_FINITE_DUPLICATE_FREE_JSON",
     "CLOSED_ACCOUNTING_ZERO_QUANTITIES",
     "MM04_TYPED_NONVACUITY",
     "PRIVILEGED_VALIDATOR_ENVIRONMENT_ASSERTION",
     "SINGLE_STRUCTURAL_WRITER_METADATA",
     "MINIMUM_45_MINUTE_WORKER_LIVENESS_WINDOW",
-    "EXACT_GEN11_ZERO_CREDIT_SUCCESSOR_ESCAPE"
+    "EXACT_GEN11_ZERO_CREDIT_SUCCESSOR_ESCAPE",
+    "MF06_PREWRITE_CANONICAL_BINDING_GUARD"
   ],
   "calibration_credit_effect": 0,
   "fresh_science_effect": "NONE",
