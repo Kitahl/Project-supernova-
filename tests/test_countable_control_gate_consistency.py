@@ -1,11 +1,15 @@
 import importlib.util
 import json
 import pathlib
+import sys
 import unittest
 
 from jsonschema import Draft202012Validator
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+# spec_from_file_location does not automatically add the script directory to sys.path;
+# make the test harness model the executable environment explicitly.
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location("reconcile_v25_admission", ROOT / "scripts/reconcile_v25_admission.py")
 MOD = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
@@ -17,8 +21,12 @@ class CountableControlGateConsistencyTests(unittest.TestCase):
         return json.loads((ROOT / "config/countable_control_set_v25.json").read_text(encoding="utf-8"))
 
     def test_declarative_contract_contains_hardened_minimum(self):
-        required = MOD.required_countable_paths(self.contract())
+        contract=self.contract()
+        self.assertEqual(contract["schema_version"],"PS-COUNTABLE-CONTROL-SET-2.5-24")
+        required = MOD.required_countable_paths(contract)
         self.assertTrue(MOD.MINIMUM_HARDENED_CONTROL.issubset(required))
+        self.assertIn("scripts/strict_json.py",required)
+        self.assertIn("config/root_epoch9_integrity_repair_epoch_v25.json",required)
 
     def test_declarative_addition_is_automatically_required(self):
         contract = self.contract()
