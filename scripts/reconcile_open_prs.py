@@ -10,7 +10,7 @@ REPO=os.environ.get("GITHUB_REPOSITORY","Kitahl/Project-supernova-"); TOKEN=os.e
 API="https://api.github.com/repos/"+REPO; OWNER=REPO.split("/",1)[0]
 ALLOWED_HEAD_PREFIXES=("hardening/","transition/","ps/consolidate/","rev4/")
 CONTEXTS=("supernova/static-control","supernova/report-admission","supernova/transition-admission")
-BOOTSTRAP_CONTEXT="supernova/bootstrap-admission"; BOOTSTRAP_CREATOR="github-actions[bot]"
+BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"; BOOTSTRAP_CREATOR="github-actions[bot]"
 BOOTSTRAP_WORKFLOW=".github/workflows/supernova-authority-bootstrap.yml"
 RUN_URL_RE=re.compile(r"^https://github\.com/"+re.escape(REPO)+r"/actions/runs/([0-9]+)$"); HEX40=re.compile(r"^[0-9a-f]{40}$")
 DURABLE_BOOTSTRAP_PROVENANCE="PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED"
@@ -33,7 +33,10 @@ GEN10_SUPERSESSION_DISPOSITION="INVALIDATED_ZERO_CREDIT_POST_START_AUTHORITATIVE
 GEN10_HISTORICAL_INTEGRATION_ISSUE="O-T0-GEN10-HISTORICAL-INTEGRATION-SCHEMA"
 
 GEN11_COHORT="CAL-BR-011-v25-27955ce6"; GEN11_G="3bb1425d18dbff2f83d69b0738c7151bf4a47355"; GEN11_STATE_BLOB="ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9"
-GEN11_VERIFIER_HEAD="a58939b12e66ab4604b8f2e5f2033bd70d5c0bd3"; GEN11_VERIFICATION_PATH=f"verification/{GEN11_COHORT}.json"; GEN11_SUPERSESSION_PATH=f"superseded/{GEN11_COHORT}.json"
+GEN11_VERIFIER_HEAD="a58939b12e66ab4604b8f2e5f2033bd70d5c0bd3"; GEN11_VERIFICATION_PATH=f"verification/{GEN11_COHORT}.json"
+GEN11_INTEGRATOR_HEAD="61fb6c549c14d2f894daa2d418fe952334d49f12"; GEN11_INTEGRATION_PATH=f"integration/{GEN11_COHORT}.json"; GEN11_INTEGRATION_BLOB="cb56b037fb47a5a2d07f876bfd80acd404e00f38"
+GEN11_MALFORMED_PLAN="0aa341106cfc4654d5de358526716cadba8c9199b31e9eb15a90f488757cc30d7"; GEN11_MF06_BINDING_ISSUE="O-GEN11-MF06-PLAN-BINDING"
+GEN11_SUPERSESSION_PATH=f"superseded/{GEN11_COHORT}.json"
 GEN11_SUPERSESSION_DISPOSITION="INVALIDATED_ZERO_CREDIT_ROOT_EPOCH9_FULL_INTEGRITY_REPAIR"; GEN12_COHORT_PREFIX="CAL-BR-012-v25-"
 GEN11_REQUIRED_ISSUES={"GEN11-EXACT-G-LIVENESS-NONCLEAN","O-T0-BRANCH-CONFIG-STRUCTURAL-WRITER-DRIFT","PS-MF04-NONFINITEJSON-001","MM03-RPT-TYPED-MISSING-006","MM04-T0-MM04-ROLE-NONVACUITY-SCHEMA-001","MM04-T0-PRIVILEGED-VALIDATOR-ENV-ASSERTION-001"}
 MINIMUM_WORKER_LIVENESS_WINDOW_MINUTES=45
@@ -233,14 +236,14 @@ def exact_gen10_zero_credit_terminal_parent(root,base,old,changed):
 
 def _gen11_terminal_evidence_valid(old):
     try:
-        blob,v=_remote_json(GEN11_VERIFICATION_PATH,GEN11_VERIFIER_HEAD)
-        if not isinstance(blob,str) or not HEX40.fullmatch(blob):return False
-        if not _one_path_child(GEN11_VERIFIER_HEAD,GEN11_G,GEN11_VERIFICATION_PATH,blob):return False
+        vb,v=_remote_json(GEN11_VERIFICATION_PATH,GEN11_VERIFIER_HEAD)
+        if not isinstance(vb,str) or not HEX40.fullmatch(vb):return False
+        if not _one_path_child(GEN11_VERIFIER_HEAD,GEN11_G,GEN11_VERIFICATION_PATH,vb):return False
         if not _schema_valid('schemas/branch_verification.schema.json',v):return False
         sem=_trusted_v25_module()
         if sem.verification_semantic_errors(v,old):return False
         if v.get('verdict')!='INVALID' or v.get('calibration_pass') is not False or v.get('partition_exhaustive_verified') is not True:return False
-        if len(v.get('safe_report_refs') or [])!=12 or v.get('quarantined_report_refs') or v.get('missing_workers') or v.get('liveness_complete') is not False:return False
+        if len(v.get('safe_report_refs') or [])!=12 or v.get('quarantined_report_refs')!=[] or v.get('missing_workers')!=[] or v.get('liveness_complete') is not False:return False
         issues=set()
         for row in v.get('issue_ledger') or []:
             if not isinstance(row,dict):continue
@@ -249,9 +252,15 @@ def _gen11_terminal_evidence_valid(old):
         if not GEN11_REQUIRED_ISSUES.issubset(issues):return False
         if _remote_branch_head('ps/verify/'+GEN11_COHORT)!=GEN11_VERIFIER_HEAD:return False
         if not _source_bound_status(GEN11_VERIFIER_HEAD,'supernova/branch-verify','success') or not _source_bound_status(GEN11_VERIFIER_HEAD,'supernova/report-admission','success'):return False
-        if _remote_branch_head('ps/integrate/'+GEN11_COHORT)!=GEN11_G:return False
-        try:_remote_json(f'integration/{GEN11_COHORT}.json','ps/integrate/'+GEN11_COHORT);return False
-        except Exception:pass
+        ib,i=_remote_json(GEN11_INTEGRATION_PATH,GEN11_INTEGRATOR_HEAD)
+        if ib!=GEN11_INTEGRATION_BLOB:return False
+        if not _one_path_child(GEN11_INTEGRATOR_HEAD,GEN11_G,GEN11_INTEGRATION_PATH,GEN11_INTEGRATION_BLOB):return False
+        if _schema_valid('schemas/branch_integration.schema.json',i):return False
+        if i.get('task_network_plan_id')!=GEN11_MALFORMED_PLAN or (i.get('session_header') or {}).get('plan_id')!=GEN11_MALFORMED_PLAN:return False
+        if GEN11_MALFORMED_PLAN==PLAN:return False
+        if i.get('cohort_id')!=GEN11_COHORT or i.get('generation_head_sha')!=GEN11_G or i.get('runtime_state_id')!=RUNTIME or i.get('calibration_pass') is not False:return False
+        if _remote_branch_head('ps/integrate/'+GEN11_COHORT)!=GEN11_INTEGRATOR_HEAD:return False
+        if not _source_bound_status(GEN11_INTEGRATOR_HEAD,'supernova/branch-integrate','failure'):return False
         return True
     except Exception:return False
 
