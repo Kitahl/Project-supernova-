@@ -2,7 +2,10 @@
 from __future__ import annotations
 import argparse, hashlib, pathlib, subprocess, sys
 from jsonschema import Draft202012Validator
-import strict_json
+try:
+ from scripts import strict_json
+except ImportError:
+ import strict_json
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
