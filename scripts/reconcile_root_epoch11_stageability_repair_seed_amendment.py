@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import importlib.util
 import collections
+import datetime
 import os
 import pathlib
+import re
 import shutil
 import tempfile
 import time
@@ -14,6 +16,9 @@ ROOT = pathlib.Path.cwd().resolve()
 POLICY_PATH = "config/root_epoch11_stageability_repair_seed_amendment_v25.json"
 ORIGINAL_POLICY_PATH = "config/root_epoch11_stageability_repair_seed_v25.json"
 ORIGINAL_SCRIPT_PATH = ROOT / "scripts" / "reconcile_root_epoch11_stageability_repair_seed.py"
+GITHUB_UTC_TIMESTAMP = re.compile(
+    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$"
+)
 
 
 def load_original_seed():
@@ -75,62 +80,166 @@ def source_attempt_jobs(seed, source_run_id: int, source_attempt: int, policy: d
     return seed.api(endpoint + "?per_page=100")
 
 
+def parse_github_utc_timestamp(value: object) -> datetime.datetime | None:
+    if not isinstance(value, str) or not GITHUB_UTC_TIMESTAMP.fullmatch(value):
+        return None
+    try:
+        parsed = datetime.datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError:
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() != datetime.timedelta(0):
+        return None
+    return parsed.astimezone(datetime.timezone.utc)
+
+
 def incomplete_earlier_same_head_runs(workflow_runs: list[dict], candidate_head: str, amendment_created_at: str) -> list[int]:
+    cutoff = parse_github_utc_timestamp(amendment_created_at)
+    if cutoff is None:
+        raise ValueError("amendment run created_at is not a valid GitHub UTC timestamp")
     pending: list[int] = []
     for run in workflow_runs:
         if not isinstance(run, dict) or run.get("event") != "pull_request_target":
             continue
-        if not isinstance(run.get("created_at"), str) or run["created_at"] > amendment_created_at:
+        if run.get("head_sha") != candidate_head:
             continue
-        pull_requests = run.get("pull_requests") or []
-        if not any((row.get("head") or {}).get("sha") == candidate_head for row in pull_requests if isinstance(row, dict)):
+        created_at = parse_github_utc_timestamp(run.get("created_at"))
+        if created_at is None:
+            raise ValueError("inventory run created_at is not a valid GitHub UTC timestamp")
+        if created_at > cutoff:
             continue
         if run.get("status") != "completed" and isinstance(run.get("id"), int):
             pending.append(run["id"])
     return sorted(pending)
 
 
-def wait_for_earlier_same_head_runs(seed, candidate_head: str, amendment_run_id: int) -> tuple[bool, str]:
+def exact_head_pull_request_target_inventory(seed, candidate_head: str, policy: dict) -> tuple[bool, list[dict], str]:
+    expected_contract = {
+        "event": "pull_request_target",
+        "head_sha_filter_required": True,
+        "per_page": 100,
+        "maximum_exact_head_results": 1000,
+        "completeness_rule": "FULLY_PAGINATE_EXACT_HEAD_RESULTS_OR_FAIL_CLOSED",
+    }
+    if policy.get("earlier_run_inventory") != expected_contract:
+        return False, [], "exact-head pull_request_target inventory policy mismatch"
+    if not isinstance(candidate_head, str) or not seed.HEX40.fullmatch(candidate_head):
+        return False, [], "exact-head pull_request_target inventory requires a 40-hex candidate head"
+
+    per_page = expected_contract["per_page"]
+    maximum = expected_contract["maximum_exact_head_results"]
+    rows: list[dict] = []
+    seen_ids: set[int] = set()
+    expected_total: int | None = None
+    for page in range(1, maximum // per_page + 1):
+        payload = seed.api(
+            f"/actions/runs?event=pull_request_target&head_sha={candidate_head}&per_page={per_page}&page={page}"
+        )
+        if not isinstance(payload, dict):
+            return False, [], "exact-head pull_request_target inventory response is malformed"
+        total = payload.get("total_count")
+        batch = payload.get("workflow_runs")
+        if isinstance(total, bool) or not isinstance(total, int) or total < 0 or not isinstance(batch, list) or len(batch) > per_page:
+            return False, [], "exact-head pull_request_target inventory response is malformed"
+        if total >= maximum:
+            return False, [], "exact-head pull_request_target run inventory reached fail-closed 1000-result bound"
+        if expected_total is None:
+            expected_total = total
+        elif total != expected_total:
+            return False, [], "exact-head pull_request_target run inventory changed during pagination"
+        for run in batch:
+            if not isinstance(run, dict):
+                return False, [], "exact-head pull_request_target inventory contains a malformed run"
+            if run.get("event") != expected_contract["event"] or run.get("head_sha") != candidate_head:
+                return False, [], "server-filtered pull_request_target inventory returned a wrong-event or wrong-head run"
+            if parse_github_utc_timestamp(run.get("created_at")) is None or not isinstance(run.get("status"), str):
+                return False, [], "exact-head pull_request_target inventory run lacks ordering or status evidence"
+            run_id = run.get("id")
+            if isinstance(run_id, bool) or not isinstance(run_id, int) or run_id in seen_ids:
+                return False, [], "exact-head pull_request_target inventory contains a missing or duplicate run id"
+            seen_ids.add(run_id)
+            rows.append(run)
+        if len(batch) < per_page:
+            if len(rows) != expected_total:
+                return False, [], "exact-head pull_request_target run inventory is incomplete"
+            return True, rows, ""
+    return False, [], "exact-head pull_request_target run inventory exceeded fail-closed pagination bound"
+
+
+def wait_for_earlier_same_head_runs(seed, candidate_head: str, amendment_run_id: int, policy: dict) -> tuple[bool, str]:
     amendment_run = seed.api(f"/actions/runs/{amendment_run_id}")
     cutoff = amendment_run.get("created_at")
-    if amendment_run.get("event") != "workflow_run" or not isinstance(cutoff, str):
+    if amendment_run.get("event") != "workflow_run" or parse_github_utc_timestamp(cutoff) is None:
         return False, "current amendment workflow provenance is unavailable"
     for _ in range(60):
-        rows: list[dict] = []
-        complete_listing = False
-        for page in range(1, 11):
-            payload = seed.api(f"/actions/runs?event=pull_request_target&per_page=100&page={page}")
-            batch = payload.get("workflow_runs") or []
-            rows.extend(row for row in batch if isinstance(row, dict))
-            if len(batch) < 100:
-                complete_listing = True
-                break
-        if not complete_listing:
-            return False, "earlier pull_request_target run inventory exceeded fail-closed bound"
-        pending = incomplete_earlier_same_head_runs(rows, candidate_head, cutoff)
+        ok, rows, reason = exact_head_pull_request_target_inventory(seed, candidate_head, policy)
+        if not ok:
+            return False, reason
+        try:
+            pending = incomplete_earlier_same_head_runs(rows, candidate_head, cutoff)
+        except ValueError as exc:
+            return False, str(exc)
         if not pending:
             return True, ""
         time.sleep(5)
     return False, "earlier same-head pull_request_target writers did not complete before timeout"
 
 
-def accepted_amendment_installation(trusted: str, policy: dict, seed) -> tuple[bool, str]:
-    base = policy["required_amendment_base_main_sha"]
-    if seed.run(["git", "merge-base", "--is-ancestor", base, trusted])[0] != 0:
-        return False, "amendment install does not descend from exact accepted root11 seed commit"
-    rc, count = seed.run(["git", "rev-list", "--count", "--first-parent", base + ".." + trusted])
+def accepted_amendment_installation(trusted: str, policy: dict, seed, original_policy: dict) -> tuple[bool, str]:
+    seed_install = policy["required_amendment_base_main_sha"]
+    amendment_install = policy.get("original_amendment_install_commit_sha")
+    if not isinstance(amendment_install, str) or not seed.HEX40.fullmatch(amendment_install):
+        return False, "original amendment install commit binding is invalid"
+    expected_followup_paths = [
+        POLICY_PATH,
+        "scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py",
+        "tests/test_root_epoch11_stageability_repair_seed_amendment.py",
+    ]
+    if policy.get("followup_paths") != expected_followup_paths:
+        return False, "pagination follow-up path contract is not exact"
+    if set(policy.get("original_amendment_paths", {})) != set(policy.get("amendment_paths", [])):
+        return False, "original amendment installation blob map is not exact"
+
+    if seed.run(["git", "merge-base", "--is-ancestor", seed_install, amendment_install])[0] != 0:
+        return False, "original amendment does not descend from exact accepted root11 seed commit"
+    rc, first_parent = seed.run(["git", "rev-parse", amendment_install + "^1"])
+    if rc or first_parent.strip() != seed_install:
+        return False, "original amendment was not the immediate next first-parent transaction"
+    rc, count = seed.run(["git", "rev-list", "--count", "--first-parent", seed_install + ".." + amendment_install])
     if rc or count.strip() != "1":
-        return False, "amendment install is not the next accepted-main transaction"
-    rc, changed = seed.run(["git", "diff", "--name-only", base + "..." + trusted])
+        return False, "original amendment was not the next accepted-main transaction"
+    rc, changed = seed.run(["git", "diff", "--name-only", seed_install + "..." + amendment_install])
     if rc or set(changed.splitlines()) != set(policy["amendment_paths"]):
-        return False, "accepted main since root11 seed is not the exact four-path amendment"
+        return False, "accepted original amendment was not the exact four-path transaction"
+    for path, expected_blob in policy["original_amendment_paths"].items():
+        if seed.blob_at(amendment_install, path) != expected_blob:
+            return False, "original amendment install blob mismatch: " + path
+
+    if seed.run(["git", "merge-base", "--is-ancestor", amendment_install, trusted])[0] != 0:
+        return False, "pagination follow-up does not descend from exact original amendment install"
+    rc, first_parent = seed.run(["git", "rev-parse", trusted + "^1"])
+    if rc or first_parent.strip() != amendment_install:
+        return False, "pagination follow-up is not the immediate next first-parent transaction"
+    rc, count = seed.run(["git", "rev-list", "--count", "--first-parent", amendment_install + ".." + trusted])
+    if rc or count.strip() != "1":
+        return False, "pagination follow-up is not the next accepted-main transaction"
+    rc, changed = seed.run(["git", "diff", "--name-only", amendment_install + "..." + trusted])
+    if rc or set(changed.splitlines()) != set(expected_followup_paths):
+        return False, "accepted main since original amendment is not the exact three-path pagination follow-up"
+    for path, expected_blob in policy["original_amendment_paths"].items():
+        if path not in expected_followup_paths and seed.blob_at("HEAD", path) != expected_blob:
+            return False, "preserved original amendment path changed: " + path
+
+    checkpoints = [seed_install, amendment_install, "HEAD"]
     for path, expected_blob in policy["original_seed_paths"].items():
-        if seed.blob_at("HEAD", path) != expected_blob or seed.blob_at(base, path) != expected_blob:
-            return False, "original root11 seed path changed: " + path
-    if seed.blob_at("HEAD", seed.ROOT_TCB_PATH) != policy["required_current_root_epoch_blob"]:
-        return False, "accepted root10 blob changed during amendment installation"
-    if seed.blob_at("HEAD", seed.STATE_PATH) != policy["required_state_blob"]:
-        return False, "accepted Gen12 state changed during amendment installation"
+        if any(seed.blob_at(ref, path) != expected_blob for ref in checkpoints):
+            return False, "original root11 seed path changed across protected transactions: " + path
+    if any(seed.blob_at(ref, seed.ROOT_TCB_PATH) != policy["required_current_root_epoch_blob"] for ref in checkpoints):
+        return False, "accepted root10 blob changed across protected transactions"
+    if any(seed.blob_at(ref, seed.STATE_PATH) != policy["required_state_blob"] for ref in checkpoints):
+        return False, "accepted Gen12 state changed across protected transactions"
+    for path, expected_blob in original_policy["frozen_root10_paths"].items():
+        if any(seed.blob_at(ref, path) != expected_blob for ref in checkpoints):
+            return False, "frozen root10 path changed during pagination follow-up: " + path
     original_reconciler = (ROOT / "scripts" / "reconcile_root_epoch11_stageability_repair_seed.py").read_text(encoding="utf-8")
     defect = policy["known_defect"]
     if defect["corrected_marker_schema_version"] not in original_reconciler:
@@ -175,7 +284,7 @@ def exact_amended_candidate(tmp: pathlib.Path, trusted: str, policy: dict, seed,
             return False, "candidate changed literal first-seed provenance " + key
     dynamic = policy["root_tcb_dynamic_amendment_bindings"]
     actual_dynamic = {
-        "root_epoch11_stageability_repair_seed_amendment_install_commit_sha": trusted,
+        "root_epoch11_stageability_repair_seed_amendment_install_commit_sha": policy["original_amendment_install_commit_sha"],
         "root_epoch11_stageability_repair_seed_amendment_policy_blob": seed.blob_at("HEAD", policy["amendment_paths"][0]),
         "root_epoch11_stageability_repair_seed_amendment_reconciler_blob": seed.blob_at("HEAD", policy["amendment_paths"][1]),
         "root_epoch11_stageability_repair_seed_amendment_workflow_blob": seed.blob_at("HEAD", policy["amendment_paths"][2]),
@@ -413,7 +522,7 @@ def main():
     if not str(head.get("ref", "")).startswith(policy["head_prefix_required"]):
         return fail_bound(seed, sha, "head prefix not root-epoch11 eligible", policy)
 
-    ok, reason = accepted_amendment_installation(trusted, policy, seed)
+    ok, reason = accepted_amendment_installation(trusted, policy, seed, original_policy)
     if not ok:
         return fail_bound(seed, sha, reason, policy)
     if seed.blob_at("HEAD", ORIGINAL_POLICY_PATH) != policy["original_seed_paths"][ORIGINAL_POLICY_PATH]:
@@ -479,7 +588,7 @@ def main():
         seed.run(["git", "worktree", "remove", "--force", str(tmp)])
         shutil.rmtree(tmp, ignore_errors=True)
 
-    ok, reason = wait_for_earlier_same_head_runs(seed, sha, amendment_run_id)
+    ok, reason = wait_for_earlier_same_head_runs(seed, sha, amendment_run_id, policy)
     if not ok:
         return fail_bound(seed, sha, reason, policy)
     final_pr = seed.api(f"/pulls/{diagnosed_pr_number}")
