@@ -26,6 +26,7 @@ DIAGNOSTIC_CONTEXTS = {
     "report_bound": "supernova/ruleset/report-source-bound",
     "transition_bound": "supernova/ruleset/transition-source-bound",
     "spoof_resistant": "supernova/ruleset/spoof-resistant",
+    "strict_up_to_date": "supernova/ruleset/strict-up-to-date",
 }
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
@@ -59,6 +60,7 @@ def post(sha: str, context: str, state: str, description: str):
 def evaluate_rules(rules, actions_app):
     types = {r.get("type") for r in rules if isinstance(r, dict)}
     checks = []
+    status_rules = []
     for rule in rules:
         if not isinstance(rule, dict) or rule.get("type") != "required_status_checks":
             continue
@@ -66,6 +68,7 @@ def evaluate_rules(rules, actions_app):
         rows = params.get("required_status_checks") or []
         if isinstance(rows, list):
             checks.extend(x for x in rows if isinstance(x, dict))
+            status_rules.append((params, [x for x in rows if isinstance(x, dict)]))
 
     app_id = (actions_app or {}).get("id")
     app_slug = (actions_app or {}).get("slug")
@@ -85,6 +88,11 @@ def evaluate_rules(rules, actions_app):
     report_bound = source_bound(REQUIRED["report"])
     transition_bound = source_bound(REQUIRED["transition"])
     distinct_required = all(name in by_context for name in REQUIRED.values())
+    strict_up_to_date = any(
+        params.get("strict_required_status_checks_policy") is True
+        and all(any(row.get("context") == ctx and row.get("integration_id") == app_id for row in rows) for ctx in REQUIRED.values())
+        for params, rows in status_rules
+    )
 
     return {
         "pr_required": "pull_request" in types,
@@ -94,7 +102,8 @@ def evaluate_rules(rules, actions_app):
         "static_bound": static_bound,
         "report_bound": report_bound,
         "transition_bound": transition_bound,
-        "spoof_resistant": distinct_required and static_bound and report_bound and transition_bound,
+        "spoof_resistant": distinct_required and static_bound and report_bound and transition_bound and strict_up_to_date,
+        "strict_up_to_date": strict_up_to_date,
         "observed_app_id": app_id,
         "observed_app_slug": app_slug,
         "required_context_integrations": {name: by_context.get(name, []) for name in REQUIRED.values()},

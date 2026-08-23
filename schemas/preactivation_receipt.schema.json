@@ -1,17 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "PS-PREACTIVATION-RECEIPT-2.5-1",
+  "title": "PS-PREACTIVATION-RECEIPT-2.5-3",
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "schema_version": {"const": "PS-PREACTIVATION-RECEIPT-2.5-1"},
+    "schema_version": {"const": "PS-PREACTIVATION-RECEIPT-2.5-3"},
     "protocol_version": {"const": "2.5"},
     "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
     "candidate_nonce": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "cohort_id": {"type": "string", "minLength": 1},
+    "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "staged_candidate_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "scheduler_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-    "role_id": {"enum": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"]},
+    "role_id": {"enum": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01","MF06"]},
     "scheduler_task_id": {"type": "string", "minLength": 1},
     "behavioral_config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "production_branch": {"type": "string", "minLength": 1},
@@ -22,8 +24,9 @@
     "production_not_before_utc": {"type": "string", "format": "date-time"},
     "normalized_first_production_utc": {"type": "string", "format": "date-time"},
     "runtime_state_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "worker_auth_commitment": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "worker_auth_proof": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "role_auth_scheme": {"const": "PS-HMAC-SHA256-PREACTIVATION-RECEIPT-1"},
+    "role_auth_commitment": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "role_auth_proof": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "scheduler_wakeup_observed": {"const": true},
     "staged_candidate_loaded": {"const": true},
     "github_read_reachability": {"const": true},
@@ -33,5 +36,5 @@
     "scientific_state_effect": {"const": "NONE"},
     "runtime_effect": {"const": "NONE"}
   },
-  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_head_sha","scheduler_manifest_git_identity","role_id","scheduler_task_id","behavioral_config_sha256","production_branch","production_path","preactivation_branch","preactivation_path","challenge_occurrence_utc","production_not_before_utc","normalized_first_production_utc","runtime_state_id","worker_auth_commitment","worker_auth_proof","scheduler_wakeup_observed","staged_candidate_loaded","github_read_reachability","github_preactivation_write_reachability","production_write_performed","fresh_evidence_consumed","scientific_state_effect","runtime_effect"]
+  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_root_sha","generation_head_sha","staged_candidate_git_identity","scheduler_manifest_git_identity","role_id","scheduler_task_id","behavioral_config_sha256","production_branch","production_path","preactivation_branch","preactivation_path","challenge_occurrence_utc","production_not_before_utc","normalized_first_production_utc","runtime_state_id","role_auth_scheme","role_auth_commitment","role_auth_proof","scheduler_wakeup_observed","staged_candidate_loaded","github_read_reachability","github_preactivation_write_reachability","production_write_performed","fresh_evidence_consumed","scientific_state_effect","runtime_effect"]
 }

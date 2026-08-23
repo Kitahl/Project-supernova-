@@ -67,7 +67,7 @@
     "calibration_pass": {"type": "boolean"},
     "verdict": {"enum": ["VERIFIED_COMPLETE", "VERIFIED_WITH_QUARANTINES", "INCOMPLETE", "INVALID"]},
     "pre_ci_observation": {"enum": ["PRE_CI", "CI_NOT_OBSERVED"]},
-    "required_post_write_ci_context": {"const": "supernova/report-admission"},
+    "required_post_write_ci_context": {"enum": ["supernova/report-admission","supernova/branch-report-admission"]},
     "negative_findings": {"type": "array"},
     "next_action": {"type": "string"}
   },

@@ -22,7 +22,7 @@ class CountableControlGateConsistencyTests(unittest.TestCase):
 
     def test_declarative_contract_contains_hardened_minimum(self):
         contract=self.contract()
-        self.assertEqual(contract["schema_version"],"PS-COUNTABLE-CONTROL-SET-2.5-25")
+        self.assertEqual(contract["schema_version"],"PS-COUNTABLE-CONTROL-SET-2.5-26")
         required = MOD.required_countable_paths(contract)
         self.assertTrue(MOD.MINIMUM_HARDENED_CONTROL.issubset(required))
         self.assertIn("scripts/strict_json.py",required)
@@ -40,7 +40,7 @@ class CountableControlGateConsistencyTests(unittest.TestCase):
             "source_preactivation_admission_commit_sha":"not-a-sha",
         }
         errors=MOD.source_bound_scheduler_admission("CAL-TEST",admission)
-        self.assertIn("scheduler admission verdict is not SCHEDULER_ADMISSION_PASS",errors)
+        self.assertIn("scheduler admission envelope is not create-once PASS",errors)
         self.assertIn("source_preactivation_admission branch mismatch",errors)
 
     def test_declarative_addition_is_automatically_required(self):

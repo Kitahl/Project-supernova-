@@ -70,9 +70,9 @@ class StructuralStatusSingleWriterTests(unittest.TestCase):
         text=STRUCTURAL.read_text(encoding="utf-8")
         for context in STRUCTURAL_CONTEXTS:self.assertIn(context,text)
 
-    def test_root10_authority_and_branch_config_name_exactly_one_structural_writer(self):
+    def test_root11_authority_and_branch_config_name_exactly_one_structural_writer(self):
         authority=json.loads(AUTHORITY.read_text(encoding="utf-8"));cfg=json.loads(BRANCH_CONFIG.read_text(encoding="utf-8"))
-        self.assertEqual(authority["root_tcb_epoch"],10)
+        self.assertEqual(authority["root_tcb_epoch"],11)
         self.assertEqual(authority["structural_status_writer_cardinality"],1)
         self.assertEqual(authority["authoritative_structural_status_writer"],"scripts/reconcile_branch_statuses.py")
         self.assertEqual(authority["non_authoritative_rest_diagnostic"],"scripts/reconcile_branch_rest.py")

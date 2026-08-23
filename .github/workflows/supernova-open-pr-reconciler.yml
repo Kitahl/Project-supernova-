@@ -14,7 +14,7 @@ permissions:
   statuses: write
 
 concurrency:
-  group: supernova-open-pr-admission-reconciler
+  group: supernova-required-context-writers
   cancel-in-progress: false
 
 jobs:

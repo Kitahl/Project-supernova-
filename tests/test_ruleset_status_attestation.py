@@ -27,6 +27,7 @@ class RulesetStatusAttestationTests(unittest.TestCase):
             {
                 "type": "required_status_checks",
                 "parameters": {
+                    "strict_required_status_checks_policy": True,
                     "required_status_checks": [
                         {"context": "supernova/static-control", "integration_id": 15368},
                         {"context": "supernova/report-admission", "integration_id": 15368},
@@ -48,6 +49,7 @@ class RulesetStatusAttestationTests(unittest.TestCase):
             "report_bound",
             "transition_bound",
             "spoof_resistant",
+            "strict_up_to_date",
         ):
             self.assertTrue(result[key], key)
 
@@ -61,6 +63,11 @@ class RulesetStatusAttestationTests(unittest.TestCase):
         self.assertFalse(result["report_bound"])
         self.assertTrue(result["transition_bound"])
         self.assertFalse(result["spoof_resistant"])
+
+    def test_non_strict_status_policy_fails_cas_gate(self):
+        mod=load_module();rules=self.good_rules();rules[-1]["parameters"]["strict_required_status_checks_policy"]=False
+        result=mod.evaluate_rules(rules,{"id":15368,"slug":"github-actions"})
+        self.assertFalse(result["strict_up_to_date"]);self.assertFalse(result["spoof_resistant"])
 
     def test_missing_or_wrong_rules_fail_closed(self):
         mod = load_module()

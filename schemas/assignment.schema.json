@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Project Supernova Branch Assignment v2.5.2",
+  "title": "Project Supernova Branch Assignment v2.5.3",
   "type": "object",
   "additionalProperties": false,
   "$defs": {
@@ -54,6 +54,7 @@
     "network_mode": {"enum": ["GITHUB_BRANCH_CALIBRATION", "FRESH_ENABLED", "BENCHMARK_DISCOVERY_WAIT"]}, "phase": {"type": "string"}, "purpose": {"type": "string"},
     "short_test": {"type": "boolean"}, "calibration_countable": {"type": "boolean"}, "repo_policy_required": {"const": true},
     "benchmark_program": {"type": ["string", "null"]}, "benchmark_suite_id": {"type": ["string", "null"]},
+    "candidate_nonce": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "generation_branch": {"type": "string"}, "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "workers": {
       "type": "object", "additionalProperties": false,

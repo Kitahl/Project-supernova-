@@ -47,7 +47,7 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
         ):
             self.assertIn(token, SOURCE)
 
-    def test_successor_uses_current_v25_root10_freeze_and_exact_branch_topology(self):
+    def test_successor_uses_current_v25_root11_freeze_and_exact_branch_topology(self):
         for token in (
             "_remote_compare_paths(base,G)",
             "_remote_branch_head(new.get('generation_branch'))",
@@ -58,7 +58,7 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
         ):
             self.assertIn(token, SOURCE)
         contract = load("config/countable_control_set_v25.json")
-        self.assertEqual(contract["schema_version"], "PS-COUNTABLE-CONTROL-SET-2.5-25")
+        self.assertEqual(contract["schema_version"], "PS-COUNTABLE-CONTROL-SET-2.5-26")
         paths = set(contract["required_control_paths"])
         for path in (
             "config/root_epoch7_repair_seed_v25.json",
@@ -69,6 +69,7 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
             "config/root_epoch9_integrity_repair_epoch_v25.json",
             "config/root_epoch10_scheduler_admission_seed_amendment_v25.json",
             "config/root_epoch10_scheduler_admission_epoch_v25.json",
+            "config/root_epoch11_stageability_repair_epoch_v25.json",
             "scripts/scheduler_admission_guard.py",
             "scripts/reconcile_root_epoch8_status_writer_repair_seed.py",
             "scripts/strict_json.py",
@@ -78,15 +79,15 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
         ):
             self.assertIn(path, paths)
 
-    def test_current_root10_preserves_gen10_epoch7_through_epoch9_history(self):
+    def test_current_root11_preserves_gen10_epoch7_through_epoch10_history(self):
         root = load("config/root_tcb_epoch_v25.json")
         marker8 = load("config/root_epoch8_status_writer_repair_epoch_v25.json")
         epoch7 = load("config/root_epoch7_repair_epoch_v25.json")
         marker9 = load("config/root_epoch9_integrity_repair_epoch_v25.json")
         authority = load("config/admission_authority.json")
-        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-10")
-        self.assertEqual(root["epoch"], 10)
-        self.assertEqual(root["previous_epoch_blob"], "9a45b2098cd5870b53f9faa92e52409fa3204c81")
+        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-11")
+        self.assertEqual(root["epoch"], 11)
+        self.assertEqual(root["previous_epoch_blob"], "cf74b9c17bf1d763e7d89dc07f9bb74c334f8b59")
         self.assertEqual(root["root_epoch8_status_writer_repair_seed_install_commit_sha"], "1e4967a8783b9d2fdc0d76080aba3e7acc31a0cf")
         self.assertEqual(root["root_epoch9_integrity_repair_seed_install_commit_sha"], "7c6cca62c51afd28c0554353331abe172dbee389")
         self.assertEqual(root["root_epoch10_scheduler_admission_seed_amendment_install_commit_sha"], "cff3368586764248f4658603d5278eeb86c375ee")
@@ -96,7 +97,7 @@ class Gen10ZeroCreditTerminalTransitionTests(unittest.TestCase):
         self.assertEqual(marker8["fresh_science_effect"], "NONE")
         self.assertEqual(marker9["calibration_credit_effect"], 0)
         self.assertEqual(marker9["fresh_science_effect"], "NONE")
-        self.assertEqual(authority["root_tcb_epoch"], 10)
+        self.assertEqual(authority["root_tcb_epoch"], 11)
         self.assertEqual(authority["structural_status_writer_cardinality"], 1)
 
 

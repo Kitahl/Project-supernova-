@@ -21,6 +21,7 @@
     "protocol_version": {"const": "2.5"},
     "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
     "cohort_id": {"type": "string", "minLength": 1},
+    "candidate_nonce": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "generation_seq": {"type": "integer", "minimum": 1},
     "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "control_manifest_id": {"type": "string", "minLength": 1},

@@ -27,10 +27,16 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         r={'id':rid,'path':self.mod.BOOTSTRAP_WORKFLOW,'event':'pull_request_target','status':'completed','conclusion':'success','repository':{'full_name':self.mod.REPO},'actor':{'login':self.mod.OWNER},'head_sha':self.head,'pull_requests':[{'number':self.pr,'head':{'sha':self.head},'base':{'sha':self.base}}]}
         r.update(overrides); return r
 
-    def fake_api(self,statuses,runs=None):
+    def current_pr(self,**overrides):
+        value={'number':self.pr,'head':{'sha':self.head,'ref':'root-rotation/test','repo':{'full_name':self.mod.REPO}},'base':{'sha':self.base}}
+        value.update(overrides);return value
+
+    def fake_api(self,statuses,runs=None,current_pr=None):
         runs=dict(runs or {self.run_id:self.run_obj()})
+        current=self.current_pr() if current_pr is None else current_pr
         def call(path,method='GET',data=None):
             if path.startswith('/commits/'): return statuses
+            if path==f'/pulls/{self.pr}':return current
             prefix='/actions/runs/'
             if path.startswith(prefix):
                 rid=int(path[len(prefix):])
@@ -38,13 +44,13 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
             raise AssertionError(path)
         return call
 
-    def check(self,statuses,run_obj=None,*,base=None,pr=None,completed='DEFAULT',runs=None):
+    def check(self,statuses,run_obj=None,*,base=None,pr=None,completed='DEFAULT',runs=None,current_pr=None):
         if runs is None:
             runs={self.run_id:self.run_obj() if run_obj is None else run_obj}
         env={}
         if completed=='DEFAULT': env['COMPLETED_BOOTSTRAP_RUN_ID']=str(self.run_id)
         elif completed is not None: env['COMPLETED_BOOTSTRAP_RUN_ID']=str(completed)
-        with mock.patch.dict(os.environ,env,clear=True), mock.patch.object(self.mod,'api',side_effect=self.fake_api(statuses,runs)):
+        with mock.patch.dict(os.environ,env,clear=True), mock.patch.object(self.mod,'api',side_effect=self.fake_api(statuses,runs,current_pr)):
             return self.mod.trusted_bootstrap_success(self.head,self.base if base is None else base,self.pr if pr is None else pr)
 
     def test_exact_designated_completed_run_passes(self): self.assertTrue(self.check([self.status()]))
@@ -62,13 +68,13 @@ class BootstrapStatusProvenanceTests(unittest.TestCase):
         self.assertFalse(self.check([self.status(description='trusted-main bootstrap PASS')]))
         self.assertFalse(self.check([self.status()],base='c'*40)); self.assertFalse(self.check([self.status()],pr=43))
     def test_run_head_binding_required(self): self.assertFalse(self.check([self.status()],self.run_obj(head_sha='c'*40)))
-    def test_run_pr_association_required(self): self.assertFalse(self.check([self.status()],self.run_obj(pull_requests=[])))
-    def test_run_pr_head_binding_required(self):
-        prs=[{'number':self.pr,'head':{'sha':'c'*40},'base':{'sha':self.base}}]
-        self.assertFalse(self.check([self.status()],self.run_obj(pull_requests=prs)))
-    def test_run_pr_base_binding_required(self):
-        prs=[{'number':self.pr,'head':{'sha':self.head},'base':{'sha':'c'*40}}]
-        self.assertFalse(self.check([self.status()],self.run_obj(pull_requests=prs)))
+    def test_empty_run_pr_association_uses_independent_current_pr_reread(self): self.assertTrue(self.check([self.status()],self.run_obj(pull_requests=[])))
+    def test_current_pr_head_binding_required(self):
+        current=self.current_pr(head={'sha':'c'*40,'ref':'root-rotation/test','repo':{'full_name':self.mod.REPO}})
+        self.assertFalse(self.check([self.status()],current_pr=current))
+    def test_current_pr_base_binding_required(self):
+        current=self.current_pr(base={'sha':'c'*40})
+        self.assertFalse(self.check([self.status()],current_pr=current))
     def test_wrong_repository_or_actor_rejected(self):
         self.assertFalse(self.check([self.status()],self.run_obj(repository={'full_name':'other/repo'})))
         self.assertFalse(self.check([self.status()],self.run_obj(actor={'login':'other'})))

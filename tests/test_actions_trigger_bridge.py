@@ -50,6 +50,16 @@ class ActionsTriggerBridgeTests(unittest.TestCase):
         self.assertIn("statuses: write", COMMENT_WF.read_text(encoding="utf-8"))
         self.assertEqual(uses_lines("permissions:\n  statuses: write\n"), [])
 
+    def test_branch_generation_writer_never_checks_out_or_executes_pr_head(self):
+        text = (ROOT / ".github" / "workflows" / "supernova-branch-reconciler.yml").read_text(encoding="utf-8")
+        self.assertIn("pull_request_target:", text)
+        self.assertIn("statuses: write", text)
+        self.assertIn("persist-credentials: false", text)
+        self.assertIn("github.event.pull_request.head.repo.full_name == github.repository", text)
+        self.assertIn("github.event.pull_request.user.login == github.repository_owner", text)
+        self.assertNotIn("ref: ${{ github.event.pull_request.head", text)
+        self.assertNotIn("git checkout ${{ github.event.pull_request.head", text)
+
 
 if __name__ == "__main__":
     unittest.main()

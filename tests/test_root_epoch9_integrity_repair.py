@@ -14,13 +14,13 @@ def load(path):
 
 
 class RootEpoch9IntegrityRepairTests(unittest.TestCase):
-    def test_root10_binds_epoch9_and_preserves_exact_epoch8_and_epoch9_seed_history(self):
+    def test_root11_binds_epoch10_and_preserves_exact_epoch8_through_epoch10_seed_history(self):
         epoch = load('config/root_tcb_epoch_v25.json')
-        self.assertEqual(epoch['schema_version'], 'PS-ROOT-TCB-EPOCH-2.5-10')
+        self.assertEqual(epoch['schema_version'], 'PS-ROOT-TCB-EPOCH-2.5-11')
         self.assertEqual(epoch['protocol_version'], '2.5')
         self.assertEqual(epoch['task_network_plan_id'], PLAN)
-        self.assertEqual(epoch['epoch'], 10)
-        self.assertEqual(epoch['previous_epoch_blob'], EPOCH9_BLOB)
+        self.assertEqual(epoch['epoch'], 11)
+        self.assertEqual(epoch['previous_epoch_blob'], 'cf74b9c17bf1d763e7d89dc07f9bb74c334f8b59')
         self.assertEqual(epoch['root_epoch9_integrity_repair_seed_install_commit_sha'], SEED_INSTALL)
         self.assertEqual(epoch['root_epoch9_integrity_repair_marker'], 'config/root_epoch9_integrity_repair_epoch_v25.json')
         self.assertEqual(epoch['root_epoch10_scheduler_admission_seed_amendment_install_commit_sha'], 'cff3368586764248f4658603d5278eeb86c375ee')
@@ -38,20 +38,20 @@ class RootEpoch9IntegrityRepairTests(unittest.TestCase):
         self.assertEqual(marker['fresh_science_effect'], 'NONE')
         self.assertEqual(marker['runtime_effect'], 'NONE')
 
-    def test_authority_and_bootstrap_are_root10_while_epoch9_helpers_remain(self):
+    def test_authority_and_bootstrap_are_root11_while_epoch9_helpers_remain(self):
         authority = load('config/admission_authority.json')
         bootstrap = load('config/authority_bootstrap_v25.json')
-        self.assertEqual(authority['root_tcb_epoch'], 10)
-        self.assertEqual(bootstrap['root_tcb_epoch_required'], 10)
+        self.assertEqual(authority['root_tcb_epoch'], 11)
+        self.assertEqual(bootstrap['root_tcb_epoch_required'], 11)
         self.assertEqual(authority['authoritative_structural_status_writer'], 'scripts/reconcile_branch_statuses.py')
         self.assertEqual(authority['structural_status_writer_cardinality'], 1)
         self.assertEqual(authority['strict_json_contract'], 'scripts/strict_json.py')
         self.assertIn('config/root_epoch9_integrity_repair_epoch_v25.json', authority['trusted_authority_helpers'])
 
-    def test_countable_v25_freezes_complete_root10_and_historical_repair_surface(self):
+    def test_countable_v25_freezes_complete_root11_and_historical_repair_surface(self):
         control = load('config/countable_control_set_v25.json')
         paths = set(control['required_control_paths'])
-        self.assertEqual(control['schema_version'], 'PS-COUNTABLE-CONTROL-SET-2.5-25')
+        self.assertEqual(control['schema_version'], 'PS-COUNTABLE-CONTROL-SET-2.5-26')
         self.assertEqual(control['minimum_worker_liveness_window_minutes'], 45)
         self.assertEqual(control['strict_json_contract'], 'FINITE_DUPLICATE_FREE_JSON_AND_ALLOW_NAN_FALSE')
         required = {
@@ -68,6 +68,10 @@ class RootEpoch9IntegrityRepairTests(unittest.TestCase):
             'scripts/reconcile_root_epoch10_scheduler_admission_seed_amendment.py',
             '.github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml',
             'scripts/scheduler_admission_guard.py',
+            'config/root_epoch11_stageability_repair_seed_v25.json',
+            'config/root_epoch11_stageability_repair_epoch_v25.json',
+            'scripts/reconcile_root_epoch11_stageability_repair_seed.py',
+            '.github/workflows/supernova-root-epoch11-stageability-repair-seed.yml',
         }
         self.assertTrue(required.issubset(paths), sorted(required - paths))
 

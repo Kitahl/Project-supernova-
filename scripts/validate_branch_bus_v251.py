@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, hashlib, pathlib, subprocess, sys
+import argparse, hashlib, hmac, os, pathlib, re, subprocess, sys
 from jsonschema import Draft202012Validator
 try:
  from scripts import strict_json
 except ImportError:
  import strict_json
-ROOT=pathlib.Path(__file__).resolve().parents[1]
+TRUSTED_ROOT=pathlib.Path(__file__).resolve().parents[1]
+DATA_ROOT=pathlib.Path(os.environ.get('SUPERNOVA_VALIDATE_ROOT',str(TRUSTED_ROOT))).resolve()
+# Backward-compatible mutable data root used by focused validators/tests.  The
+# trusted entrypoint itself remains anchored by TRUSTED_ROOT.
+ROOT=DATA_ROOT
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HMAC2='PS-HMAC-SHA256-CANONICAL-REPORT-2'
 TRANSPORT='PRETTY_SORTED_UTF8_JSON_V1'
@@ -44,6 +48,21 @@ def report_transport_errors(path,report):
  except Exception as x:return e+['cannot derive deterministic strict report transport: '+repr(x)]
  if raw!=expected:e.append('report transport != PRETTY_SORTED_UTF8_JSON_V1')
  if report.get('transport_serialization')!=TRANSPORT:e.append('report transport_serialization binding mismatch')
+ return e
+def report_auth_errors(report,worker,auth):
+ e=[]
+ try:
+  keys=strict_json.loads(os.environ.get('SUPERNOVA_WORKER_AUTH_KEYS_JSON',''))
+ except Exception:return ['trusted worker verifier-key bundle unavailable']
+ if not isinstance(keys,dict) or set(keys)!=set(SESS):return ['trusted worker verifier-key bundle is not exact 12']
+ raw=keys.get(worker)
+ if not isinstance(raw,str) or not re.fullmatch(r'[0-9a-f]{64}',raw):return [f'{worker} trusted verifier key invalid']
+ key=bytes.fromhex(raw);commitments=auth.get('commitments') or {}
+ if hashlib.sha256(key).hexdigest()!=commitments.get(worker):e.append(f'{worker} verifier key commitment mismatch')
+ if report.get('worker_auth_commitment')!=commitments.get(worker):e.append(f'{worker} report auth commitment mismatch')
+ signed=dict(report);observed=signed.pop('worker_auth_proof',None)
+ expected=hmac.new(key,strict_json.canonical_dumps(signed).encode('utf-8'),hashlib.sha256).hexdigest()
+ if not isinstance(observed,str) or not hmac.compare_digest(observed,expected):e.append(f'{worker} report HMAC invalid')
  return e
 def _schema_errors(worker,payload,path):
  e=[]
@@ -145,7 +164,7 @@ def validate(branch,G):
   else:
    r=load(rp)
    for x in Draft202012Validator(sch('schemas/branch_report.schema.json')).iter_errors(r):e.append(f'report schema: {x.message}')
-   e.extend(report_transport_errors(rp,r));e.extend(typed_role_payload_errors(r,a));e.extend(issue_ledger_errors(r));e.extend(model_binding_errors(r,co))
+   e.extend(report_transport_errors(rp,r));e.extend(report_auth_errors(r,w,auth));e.extend(typed_role_payload_errors(r,a));e.extend(issue_ledger_errors(r));e.extend(model_binding_errors(r,co))
    h=r.get('session_header',{});exact={'session_name':SESS.get(w),'target_program':aw.get('target_program'),'phase':a.get('phase'),'iteration_id':c,'iteration_number':a.get('generation_seq'),'role_id':w,'goal':aw.get('goal'),'plan_id':PLAN,'runtime_state_id':a.get('runtime_state_id'),'model_target':'GPT-5.6 Sol','reasoning_effort_target':'EXTRA_HIGH'}
    for key,val in exact.items():
     if h.get(key)!=val:e.append(f'strict session mismatch {key}')

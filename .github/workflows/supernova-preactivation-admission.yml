@@ -1,0 +1,49 @@
+name: Supernova Preactivation Admission
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+  actions: read
+  statuses: write
+
+concurrency:
+  group: supernova-required-context-writers
+  cancel-in-progress: false
+
+jobs:
+  admit:
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == github.repository_owner &&
+      startsWith(github.event.pull_request.base.ref, 'ps/gen/') &&
+      startsWith(github.event.pull_request.head.ref, 'ps/preactivate/')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13.15'
+      - name: Install hash-locked validation environment
+        run: "python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements-validation.lock"
+      - name: Assert frozen validator environment
+        run: python scripts/assert_validator_environment.py
+      - name: Validate exact sibling receipt using accepted-main authority
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SUPERNOVA_PREACTIVATION_PR_NUMBER: ${{ github.event.pull_request.number }}
+          SUPERNOVA_PREACTIVATION_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SUPERNOVA_PREACTIVATION_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SUPERNOVA_WORKER_AUTH_KEYS_JSON: ${{ secrets.SUPERNOVA_WORKER_AUTH_KEYS_JSON }}
+          SUPERNOVA_MF06_PREACTIVATION_KEY: ${{ secrets.SUPERNOVA_MF06_PREACTIVATION_KEY }}
+          SUPERNOVA_MM06_ATTESTATION_KEY: ${{ secrets.SUPERNOVA_MM06_ATTESTATION_KEY }}
+          SUPERNOVA_SCHEDULER_INVENTORY_KEY: ${{ secrets.SUPERNOVA_SCHEDULER_INVENTORY_KEY }}
+        run: python scripts/reconcile_preactivation_admission.py

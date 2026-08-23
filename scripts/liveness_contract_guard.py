@@ -31,6 +31,14 @@ def validate(root:pathlib.Path, cohort:str):
     if l.get('cohort_id')!=cohort or c.get('cohort_id')!=cohort or a.get('cohort_id')!=cohort:e.append('liveness cohort mismatch')
     if l.get('generation_seq')!=c.get('generation_seq') or l.get('generation_seq')!=a.get('generation_seq'):e.append('liveness generation mismatch')
     if l.get('generation_root_sha')!=c.get('control_release_commit_sha') or l.get('generation_root_sha')!=a.get('generation_root_sha'):e.append('liveness generation-root mismatch')
+    # Root11 requires a single nonce across C -> A -> L.  The property remains
+    # optional in the closed schemas so immutable Gen12/root9 evidence still validates.
+    if any(x.get('candidate_nonce') is not None for x in (c,a,l)):
+        nonce=c.get('candidate_nonce')
+        if not isinstance(nonce,str) or len(nonce)!=64 or a.get('candidate_nonce')!=nonce or l.get('candidate_nonce')!=nonce:
+            e.append('root11 candidate nonce chain mismatch')
+        if c.get('generation_root_sha')!=c.get('control_release_commit_sha'):
+            e.append('root11 control generation root mismatch')
     if l.get('control_manifest_id')!=c.get('control_manifest_id') or l.get('control_manifest_git_identity')!=blob(cp):e.append('liveness control binding mismatch')
     if l.get('assignment_id')!=a.get('assignment_id') or l.get('assignment_git_identity')!=blob(ap):e.append('liveness assignment binding mismatch')
     cfg=load(root/'branch/CONFIG.json')
