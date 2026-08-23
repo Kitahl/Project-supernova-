@@ -7,8 +7,12 @@ trusted immutable creation-time witness at/before the deadline, or has an
 expected-source exact-head structural status whose GitHub server timestamp proves
 the report existed by the deadline. Git author/committer timestamps are never
 treated as authoritative receipt-creation time. Missing, late, or timing-unknown
-GitHub receipts fail closed after the frozen deadline. Future countable contracts
-must also reserve the root9 minimum publication slack before they are eligible.
+GitHub receipts fail closed after the frozen deadline.
+
+Root9's minimum publication-window rule is a prospective cohort-construction
+eligibility invariant enforced by liveness_contract_guard before a countable
+cohort starts. This runtime observer must not reinterpret an already-frozen or
+historical contract merely because its publication window is shorter.
 """
 from __future__ import annotations
 import argparse, datetime as dt, os, pathlib, urllib.error, urllib.parse, urllib.request
@@ -53,19 +57,13 @@ def _branch_worker_status_witness(statuses: Any) -> dict[str,Any] | None:
         return {'trusted_observed_at_utc':raw,'witness_status_id':status.get('id'),'witness_creator_login':creator.get('login'),'witness_context':EXPECTED_STATUS_CONTEXT}
     return None
 
-def _slack_minutes(lane: dict) -> float:
-    return (parse_time(lane['deadline_utc'])-parse_time(lane['expected_window_start_utc'])).total_seconds()/60.0
-
 def evaluate(contract: dict, now: dt.datetime, observe_fn: Callable[[str,str], Any]) -> dict:
     if now.tzinfo is None: raise ValueError('now must be timezone-aware')
     now=now.astimezone(UTC); observations=[]; blocking=[]
     for lane in contract['lanes']:
         deadline=parse_time(lane['deadline_utc']); meta=observe_fn(lane['branch'],lane['path']); exists=_observed(meta)
         created=_time(meta,'trusted_created_at_utc'); witnessed=_time(meta,'trusted_observed_at_utc'); notes=[]
-        if _slack_minutes(lane) < minimum_worker_liveness_window_minutes:
-            receipt_status='RUN_TIMING_UNKNOWN' if exists else 'NO_RECEIPT'; late=max(1,int((now-deadline).total_seconds())) if now>deadline else 0; blocking.append(lane['lane_id'])
-            notes.append(f'Frozen countable liveness publication window is below {minimum_worker_liveness_window_minutes} minutes; fail closed.')
-        elif exists:
+        if exists:
             if created is not None and created>deadline:
                 receipt_status='RUN_LATE'; late=max(1,int((created-deadline).total_seconds())); blocking.append(lane['lane_id']); notes.append('Trusted receipt creation timestamp is after frozen deadline.')
             elif created is not None:
