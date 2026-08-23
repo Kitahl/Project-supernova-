@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-ROOT-EPOCH11-STAGEABILITY-REPAIR-SEED-AMENDMENT-2.5-1",
+  "schema_version": "PS-ROOT-EPOCH11-STAGEABILITY-REPAIR-SEED-AMENDMENT-2.5-2",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "issue_ref": "#233",
@@ -22,6 +22,7 @@
   "same_repository_required": true,
   "owner_authored_required": true,
   "original_seed_install_commit_sha": "49748265ab8afff2f53b4fa306c2b96d9d7e798c",
+  "original_amendment_install_commit_sha": "0d1f92f9b538d56ac98f5dc8fd84f05bd20d8db8",
   "reviewed_candidate_source_commit_sha": "3bdefc9dd2382e46d56cb139160a6703fd50b599",
   "original_seed_paths": {
     "config/root_epoch11_stageability_repair_seed_v25.json": "db7f1806c8af4571733822be27a712dae2ff38f1",
@@ -35,6 +36,30 @@
     ".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml",
     "tests/test_root_epoch11_stageability_repair_seed_amendment.py"
   ],
+  "original_amendment_paths": {
+    "config/root_epoch11_stageability_repair_seed_amendment_v25.json": "39f6847c10d7c6387531690769002608b58fc5ec",
+    "scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py": "0f2dc2d4260640d359a04c540e1554b57ac62d2b",
+    ".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml": "2ab92dc8a0864cbf377b9529e2ea3d1348656863",
+    "tests/test_root_epoch11_stageability_repair_seed_amendment.py": "8b62c940b7d5a6a5addd822c9804eeaa0407143e"
+  },
+  "followup_paths": [
+    "config/root_epoch11_stageability_repair_seed_amendment_v25.json",
+    "scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py",
+    "tests/test_root_epoch11_stageability_repair_seed_amendment.py"
+  ],
+  "earlier_run_inventory": {
+    "event": "pull_request_target",
+    "head_sha_filter_required": true,
+    "per_page": 100,
+    "maximum_exact_head_results": 1000,
+    "completeness_rule": "FULLY_PAGINATE_EXACT_HEAD_RESULTS_OR_FAIL_CLOSED"
+  },
+  "followup_defect": {
+    "observed_failure_run_id": 32651152283,
+    "failure": "earlier pull_request_target run inventory exceeded fail-closed bound",
+    "root_cause": "REPOSITORY_WIDE_PULL_REQUEST_TARGET_ARCHIVE_WAS_PAGINATED_BEFORE_LOCAL_HEAD_FILTERING",
+    "correction_rule": "SERVER_FILTER_EVENT_AND_EXACT_40_HEX_HEAD_SHA_THEN_FULLY_PAGINATE_AND_FAIL_CLOSED_AT_1000_EXACT_HEAD_RESULTS"
+  },
   "source_workflow": {
     "name": "Supernova Root Epoch11 Stageability Repair Seed",
     "path": ".github/workflows/supernova-root-epoch11-stageability-repair-seed.yml",
@@ -87,13 +112,19 @@
   "candidate_execution_with_write_token": "FORBIDDEN",
   "candidate_bytes_in_privileged_phase": "DATA_ONLY_UNDER_EXACT_PINS_AND_ACCEPTED_MAIN_INSPECTION; NO_CANDIDATE_EXECUTABLE_OR_TEST_IS_LAUNCHED",
   "original_seed_modification": "FORBIDDEN",
-  "amendment_self_modification": "FORBIDDEN",
+  "amendment_self_modification": "FORBIDDEN_EXCEPT_THIS_EXACT_THREE_PATH_IMMEDIATE_PAGINATION_FOLLOWUP_TRANSACTION",
   "implementation_authorization": "NOT_GRANTED_BY_AMENDMENT_INSTALLATION; ONLY_AN_EXACT_ORIGINAL_SEED_PINNED_CANDIDATE_MAY_RECEIVE_EXISTING_CONTEXTS",
-  "authority_effect": "CORRECTS_ONLY_THE_ACCEPTED_TRUSTED_SEED_INTERNAL_MARKER_SCHEMA_EXPECTATION",
+  "authority_effect": "PRESERVES_THE_ACCEPTED_MARKER_CORRECTION_AND_CORRECTS_ONLY_ITS_EXACT_HEAD_RUN_INVENTORY_QUERY",
   "durable_provenance_rule": "ALL_FOUR_AMENDMENT_PATHS_ARE_STATIC_BOOTSTRAP_ROOTS_REQUIRED_INSTALLED_COUNTABLE_CONTROLS_AND_ADMISSION_AUTHORITY_INVENTORY_MEMBERS_IN_THE_EXACT_AMENDED_CANDIDATE",
   "state_effect": "NONE",
   "runtime_effect": "NONE",
   "science_effect": "NONE",
+  "candidate_rebuild_root_tcb_bindings": {
+    "root_epoch11_stageability_repair_seed_amendment_install_commit_sha": "0d1f92f9b538d56ac98f5dc8fd84f05bd20d8db8",
+    "root_epoch11_stageability_repair_seed_amendment_policy_blob": "CURRENT_ACCEPTED_FOLLOWUP_HEAD_BLOB_AT_config/root_epoch11_stageability_repair_seed_amendment_v25.json",
+    "root_epoch11_stageability_repair_seed_amendment_reconciler_blob": "CURRENT_ACCEPTED_FOLLOWUP_HEAD_BLOB_AT_scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py",
+    "root_epoch11_stageability_repair_seed_amendment_workflow_blob": "2ab92dc8a0864cbf377b9529e2ea3d1348656863"
+  },
   "failure_semantics": "FAIL_CLOSED",
   "seed_context": "supernova/root-epoch11-stageability-repair-seed-amendment",
   "candidate_path_count": 69,
