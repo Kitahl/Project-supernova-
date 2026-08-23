@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-GENERATION-DELTA-POLICY-2.5-1",
+  "schema_version": "PS-GENERATION-DELTA-POLICY-2.5-2",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "authority": "SINGLE_MACHINE_READABLE_GENERATION_DELTA_POLICY",
@@ -7,9 +7,13 @@
     "exact_path_templates": [
       "control/{cohort}.json",
       "assignments/{cohort}.json",
-      "liveness/{cohort}.json"
+      "liveness/{cohort}.json",
+      "scheduler/{cohort}.json"
     ],
-    "exact_cardinality": 3
+    "exact_cardinality": 4,
+    "scheduler_admission_required_before_promotion": true,
+    "scheduler_admission_copy_path_template": "scheduler_admission/{cohort}.json",
+    "scheduler_admission_is_transition_evidence_not_generation_delta": true
   },
   "non_countable": {
     "exact_path_templates": [
@@ -20,5 +24,7 @@
   },
   "extra_paths": "FORBIDDEN",
   "missing_paths": "FORBIDDEN",
-  "wrong_cohort_identity": "FORBIDDEN"
+  "wrong_cohort_identity": "FORBIDDEN",
+  "stage_admit_promote": "THREE_DISTINCT_TRANSACTIONS",
+  "active_cohort_constructive_scheduler_repair": "FORBIDDEN"
 }

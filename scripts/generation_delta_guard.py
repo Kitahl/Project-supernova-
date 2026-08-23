@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, pathlib, subprocess, sys
+import argparse, pathlib, subprocess, sys
+
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+import strict_json
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 POLICY_PATH=ROOT/'config/generation_delta_policy_v25.json'
@@ -12,7 +17,7 @@ def git(*args: str) -> tuple[int,str,str]:
 
 
 def load_policy() -> dict:
-    return json.loads(POLICY_PATH.read_text(encoding='utf-8'))
+    return strict_json.loads(POLICY_PATH.read_text(encoding='utf-8'))
 
 
 def expected_paths(cohort: str, countable: bool, policy: dict | None=None) -> list[str]:
@@ -24,6 +29,11 @@ def expected_paths(cohort: str, countable: bool, policy: dict | None=None) -> li
         raise ValueError('generation delta policy cardinality mismatch')
     if len(paths)!=len(set(paths)):
         raise ValueError('generation delta policy contains duplicate paths')
+    if countable:
+        if block.get('exact_cardinality') != 4 or f'scheduler/{cohort}.json' not in paths:
+            raise ValueError('countable generation must freeze scheduler manifest as fourth path')
+        if block.get('scheduler_admission_required_before_promotion') is not True:
+            raise ValueError('countable scheduler admission gate disabled')
     return paths
 
 

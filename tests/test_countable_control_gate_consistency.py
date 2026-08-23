@@ -22,11 +22,26 @@ class CountableControlGateConsistencyTests(unittest.TestCase):
 
     def test_declarative_contract_contains_hardened_minimum(self):
         contract=self.contract()
-        self.assertEqual(contract["schema_version"],"PS-COUNTABLE-CONTROL-SET-2.5-24")
+        self.assertEqual(contract["schema_version"],"PS-COUNTABLE-CONTROL-SET-2.5-25")
         required = MOD.required_countable_paths(contract)
         self.assertTrue(MOD.MINIMUM_HARDENED_CONTROL.issubset(required))
         self.assertIn("scripts/strict_json.py",required)
         self.assertIn("config/root_epoch9_integrity_repair_epoch_v25.json",required)
+        self.assertIn("config/root_epoch10_scheduler_admission_seed_amendment_v25.json",required)
+        self.assertIn("scripts/scheduler_admission_guard.py",required)
+        self.assertTrue(contract["scheduler_admission_required_before_promotion"])
+        self.assertEqual(contract["canonical_scheduled_task_count"],15)
+        self.assertEqual(contract["replacement_scheduled_task"],"FORBIDDEN")
+
+    def test_scheduler_admission_copy_requires_explicit_pass_and_source_binding(self):
+        admission={
+            "admission_verdict":"FAIL",
+            "source_preactivation_admission_branch":"wrong",
+            "source_preactivation_admission_commit_sha":"not-a-sha",
+        }
+        errors=MOD.source_bound_scheduler_admission("CAL-TEST",admission)
+        self.assertIn("scheduler admission verdict is not SCHEDULER_ADMISSION_PASS",errors)
+        self.assertIn("source_preactivation_admission branch mismatch",errors)
 
     def test_declarative_addition_is_automatically_required(self):
         contract = self.contract()

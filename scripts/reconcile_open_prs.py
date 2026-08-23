@@ -4,11 +4,15 @@ from __future__ import annotations
 import base64, importlib.util, os, pathlib, re, shutil, subprocess, sys, tempfile, urllib.error, urllib.parse, urllib.request
 from datetime import datetime
 from jsonschema import Draft202012Validator
+
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
 import strict_json
 
 REPO=os.environ.get("GITHUB_REPOSITORY","Kitahl/Project-supernova-"); TOKEN=os.environ.get("GITHUB_TOKEN","")
 API="https://api.github.com/repos/"+REPO; OWNER=REPO.split("/",1)[0]
-ALLOWED_HEAD_PREFIXES=("hardening/","transition/","ps/consolidate/","rev4/")
+ALLOWED_HEAD_PREFIXES=("hardening/","transition/","ps/consolidate/","rev4/","root-rotation/")
 CONTEXTS=("supernova/static-control","supernova/report-admission","supernova/transition-admission")
 BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"; BOOTSTRAP_CREATOR = "github-actions[bot]"
 BOOTSTRAP_WORKFLOW=".github/workflows/supernova-authority-bootstrap.yml"
@@ -40,6 +44,9 @@ GEN11_SUPERSESSION_PATH=f"superseded/{GEN11_COHORT}.json"
 GEN11_SUPERSESSION_DISPOSITION="INVALIDATED_ZERO_CREDIT_ROOT_EPOCH9_FULL_INTEGRITY_REPAIR"; GEN12_COHORT_PREFIX="CAL-BR-012-v25-"
 GEN11_REQUIRED_ISSUES={"GEN11-EXACT-G-LIVENESS-NONCLEAN","O-T0-BRANCH-CONFIG-STRUCTURAL-WRITER-DRIFT","PS-MF04-NONFINITEJSON-001","MM03-RPT-TYPED-MISSING-006","MM04-T0-MM04-ROLE-NONVACUITY-SCHEMA-001","MM04-T0-PRIVILEGED-VALIDATOR-ENV-ASSERTION-001"}
 MINIMUM_WORKER_LIVENESS_WINDOW_MINUTES=45
+
+GEN12_COHORT="CAL-BR-012-v25-4ca0dec6"; GEN12_G="b366cf01e64e1a00a2e566e14e25cc7c15ce523f"
+GEN12_STATE_BLOB="826fcdd01701eda04a177f86748878b3755badc0"; GEN12_VERIFIER_BLOB="251e306b062de5386f3c8a1ff7d80683515547fd"
 
 AUTHORITY_PREFIXES=("scripts/","tests/","schemas/","config/",".github/workflows/")
 AUTHORITY_PATHS={"PROTOCOL.md","BRANCH_PROTOCOL.md","BRANCH_WORKER_PROTOCOL.md","SESSION_STANDARD.md","plan/PLAN.json","requirements-validation.lock","branch/CONFIG.json","research/open_lanes.json","benchmark/pool_disposition.json"}
@@ -309,6 +316,41 @@ def exact_gen11_zero_credit_terminal_parent(root,base,old,changed):
         if 'HMAC input contract is separate from committed-file byte contract' not in joined or 'abort without write on mismatch' not in joined:return False
     return receipt==_receipt(GEN11_COHORT,GEN11_G,GEN11_STATE_BLOB,GEN11_SUPERSESSION_DISPOSITION,12,True)
 
+def _gen12_terminal_chain_valid(old):
+    if not _matches(old,{"protocol_version":"2.5","task_network_plan_id":PLAN,"generation_seq":12,"active_cohort_id":GEN12_COHORT,"generation_head_sha":GEN12_G,"calibration_countable_current":True,"calibration_streak":0,"fresh_allowed_globally":False}):return False
+    try:
+        vh=_remote_branch_head('ps/verify/'+GEN12_COHORT)
+        if not vh or not _source_bound_status(vh,'supernova/branch-verify') or not _source_bound_status(vh,'supernova/report-admission'):return False
+        vb,v=_remote_json('verification/'+GEN12_COHORT+'.json',vh)
+        if vb!=GEN12_VERIFIER_BLOB or v.get('verdict')!='INCOMPLETE' or v.get('calibration_pass') is not False or v.get('liveness_complete') is not False:return False
+        if v.get('safe_report_refs')!=[] or v.get('quarantined_report_refs')!=[] or set(v.get('missing_workers') or [])!=WORKERS:return False
+        ih=_remote_branch_head('ps/integrate/'+GEN12_COHORT)
+        if not ih or not _source_bound_status(ih,'supernova/branch-integrate'):return False
+        _,i=_remote_json('integration/'+GEN12_COHORT+'.json',ih)
+        if i.get('verification_head_sha')!=vh or i.get('verification_verdict')!='INCOMPLETE' or i.get('calibration_pass') is not False:return False
+        if i.get('safe_report_refs')!=[] or i.get('quarantines')!=[] or set(i.get('missing_workers') or [])!=WORKERS:return False
+        return True
+    except Exception:return False
+
+def exact_gen12_zero_credit_scheduler_repair_parent(root,base,old,changed):
+    """Admit only the exact terminal Gen12 zero-credit cohort into a scheduler-admitted replacement."""
+    rc,b=_state_blob(root,base)
+    if rc or b.strip()!=GEN12_STATE_BLOB or not _gen12_terminal_chain_valid(old):return False
+    try:new=_load_json(root,'state/CURRENT.json')
+    except Exception:return False
+    cohort=new.get('active_cohort_id')
+    if not isinstance(cohort,str) or cohort==GEN12_COHORT:return False
+    cp=f'control/{cohort}.json';ap=f'assignments/{cohort}.json';lp=f'liveness/{cohort}.json';sp=f'scheduler/{cohort}.json';sap=f'scheduler_admission/{cohort}.json';sup=f'superseded/{GEN12_COHORT}.json';hist=f'history/{GEN12_COHORT}/CONSOLIDATION.json'
+    if set(changed)!={'state/CURRENT.json',cp,ap,lp,sp,sap,sup,hist}:return False
+    try:
+        control=_load_json(root,cp);admission=_load_json(root,sap);manifest=_load_json(root,sp)
+    except Exception:return False
+    if control.get('scheduler_admission_required') is not True or control.get('scheduler_manifest_path')!=sp:return False
+    if admission.get('admission_verdict')!='SCHEDULER_ADMISSION_PASS' or admission.get('cohort_id')!=cohort or admission.get('candidate_nonce')!=manifest.get('candidate_nonce'):return False
+    if admission.get('generation_head_sha')!=new.get('generation_head_sha') or manifest.get('generation_head_sha')!=new.get('generation_head_sha'):return False
+    if new.get('calibration_streak')!=0 or new.get('fresh_allowed_globally') is not False:return False
+    return True
+
 def report_admission(root,base,changed):
     if "state/CURRENT.json" not in changed:return []
     rc,text=run(["git","show",base+":state/CURRENT.json"],root)
@@ -316,7 +358,7 @@ def report_admission(root,base,changed):
     try:
         old=strict_json.loads(text)
         if exact_noncountable_gen6_bootstrap_parent(root,base,old):return []
-        for predicate in (exact_invalidated_gen7_repair_parent,exact_noncountable_substrate_staging_parent,exact_gen9_zero_credit_reset_parent,exact_gen10_zero_credit_terminal_parent,exact_gen11_zero_credit_terminal_parent):
+        for predicate in (exact_invalidated_gen7_repair_parent,exact_noncountable_substrate_staging_parent,exact_gen9_zero_credit_reset_parent,exact_gen10_zero_credit_terminal_parent,exact_gen11_zero_credit_terminal_parent,exact_gen12_zero_credit_scheduler_repair_parent):
             if predicate(root,base,old,changed):return []
         cohort=old["active_cohort_id"];h=root/"history"/cohort;con=_load_json(h,"CONSOLIDATION.json");ver=_load_json(h,"verification.json");integ=_load_json(h,"integration.json");e=[]
         if ver.get("verdict")!="VERIFIED_COMPLETE":e.append("verification verdict not complete")

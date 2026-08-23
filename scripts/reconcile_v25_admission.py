@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import base64, os, re, urllib.error, urllib.parse, urllib.request
+import base64, os, pathlib, re, sys, urllib.error, urllib.parse, urllib.request
+
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
 import strict_json
 
 TOKEN=os.environ.get('GITHUB_TOKEN','')
@@ -15,22 +19,30 @@ HEX40=re.compile(r'^[0-9a-f]{40}$')
 MINIMUM_HARDENED_CONTROL={
     'PROTOCOL.md','BRANCH_PROTOCOL.md','BRANCH_WORKER_PROTOCOL.md','SESSION_STANDARD.md','plan/PLAN.json',
     'config/protocol_freeze.json','config/repo_policy.json','config/roles.json','config/worker_auth.json',
-    'config/task_registry_v25.json','config/checker_pins.json','config/countable_control_set_v25.json',
-    'config/admission_authority.json','branch/CONFIG.json','research/open_lanes.json','benchmark/registry.json','benchmark/pool_disposition.json',
+    'config/task_registry_v25.json','config/task_registry_semantics_v25.json','config/checker_pins.json','config/countable_control_set_v25.json',
+    'config/admission_authority.json','config/root_tcb_epoch_v25.json','config/root_epoch10_scheduler_admission_seed_v25.json',
+    'config/root_epoch10_scheduler_admission_seed_amendment_v25.json','config/root_epoch10_scheduler_admission_epoch_v25.json',
+    'branch/CONFIG.json','research/open_lanes.json','benchmark/registry.json','benchmark/pool_disposition.json',
     'schemas/state.schema.json','schemas/control.schema.json','schemas/assignment.schema.json','schemas/branch_report.schema.json',
     'schemas/branch_verification.schema.json','schemas/branch_integration.schema.json','schemas/branch_director.schema.json',
     'schemas/branch_consolidation.schema.json','schemas/lane_liveness_observation.schema.json','schemas/cohort_liveness_contract.schema.json',
     'schemas/verifier_assurance.schema.json','schemas/runtime_update.schema.json','schemas/private_manifest_contract.schema.json',
+    'schemas/scheduler_manifest.schema.json','schemas/preactivation_receipt.schema.json','schemas/scheduler_admission.schema.json',
     'scripts/strict_json.py','scripts/validate_bus.py','scripts/validate_branch_bus_v251.py','scripts/parent_lineage_guard.py',
+    'scripts/generation_delta_guard.py','scripts/scheduler_admission_guard.py','scripts/reconcile_root_epoch10_scheduler_admission_seed.py',
+    'scripts/reconcile_root_epoch10_scheduler_admission_seed_amendment.py',
     'scripts/transition_guard.py','scripts/reconcile_branch_rest.py','scripts/reconcile_branch_statuses.py','scripts/reconcile_v25_admission.py',
     'scripts/reconcile_open_prs.py','scripts/check_lane_liveness.py','scripts/liveness_contract_guard.py',
     'tests/test_v25_report_contracts.py','tests/test_source_bound_repo_policy.py','tests/test_countable_control_freeze.py',
+    'tests/test_generation_delta_policy.py','tests/test_root_epoch10_scheduler_admission_seed.py',
+    'tests/test_root_epoch10_scheduler_admission_seed_amendment.py','tests/test_root_epoch10_scheduler_admission.py','tests/test_scheduler_admission_negative.py',
     'tests/test_actions_trigger_bridge.py','tests/test_open_pr_admission_trust.py','tests/test_countable_control_gate_consistency.py',
     'tests/test_privileged_admission_workflows.py','tests/liveness/test_liveness_monitor.py','tests/verifier_assurance/test_verifier_assurance_schema.py',
     '.github/workflows/supernova-v25-admission.yml','.github/workflows/supernova-rest-branch-reconciler.yml',
     '.github/workflows/supernova-open-pr-reconciler.yml','.github/workflows/supernova-actions-heartbeat.yml',
     '.github/workflows/supernova-comment-admission.yml','.github/workflows/supernova-pr-target-admission.yml',
-    '.github/workflows/supernova-liveness-monitor.yml','requirements-validation.lock'
+    '.github/workflows/supernova-liveness-monitor.yml','.github/workflows/supernova-root-epoch10-scheduler-admission-seed.yml',
+    '.github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml','requirements-validation.lock'
 }
 
 def req(path,method='GET',data=None):
@@ -78,6 +90,22 @@ def required_countable_paths(contract):
 
 def result_state(errors,waiting=False):return 'pending' if waiting else ('failure' if errors else 'success')
 
+def source_bound_scheduler_admission(cohort,admission):
+    """The promoted copy must be byte-identical to admitted MM06 preactivation evidence."""
+    e=[];branch=admission.get('source_preactivation_admission_branch');commit=admission.get('source_preactivation_admission_commit_sha');blob=admission.get('source_preactivation_admission_blob_sha')
+    if admission.get('admission_verdict')!='SCHEDULER_ADMISSION_PASS':e.append('scheduler admission verdict is not SCHEDULER_ADMISSION_PASS')
+    if branch!=f'ps/preactivate/{cohort}/MM06':e.append('source_preactivation_admission branch mismatch');return e
+    if not isinstance(commit,str) or not HEX40.fullmatch(commit):e.append('source_preactivation_admission commit invalid');return e
+    if branch_head(branch)!=commit:e.append('source_preactivation_admission branch head drift');return e
+    try:
+        meta,source=content(f'preactivation/{cohort}/MM06.json',commit)
+        if meta.get('sha')!=blob:e.append('source_preactivation_admission blob mismatch')
+        if dict(admission)!=dict(source):e.append('scheduler admission copy differs from MM06 preactivation source')
+        ok,msg=source_bound_pass(commit,'supernova/report-admission')
+        if not ok:e.append('source_preactivation_admission report-admission '+msg)
+    except Exception as x:e.append('source_preactivation_admission '+str(x))
+    return e
+
 def generation_check(state):
     e=[];G=state.get('generation_head_sha');gen=state.get('generation_branch');cohort=state.get('active_cohort_id')
     if state.get('protocol_version')!='2.5':e.append('protocol != 2.5')
@@ -111,6 +139,12 @@ def generation_check(state):
             if pins.get('protocol_version')!='2.5':e.append('checker pins protocol mismatch')
             _,authority=content('config/admission_authority.json',root)
             if authority.get('candidate_code_execution_with_status_write_token')!='FORBIDDEN':e.append('frozen admission authority permits privileged candidate code')
+            if c.get('scheduler_admission_required') is True:
+                smeta,_=content(c.get('scheduler_manifest_path'),G)
+                if smeta.get('sha')!=c.get('scheduler_manifest_git_identity'):e.append('frozen scheduler manifest blob mismatch')
+                try:
+                    _,admission=content(f'scheduler_admission/{cohort}.json','main');e.extend(source_bound_scheduler_admission(cohort,admission))
+                except Exception as x:e.append('scheduler admission missing after promotion: '+str(x))
     except Exception as x:e.append('generation '+str(x))
     return e
 
@@ -212,7 +246,7 @@ def consolidation_check(state,vh,ih):
         if not isinstance(B,str) or not HEX40.fullmatch(B):e.append('bad expected main')
         if M!=B:e.append('stale main CAS')
         if r.get('verification_head_sha')!=vh or r.get('integration_head_sha')!=ih:e.append('fan-in head mismatch')
-        files=changed(B,H);allowed=all(x.startswith(f'history/{cohort}/') or x=='state/CURRENT.json' or x=='benchmark/registry.json' or x.startswith('control/') or x.startswith('assignments/') or x.startswith('superseded/') or x.startswith('transitions/') for x in files)
+        files=changed(B,H);allowed=all(x.startswith(f'history/{cohort}/') or x=='state/CURRENT.json' or x=='benchmark/registry.json' or x.startswith('control/') or x.startswith('assignments/') or x.startswith('liveness/') or x.startswith('scheduler/') or x.startswith('scheduler_admission/') or x.startswith('superseded/') or x.startswith('transitions/') for x in files)
         if not allowed or 'state/CURRENT.json' not in files:e.append('illegal consolidation diff')
     except Exception as x:e.append('consolidation '+str(x))
     return H,e

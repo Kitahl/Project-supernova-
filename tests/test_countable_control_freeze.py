@@ -15,8 +15,8 @@ class CountableControlFreezeTests(unittest.TestCase):
         missing = sorted(path for path in self.required if not (ROOT / path).exists())
         self.assertEqual(missing, [], f"required countable-control files missing: {missing}")
 
-    def test_root9_integrity_surface_and_liveness_are_frozen(self):
-        self.assertEqual(self.contract["schema_version"], "PS-COUNTABLE-CONTROL-SET-2.5-24")
+    def test_root10_scheduler_surface_and_root9_history_are_frozen(self):
+        self.assertEqual(self.contract["schema_version"], "PS-COUNTABLE-CONTROL-SET-2.5-25")
         must = {
             "scripts/reconcile_open_prs.py",
             ".github/workflows/supernova-open-pr-reconciler.yml",
@@ -27,15 +27,32 @@ class CountableControlFreezeTests(unittest.TestCase):
             "scripts/strict_json.py",
             "config/root_epoch9_integrity_repair_seed_v25.json",
             "config/root_epoch9_integrity_repair_epoch_v25.json",
+            "config/root_epoch10_scheduler_admission_seed_v25.json",
+            "config/root_epoch10_scheduler_admission_seed_amendment_v25.json",
+            "config/root_epoch10_scheduler_admission_epoch_v25.json",
+            "scripts/reconcile_root_epoch10_scheduler_admission_seed.py",
+            "scripts/reconcile_root_epoch10_scheduler_admission_seed_amendment.py",
+            "scripts/scheduler_admission_guard.py",
+            "schemas/scheduler_manifest.schema.json",
+            "schemas/preactivation_receipt.schema.json",
+            "schemas/scheduler_admission.schema.json",
+            "tests/test_root_epoch10_scheduler_admission.py",
+            "tests/test_scheduler_admission_negative.py",
+            ".github/workflows/supernova-root-epoch10-scheduler-admission-seed.yml",
+            ".github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml",
             "config/worker_auth.json",
             "config/checker_pins.json",
             "tests/test_v25_report_contracts.py",
             "tests/test_gen11_zero_credit_terminal_transition.py",
         }
         self.assertTrue(must.issubset(self.required), sorted(must - self.required))
+        self.assertTrue(self.contract["scheduler_manifest_required_for_countable_generation"])
+        self.assertTrue(self.contract["scheduler_admission_required_before_promotion"])
+        self.assertEqual(self.contract["canonical_scheduled_task_count"], 15)
+        self.assertEqual(self.contract["replacement_scheduled_task"], "FORBIDDEN")
 
     def test_active_countable_generation_freeze_or_explicit_hardening_supersession(self):
-        """Historical Gen11 stays immutable; root9/v24 starts a replacement at streak zero."""
+        """Historical Gen11/12 stay immutable; root10/v25 starts a replacement at streak zero."""
         state = json.loads((ROOT / "state/CURRENT.json").read_text(encoding="utf-8"))
         if state.get("calibration_countable_current") is not True:
             self.skipTest("current generation is intentionally non-countable")
@@ -55,9 +72,9 @@ class CountableControlFreezeTests(unittest.TestCase):
                 self.contract.get("authoritative_change_after_cohort1"),
                 "RESETS_CALIBRATION_STREAK_TO_ZERO",
             )
-            marker=json.loads((ROOT/'config/root_epoch9_integrity_repair_epoch_v25.json').read_text(encoding='utf-8'))
+            marker=json.loads((ROOT/'config/root_epoch10_scheduler_admission_epoch_v25.json').read_text(encoding='utf-8'))
             self.assertEqual(marker['calibration_credit_effect'],0)
-            self.assertEqual(marker['next_calibration_streak'],0)
+            self.assertEqual(marker['calibration_streak_effect'],'RESET_OR_RETAIN_ZERO')
             return
 
         self.assertTrue(self.required.issubset(frozen), sorted(self.required - frozen))
