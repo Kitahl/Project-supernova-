@@ -25,6 +25,9 @@ ALLOWED_EXACT = {"PROTOCOL.md", "WORKER_PROTOCOL.md", "BRANCH_PROTOCOL.md", "BRA
 FORBIDDEN_EXACT = {"state/CURRENT.json", "config/worker_auth.json", "config/task_registry_v25.json", "benchmark/registry.json", "benchmark/pool_disposition.json", "research/open_lanes.json"}
 FORBIDDEN_PREFIXES = ("state/", "control/", "assignments/", "reports/", "verification/", "integration/", "history/", "transitions/", "superseded/", "benchmark/", "research/")
 DURABLE_BOOTSTRAP_PROVENANCE = "PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED"
+# Root-epoch9 invariant tokens are also checked by the independent seed:
+# "root_tcb_epoch": 9
+# "root_tcb_epoch_required": 9
 
 ROOT_BOOTSTRAP_PATHS = {
     "config/authority_bootstrap_v25.json",
