@@ -2,6 +2,7 @@ import json
 import pathlib
 import unittest
 
+# This seed is installed through the ordinary protected hardening bootstrap path.
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 POLICY = ROOT / "config" / "root_epoch10_scheduler_admission_seed_v25.json"
 SCRIPT = ROOT / "scripts" / "reconcile_root_epoch10_scheduler_admission_seed.py"
