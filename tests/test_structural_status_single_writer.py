@@ -45,9 +45,12 @@ class StructuralStatusSingleWriterTests(unittest.TestCase):
 
     def test_rest_workflow_separates_diagnostics_from_status_writing_admission(self):
         text=REST_WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("python3 /tmp/reconcile_branch_rest.py",text);self.assertIn("python3 /tmp/reconcile_v25_admission.py",text)
+        self.assertIn("actions/checkout@",text);self.assertIn("python-version: '3.13.15'",text)
+        self.assertIn("requirements-validation.lock",text);self.assertIn("scripts/assert_validator_environment.py",text)
+        self.assertIn("python scripts/reconcile_branch_rest.py",text);self.assertIn("python scripts/reconcile_v25_admission.py",text)
+        self.assertNotIn("/tmp/reconcile_v25_admission.py",text)
         self.assertIn("GET-only",text);self.assertIn("only status-writing program",text)
-        self.assertLess(text.index("python3 /tmp/reconcile_branch_rest.py"),text.index("python3 /tmp/reconcile_v25_admission.py"))
+        self.assertLess(text.index("python scripts/reconcile_branch_rest.py"),text.index("python scripts/reconcile_v25_admission.py"))
 
     def test_admission_helper_preserves_fan_in_but_never_publishes_structural_context(self):
         text=ADMISSION.read_text(encoding="utf-8")
@@ -67,9 +70,9 @@ class StructuralStatusSingleWriterTests(unittest.TestCase):
         text=STRUCTURAL.read_text(encoding="utf-8")
         for context in STRUCTURAL_CONTEXTS:self.assertIn(context,text)
 
-    def test_authority_and_branch_config_name_exactly_one_structural_writer(self):
+    def test_root10_authority_and_branch_config_name_exactly_one_structural_writer(self):
         authority=json.loads(AUTHORITY.read_text(encoding="utf-8"));cfg=json.loads(BRANCH_CONFIG.read_text(encoding="utf-8"))
-        self.assertEqual(authority["root_tcb_epoch"],9)
+        self.assertEqual(authority["root_tcb_epoch"],10)
         self.assertEqual(authority["structural_status_writer_cardinality"],1)
         self.assertEqual(authority["authoritative_structural_status_writer"],"scripts/reconcile_branch_statuses.py")
         self.assertEqual(authority["non_authoritative_rest_diagnostic"],"scripts/reconcile_branch_rest.py")

@@ -6,8 +6,13 @@ import pathlib
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import urllib.request
+
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
 import strict_json
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "Kitahl/Project-supernova-")
@@ -19,15 +24,15 @@ BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"
 BOOTSTRAP_CREATOR = "github-actions[bot]"
 REQUIRED_CONTEXTS = ["supernova/static-control", "supernova/report-admission", "supernova/transition-admission"]
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
-ALLOWED_HEAD_PREFIXES = ("hardening/", "rev4/")
+ALLOWED_HEAD_PREFIXES = ("hardening/", "rev4/", "root-rotation/")
 ALLOWED_PREFIXES = ("config/", "schemas/", "scripts/", "tests/", ".github/workflows/", "docs/")
 ALLOWED_EXACT = {"PROTOCOL.md", "WORKER_PROTOCOL.md", "BRANCH_PROTOCOL.md", "BRANCH_WORKER_PROTOCOL.md", "SESSION_STANDARD.md", "plan/PLAN.json", "requirements-validation.lock", "branch/CONFIG.json"}
 FORBIDDEN_EXACT = {"state/CURRENT.json", "config/worker_auth.json", "config/task_registry_v25.json", "benchmark/registry.json", "benchmark/pool_disposition.json", "research/open_lanes.json"}
-FORBIDDEN_PREFIXES = ("state/", "control/", "assignments/", "reports/", "verification/", "integration/", "history/", "transitions/", "superseded/", "benchmark/", "research/")
+FORBIDDEN_PREFIXES = ("state/", "control/", "assignments/", "liveness/", "scheduler/", "scheduler_admission/", "preactivation/", "reports/", "verification/", "integration/", "history/", "transitions/", "superseded/", "runtime/", "benchmark/", "research/")
 DURABLE_BOOTSTRAP_PROVENANCE = "PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED"
-# Root-epoch9 invariant tokens are also checked by the independent seed:
-# "root_tcb_epoch": 9
-# "root_tcb_epoch_required": 9
+# Root-epoch10 invariant tokens are also checked by the independent seed:
+# "root_tcb_epoch": 10
+# "root_tcb_epoch_required": 10
 
 ROOT_BOOTSTRAP_PATHS = {
     "config/authority_bootstrap_v25.json",
@@ -52,6 +57,17 @@ ROOT_BOOTSTRAP_STATIC_PATHS = ROOT_BOOTSTRAP_PATHS | {
     "scripts/reconcile_root_epoch9_integrity_repair_seed.py",
     ".github/workflows/supernova-root-epoch9-integrity-repair-seed.yml",
     "config/root_epoch9_integrity_repair_epoch_v25.json",
+    "config/root_epoch10_scheduler_admission_seed_v25.json",
+    "scripts/reconcile_root_epoch10_scheduler_admission_seed.py",
+    ".github/workflows/supernova-root-epoch10-scheduler-admission-seed.yml",
+    "config/root_epoch10_scheduler_admission_seed_amendment_v25.json",
+    "scripts/reconcile_root_epoch10_scheduler_admission_seed_amendment.py",
+    ".github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml",
+    "config/root_epoch10_scheduler_admission_epoch_v25.json",
+    "scripts/scheduler_admission_guard.py",
+    "schemas/scheduler_manifest.schema.json",
+    "schemas/preactivation_receipt.schema.json",
+    "schemas/scheduler_admission.schema.json",
     "scripts/strict_json.py",
     "requirements-validation.lock",
 }
@@ -62,15 +78,20 @@ REQUIRED_INSTALLED_CONTROL_PATHS = {
     "config/root_epoch7_repair_seed_v25.json","config/root_epoch7_repair_epoch_v25.json",
     "config/root_epoch8_status_writer_repair_seed_v25.json","config/root_epoch8_status_writer_repair_epoch_v25.json",
     "config/root_epoch9_integrity_repair_seed_v25.json","config/root_epoch9_integrity_repair_epoch_v25.json",
+    "config/root_epoch10_scheduler_admission_seed_v25.json","config/root_epoch10_scheduler_admission_seed_amendment_v25.json","config/root_epoch10_scheduler_admission_epoch_v25.json",
     "scripts/assert_validator_environment.py","scripts/strict_json.py","scripts/reconcile_open_prs.py","scripts/reconcile_authority_bootstrap.py",
     "scripts/reconcile_root_rotation_seed.py","scripts/reconcile_root_epoch6_repair_seed.py","scripts/reconcile_root_epoch7_repair_seed.py",
     "scripts/reconcile_root_epoch8_status_writer_repair_seed.py","scripts/reconcile_root_epoch9_integrity_repair_seed.py",
+    "scripts/reconcile_root_epoch10_scheduler_admission_seed.py","scripts/reconcile_root_epoch10_scheduler_admission_seed_amendment.py","scripts/scheduler_admission_guard.py",
+    "schemas/scheduler_manifest.schema.json","schemas/preactivation_receipt.schema.json","schemas/scheduler_admission.schema.json",
     "tests/test_authority_bootstrap.py","tests/test_bootstrap_root_tcb_and_head_binding.py","tests/test_bootstrap_status_provenance.py",
     "tests/test_validator_environment_contract.py","tests/test_root_epoch6_repair_seed.py","tests/test_root_epoch6_repair.py",
     "tests/test_root_epoch8_status_writer_repair_seed.py","tests/test_root_epoch9_integrity_repair.py","tests/test_strict_json_contract.py",
+    "tests/test_root_epoch10_scheduler_admission_seed.py","tests/test_root_epoch10_scheduler_admission_seed_amendment.py","tests/test_root_epoch10_scheduler_admission.py","tests/test_scheduler_admission_negative.py",
     ".github/workflows/supernova-authority-bootstrap.yml",".github/workflows/supernova-bootstrap-completion-reconcile.yml",
     ".github/workflows/supernova-root-rotation-seed.yml",".github/workflows/supernova-root-epoch6-repair-seed.yml",".github/workflows/supernova-root-epoch7-repair-seed.yml",".github/workflows/supernova-root-epoch8-status-writer-repair-seed.yml",
     ".github/workflows/supernova-root-epoch9-integrity-repair-seed.yml",
+    ".github/workflows/supernova-root-epoch10-scheduler-admission-seed.yml",".github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml",
 }
 
 
@@ -97,7 +118,7 @@ def fail(sha: str | None, reason: str):
 
 def bootstrap_root_paths(trusted_root: pathlib.Path):
     roots = set(ROOT_BOOTSTRAP_STATIC_PATHS);admission = load_json(trusted_root, "config/admission_authority.json")
-    for key in ("authority_bootstrap_policy","trusted_reconciler","trusted_authority_bootstrap_reconciler","candidate_diagnostic_workflow","bootstrap_completion_workflow","root_tcb_epoch_path","validator_environment_contract","validator_environment_assertion","strict_json_contract","generation_delta_policy"):
+    for key in ("authority_bootstrap_policy","trusted_reconciler","trusted_authority_bootstrap_reconciler","candidate_diagnostic_workflow","bootstrap_completion_workflow","root_tcb_epoch_path","validator_environment_contract","validator_environment_assertion","strict_json_contract","generation_delta_policy","scheduler_admission_policy","scheduler_admission_guard","scheduler_manifest_schema","preactivation_receipt_schema","scheduler_admission_schema"):
         value = admission.get(key)
         if isinstance(value, str) and value:roots.add(value)
     for key in ("trusted_validator_entrypoints", "authoritative_status_workflows", "trusted_authority_helpers"):
@@ -130,13 +151,13 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
     except Exception as exc:errors.append("repo policy invariant check failed: "+repr(exc))
     try:
         admission=load_json(candidate_root,"config/admission_authority.json")
-        required_admission={"protocol_version":"2.5","task_network_plan_id":PLAN,"required_status_creator":BOOTSTRAP_CREATOR,"candidate_code_execution_with_status_write_token":"FORBIDDEN","ref_selectable_dispatch_with_status_write_token":"FORBIDDEN","candidate_bytes_treatment":"DATA_ONLY_UNDER_TRUSTED_MAIN_VALIDATORS","trusted_reconciler":"scripts/reconcile_open_prs.py","trusted_authority_bootstrap_reconciler":"scripts/reconcile_authority_bootstrap.py","authority_bootstrap_context":BOOTSTRAP_CONTEXT,"bootstrap_completion_workflow":".github/workflows/supernova-bootstrap-completion-reconcile.yml","bootstrap_status_provenance":DURABLE_BOOTSTRAP_PROVENANCE,"validator_environment_contract":"config/validator_environment_v25.json","validator_environment_assertion":"scripts/assert_validator_environment.py","strict_json_contract":"scripts/strict_json.py","root_tcb_epoch_path":"config/root_tcb_epoch_v25.json","root_tcb_epoch":9,"same_repository_required":True,"owner_authored_required_for_privileged_reconciliation":True,"exact_current_main_ancestor_required":True,"required_contexts":REQUIRED_CONTEXTS}
+        required_admission={"protocol_version":"2.5","task_network_plan_id":PLAN,"required_status_creator":BOOTSTRAP_CREATOR,"candidate_code_execution_with_status_write_token":"FORBIDDEN","ref_selectable_dispatch_with_status_write_token":"FORBIDDEN","candidate_bytes_treatment":"DATA_ONLY_UNDER_TRUSTED_MAIN_VALIDATORS","trusted_reconciler":"scripts/reconcile_open_prs.py","trusted_authority_bootstrap_reconciler":"scripts/reconcile_authority_bootstrap.py","authority_bootstrap_context":BOOTSTRAP_CONTEXT,"bootstrap_completion_workflow":".github/workflows/supernova-bootstrap-completion-reconcile.yml","bootstrap_status_provenance":DURABLE_BOOTSTRAP_PROVENANCE,"validator_environment_contract":"config/validator_environment_v25.json","validator_environment_assertion":"scripts/assert_validator_environment.py","strict_json_contract":"scripts/strict_json.py","root_tcb_epoch_path":"config/root_tcb_epoch_v25.json","root_tcb_epoch":10,"scheduler_admission_guard":"scripts/scheduler_admission_guard.py","scheduler_admission_required_for_countable_promotion":True,"scheduler_task_cardinality":15,"scheduler_replacement_task":"FORBIDDEN","scheduler_active_cohort_constructive_repair":"FORBIDDEN","same_repository_required":True,"owner_authored_required_for_privileged_reconciliation":True,"exact_current_main_ancestor_required":True,"required_contexts":REQUIRED_CONTEXTS}
         for key,expected in required_admission.items():
             if admission.get(key)!=expected:errors.append(f"admission authority invariant weakened: {key}")
     except Exception as exc:errors.append("admission authority invariant check failed: "+repr(exc))
     try:
         bootstrap=load_json(candidate_root,"config/authority_bootstrap_v25.json")
-        required_bootstrap={"protocol_version":"2.5","task_network_plan_id":PLAN,"enabled_after_install":True,"bootstrap_context":BOOTSTRAP_CONTEXT,"required_status_creator":BOOTSTRAP_CREATOR,"trusted_executable_source":"EXACT_ACCEPTED_MAIN","candidate_bytes_in_privileged_phase":"DATA_ONLY","candidate_diagnostics":"READ_ONLY_SEPARATE_JOB_REQUIRED","diagnostic_binding":"EXACT_EVENT_HEAD_AND_BASE_REQUIRED","bootstrap_status_target":"DESIGNATED_AUTHORITY_BOOTSTRAP_WORKFLOW_RUN_URL_REQUIRED","bootstrap_success_consumption":DURABLE_BOOTSTRAP_PROVENANCE,"bootstrap_completion_workflow":".github/workflows/supernova-bootstrap-completion-reconcile.yml","completion_run_id_environment":"COMPLETED_BOOTSTRAP_RUN_ID","validator_environment_contract":"config/validator_environment_v25.json","validator_environment_assertion":"scripts/assert_validator_environment.py","strict_json_contract":"scripts/strict_json.py","same_repository_required":True,"owner_authored_required":True,"base_branch_required":"main","exact_current_main_ancestor_required":True,"calibration_streak_required":0,"fresh_allowed_globally_required":False,"protocol_version_required":"2.5","specification_revision_required":4,"root_tcb_epoch_required":9,"worker_auth_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","state_or_scientific_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","root_tcb_change":"REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED","merge_authority":"EXISTING_GITHUB_RULESET_ONLY","bootstrap_verifier_may_bypass_ruleset":False,"bootstrap_verifier_may_merge":False,"failure_semantics":"FAIL_CLOSED"}
+        required_bootstrap={"protocol_version":"2.5","task_network_plan_id":PLAN,"enabled_after_install":True,"bootstrap_context":BOOTSTRAP_CONTEXT,"required_status_creator":BOOTSTRAP_CREATOR,"trusted_executable_source":"EXACT_ACCEPTED_MAIN","candidate_bytes_in_privileged_phase":"DATA_ONLY","candidate_diagnostics":"READ_ONLY_SEPARATE_JOB_REQUIRED","diagnostic_binding":"EXACT_EVENT_HEAD_AND_BASE_REQUIRED","bootstrap_status_target":"DESIGNATED_AUTHORITY_BOOTSTRAP_WORKFLOW_RUN_URL_REQUIRED","bootstrap_success_consumption":DURABLE_BOOTSTRAP_PROVENANCE,"bootstrap_completion_workflow":".github/workflows/supernova-bootstrap-completion-reconcile.yml","completion_run_id_environment":"COMPLETED_BOOTSTRAP_RUN_ID","validator_environment_contract":"config/validator_environment_v25.json","validator_environment_assertion":"scripts/assert_validator_environment.py","strict_json_contract":"scripts/strict_json.py","same_repository_required":True,"owner_authored_required":True,"base_branch_required":"main","exact_current_main_ancestor_required":True,"calibration_streak_required":0,"fresh_allowed_globally_required":False,"protocol_version_required":"2.5","specification_revision_required":4,"root_tcb_epoch_required":10,"worker_auth_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","state_or_scientific_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","root_tcb_change":"REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED","active_cohort_constructive_scheduler_repair":"FORBIDDEN","merge_authority":"EXISTING_GITHUB_RULESET_ONLY","bootstrap_verifier_may_bypass_ruleset":False,"bootstrap_verifier_may_merge":False,"failure_semantics":"FAIL_CLOSED"}
         for key,expected in required_bootstrap.items():
             if bootstrap.get(key)!=expected:errors.append(f"bootstrap policy invariant weakened: {key}")
     except Exception as exc:errors.append("bootstrap policy invariant check failed: "+repr(exc))
@@ -159,6 +180,10 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
         if removed:errors.append("countable control set shrank: "+removed[0])
         missing_installed=sorted(REQUIRED_INSTALLED_CONTROL_PATHS-new_paths)
         if missing_installed:errors.append("countable control missing installed authority/substrate path: "+missing_installed[0])
+        if candidate_control.get("scheduler_manifest_required_for_countable_generation") is not True:errors.append("countable scheduler manifest invariant weakened")
+        if candidate_control.get("scheduler_admission_required_before_promotion") is not True:errors.append("countable scheduler admission invariant weakened")
+        if candidate_control.get("canonical_scheduled_task_count")!=15 or candidate_control.get("replacement_scheduled_task")!="FORBIDDEN":errors.append("canonical 15-task identity invariant weakened")
+        if candidate_control.get("active_cohort_constructive_scheduler_repair")!="FORBIDDEN":errors.append("active-cohort scheduler immutability weakened")
         if candidate_control.get("authoritative_change_after_cohort1")!="RESETS_CALIBRATION_STREAK_TO_ZERO":errors.append("countable control mid-streak reset invariant weakened")
         if candidate_control.get("candidate_code_with_status_write_token")!="FORBIDDEN":errors.append("countable control candidate privilege invariant weakened")
         if candidate_control.get("fresh_science")!="FORBIDDEN_UNTIL_TWO_CLEAN_COUNTABLE_COHORTS_PLUS_PRIVATE_FROZEN_PRE_OUTCOME_MANIFEST":errors.append("countable control fresh-science invariant weakened")

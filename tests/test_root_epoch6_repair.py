@@ -18,17 +18,18 @@ EPOCH9_SEED_INSTALL='7c6cca62c51afd28c0554353331abe172dbee389'
 EPOCH9_SEED_POLICY='46b2f26e6a52c4d9051f7642a8cbaf7f45a1f259'
 EPOCH9_SEED_RECONCILER='89593976839aaaf12bf0e7406a98f30223905829'
 EPOCH9_SEED_WORKFLOW='08d12d85073b048748964c09f8ce14940c7b1106'
+EPOCH9_BLOB='9a45b2098cd5870b53f9faa92e52409fa3204c81'
 
 
 def load(path): return json.loads((ROOT/path).read_text(encoding='utf-8'))
 
 
 class RootEpoch6RepairTests(unittest.TestCase):
- def test_epoch9_binds_exact_epoch8_predecessor_and_epoch9_seed(self):
+ def test_root10_binds_epoch9_predecessor_and_preserves_epoch7_through_epoch9_history(self):
   epoch=load('config/root_tcb_epoch_v25.json')
-  self.assertEqual(epoch['schema_version'],'PS-ROOT-TCB-EPOCH-2.5-9')
-  self.assertEqual(epoch['protocol_version'],'2.5');self.assertEqual(epoch['task_network_plan_id'],PLAN);self.assertEqual(epoch['epoch'],9)
-  self.assertEqual(epoch['previous_epoch_blob'],EPOCH8_BLOB)
+  self.assertEqual(epoch['schema_version'],'PS-ROOT-TCB-EPOCH-2.5-10')
+  self.assertEqual(epoch['protocol_version'],'2.5');self.assertEqual(epoch['task_network_plan_id'],PLAN);self.assertEqual(epoch['epoch'],10)
+  self.assertEqual(epoch['previous_epoch_blob'],EPOCH9_BLOB)
   self.assertEqual(epoch['root_epoch7_repair_seed_install_commit_sha'],EPOCH7_SEED_INSTALL)
   self.assertEqual(epoch['root_epoch7_repair_seed_policy_blob'],EPOCH7_SEED_POLICY)
   self.assertEqual(epoch['root_epoch7_repair_seed_reconciler_blob'],EPOCH7_SEED_RECONCILER)
@@ -41,15 +42,18 @@ class RootEpoch6RepairTests(unittest.TestCase):
   self.assertEqual(epoch['root_epoch9_integrity_repair_seed_policy_blob'],EPOCH9_SEED_POLICY)
   self.assertEqual(epoch['root_epoch9_integrity_repair_seed_reconciler_blob'],EPOCH9_SEED_RECONCILER)
   self.assertEqual(epoch['root_epoch9_integrity_repair_seed_workflow_blob'],EPOCH9_SEED_WORKFLOW)
+  self.assertEqual(epoch['root_epoch10_scheduler_admission_seed_install_commit_sha'],'7bc97d2bed9fb285feb2e9ae1c31fb4331919d00')
+  self.assertEqual(epoch['root_epoch10_scheduler_admission_seed_amendment_install_commit_sha'],'cff3368586764248f4658603d5278eeb86c375ee')
   self.assertEqual(epoch['bootstrap_provenance'],DURABLE)
 
- def test_epoch6_through_epoch9_markers_have_zero_runtime_science_and_credit_effect(self):
-  old=load('config/root_epoch6_repair_epoch_v25.json');mid=load('config/root_epoch7_repair_epoch_v25.json');eight=load('config/root_epoch8_status_writer_repair_epoch_v25.json');nine=load('config/root_epoch9_integrity_repair_epoch_v25.json')
+ def test_epoch6_through_root10_markers_have_zero_runtime_science_and_credit_effect(self):
+  old=load('config/root_epoch6_repair_epoch_v25.json');mid=load('config/root_epoch7_repair_epoch_v25.json');eight=load('config/root_epoch8_status_writer_repair_epoch_v25.json');nine=load('config/root_epoch9_integrity_repair_epoch_v25.json');ten=load('config/root_epoch10_scheduler_admission_epoch_v25.json')
   self.assertEqual(old['previous_root_epoch'],5);self.assertEqual(old['new_root_epoch'],6)
   self.assertEqual(mid['previous_root_epoch'],6);self.assertEqual(mid['new_root_epoch'],7)
   self.assertEqual(eight['previous_root_epoch'],7);self.assertEqual(eight['new_root_epoch'],8)
   self.assertEqual(nine['previous_root_epoch'],8);self.assertEqual(nine['new_root_epoch'],9)
-  for marker in (old,mid,eight,nine):
+  self.assertEqual(ten['previous_root_epoch'],9);self.assertEqual(ten['new_root_epoch'],10)
+  for marker in (old,mid,eight,nine,ten):
    self.assertEqual(marker['calibration_credit_effect'],0)
    self.assertEqual(marker['fresh_science_effect'],'NONE');self.assertEqual(marker['runtime_effect'],'NONE')
   self.assertIn('STRUCTURAL_BRANCH_STATUS_SINGLE_WRITER_RESTORED',eight['repair_scope'])
@@ -86,10 +90,10 @@ class RootEpoch6RepairTests(unittest.TestCase):
   self.assertIn('os.environ["DIAGNOSED_HEAD_SHA"] = sha',text)
   self.assertIn('os.environ["DIAGNOSED_BASE_SHA"] = base_sha',text)
 
- def test_countable_control_v24_freezes_epoch9_integrity_surface(self):
+ def test_countable_control_v25_freezes_root10_and_historical_integrity_surface(self):
   control=load('config/countable_control_set_v25.json');paths=set(control['required_control_paths'])
-  self.assertEqual(control['schema_version'],'PS-COUNTABLE-CONTROL-SET-2.5-24')
-  required={'config/root_epoch9_integrity_repair_seed_v25.json','config/root_epoch9_integrity_repair_epoch_v25.json','scripts/reconcile_root_epoch9_integrity_repair_seed.py','.github/workflows/supernova-root-epoch9-integrity-repair-seed.yml','scripts/strict_json.py','tests/test_root_epoch9_integrity_repair.py','tests/test_strict_json_contract.py','tests/test_gen11_zero_credit_terminal_transition.py','scripts/reconcile_v25_admission.py','scripts/reconcile_open_prs.py','scripts/reconcile_authority_bootstrap.py','tests/test_structural_status_single_writer.py'}
+  self.assertEqual(control['schema_version'],'PS-COUNTABLE-CONTROL-SET-2.5-25')
+  required={'config/root_epoch9_integrity_repair_seed_v25.json','config/root_epoch9_integrity_repair_epoch_v25.json','scripts/reconcile_root_epoch9_integrity_repair_seed.py','.github/workflows/supernova-root-epoch9-integrity-repair-seed.yml','config/root_epoch10_scheduler_admission_seed_v25.json','config/root_epoch10_scheduler_admission_seed_amendment_v25.json','config/root_epoch10_scheduler_admission_epoch_v25.json','scripts/reconcile_root_epoch10_scheduler_admission_seed_amendment.py','.github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml','scripts/strict_json.py','tests/test_root_epoch9_integrity_repair.py','tests/test_strict_json_contract.py','tests/test_gen11_zero_credit_terminal_transition.py','scripts/reconcile_v25_admission.py','scripts/reconcile_open_prs.py','scripts/reconcile_authority_bootstrap.py','tests/test_structural_status_single_writer.py'}
   self.assertTrue(required.issubset(paths),sorted(required-paths))
   self.assertGreaterEqual(control['minimum_worker_liveness_window_minutes'],45)
 
