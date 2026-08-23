@@ -12,6 +12,10 @@ class Gen11ZeroCreditTerminalTransitionTests(unittest.TestCase):
             'GEN11_G="3bb1425d18dbff2f83d69b0738c7151bf4a47355"',
             'GEN11_STATE_BLOB="ad93b7d0a0a4fe329fea2f4855f8eb65a86ce7f9"',
             'GEN11_VERIFIER_HEAD="a58939b12e66ab4604b8f2e5f2033bd70d5c0bd3"',
+            'GEN11_INTEGRATOR_HEAD="61fb6c549c14d2f894daa2d418fe952334d49f12"',
+            'GEN11_INTEGRATION_BLOB="cb56b037fb47a5a2d07f876bfd80acd404e00f38"',
+            'GEN11_MALFORMED_PLAN="0aa341106cfc4654d5de358526716cadba8c9199b31e9eb15a90f488757cc30d7"',
+            'GEN11_MF06_BINDING_ISSUE="O-GEN11-MF06-PLAN-BINDING"',
             'GEN11_SUPERSESSION_DISPOSITION="INVALIDATED_ZERO_CREDIT_ROOT_EPOCH9_FULL_INTEGRITY_REPAIR"',
             'GEN12_COHORT_PREFIX="CAL-BR-012-v25-"',
             'def exact_gen11_zero_credit_terminal_parent',
@@ -26,6 +30,20 @@ class Gen11ZeroCreditTerminalTransitionTests(unittest.TestCase):
             "len(v.get('safe_report_refs') or [])!=12",
             "v.get('quarantined_report_refs')!=[]",
             "v.get('missing_workers')!=[]",
+        ):
+            self.assertIn(token, SRC)
+
+    def test_malformed_mf06_receipt_is_preserved_as_exact_rejected_history(self):
+        for token in (
+            "ib,i=_remote_json(GEN11_INTEGRATION_PATH,GEN11_INTEGRATOR_HEAD)",
+            "if ib!=GEN11_INTEGRATION_BLOB:return False",
+            "if not _one_path_child(GEN11_INTEGRATOR_HEAD,GEN11_G,GEN11_INTEGRATION_PATH,GEN11_INTEGRATION_BLOB):return False",
+            "if _schema_valid('schemas/branch_integration.schema.json',i):return False",
+            "i.get('task_network_plan_id')!=GEN11_MALFORMED_PLAN",
+            "(i.get('session_header') or {}).get('plan_id')!=GEN11_MALFORMED_PLAN",
+            "GEN11_MALFORMED_PLAN==PLAN",
+            "_remote_branch_head('ps/integrate/'+GEN11_COHORT)!=GEN11_INTEGRATOR_HEAD",
+            "_source_bound_status(GEN11_INTEGRATOR_HEAD,'supernova/branch-integrate','failure')",
         ):
             self.assertIn(token, SRC)
 
