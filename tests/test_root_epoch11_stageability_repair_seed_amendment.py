@@ -124,14 +124,26 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         self.workflow = WORKFLOW.read_text(encoding="utf-8")
         self.module = load_amendment_module()
 
-    def test_amendment_is_exact_four_path_one_shot_non_authorizing_correction(self):
+    def test_amendment_and_pagination_followup_are_exact_one_shot_non_authorizing_transactions(self):
         p = self.policy
-        self.assertEqual(p["schema_version"], "PS-ROOT-EPOCH11-STAGEABILITY-REPAIR-SEED-AMENDMENT-2.5-1")
+        self.assertEqual(p["schema_version"], "PS-ROOT-EPOCH11-STAGEABILITY-REPAIR-SEED-AMENDMENT-2.5-2")
         self.assertEqual(p["required_amendment_base_main_sha"], "49748265ab8afff2f53b4fa306c2b96d9d7e798c")
         self.assertEqual(p["original_seed_install_commit_sha"], p["required_amendment_base_main_sha"])
+        self.assertEqual(p["original_amendment_install_commit_sha"], "0d1f92f9b538d56ac98f5dc8fd84f05bd20d8db8")
         self.assertEqual(p["reviewed_candidate_source_commit_sha"], "3bdefc9dd2382e46d56cb139160a6703fd50b599")
         self.assertEqual(len(p["original_seed_paths"]), 4)
         self.assertEqual(len(p["amendment_paths"]), 4)
+        self.assertEqual(set(p["original_amendment_paths"]), set(p["amendment_paths"]))
+        self.assertEqual(p["followup_paths"], [
+            "config/root_epoch11_stageability_repair_seed_amendment_v25.json",
+            "scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py",
+            "tests/test_root_epoch11_stageability_repair_seed_amendment.py",
+        ])
+        self.assertNotIn(".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml", p["followup_paths"])
+        self.assertEqual(
+            p["original_amendment_paths"][".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml"],
+            "2ab92dc8a0864cbf377b9529e2ea3d1348656863",
+        )
         self.assertEqual(p["seed_context"], "supernova/root-epoch11-stageability-repair-seed-amendment")
         self.assertEqual(p["candidate_path_count"], 69)
         self.assertEqual(len(p["expected_root_candidate_blobs"]), 68)
@@ -147,8 +159,84 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         self.assertIn("ALL_FOUR_AMENDMENT_PATHS", p["durable_provenance_rule"])
         self.assertEqual(p["failure_semantics"], "FAIL_CLOSED")
         self.assertTrue(p["candidate_bytes_in_privileged_phase"].startswith("DATA_ONLY"))
-        for blob in p["original_seed_paths"].values():
+        self.assertEqual(p["expected_normalized_root_tcb_sha256"], "a07cc77998a9091a40d0adaeb900dcc44d75a36df38d0bfb0292e34a53927619")
+        rebuild = p["candidate_rebuild_root_tcb_bindings"]
+        self.assertEqual(rebuild["root_epoch11_stageability_repair_seed_amendment_install_commit_sha"], p["original_amendment_install_commit_sha"])
+        self.assertEqual(rebuild["root_epoch11_stageability_repair_seed_amendment_workflow_blob"], p["original_amendment_paths"][".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml"])
+        for blob in [*p["original_seed_paths"].values(), *p["original_amendment_paths"].values()]:
             self.assertRegex(blob, r"^[0-9a-f]{40}$")
+
+    def _installation_seed(self, trusted):
+        p = self.policy
+        seed_install = p["required_amendment_base_main_sha"]
+        amendment_install = p["original_amendment_install_commit_sha"]
+        parents = {amendment_install: seed_install, trusted: amendment_install}
+        changes = {
+            seed_install + "..." + amendment_install: list(p["amendment_paths"]),
+            amendment_install + "..." + trusted: list(p["followup_paths"]),
+        }
+        overrides = {}
+
+        def run(args):
+            if args[1:3] == ["merge-base", "--is-ancestor"]:
+                return (0, "")
+            if args[1] == "rev-parse":
+                commit = args[2][:-2]
+                return (0, parents.get(commit, "") + "\n")
+            if args[1:4] == ["rev-list", "--count", "--first-parent"]:
+                return (0, "1\n")
+            if args[1:3] == ["diff", "--name-only"]:
+                return (0, "\n".join(changes.get(args[3], [])) + "\n")
+            return (1, "unexpected command")
+
+        def blob_at(ref, path, cwd=None):
+            if (ref, path) in overrides:
+                return overrides[(ref, path)]
+            if ref == amendment_install and path in p["original_amendment_paths"]:
+                return p["original_amendment_paths"][path]
+            if ref == "HEAD" and path not in p["followup_paths"] and path in p["original_amendment_paths"]:
+                return p["original_amendment_paths"][path]
+            if path in p["original_seed_paths"]:
+                return p["original_seed_paths"][path]
+            if path == "config/root_tcb_epoch_v25.json":
+                return p["required_current_root_epoch_blob"]
+            if path == "state/STATE.json":
+                return p["required_state_blob"]
+            if path in self.original_policy["frozen_root10_paths"]:
+                return self.original_policy["frozen_root10_paths"][path]
+            return "f" * 40
+
+        seed = types.SimpleNamespace(
+            HEX40=re.compile(r"^[0-9a-f]{40}$"),
+            ROOT_TCB_PATH="config/root_tcb_epoch_v25.json",
+            STATE_PATH="state/STATE.json",
+            run=run,
+            blob_at=blob_at,
+        )
+        return seed, parents, changes, overrides
+
+    def test_accepted_followup_proves_both_immediate_transactions_and_freezes_authority(self):
+        trusted = "f" * 40
+        seed, parents, changes, overrides = self._installation_seed(trusted)
+        self.assertEqual(self.module.accepted_amendment_installation(trusted, self.policy, seed, self.original_policy), (True, ""))
+
+        parents[trusted] = "e" * 40
+        self.assertFalse(self.module.accepted_amendment_installation(trusted, self.policy, seed, self.original_policy)[0])
+        parents[trusted] = self.policy["original_amendment_install_commit_sha"]
+
+        followup_range = self.policy["original_amendment_install_commit_sha"] + "..." + trusted
+        changes[followup_range].append("state/STATE.json")
+        self.assertFalse(self.module.accepted_amendment_installation(trusted, self.policy, seed, self.original_policy)[0])
+        changes[followup_range].pop()
+
+        workflow = ".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml"
+        overrides[("HEAD", workflow)] = "e" * 40
+        self.assertFalse(self.module.accepted_amendment_installation(trusted, self.policy, seed, self.original_policy)[0])
+        del overrides[("HEAD", workflow)]
+
+        root10_path = next(iter(self.original_policy["frozen_root10_paths"]))
+        overrides[(self.policy["original_amendment_install_commit_sha"], root10_path)] = "e" * 40
+        self.assertFalse(self.module.accepted_amendment_installation(trusted, self.policy, seed, self.original_policy)[0])
 
     def test_real_69_path_surface_has_an_explicit_executable_68_blob_map(self):
         p = self.policy
@@ -389,7 +477,7 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         amendment_blobs = ["2" * 40, "3" * 40, "4" * 40]
         trusted = "5" * 40
         actual_dynamic = {
-            "root_epoch11_stageability_repair_seed_amendment_install_commit_sha": trusted,
+            "root_epoch11_stageability_repair_seed_amendment_install_commit_sha": p["original_amendment_install_commit_sha"],
             "root_epoch11_stageability_repair_seed_amendment_policy_blob": amendment_blobs[0],
             "root_epoch11_stageability_repair_seed_amendment_reconciler_blob": amendment_blobs[1],
             "root_epoch11_stageability_repair_seed_amendment_workflow_blob": amendment_blobs[2],
@@ -503,7 +591,7 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         self.assertGreaterEqual(self.script.count('seed.api(f"/actions/runs/{source_run_id}")'), 2)
         self.assertIn("final_jobs = source_attempt_jobs(seed, source_run_id, source_attempt, policy)", self.script)
         self.assertIn("source_run_binding_errors(final_source, final_jobs, final_pr, trusted, policy, source_attempt)", self.script)
-        self.assertLess(self.script.index("wait_for_earlier_same_head_runs(seed, sha, amendment_run_id)"), self.script.index('final_source = seed.api(f"/actions/runs/{source_run_id}")'))
+        self.assertLess(self.script.index("wait_for_earlier_same_head_runs(seed, sha, amendment_run_id, policy)"), self.script.index('final_source = seed.api(f"/actions/runs/{source_run_id}")'))
         self.assertLess(self.script.index("final_jobs = source_attempt_jobs"), self.script.index("source_run_binding_errors(final_source, final_jobs"))
         self.assertLess(self.script.index("source_run_binding_errors(final_source, final_jobs"), self.script.index('seed.post(sha, context, "success"'))
 
@@ -511,14 +599,144 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         head = "b" * 40
         cutoff = "2026-08-23T12:00:00Z"
         rows = [
-            {"id": 10, "event": "pull_request_target", "created_at": "2026-08-23T11:58:00Z", "status": "in_progress", "pull_requests": [{"head": {"sha": head}}]},
-            {"id": 11, "event": "pull_request_target", "created_at": "2026-08-23T11:59:00Z", "status": "completed", "pull_requests": [{"head": {"sha": head}}]},
-            {"id": 12, "event": "pull_request_target", "created_at": "2026-08-23T12:01:00Z", "status": "in_progress", "pull_requests": [{"head": {"sha": head}}]},
-            {"id": 13, "event": "pull_request_target", "created_at": "2026-08-23T11:57:00Z", "status": "in_progress", "pull_requests": [{"head": {"sha": "c" * 40}}]},
+            {"id": 10, "event": "pull_request_target", "head_sha": head, "created_at": "2026-08-23T11:58:00Z", "status": "in_progress"},
+            {"id": 11, "event": "pull_request_target", "head_sha": head, "created_at": "2026-08-23T11:59:00Z", "status": "completed"},
+            {"id": 12, "event": "pull_request_target", "head_sha": head, "created_at": "2026-08-23T12:01:00Z", "status": "in_progress"},
+            {"id": 13, "event": "pull_request_target", "head_sha": "c" * 40, "created_at": "2026-08-23T11:57:00Z", "status": "in_progress"},
         ]
         self.assertEqual(self.module.incomplete_earlier_same_head_runs(rows, head, cutoff), [10])
         rows[0]["status"] = "completed"
         self.assertEqual(self.module.incomplete_earlier_same_head_runs(rows, head, cutoff), [])
+
+    def test_timestamp_ordering_is_parsed_not_lexical_and_rejects_non_github_shapes(self):
+        head = "b" * 40
+        rows = [
+            {"id": 20, "event": "pull_request_target", "head_sha": head, "created_at": "2026-08-23T12:00:00Z", "status": "in_progress"},
+            {"id": 21, "event": "pull_request_target", "head_sha": head, "created_at": "2026-08-23T12:00:00.000001Z", "status": "in_progress"},
+        ]
+        self.assertEqual(
+            self.module.incomplete_earlier_same_head_runs(rows, head, "2026-08-23T12:00:00.000000Z"),
+            [20],
+        )
+        self.assertIsNotNone(self.module.parse_github_utc_timestamp("2026-08-23T12:00:00Z"))
+        self.assertIsNotNone(self.module.parse_github_utc_timestamp("2026-08-23T12:00:00.123456Z"))
+        for value in [
+            "not-a-timestamp",
+            "2026-08-23T12:00:00",
+            "2026-08-23T12:00:00+00:00",
+            "2026-13-23T12:00:00Z",
+            None,
+        ]:
+            self.assertIsNone(self.module.parse_github_utc_timestamp(value))
+
+    def test_wait_rejects_invalid_or_timezone_naive_amendment_cutoff_before_inventory(self):
+        head = "b" * 40
+        for cutoff in ["not-a-timestamp", "2026-08-23T12:00:00", None]:
+            calls = []
+            seed = types.SimpleNamespace(
+                HEX40=re.compile(r"^[0-9a-f]{40}$"),
+                api=lambda path, cutoff=cutoff: calls.append(path) or {"event": "workflow_run", "created_at": cutoff},
+            )
+            ok, reason = self.module.wait_for_earlier_same_head_runs(seed, head, 123, self.policy)
+            self.assertFalse(ok)
+            self.assertIn("provenance", reason)
+            self.assertEqual(calls, ["/actions/runs/123"])
+
+    @staticmethod
+    def _inventory_run(run_id, head, event="pull_request_target"):
+        return {
+            "id": run_id,
+            "event": event,
+            "head_sha": head,
+            "created_at": "2026-08-23T11:58:00Z",
+            "status": "completed",
+        }
+
+    def test_exact_head_inventory_server_filters_and_fully_paginates(self):
+        head = "b" * 40
+        calls = []
+        pages = {
+            1: [self._inventory_run(i, head) for i in range(0, 100)],
+            2: [self._inventory_run(i, head) for i in range(100, 200)],
+            3: [self._inventory_run(i, head) for i in range(200, 205)],
+        }
+        def api(path):
+            calls.append(path)
+            page = int(path.rsplit("=", 1)[1])
+            return {"total_count": 205, "workflow_runs": pages[page]}
+        seed = types.SimpleNamespace(HEX40=re.compile(r"^[0-9a-f]{40}$"), api=api)
+        ok, rows, reason = self.module.exact_head_pull_request_target_inventory(seed, head, self.policy)
+        self.assertTrue(ok, reason)
+        self.assertEqual(len(rows), 205)
+        self.assertEqual(len(calls), 3)
+        for page, call in enumerate(calls, 1):
+            self.assertEqual(call, f"/actions/runs?event=pull_request_target&head_sha={head}&per_page=100&page={page}")
+
+    def test_exact_head_inventory_accepts_999_but_rejects_a_tenth_full_page(self):
+        head = "b" * 40
+        def run_inventory(last_size):
+            calls = []
+            def api(path):
+                calls.append(path)
+                page = int(path.rsplit("=", 1)[1])
+                size = 100 if page < 10 else last_size
+                start = (page - 1) * 100
+                return {"total_count": 999, "workflow_runs": [self._inventory_run(i, head) for i in range(start, start + size)]}
+            seed = types.SimpleNamespace(HEX40=re.compile(r"^[0-9a-f]{40}$"), api=api)
+            return self.module.exact_head_pull_request_target_inventory(seed, head, self.policy), calls
+        (ok, rows, reason), calls = run_inventory(99)
+        self.assertTrue(ok, reason)
+        self.assertEqual(len(rows), 999)
+        self.assertEqual(len(calls), 10)
+        (ok, rows, reason), calls = run_inventory(100)
+        self.assertFalse(ok)
+        self.assertIn("bound", reason)
+        self.assertEqual(len(calls), 10)
+
+    def test_exact_head_inventory_rejects_invalid_head_without_query_and_incomplete_pages(self):
+        calls = []
+        seed = types.SimpleNamespace(HEX40=re.compile(r"^[0-9a-f]{40}$"), api=lambda path: calls.append(path))
+        self.assertFalse(self.module.exact_head_pull_request_target_inventory(seed, "not-a-sha", self.policy)[0])
+        self.assertEqual(calls, [])
+
+        head = "b" * 40
+        seed.api = lambda path: {"total_count": 205, "workflow_runs": [self._inventory_run(1, head)]}
+        ok, rows, reason = self.module.exact_head_pull_request_target_inventory(seed, head, self.policy)
+        self.assertFalse(ok)
+        self.assertIn("incomplete", reason)
+
+    def test_exact_head_inventory_fails_closed_on_wrong_filter_result_or_duplicate(self):
+        head = "b" * 40
+        wrong = self._inventory_run(1, "c" * 40)
+        seed = types.SimpleNamespace(
+            HEX40=re.compile(r"^[0-9a-f]{40}$"),
+            api=lambda path: {"total_count": 1, "workflow_runs": [wrong]},
+        )
+        ok, rows, reason = self.module.exact_head_pull_request_target_inventory(seed, head, self.policy)
+        self.assertFalse(ok)
+        self.assertIn("wrong-event or wrong-head", reason)
+
+        duplicate = self._inventory_run(1, head)
+        seed.api = lambda path: {"total_count": 2, "workflow_runs": [duplicate, dict(duplicate)]}
+        ok, rows, reason = self.module.exact_head_pull_request_target_inventory(seed, head, self.policy)
+        self.assertFalse(ok)
+        self.assertIn("duplicate", reason)
+
+        malformed = self._inventory_run(2, head)
+        del malformed["created_at"]
+        seed.api = lambda path: {"total_count": 1, "workflow_runs": [malformed]}
+        ok, rows, reason = self.module.exact_head_pull_request_target_inventory(seed, head, self.policy)
+        self.assertFalse(ok)
+        self.assertIn("ordering or status", reason)
+
+        invalid = self._inventory_run(3, head)
+        invalid["created_at"] = "not-a-timestamp"
+        seed.api = lambda path: {"total_count": 1, "workflow_runs": [invalid]}
+        ok, rows, reason = self.module.exact_head_pull_request_target_inventory(seed, head, self.policy)
+        self.assertFalse(ok)
+        self.assertIn("ordering or status", reason)
+        with self.assertRaisesRegex(ValueError, "valid GitHub UTC timestamp"):
+            self.module.incomplete_earlier_same_head_runs([invalid], head, "2026-08-23T12:00:00Z")
 
     def test_workflow_runs_only_after_original_fail_closed_and_never_executes_candidate_with_write_token(self):
         candidate, trusted = self.workflow.split("  trusted-seed-amendment:", 1)
