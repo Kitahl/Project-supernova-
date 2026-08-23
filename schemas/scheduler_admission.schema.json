@@ -11,6 +11,9 @@
     "cohort_id": {"type": "string", "minLength": 1},
     "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "scheduler_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_preactivation_admission_branch": {"type": "string", "pattern": "^ps/preactivate/[^/]+/MM06$"},
+    "source_preactivation_admission_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_preactivation_admission_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "mm06_scheduler_task_id": {"type": "string", "minLength": 1},
     "mm06_behavioral_config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "task_registry_exact_15_verified": {"const": true},
@@ -52,5 +55,5 @@
     "runtime_effect": {"const": "NONE"},
     "required_post_write_ci_context": {"const": "supernova/report-admission"}
   },
-  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_head_sha","scheduler_manifest_git_identity","mm06_scheduler_task_id","mm06_behavioral_config_sha256","task_registry_exact_15_verified","no_replacement_task_verified","normalized_schedule_readback_verified","timezone_binding_verified","retry_slack_formula_verified","production_branches_unchanged_from_generation_head","preactivation_branch_isolation_verified","create_once_prewrite_guards_verified","worker_results","partition_exhaustive_verified","admission_verdict","fresh_evidence_consumed","scientific_state_effect","runtime_effect","required_post_write_ci_context"]
+  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_head_sha","scheduler_manifest_git_identity","source_preactivation_admission_branch","source_preactivation_admission_commit_sha","source_preactivation_admission_blob_sha","mm06_scheduler_task_id","mm06_behavioral_config_sha256","task_registry_exact_15_verified","no_replacement_task_verified","normalized_schedule_readback_verified","timezone_binding_verified","retry_slack_formula_verified","production_branches_unchanged_from_generation_head","preactivation_branch_isolation_verified","create_once_prewrite_guards_verified","worker_results","partition_exhaustive_verified","admission_verdict","fresh_evidence_consumed","scientific_state_effect","runtime_effect","required_post_write_ci_context"]
 }
