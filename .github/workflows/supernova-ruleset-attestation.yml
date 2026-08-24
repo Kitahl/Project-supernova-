@@ -59,12 +59,24 @@ jobs:
                   return {'ok': False, 'label': label, 'error': repr(exc)}
 
           base = 'https://api.github.com/repos/' + repo
-          api(
-              base + '/issues/' + str(pr) + '/comments',
-              'POST',
-              {'body': 'SUPERNOVA_RULESET_ATTESTATION_V25_STARTED — accepted-main workflow reached GitHub runner.'},
-              auth=True,
-          )
+
+          def comment(body):
+              try:
+                  api(base + '/issues/' + str(pr) + '/comments', 'POST', {'body': body}, auth=True)
+                  return True
+              except urllib.error.HTTPError as exc:
+                  raw = exc.read().decode('utf-8', errors='replace')
+                  print(json.dumps({
+                      'comment_posted': False,
+                      'http_status': exc.code,
+                      'error': raw[:4000],
+                  }, sort_keys=True))
+                  return False
+              except Exception as exc:
+                  print(json.dumps({'comment_posted': False, 'error': repr(exc)}, sort_keys=True))
+                  return False
+
+          comment('SUPERNOVA_RULESET_ATTESTATION_V25_STARTED — accepted-main workflow reached GitHub runner.')
 
           effective = public_get('effective_branch_rules', base + '/rules/branches/main')
           summaries = public_get('repository_rulesets', base + '/rulesets')
@@ -116,6 +128,6 @@ jobs:
                   + json.dumps({**attestation, 'repository_ruleset_details': 'OMITTED_COMMENT_SIZE'}, sort_keys=True, indent=2)
                   + '\n```\nSUPERNOVA_RULESET_ATTESTATION_V25_END'
               )
-          api(base + '/issues/' + str(pr) + '/comments', 'POST', {'body': body}, auth=True)
+          comment(body)
           print(json.dumps(attestation, sort_keys=True))
           PY

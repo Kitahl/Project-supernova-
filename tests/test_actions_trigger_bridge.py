@@ -63,6 +63,7 @@ class ActionsTriggerBridgeTests(unittest.TestCase):
             f"- uses: {SETUP_PYTHON} # immutable SHA",
             f"- uses: {STATUS_APP_ACTION} # v3.2.0 immutable SHA",
             f"- uses: {SETUP_PYTHON} # immutable SHA",
+            f"- uses: {SETUP_PYTHON} # immutable SHA",
         ])
         self.assertNotIn("actions/checkout@", text)
 

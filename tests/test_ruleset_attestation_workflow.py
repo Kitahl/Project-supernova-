@@ -32,7 +32,9 @@ class RulesetAttestationWorkflowTests(unittest.TestCase):
     def test_attestation_is_fail_soft_and_observable_before_queries(self):
         text = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("SUPERNOVA_RULESET_ATTESTATION_V25_STARTED", text)
-        self.assertIn("except urllib.error.HTTPError", text)
+        self.assertIn("def comment(body):", text)
+        self.assertIn("'comment_posted': False", text)
+        self.assertGreaterEqual(text.count("except urllib.error.HTTPError"), 2)
         self.assertIn("auth=False", text)
         self.assertIn("'http_status': exc.code", text)
         self.assertIn("OMITTED_COMMENT_SIZE", text)
