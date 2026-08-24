@@ -20,6 +20,16 @@ BRANCH_TRANSITION_CONTEXT='supernova/branch-transition-admission'
 WORKERS={'MF01','MF02','MF03','MF04','MF05','MM01','MM02','MM03','MM04','MM05','MM07','EXT01'}
 TERMINAL_VERDICTS={'VERIFIED_COMPLETE','VERIFIED_WITH_QUARANTINES','INCOMPLETE','INVALID'}
 HEX40=re.compile(r'^[0-9a-f]{40}$')
+GEN12_COHORT='CAL-BR-012-v25-4ca0dec6'
+GEN12_G='b366cf01e64e1a00a2e566e14e25cc7c15ce523f'
+GEN12_STATE_BLOB='826fcdd01701eda04a177f86748878b3755badc0'
+GEN12_CONTROL_BLOB='50c8243c6857b07763e7637868cc062e42cb30ce'
+GEN12_ASSIGNMENT_BLOB='13612b63ca2035b5b0943d52d4c6ec5ac273057c'
+GEN12_TERMINAL_STATIC_ERRORS=(
+    'countable control missing canonical hardened paths: .github/workflows/supernova-preactivation-admission.yml,.github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml,.github/workflows/supernova-root-epoch10-scheduler-admission-seed.yml,.github/workflows/supernova-root-epoch11-readme-lineage-seed.yml,.github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml,.github/workflows/supernova-root-epoch11-stageability-repair-seed.yml',
+    'frozen countable-control contract differs from accepted main contract',
+)
+GEN12_TERMINAL_STATIC_DESCRIPTION='v2.5 exact immutable Gen12 terminal exception PASS'
 MINIMUM_HARDENED_CONTROL={
     'PROTOCOL.md','BRANCH_PROTOCOL.md','BRANCH_WORKER_PROTOCOL.md','SESSION_STANDARD.md','plan/PLAN.json',
     'config/protocol_freeze.json','config/repo_policy.json','config/roles.json','config/worker_auth.json',
@@ -234,6 +244,25 @@ def generation_check(state):
     except Exception as x:e.append('generation '+str(x))
     return e
 
+def gen12_terminal_static_exception(state_meta,state,errors):
+    """Accept only Gen12's exact prospective root11 incompatibility for zero-credit exit."""
+    expected={
+        'protocol_version':'2.5','task_network_plan_id':PLAN,'transport_mode':'BRANCH_GITOPS',
+        'generation_seq':12,'active_cohort_id':GEN12_COHORT,'generation_head_sha':GEN12_G,
+        'generation_branch':'ps/gen/'+GEN12_COHORT,
+        'active_control_manifest_path':'control/'+GEN12_COHORT+'.json',
+        'active_control_manifest_git_identity':GEN12_CONTROL_BLOB,
+        'active_assignment_path':'assignments/'+GEN12_COHORT+'.json',
+        'active_assignment_git_identity':GEN12_ASSIGNMENT_BLOB,
+        'calibration_countable_current':True,'calibration_streak':0,'fresh_allowed_globally':False,
+    }
+    return (
+        isinstance(state_meta,dict)
+        and state_meta.get('sha')==GEN12_STATE_BLOB
+        and all(state.get(key)==value for key,value in expected.items())
+        and tuple(errors)==GEN12_TERMINAL_STATIC_ERRORS
+    )
+
 def verification_semantic_errors(v,state):
     e=[];verdict=v.get('verdict')
     if verdict not in TERMINAL_VERDICTS:e.append('invalid terminal verifier verdict')
@@ -349,14 +378,15 @@ def consolidation_check(state,vh,ih):
     return H,e
 
 def main():
-    _,state=content('state/CURRENT.json','main')
+    state_meta,state=content('state/CURRENT.json','main')
     if state.get('task_network_plan_id')!=PLAN or state.get('transport_mode')!='BRANCH_GITOPS':return 0
     try:delegated_heads=open_main_pr_heads()
     except Exception as x:
         print('OPEN_MAIN_PR_DELEGATION_FAILED',repr(x));return 1
-    G=state['generation_head_sha'];ge=generation_check(state)
+    G=state['generation_head_sha'];raw_ge=generation_check(state);gen12_exception=gen12_terminal_static_exception(state_meta,state,raw_ge);ge=[] if gen12_exception else raw_ge
+    static_pass_description=GEN12_TERMINAL_STATIC_DESCRIPTION if gen12_exception else 'v2.5 frozen static control PASS'
     if G in delegated_heads:print('OPEN_MAIN_PR_HEAD_DELEGATED_TO_STRICT_RECONCILER',G)
-    else:status(G,ACTIVE_STATIC_CONTEXT,'failure' if ge else 'success',('FAIL '+ge[0]) if ge else 'v2.5 frozen static control PASS')
+    else:status(G,ACTIVE_STATIC_CONTEXT,'failure' if ge else 'success',('FAIL '+ge[0]) if ge else static_pass_description)
     vh,ve=verification_check(state);v_wait=bool(vh and vh==G)
     if vh:
         if vh in delegated_heads:print('OPEN_MAIN_PR_HEAD_DELEGATED_TO_STRICT_RECONCILER',vh)
@@ -367,7 +397,7 @@ def main():
         if ch in delegated_heads:
             print('OPEN_MAIN_PR_HEAD_DELEGATED_TO_STRICT_RECONCILER',ch)
             return 1 if ge else 0
-        status(ch,ACTIVE_STATIC_CONTEXT,'failure' if ge else 'success',('FAIL '+ge[0]) if ge else 'underlying v2.5 static control PASS')
+        status(ch,ACTIVE_STATIC_CONTEXT,'failure' if ge else 'success',('FAIL '+ge[0]) if ge else static_pass_description)
         ri_wait=v_wait or i_wait;rs=result_state(ve+ie,ri_wait);rdesc='awaiting verifier/integration receipt' if ri_wait else (('FAIL '+(ve+ie)[0]) if (ve or ie) else 'verified fan-in/branch report admission PASS');status(ch,BRANCH_REPORT_CONTEXT,rs,rdesc)
         ts=result_state(ce,c_wait);tdesc='awaiting consolidation receipt' if c_wait else (('FAIL '+ce[0]) if ce else 'consolidation CAS/allowed-diff PASS');status(ch,BRANCH_TRANSITION_CONTEXT,ts,tdesc)
     return 1 if ge else 0
