@@ -18,6 +18,7 @@ ORIGINAL_SCRIPT_PATH = ROOT / "scripts/reconcile_root_epoch11_stageability_repai
 AMENDMENT_SCRIPT_PATH = ROOT / "scripts/reconcile_root_epoch11_stageability_repair_seed_amendment.py"
 STATE_PATH = "state/CURRENT.json"
 ROOT_TCB_PATH = "config/root_tcb_epoch_v25.json"
+RECEIPT_CONTEXT = "supernova/root-epoch11-readme-lineage-seed"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
 
@@ -250,8 +251,7 @@ def trusted_candidate_semantic_errors(tmp: pathlib.Path, policy: dict, seed, ame
 
 def fail(seed, sha: str | None, reason: str, policy: dict) -> int:
     if isinstance(sha, str) and HEX40.fullmatch(sha):
-        for context in policy.get("required_status_contexts", []):
-            seed.post(sha, context, "failure", "root11 lineage seed refused: " + reason)
+        seed.post(sha, RECEIPT_CONTEXT, "failure", "root11 lineage seed refused: " + reason)
     print("ROOT EPOCH11 README LINEAGE SEED REFUSED:", reason)
     return 1
 
@@ -352,8 +352,7 @@ def main() -> int:
         seed.run(["git", "worktree", "remove", "--force", str(tmp)])
         shutil.rmtree(tmp, ignore_errors=True)
 
-    for context in policy["required_status_contexts"]:
-        seed.post(sha, context, "success", f"PASS pr={number} h={sha} b={trusted} r={run_id}")
+    seed.post(sha, RECEIPT_CONTEXT, "success", f"PASS pr={number} h={sha} b={trusted} r={run_id}")
     print("ROOT EPOCH11 README LINEAGE SEED PASS")
     return 0
 

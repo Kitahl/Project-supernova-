@@ -13,7 +13,7 @@ permissions:
   statuses: write
 
 concurrency:
-  group: supernova-v25-rest-reconciler
+  group: supernova-required-context-writers
   cancel-in-progress: false
 
 jobs:

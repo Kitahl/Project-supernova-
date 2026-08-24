@@ -10,8 +10,7 @@ import urllib.request
 REPO = os.environ.get("GITHUB_REPOSITORY", "Kitahl/Project-supernova-")
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
 API = "https://api.github.com/repos/" + REPO
-EXPECTED_ACTIONS_APP_ID = 15368
-EXPECTED_ACTIONS_SLUG = "github-actions"
+EXPECTED_STATUS_APP_INTEGRATION_ID = 4697060
 REQUIRED = {
     "static": "supernova/static-control",
     "report": "supernova/report-admission",
@@ -21,11 +20,12 @@ DIAGNOSTIC_CONTEXTS = {
     "pr_required": "supernova/ruleset/pr-required",
     "deletion_blocked": "supernova/ruleset/deletion-blocked",
     "non_fast_forward_blocked": "supernova/ruleset/non-fast-forward-blocked",
-    "actions_app": "supernova/ruleset/actions-app-15368",
+    "status_app": "supernova/ruleset/status-app-4697060",
     "static_bound": "supernova/ruleset/static-source-bound",
     "report_bound": "supernova/ruleset/report-source-bound",
     "transition_bound": "supernova/ruleset/transition-source-bound",
     "spoof_resistant": "supernova/ruleset/spoof-resistant",
+    "strict_up_to_date": "supernova/ruleset/strict-up-to-date",
 }
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
@@ -56,9 +56,10 @@ def post(sha: str, context: str, state: str, description: str):
     )
 
 
-def evaluate_rules(rules, actions_app):
+def evaluate_rules(rules):
     types = {r.get("type") for r in rules if isinstance(r, dict)}
     checks = []
+    status_rules = []
     for rule in rules:
         if not isinstance(rule, dict) or rule.get("type") != "required_status_checks":
             continue
@@ -66,10 +67,7 @@ def evaluate_rules(rules, actions_app):
         rows = params.get("required_status_checks") or []
         if isinstance(rows, list):
             checks.extend(x for x in rows if isinstance(x, dict))
-
-    app_id = (actions_app or {}).get("id")
-    app_slug = (actions_app or {}).get("slug")
-    actions_ok = app_id == EXPECTED_ACTIONS_APP_ID and app_slug == EXPECTED_ACTIONS_SLUG
+            status_rules.append((params, [x for x in rows if isinstance(x, dict)]))
 
     by_context = {}
     for row in checks:
@@ -79,24 +77,34 @@ def evaluate_rules(rules, actions_app):
 
     def source_bound(ctx):
         ids = by_context.get(ctx) or []
-        return bool(ids) and actions_ok and all(x == app_id for x in ids)
+        return bool(ids) and all(type(x) is int and x == EXPECTED_STATUS_APP_INTEGRATION_ID for x in ids)
 
     static_bound = source_bound(REQUIRED["static"])
     report_bound = source_bound(REQUIRED["report"])
     transition_bound = source_bound(REQUIRED["transition"])
     distinct_required = all(name in by_context for name in REQUIRED.values())
+    status_app = distinct_required and all(source_bound(ctx) for ctx in REQUIRED.values())
+    strict_up_to_date = any(
+        params.get("strict_required_status_checks_policy") is True
+        and all(
+            [row.get("integration_id") for row in rows if row.get("context") == ctx]
+            == [EXPECTED_STATUS_APP_INTEGRATION_ID]
+            for ctx in REQUIRED.values()
+        )
+        for params, rows in status_rules
+    )
 
     return {
         "pr_required": "pull_request" in types,
         "deletion_blocked": "deletion" in types,
         "non_fast_forward_blocked": "non_fast_forward" in types,
-        "actions_app": actions_ok,
+        "status_app": status_app,
         "static_bound": static_bound,
         "report_bound": report_bound,
         "transition_bound": transition_bound,
-        "spoof_resistant": distinct_required and static_bound and report_bound and transition_bound,
-        "observed_app_id": app_id,
-        "observed_app_slug": app_slug,
+        "spoof_resistant": distinct_required and static_bound and report_bound and transition_bound and strict_up_to_date,
+        "strict_up_to_date": strict_up_to_date,
+        "expected_status_app_integration_id": EXPECTED_STATUS_APP_INTEGRATION_ID,
         "required_context_integrations": {name: by_context.get(name, []) for name in REQUIRED.values()},
         "rule_types": sorted(x for x in types if isinstance(x, str)),
     }
@@ -127,10 +135,9 @@ def main():
 
     try:
         rules = api(API + "/rules/branches/main", auth=False)
-        actions_app = api("https://api.github.com/apps/github-actions", auth=False)
-        if not isinstance(rules, list) or not isinstance(actions_app, dict):
-            raise RuntimeError("unexpected public GitHub rules/app response")
-        result = evaluate_rules(rules, actions_app)
+        if not isinstance(rules, list):
+            raise RuntimeError("unexpected public GitHub rules response")
+        result = evaluate_rules(rules)
         publish_all(sha, result)
         print("RULESET ATTESTATION", json.dumps(result, sort_keys=True))
     except Exception as exc:

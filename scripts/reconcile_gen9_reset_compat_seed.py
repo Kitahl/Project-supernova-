@@ -38,8 +38,6 @@ def post(sha,ctx,state,desc):
 def fail(sha,reason,policy):
     if isinstance(sha,str) and HEX40.fullmatch(sha):
         post(sha,policy["seed_context"],"failure","Gen9 reset compat seed refused: "+reason)
-        for ctx in policy["required_status_contexts"]:
-            post(sha,ctx,"failure","Gen9 reset compat seed refused: "+reason)
     print("GEN9 RESET COMPAT SEED REFUSED:",reason)
     return 1
 
@@ -117,8 +115,6 @@ def main():
         run(["git","worktree","remove","--force",str(tmp)]); shutil.rmtree(tmp,ignore_errors=True)
 
     post(sha,policy["seed_context"],"success","accepted-main Gen9 reset compatibility seed PASS; exact head/base")
-    for ctx in policy["required_status_contexts"]:
-        post(sha,ctx,"success","one-shot Gen9 reset compatibility root repair exact-head PASS/N-A state")
     print("GEN9 RESET COMPAT SEED PASS",number,sha)
     return 0
 

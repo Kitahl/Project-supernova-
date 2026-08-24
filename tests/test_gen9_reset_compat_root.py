@@ -12,12 +12,12 @@ def load(path):
 
 
 class Gen9ResetCompatRootTests(unittest.TestCase):
-    def test_root10_binds_epoch9_predecessor_and_preserves_gen9_compat_history(self):
+    def test_root11_binds_epoch10_predecessor_and_preserves_gen9_compat_history(self):
         root = load("config/root_tcb_epoch_v25.json")
         marker = load("config/gen9_reset_compat_epoch_v25.json")
-        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-10")
-        self.assertEqual(root["epoch"], 10)
-        self.assertEqual(root["previous_epoch_blob"], EPOCH9_BLOB)
+        self.assertEqual(root["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-11")
+        self.assertEqual(root["epoch"], 11)
+        self.assertEqual(root["previous_epoch_blob"], "cf74b9c17bf1d763e7d89dc07f9bb74c334f8b59")
         self.assertEqual(root["root_epoch9_integrity_repair_seed_policy_blob"], "46b2f26e6a52c4d9051f7642a8cbaf7f45a1f259")
         self.assertEqual(root["gen9_reset_liveness_binding"], "CONTROL_AND_ASSIGNMENT_GIT_BLOB_IDENTITIES")
         self.assertEqual(marker["schema_version"], "PS-GEN9-RESET-COMPAT-EPOCH-2.5-1")
@@ -46,9 +46,9 @@ class Gen9ResetCompatRootTests(unittest.TestCase):
         for path in seed["seed_paths"] + [seed["one_shot_marker_path"], "tests/test_gen9_reset_compat_root.py"]:
             self.assertIn(path, controls)
 
-    def test_admission_inventory_is_root10_and_retains_historical_assets(self):
+    def test_admission_inventory_is_root11_and_retains_historical_assets(self):
         authority = load("config/admission_authority.json")
-        self.assertEqual(authority["root_tcb_epoch"], 10)
+        self.assertEqual(authority["root_tcb_epoch"], 11)
         self.assertEqual(authority["gen9_reset_liveness_binding"], "CONTROL_AND_ASSIGNMENT_GIT_BLOB_IDENTITIES")
         helpers = set(authority["trusted_authority_helpers"])
         for path in (

@@ -53,7 +53,8 @@ class RootEpoch11StageabilityRepairSeedTests(unittest.TestCase):
         self.assertEqual(p["failure_semantics"], "FAIL_CLOSED")
         self.assertNotIn("seed_context", p)
         self.assertEqual(p["historical_status_provenance"], "OBSERVED_GITHUB_ACTIONS_BOT_SUCCESS_WITHOUT_TARGET_URL_NO_WORKFLOW_IDENTITY_CLAIM")
-        self.assertNotIn("supernova/root-epoch11-stageability-repair-seed", self.script)
+        self.assertEqual(load_seed_module().RECEIPT_CONTEXT, "supernova/root-epoch11-stageability-repair-seed")
+        self.assertNotIn('for context in policy["required_status_contexts"]', self.script)
 
     def test_root10_initial_and_amendment_anchors_are_frozen(self):
         p = self.policy

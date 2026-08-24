@@ -1,6 +1,8 @@
 name: Supernova Branch Reconciler
 
 on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
   schedule:
@@ -10,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
   statuses: write
 
 concurrency:
@@ -18,6 +21,13 @@ concurrency:
 
 jobs:
   reconcile:
+    if: >-
+      github.event_name != 'pull_request_target' ||
+      (github.event.pull_request.draft == false &&
+       github.event.pull_request.base.ref == 'main' &&
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       github.event.pull_request.user.login == github.repository_owner &&
+       startsWith(github.event.pull_request.head.ref, 'ps/stage/'))
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -34,4 +44,8 @@ jobs:
       - name: Reconcile active exact branch heads
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          SUPERNOVA_WORKER_AUTH_KEYS_JSON: ${{ secrets.SUPERNOVA_WORKER_AUTH_KEYS_JSON }}
+          SUPERNOVA_STAGE_PR_NUMBER: ${{ github.event.pull_request.number }}
+          SUPERNOVA_STAGE_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SUPERNOVA_STAGE_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: python scripts/reconcile_branch_statuses.py

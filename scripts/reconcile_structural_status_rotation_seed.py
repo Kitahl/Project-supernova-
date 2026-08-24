@@ -4,6 +4,24 @@ import json, os, pathlib, re, shutil, subprocess, tempfile, urllib.request
 
 ROOT=pathlib.Path.cwd().resolve();REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-');TOKEN=os.environ.get('GITHUB_TOKEN','');API='https://api.github.com/repos/'+REPO;OWNER=REPO.split('/',1)[0]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa';HEX40=re.compile(r'^[0-9a-f]{40}$');POLICY_PATH='config/structural_status_rotation_seed_v25.json'
+ROOT_TCB_PATH='config/root_tcb_epoch_v25.json';EXPECTED_PREDECESSOR_ROOT_EPOCH=2
+EXPECTED_ROOT_EPOCH2_IDENTITY={
+ 'schema_version':'PS-ROOT-TCB-EPOCH-2.5-2',
+ 'protocol_version':'2.5',
+ 'task_network_plan_id':'0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa',
+ 'epoch':2,
+ 'status':'ACTIVE_AFTER_ROOT_ROTATION',
+ 'root_rotation_seed_merge_commit_sha':'088139cca3fa308058dca72e2c67eb3f758624bc',
+ 'seed_policy_blob':'9698216426dba4121de444d1800936e196e64163',
+ 'seed_reconciler_blob':'7a7b1dc4cd88d98642f2ba933f004b09b36a1933',
+ 'seed_workflow_blob':'10cf188aa27a8d799d48052cef8347238be43385',
+ 'seed_one_shot_disposition':'PERMANENTLY_INERT_AFTER_THIS_MARKER_IS_ACCEPTED',
+ 'root_tcb_source':'ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS',
+ 'bootstrap_provenance':'DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_REQUIRED',
+ 'root_change_rule':'NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED',
+ 'fresh_science_effect':'NONE',
+ 'calibration_credit_effect':'NONE; REPLACEMENT COUNTABLE COHORT STARTS_AT_STREAK_ZERO',
+}
 GEN9_COHORT='CAL-BR-009-v25-b53ab205';GEN9_G='67bcfef1a5a1e65c9cc4adb1a2f308ec51c70c3f';GEN9_STATE_BLOB='31071464144bde197aca0e3f13153be2d85208d7'
 FOUNDRY='57c57394bda484c4ec4613c312080682a37670ebb6cec06d061979e39f1ec64f';MASTERMIND='026a4d845ac021baa9f90c7c48c1f77f19f57065d257e45824025f5f467a9d0d';RUNTIME='9d0a88cc9001295b5e4c0f4163e83c0fd64ce04521e34230ad3539af14f3dfaf'
 
@@ -17,6 +35,10 @@ def run(cmd,cwd=ROOT):
  p=subprocess.run(cmd,cwd=str(cwd),text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False);return p.returncode,p.stdout
 
 def load(root,path):return json.loads((root/path).read_text(encoding='utf-8'))
+def accepted_predecessor_root_epoch():
+ try:value=load(ROOT,ROOT_TCB_PATH)
+ except (OSError,UnicodeError,json.JSONDecodeError):return None
+ return EXPECTED_PREDECESSOR_ROOT_EPOCH if value==EXPECTED_ROOT_EPOCH2_IDENTITY else None
 def git_blob(path):
  rc,out=run(['git','rev-parse','HEAD:'+path]);return out.strip() if rc==0 else None
 
@@ -26,7 +48,6 @@ def post(sha,ctx,state,desc):
 def fail(sha,reason,policy):
  if isinstance(sha,str) and HEX40.fullmatch(sha):
   post(sha,policy['seed_context'],'failure','structural root seed refused: '+reason)
-  for ctx in policy['required_status_contexts']:post(sha,ctx,'failure','structural root seed refused: '+reason)
  print('STRUCTURAL ROOT SEED REFUSED:',reason);return 1
 
 def main():
@@ -47,6 +68,7 @@ def main():
  if state.get('calibration_streak')!=0 or state.get('fresh_allowed_globally') is not False:return fail(sha,'streak must be zero and fresh disabled',policy)
  if state.get('foundry_sha256')!=FOUNDRY or state.get('mastermind_sha256')!=MASTERMIND or state.get('runtime_state_id')!=RUNTIME:return fail(sha,'Gen9 substrate/runtime identity drift',policy)
  if (ROOT/policy['one_shot_marker_path']).exists():return fail(sha,'structural-status epoch marker exists; seed permanently inert',policy)
+ if accepted_predecessor_root_epoch()!=EXPECTED_PREDECESSOR_ROOT_EPOCH:return fail(sha,'structural seed is inert outside exact predecessor root epoch 2 identity',policy)
  run(['git','fetch','--no-tags','origin',f'pull/{number}/head']);rc,_=run(['git','merge-base','--is-ancestor',trusted,sha])
  if rc:return fail(sha,'candidate does not descend from exact accepted main',policy)
  rc,out=run(['git','diff','--name-only',trusted+'...'+sha]);changed=[x for x in out.splitlines() if x]
@@ -91,7 +113,6 @@ def main():
  finally:
   run(['git','worktree','remove','--force',str(tmp)]);shutil.rmtree(tmp,ignore_errors=True)
  post(sha,policy['seed_context'],'success','accepted-main structural-status seed PASS; exact head/base')
- for ctx in policy['required_status_contexts']:post(sha,ctx,'success','one-shot structural root seed exact-head PASS/N-A non-state transition')
  print('STRUCTURAL STATUS ROTATION SEED PASS',number,sha);return 0
 
 if __name__=='__main__':raise SystemExit(main())

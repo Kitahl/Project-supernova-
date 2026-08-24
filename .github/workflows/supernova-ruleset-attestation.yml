@@ -75,10 +75,21 @@ jobs:
                   if isinstance(rid, int):
                       details.append(public_get('ruleset_' + str(rid), base + '/rulesets/' + str(rid)))
           branch = public_get('branch_main', base + '/branches/main')
-          actions_app = public_get('github_actions_app', 'https://api.github.com/apps/github-actions')
+          required_contexts = (
+              'supernova/static-control',
+              'supernova/report-admission',
+              'supernova/transition-admission',
+          )
+          observed_integrations = {context: [] for context in required_contexts}
+          if effective.get('ok') and isinstance(effective.get('value'), list):
+              for rule in effective['value']:
+                  if not isinstance(rule, dict) or rule.get('type') != 'required_status_checks':
+                      continue
+                  for row in (rule.get('parameters') or {}).get('required_status_checks') or []:
+                      if isinstance(row, dict) and row.get('context') in observed_integrations:
+                          observed_integrations[row['context']].append(row.get('integration_id'))
 
           branch_value = branch.get('value') if branch.get('ok') else {}
-          app_value = actions_app.get('value') if actions_app.get('ok') else {}
           attestation = {
               'schema_version': 'PS-RULESET-ATTESTATION-1',
               'repository': repo,
@@ -87,12 +98,11 @@ jobs:
               'effective_branch_rules': effective,
               'repository_rulesets': summaries,
               'repository_ruleset_details': details,
-              'github_actions_app': {
-                  'query': actions_app,
-                  'id': (app_value or {}).get('id'),
-                  'slug': (app_value or {}).get('slug'),
-                  'name': (app_value or {}).get('name'),
-                  'owner_login': (((app_value or {}).get('owner') or {}).get('login')),
+              'protected_status_authority': {
+                  'integration_id': 4697060,
+                  'slug': 'project-supernova-status-authority',
+                  'bot_login': 'project-supernova-status-authority[bot]',
+                  'observed_required_context_integrations': observed_integrations,
               },
           }
           body = (

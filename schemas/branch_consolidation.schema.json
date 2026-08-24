@@ -1,1 +1,135 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Project Supernova Branch Consolidation Receipt v2.5 frozen","type":"object","additionalProperties":false,"required":["task_network_plan_id","cohort_id","consolidation_id","generation_head_sha","verification_branch","verification_head_sha","integration_branch","integration_head_sha","expected_main_head","safe_history_refs","next_state_path","calibration_counted","repo_policy_observed_protected","repo_policy_source_bound_contexts_verified","static_control_context","report_admission_context","transition_admission_context","benchmark_actions","next_action"],"properties":{"task_network_plan_id":{"const":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},"cohort_id":{"type":"string"},"consolidation_id":{"type":"string"},"generation_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},"verification_branch":{"type":"string"},"verification_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},"integration_branch":{"type":"string"},"integration_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},"expected_main_head":{"type":"string","pattern":"^[0-9a-f]{40}$"},"safe_history_refs":{"type":"array","items":{"type":"string"}},"next_state_path":{"const":"state/CURRENT.json"},"calibration_counted":{"type":"boolean"},"repo_policy_observed_protected":{"type":"boolean"},"repo_policy_source_bound_contexts_verified":{"type":"boolean"},"static_control_context":{"type":"object","additionalProperties":false,"required":["context","status"],"properties":{"context":{"const":"supernova/static-control"},"status":{"const":"PASS"}}},"report_admission_context":{"type":"object","additionalProperties":false,"required":["context","status","verification_head_sha"],"properties":{"context":{"const":"supernova/report-admission"},"status":{"const":"PASS"},"verification_head_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"}}},"transition_admission_context":{"type":"object","additionalProperties":false,"required":["context","required_on_exact_consolidation_head"],"properties":{"context":{"const":"supernova/transition-admission"},"required_on_exact_consolidation_head":{"const":true}}},"benchmark_actions":{"type":"array"},"next_action":{"type":"string"}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Supernova Branch Consolidation Receipt v2.5 legacy/root11",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "legacy_static_control_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context", "status"],
+      "properties": {
+        "context": {"const": "supernova/static-control"},
+        "status": {"const": "PASS"}
+      }
+    },
+    "legacy_report_admission_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context", "status", "verification_head_sha"],
+      "properties": {
+        "context": {"const": "supernova/report-admission"},
+        "status": {"const": "PASS"},
+        "verification_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    },
+    "legacy_transition_admission_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context", "required_on_exact_consolidation_head"],
+      "properties": {
+        "context": {"const": "supernova/transition-admission"},
+        "required_on_exact_consolidation_head": {"const": true}
+      }
+    },
+    "root11_static_control_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context", "status", "generation_head_sha"],
+      "properties": {
+        "context": {"const": "supernova/active-static-control"},
+        "status": {"const": "PASS"},
+        "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    },
+    "root11_report_admission_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context", "status", "verification_head_sha"],
+      "properties": {
+        "context": {"const": "supernova/branch-report-admission"},
+        "status": {"const": "PASS"},
+        "verification_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    },
+    "root11_transition_admission_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context", "required_on_exact_consolidation_head", "expected_main_head"],
+      "properties": {
+        "context": {"const": "supernova/branch-transition-admission"},
+        "required_on_exact_consolidation_head": {"const": true},
+        "expected_main_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    }
+  },
+  "required": [
+    "task_network_plan_id",
+    "cohort_id",
+    "consolidation_id",
+    "generation_head_sha",
+    "verification_branch",
+    "verification_head_sha",
+    "integration_branch",
+    "integration_head_sha",
+    "expected_main_head",
+    "safe_history_refs",
+    "next_state_path",
+    "calibration_counted",
+    "repo_policy_observed_protected",
+    "repo_policy_source_bound_contexts_verified",
+    "static_control_context",
+    "report_admission_context",
+    "transition_admission_context",
+    "benchmark_actions",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
+    "cohort_id": {"type": "string"},
+    "consolidation_id": {"type": "string"},
+    "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "verification_branch": {"type": "string"},
+    "verification_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "integration_branch": {"type": "string"},
+    "integration_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "expected_main_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "safe_history_refs": {"type": "array", "items": {"type": "string"}},
+    "next_state_path": {"const": "state/CURRENT.json"},
+    "calibration_counted": {"type": "boolean"},
+    "repo_policy_observed_protected": {"type": "boolean"},
+    "repo_policy_source_bound_contexts_verified": {"type": "boolean"},
+    "static_control_context": {"type": "object"},
+    "report_admission_context": {"type": "object"},
+    "transition_admission_context": {"type": "object"},
+    "benchmark_actions": {"type": "array"},
+    "next_action": {"type": "string"}
+  },
+  "oneOf": [
+    {
+      "not": {"required": ["schema_version"]},
+      "properties": {
+        "static_control_context": {"$ref": "#/$defs/legacy_static_control_context"},
+        "report_admission_context": {"$ref": "#/$defs/legacy_report_admission_context"},
+        "transition_admission_context": {"$ref": "#/$defs/legacy_transition_admission_context"}
+      }
+    },
+    {
+      "required": ["schema_version"],
+      "properties": {
+        "schema_version": {"const": "PS-BRANCH-CONSOLIDATION-2.5-ROOT11-1"},
+        "safe_history_refs": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "static_control_context": {"$ref": "#/$defs/root11_static_control_context"},
+        "report_admission_context": {"$ref": "#/$defs/root11_report_admission_context"},
+        "transition_admission_context": {"$ref": "#/$defs/root11_transition_admission_context"}
+      }
+    }
+  ]
+}

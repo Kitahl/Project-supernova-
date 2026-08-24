@@ -470,8 +470,7 @@ def decline(reason: str) -> int:
 
 def fail_bound(seed, sha: str, reason: str, policy: dict) -> int:
     if isinstance(sha, str) and seed.HEX40.fullmatch(sha):
-        for context in [policy["seed_context"], *policy["required_status_contexts"]]:
-            seed.post(sha, context, "failure", "root11 seed amendment refused: " + reason)
+        seed.post(sha, policy["seed_context"], "failure", "root11 seed amendment refused: " + reason)
     print("ROOT EPOCH11 SEED AMENDMENT REFUSED: " + reason)
     return 1
 
@@ -601,8 +600,7 @@ def main():
     final_jobs = source_attempt_jobs(seed, source_run_id, source_attempt, policy)
     if source_run_binding_errors(final_source, final_jobs, final_pr, trusted, policy, source_attempt):
         return decline("source workflow provenance changed during amendment validation")
-    for context in [policy["seed_context"], *policy["required_status_contexts"]]:
-        seed.post(sha, context, "success", "trusted root11 seed-completeness amendment PASS")
+    seed.post(sha, policy["seed_context"], "success", "trusted root11 seed-completeness amendment PASS")
     print("ROOT EPOCH11 STAGEABILITY-REPAIR SEED-COMPLETENESS AMENDMENT PASS")
     return 0
 

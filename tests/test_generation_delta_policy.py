@@ -37,6 +37,11 @@ class GenerationDeltaPolicyTests(unittest.TestCase):
         self.assertEqual(self.policy['non_countable']['exact_cardinality'],2)
         self.assertIn('scheduler/{cohort}.json',self.policy['countable']['exact_path_templates'])
         self.assertTrue(self.policy['countable']['scheduler_admission_required_before_promotion'])
-        self.assertEqual(self.policy['stage_admit_promote'],'THREE_DISTINCT_TRANSACTIONS')
+        self.assertEqual(self.policy['stage_admit_promote'],'STAGE_POINTER_THEN_CREATE_ONCE_ADMISSION_ENVELOPE_THEN_LATER_PROMOTE')
+
+    def test_root11_forbids_future_generation_head_in_manifest(self):
+        self.assertEqual(self.policy['countable']['scheduler_manifest_generation_head_sha'], 'FORBIDDEN_SELF_REFERENCE')
+        self.assertEqual(self.policy['stage_pointer_path'], 'state/STAGED.json')
+        self.assertEqual(self.policy['stage_admit_promote'], 'STAGE_POINTER_THEN_CREATE_ONCE_ADMISSION_ENVELOPE_THEN_LATER_PROMOTE')
 
 if __name__=='__main__': unittest.main()

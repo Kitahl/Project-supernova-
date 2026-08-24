@@ -44,7 +44,6 @@ def post(sha,ctx,state,desc):
 def fail(sha,reason,policy):
  if isinstance(sha,str) and HEX40.fullmatch(sha):
   post(sha,policy['seed_context'],'failure','trust seed refused: '+reason)
-  for ctx in policy['required_status_contexts']:post(sha,ctx,'failure','trust seed refused: '+reason)
  print('T0 TRUST SEED REFUSED:',reason);return 1
 
 
@@ -121,7 +120,6 @@ def main():
  finally:
   run(['git','worktree','remove','--force',str(tmp)]);shutil.rmtree(tmp,ignore_errors=True)
  post(sha,policy['seed_context'],'success','one-shot accepted-main T0 trust seed PASS; exact head/base/repair set')
- for ctx in policy['required_status_contexts']:post(sha,ctx,'success','one-shot T0 trust seed exact-head PASS/N-A non-state transition')
  print('T0 TRUST REPAIR SEED PASS',number,sha);return 0
 
 if __name__=='__main__':raise SystemExit(main())

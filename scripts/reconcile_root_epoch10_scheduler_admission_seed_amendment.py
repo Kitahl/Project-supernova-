@@ -94,8 +94,6 @@ def post(sha: str, context: str, state: str, description: str):
 def fail(sha, reason: str, policy: dict):
     if isinstance(sha, str) and HEX40.fullmatch(sha):
         post(sha, policy["seed_context"], "failure", "root10 seed amendment refused: " + reason)
-        for context in policy["required_status_contexts"]:
-            post(sha, context, "failure", "root10 seed amendment refused: " + reason)
     print("ROOT EPOCH10 SCHEDULER-ADMISSION SEED AMENDMENT REFUSED:", reason)
     return 1
 
@@ -305,8 +303,6 @@ def main():
         run(["git", "worktree", "remove", "--force", str(tmp)])
         shutil.rmtree(tmp, ignore_errors=True)
     post(sha, policy["seed_context"], "success", "root10 scheduler-admission seed amendment PASS")
-    for context in policy["required_status_contexts"]:
-        post(sha, context, "success", "trusted root10 scheduler-admission amendment PASS")
     print("ROOT EPOCH10 SCHEDULER-ADMISSION SEED AMENDMENT PASS")
     return 0
 

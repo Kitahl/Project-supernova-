@@ -97,12 +97,13 @@ class AuthorityBootstrapTests(unittest.TestCase):
         self.assertNotIn('/merge', text)
         self.assertNotIn('git push', text)
 
-    def test_normal_reconciler_requires_source_verified_bootstrap(self):
+    def test_normal_reconciler_requires_bootstrap_or_exact_owner_root_transition(self):
         text = OPEN.read_text(encoding="utf-8")
         self.assertIn('BOOTSTRAP_CONTEXT = "supernova/bootstrap-admission"', text)
         self.assertIn('BOOTSTRAP_CREATOR = "github-actions[bot]"', text)
         self.assertIn("trusted_bootstrap_success(head_sha)", text)
-        self.assertIn("authority bytes changed without source-verified bootstrap", text)
+        self.assertIn("trusted_root_transition_authorization", text)
+        self.assertIn("root transition requires exactly one live exact owner authorization", text)
 
     def test_admission_contract_names_bootstrap_components(self):
         a = json.loads(AUTH.read_text(encoding="utf-8"))
@@ -148,6 +149,7 @@ class AuthorityBootstrapTests(unittest.TestCase):
             ("forbid_force_push", False),
             ("forbid_branch_deletion", False),
             ("required_main_status_contexts", ["supernova/static-control"]),
+            ("required_status_source_integration_ids", [15368]),
             ("required_status_source_creator_logins", ["other-app[bot]"]),
             ("operational_source_binding_proof_required", False),
             ("candidate_code_execution_with_status_write_token", "ALLOWED"),

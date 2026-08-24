@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PS-SCHEDULER-ADMISSION-COPY-2.5-1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "PS-SCHEDULER-ADMISSION-COPY-2.5-1"},
+    "protocol_version": {"const": "2.5"},
+    "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
+    "candidate_nonce": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "cohort_id": {"type": "string", "minLength": 1},
+    "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "staged_candidate_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "scheduler_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_preactivation_admission_branch": {"type": "string", "pattern": "^ps/preactivate/[^/]+/MM06$"},
+    "source_preactivation_admission_path": {"type": "string", "pattern": "^preactivation/[^/]+/MM06\\.json$"},
+    "source_preactivation_admission_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_preactivation_admission_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_schema_version": {"const": "PS-SCHEDULER-ADMISSION-2.5-3"},
+    "admission_verdict": {"const": "SCHEDULER_ADMISSION_PASS"},
+    "creation_mode": {"const": "CREATE_ONCE"}
+  },
+  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_root_sha","generation_head_sha","staged_candidate_git_identity","scheduler_manifest_git_identity","source_preactivation_admission_branch","source_preactivation_admission_path","source_preactivation_admission_commit_sha","source_preactivation_admission_blob_sha","source_schema_version","admission_verdict","creation_mode"]
+}

@@ -42,7 +42,7 @@
     "integrator_branch": {"type": "string"},
     "verification_branch": {"type": "string"},
     "verification_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-    "verification_external_ci_context": {"const": "supernova/report-admission"},
+    "verification_external_ci_context": {"enum": ["supernova/report-admission","supernova/branch-report-admission"]},
     "verification_external_ci_status": {"const": "PASS"},
     "verification_external_ci_source": {"const": "github-actions[bot]"},
     "verification_external_ci_observed_after_receipt": {"const": true},

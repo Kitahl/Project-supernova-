@@ -6,18 +6,20 @@ on:
     types: [completed]
 
 permissions:
-  contents: read
-  pull-requests: read
   actions: read
-  statuses: write
+  contents: read
+  issues: read
+  pull-requests: read
+  statuses: read
 
 concurrency:
-  group: supernova-bootstrap-completion-${{ github.event.workflow_run.id }}
+  group: supernova-required-context-writers
   cancel-in-progress: false
 
 jobs:
   reconcile:
     if: github.event.workflow_run.conclusion == 'success'
+    environment: supernova-protected-writer
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
@@ -35,9 +37,17 @@ jobs:
         run: "python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements-validation.lock"
       - name: Assert frozen validator environment
         run: python scripts/assert_validator_environment.py
+      - name: Mint repository-scoped protected status token
+        id: status-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0 immutable SHA
+        with:
+          client-id: ${{ vars.SUPERNOVA_STATUS_APP_CLIENT_ID }}
+          private-key: ${{ secrets.SUPERNOVA_STATUS_APP_PRIVATE_KEY }}
+          permission-statuses: write
       - name: Reconcile open PRs using exact completed designated-run provenance
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          SUPERNOVA_STATUS_TOKEN: ${{ steps.status-token.outputs.token }}
           COMPLETED_BOOTSTRAP_RUN_ID: ${{ github.event.workflow_run.id }}
         run: python scripts/reconcile_open_prs.py

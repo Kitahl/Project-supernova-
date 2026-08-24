@@ -12,9 +12,9 @@ def load(path):
 class RootEpoch10SchedulerAdmissionTests(unittest.TestCase):
     def test_root_epoch_and_seed_are_bound(self):
         epoch = load("config/root_tcb_epoch_v25.json")
-        self.assertEqual(epoch["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-10")
-        self.assertEqual(epoch["epoch"], 10)
-        self.assertEqual(epoch["previous_epoch_blob"], "9a45b2098cd5870b53f9faa92e52409fa3204c81")
+        self.assertEqual(epoch["schema_version"], "PS-ROOT-TCB-EPOCH-2.5-11")
+        self.assertEqual(epoch["epoch"], 11)
+        self.assertEqual(epoch["previous_epoch_blob"], "cf74b9c17bf1d763e7d89dc07f9bb74c334f8b59")
         self.assertEqual(epoch["root_epoch10_scheduler_admission_seed_install_commit_sha"], "7bc97d2bed9fb285feb2e9ae1c31fb4331919d00")
         self.assertEqual(epoch["root_epoch10_scheduler_admission_seed_policy_blob"], "19e7cc66a6152871327b40017e0114115ed76db6")
         self.assertEqual(epoch["root_epoch10_scheduler_admission_seed_reconciler_blob"], "03f8d39d205e8d3f548f1700363e6d714882dca2")
@@ -29,12 +29,15 @@ class RootEpoch10SchedulerAdmissionTests(unittest.TestCase):
         self.assertIn("scheduler/{cohort}.json", policy["countable"]["exact_path_templates"])
         self.assertTrue(policy["countable"]["scheduler_admission_required_before_promotion"])
         control = load("schemas/control.schema.json")
-        for field in ("scheduler_manifest_path", "scheduler_manifest_git_identity", "scheduler_admission_required"):
-            self.assertIn(field, control["required"])
+        self.assertIn("scheduler_manifest_path", control["properties"])
+        self.assertIn("scheduler_admission_required", control["properties"])
+        self.assertNotIn("scheduler_manifest_git_identity", control["required"])
+        self.assertIn("scheduler_manifest_git_identity", control["properties"])
+        self.assertTrue(any(x.get("if", {}).get("required") == ["candidate_nonce"] for x in control["allOf"]))
 
     def test_authority_inventory_and_countable_surface_include_scheduler_gate(self):
         authority = load("config/admission_authority.json")
-        self.assertEqual(authority["root_tcb_epoch"], 10)
+        self.assertEqual(authority["root_tcb_epoch"], 11)
         self.assertTrue(authority["scheduler_admission_required_for_countable_promotion"])
         inventory = set(authority["trusted_validator_entrypoints"]) | set(authority["trusted_authority_helpers"]) | set(authority["authoritative_status_workflows"])
         for path in (

@@ -1,1 +1,296 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","additionalProperties":false,"properties":{"accepted_network_checkpoint_id":{"type":"string"},"active_assignment_git_identity":{"pattern":"^[0-9a-f]{40}$","type":"string"},"active_assignment_path":{"type":"string"},"active_cohort_id":{"type":"string"},"active_control_manifest_git_identity":{"pattern":"^[0-9a-f]{40}$","type":"string"},"active_control_manifest_path":{"type":"string"},"active_parent_state_git_identity":{"pattern":"^[0-9a-f]{40}$","type":"string"},"actual_runtime_plan_id":{"type":"string"},"authority_note":{"type":"string"},"base_runtime_state_id":{"type":"string"},"benchmark_registry_git_identity":{"pattern":"^[0-9a-f]{40}$","type":"string"},"benchmark_registry_path":{"const":"benchmark/registry.json"},"calibration_countable_current":{"type":"boolean"},"calibration_required_clean_cohorts":{"const":2},"calibration_streak":{"maximum":2,"minimum":0,"type":"integer"},"canonical_bus_repo":{"const":"Kitahl/Project-supernova-"},"consolidation_branch":{"type":"string"},"current_runtime_blocker":{"type":"string"},"deep_research_owner":{"const":"BIL00"},"deep_research_times_vancouver":{"maxItems":2,"minItems":2,"prefixItems":[{"const":"00:58"},{"const":"12:58"}],"type":"array"},"expected_base_head":{"pattern":"^[0-9a-f]{40}$","type":"string"},"foundry_sha256":{"type":"string"},"fresh_allowed_globally":{"type":"boolean"},"generation_branch":{"pattern":"^ps/gen/","type":"string"},"generation_head_sha":{"pattern":"^[0-9a-f]{40}$","type":"string"},"generation_seq":{"minimum":1,"type":"integer"},"goal1_status":{"enum":["BLOCKED_T0","OPEN","PASSED","FAILED"]},"goal2_status":{"enum":["BLOCKED_BY_GOAL1","OPEN","PASSED","FAILED"]},"integrator_branch":{"type":"string"},"last_deep_research_path":{"type":["string","null"]},"last_deep_research_time_vancouver":{"type":["string","null"]},"mastermind_sha256":{"type":"string"},"network_mode":{"enum":["GITHUB_BRANCH_CALIBRATION","FRESH_ENABLED","BENCHMARK_DISCOVERY_WAIT"]},"private_vault_repo":{"const":"Kitahl/thoma"},"protocol_version":{"const":"2.5"},"public_repo_safety":{"const":"OPAQUE_PROTECTED_REFERENCES_ONLY"},"repo_policy_status":{"enum":["UNVERIFIED_BLOCKING","VERIFIED_PROTECTED","VERIFIED_PROTECTED_SOURCE_BOUND"]},"runtime_state_id":{"type":"string"},"runtime_update_receipt_path":{"type":["string","null"]},"superseded_cohorts":{"items":{"type":"string"},"type":"array","uniqueItems":true},"task_network_plan_id":{"const":"0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},"transport_mode":{"const":"BRANCH_GITOPS"},"verifier_branch":{"type":"string"},"worker_auth_scheme":{"const":"PS-HMAC-SHA256-CANONICAL-REPORT-2"},"worker_branches":{"additionalProperties":false,"properties":{"EXT01":{"type":"string"},"MF01":{"type":"string"},"MF02":{"type":"string"},"MF03":{"type":"string"},"MF04":{"type":"string"},"MF05":{"type":"string"},"MM01":{"type":"string"},"MM02":{"type":"string"},"MM03":{"type":"string"},"MM04":{"type":"string"},"MM05":{"type":"string"},"MM07":{"type":"string"}},"required":["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"],"type":"object"}},"required":["protocol_version","task_network_plan_id","transport_mode","runtime_state_id","foundry_sha256","mastermind_sha256","actual_runtime_plan_id","accepted_network_checkpoint_id","generation_seq","active_parent_state_git_identity","canonical_bus_repo","private_vault_repo","active_cohort_id","generation_branch","generation_head_sha","active_control_manifest_path","active_control_manifest_git_identity","active_assignment_path","active_assignment_git_identity","worker_branches","verifier_branch","integrator_branch","consolidation_branch","benchmark_registry_path","benchmark_registry_git_identity","fresh_allowed_globally","calibration_required_clean_cohorts","calibration_streak","calibration_countable_current","repo_policy_status","superseded_cohorts","current_runtime_blocker","deep_research_owner","deep_research_times_vancouver","public_repo_safety","worker_auth_scheme","goal1_status","goal2_status","authority_note"],"title":"Project Supernova Canonical Branch State v2.5","type":"object"}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "accepted_network_checkpoint_id": {
+      "type": "string"
+    },
+    "active_assignment_git_identity": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "active_assignment_path": {
+      "type": "string"
+    },
+    "active_cohort_id": {
+      "type": "string"
+    },
+    "active_control_manifest_git_identity": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "active_control_manifest_path": {
+      "type": "string"
+    },
+    "active_parent_state_git_identity": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "active_staged_candidate_git_identity": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "active_staged_candidate_path": {
+      "pattern": "^staging/[^/]+\\.json$",
+      "type": "string"
+    },
+    "actual_runtime_plan_id": {
+      "type": "string"
+    },
+    "authority_note": {
+      "type": "string"
+    },
+    "base_runtime_state_id": {
+      "type": "string"
+    },
+    "benchmark_registry_git_identity": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "benchmark_registry_path": {
+      "const": "benchmark/registry.json"
+    },
+    "calibration_countable_current": {
+      "type": "boolean"
+    },
+    "calibration_required_clean_cohorts": {
+      "const": 2
+    },
+    "calibration_streak": {
+      "maximum": 2,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "canonical_bus_repo": {
+      "const": "Kitahl/Project-supernova-"
+    },
+    "consolidation_branch": {
+      "type": "string"
+    },
+    "current_runtime_blocker": {
+      "type": "string"
+    },
+    "deep_research_owner": {
+      "const": "BIL00"
+    },
+    "deep_research_times_vancouver": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "const": "00:58"
+        },
+        {
+          "const": "12:58"
+        }
+      ],
+      "type": "array"
+    },
+    "expected_base_head": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "foundry_sha256": {
+      "type": "string"
+    },
+    "fresh_allowed_globally": {
+      "type": "boolean"
+    },
+    "generation_branch": {
+      "pattern": "^ps/gen/",
+      "type": "string"
+    },
+    "generation_head_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "generation_seq": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "goal1_status": {
+      "enum": [
+        "BLOCKED_T0",
+        "OPEN",
+        "PASSED",
+        "FAILED"
+      ]
+    },
+    "goal2_status": {
+      "enum": [
+        "BLOCKED_BY_GOAL1",
+        "OPEN",
+        "PASSED",
+        "FAILED"
+      ]
+    },
+    "integrator_branch": {
+      "type": "string"
+    },
+    "last_deep_research_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_deep_research_time_vancouver": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mastermind_sha256": {
+      "type": "string"
+    },
+    "network_mode": {
+      "enum": [
+        "GITHUB_BRANCH_CALIBRATION",
+        "FRESH_ENABLED",
+        "BENCHMARK_DISCOVERY_WAIT"
+      ]
+    },
+    "private_vault_repo": {
+      "const": "Kitahl/thoma"
+    },
+    "protocol_version": {
+      "const": "2.5"
+    },
+    "public_repo_safety": {
+      "const": "OPAQUE_PROTECTED_REFERENCES_ONLY"
+    },
+    "repo_policy_status": {
+      "enum": [
+        "UNVERIFIED_BLOCKING",
+        "VERIFIED_PROTECTED",
+        "VERIFIED_PROTECTED_SOURCE_BOUND"
+      ]
+    },
+    "runtime_state_id": {
+      "type": "string"
+    },
+    "runtime_update_receipt_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "superseded_cohorts": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "task_network_plan_id": {
+      "const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"
+    },
+    "transport_mode": {
+      "const": "BRANCH_GITOPS"
+    },
+    "verifier_branch": {
+      "type": "string"
+    },
+    "worker_auth_scheme": {
+      "const": "PS-HMAC-SHA256-CANONICAL-REPORT-2"
+    },
+    "worker_branches": {
+      "additionalProperties": false,
+      "properties": {
+        "EXT01": {
+          "type": "string"
+        },
+        "MF01": {
+          "type": "string"
+        },
+        "MF02": {
+          "type": "string"
+        },
+        "MF03": {
+          "type": "string"
+        },
+        "MF04": {
+          "type": "string"
+        },
+        "MF05": {
+          "type": "string"
+        },
+        "MM01": {
+          "type": "string"
+        },
+        "MM02": {
+          "type": "string"
+        },
+        "MM03": {
+          "type": "string"
+        },
+        "MM04": {
+          "type": "string"
+        },
+        "MM05": {
+          "type": "string"
+        },
+        "MM07": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "MF01",
+        "MF02",
+        "MF03",
+        "MF04",
+        "MF05",
+        "MM01",
+        "MM02",
+        "MM03",
+        "MM04",
+        "MM05",
+        "MM07",
+        "EXT01"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "protocol_version",
+    "task_network_plan_id",
+    "transport_mode",
+    "runtime_state_id",
+    "foundry_sha256",
+    "mastermind_sha256",
+    "actual_runtime_plan_id",
+    "accepted_network_checkpoint_id",
+    "generation_seq",
+    "active_parent_state_git_identity",
+    "canonical_bus_repo",
+    "private_vault_repo",
+    "active_cohort_id",
+    "generation_branch",
+    "generation_head_sha",
+    "active_control_manifest_path",
+    "active_control_manifest_git_identity",
+    "active_assignment_path",
+    "active_assignment_git_identity",
+    "worker_branches",
+    "verifier_branch",
+    "integrator_branch",
+    "consolidation_branch",
+    "benchmark_registry_path",
+    "benchmark_registry_git_identity",
+    "fresh_allowed_globally",
+    "calibration_required_clean_cohorts",
+    "calibration_streak",
+    "calibration_countable_current",
+    "repo_policy_status",
+    "superseded_cohorts",
+    "current_runtime_blocker",
+    "deep_research_owner",
+    "deep_research_times_vancouver",
+    "public_repo_safety",
+    "worker_auth_scheme",
+    "goal1_status",
+    "goal2_status",
+    "authority_note"
+  ],
+  "title": "Project Supernova Canonical Branch State v2.5",
+  "type": "object"
+}

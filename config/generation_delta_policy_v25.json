@@ -1,5 +1,5 @@
 {
-  "schema_version": "PS-GENERATION-DELTA-POLICY-2.5-2",
+  "schema_version": "PS-GENERATION-DELTA-POLICY-2.5-3",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
   "authority": "SINGLE_MACHINE_READABLE_GENERATION_DELTA_POLICY",
@@ -14,6 +14,9 @@
     "scheduler_admission_required_before_promotion": true,
     "scheduler_admission_copy_path_template": "scheduler_admission/{cohort}.json",
     "scheduler_admission_is_transition_evidence_not_generation_delta": true
+    ,"commit_shape": "EXACTLY_ONE_COMMIT_WITH_SOLE_PARENT_GENERATION_ROOT"
+    ,"artifact_identity_dag": "CONTROL_TO_ASSIGNMENT_TO_LIVENESS_TO_SCHEDULER"
+    ,"scheduler_manifest_generation_head_sha": "FORBIDDEN_SELF_REFERENCE"
   },
   "non_countable": {
     "exact_path_templates": [
@@ -25,6 +28,10 @@
   "extra_paths": "FORBIDDEN",
   "missing_paths": "FORBIDDEN",
   "wrong_cohort_identity": "FORBIDDEN",
-  "stage_admit_promote": "THREE_DISTINCT_TRANSACTIONS",
+  "stage_pointer_path": "state/STAGED.json",
+  "active_pointer_archive_path_template": "staging/{cohort}.json",
+  "active_pointer_archive_rule": "PROMOTION_ADDS_BYTE_IDENTICAL_COPY_OF_ACCEPTED_STAGED_POINTER; ARCHIVE_IS_IMMUTABLE",
+  "stage_admit_promote": "STAGE_POINTER_THEN_CREATE_ONCE_ADMISSION_ENVELOPE_THEN_LATER_PROMOTE",
+  "scheduler_admission_copy_schema": "schemas/scheduler_admission_copy.schema.json",
   "active_cohort_constructive_scheduler_repair": "FORBIDDEN"
 }

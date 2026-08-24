@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PS-SCHEDULER-INVENTORY-ATTESTATION-2.5-1",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "role_id": {"enum": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01","MM06","MF06","BIL00"]},
+        "scheduler_task_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "title": {"type": "string", "minLength": 1},
+        "prompt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "behavioral_config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "normalized_schedule": {"type": "string", "pattern": "^TZID=America/Vancouver;FREQ=HOURLY;BYMINUTE=[0-5][0-9]$"},
+        "timing_mode": {"const": "exact_schedule"},
+        "default_timezone": {"const": "America/Vancouver"},
+        "enabled": {"type": "boolean"},
+        "execution_mode": {"const": "SAFE_REPLAY_ONLY"},
+        "preactivation_inactive_result": {"const": "PREACTIVATION_WAIT"}
+      },
+      "required": ["role_id","scheduler_task_id","title","prompt_sha256","behavioral_config_sha256","normalized_schedule","timing_mode","default_timezone","enabled","execution_mode","preactivation_inactive_result"]
+    },
+    "legacy_task": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scheduler_task_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "title": {"type": "string", "minLength": 1},
+        "enabled": {"const": false}
+      },
+      "required": ["scheduler_task_id","title","enabled"]
+    }
+  },
+  "properties": {
+    "schema_version": {"const": "PS-SCHEDULER-INVENTORY-ATTESTATION-2.5-1"},
+    "protocol_version": {"const": "2.5"},
+    "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
+    "candidate_nonce": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "cohort_id": {"type": "string", "minLength": 1},
+    "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "staged_candidate_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "scheduler_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "attestor_role": {"const": "BIL00"},
+    "attestor_scheduler_task_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "scheduler_namespace": {"const": "CHATGPT_SCHEDULED_TASKS"},
+    "pagination_complete": {"const": true},
+    "observed_supernova_task_count": {"type": "integer", "minimum": 15},
+    "observed_active_canonical_count": {"const": 15},
+    "observed_active_noncanonical_count": {"const": 0},
+    "before_tasks": {"type": "array", "minItems": 15, "maxItems": 15, "items": {"$ref": "#/$defs/task"}},
+    "after_tasks": {"type": "array", "minItems": 15, "maxItems": 15, "items": {"$ref": "#/$defs/task"}},
+    "noncanonical_supernova_tasks": {"type": "array", "items": {"$ref": "#/$defs/legacy_task"}},
+    "challenge_occurrence_utc": {"type": "string", "format": "date-time"},
+    "attested_at_utc": {"type": "string", "format": "date-time"},
+    "attestation_key_id": {"const": "PS-BIL00-INVENTORY-ROOT11-2026-08-23"},
+    "attestation_tag": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_root_sha","generation_head_sha","staged_candidate_git_identity","scheduler_manifest_git_identity","attestor_role","attestor_scheduler_task_id","scheduler_namespace","pagination_complete","observed_supernova_task_count","observed_active_canonical_count","observed_active_noncanonical_count","before_tasks","after_tasks","noncanonical_supernova_tasks","challenge_occurrence_utc","attested_at_utc","attestation_key_id","attestation_tag"]
+}

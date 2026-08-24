@@ -1,21 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "PS-SCHEDULER-ADMISSION-2.5-1",
+  "title": "PS-SCHEDULER-ADMISSION-2.5-3",
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "schema_version": {"const": "PS-SCHEDULER-ADMISSION-2.5-1"},
+    "schema_version": {"const": "PS-SCHEDULER-ADMISSION-2.5-3"},
     "protocol_version": {"const": "2.5"},
     "task_network_plan_id": {"const": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"},
     "candidate_nonce": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "cohort_id": {"type": "string", "minLength": 1},
+    "generation_root_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "generation_head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "staged_candidate_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "scheduler_manifest_git_identity": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-    "source_preactivation_admission_branch": {"type": "string", "pattern": "^ps/preactivate/[^/]+/MM06$"},
-    "source_preactivation_admission_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-    "source_preactivation_admission_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "scheduler_inventory_branch": {"type": "string", "pattern": "^ps/preactivate/[^/]+/BIL00$"},
+    "scheduler_inventory_path": {"type": "string", "pattern": "^preactivation/[^/]+/BIL00\\.json$"},
+    "scheduler_inventory_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "scheduler_inventory_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "mm06_scheduler_task_id": {"type": "string", "minLength": 1},
     "mm06_behavioral_config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "mm06_challenge_occurrence_utc": {"type": "string", "format": "date-time"},
     "task_registry_exact_15_verified": {"const": true},
     "no_replacement_task_verified": {"const": true},
     "normalized_schedule_readback_verified": {"const": true},
@@ -24,28 +28,22 @@
     "production_branches_unchanged_from_generation_head": {"const": true},
     "preactivation_branch_isolation_verified": {"const": true},
     "create_once_prewrite_guards_verified": {"const": true},
-    "worker_results": {
-      "type": "array",
-      "minItems": 12,
-      "maxItems": 12,
+    "preactivation_results": {
+      "type": "array", "minItems": 13, "maxItems": 13,
       "items": {
-        "type": "object",
-        "additionalProperties": false,
+        "type": "object", "additionalProperties": false,
         "properties": {
-          "role_id": {"enum": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01"]},
+          "role_id": {"enum": ["MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01","MF06"]},
           "preactivation_branch": {"type": "string", "minLength": 1},
           "preactivation_path": {"type": "string", "minLength": 1},
           "receipt_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
           "receipt_creation_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-          "scheduler_task_id_valid": {"const": true},
-          "behavioral_config_valid": {"const": true},
-          "challenge_timing_valid": {"const": true},
-          "worker_commitment_valid": {"const": true},
-          "worker_hmac_valid": {"const": true},
-          "mm06_verifier_copy_commitment_valid": {"const": true},
+          "scheduler_task_id_valid": {"const": true}, "behavioral_config_valid": {"const": true},
+          "challenge_timing_valid": {"const": true}, "role_commitment_valid": {"const": true},
+          "role_hmac_valid": {"const": true}, "mm06_verifier_copy_commitment_valid": {"const": true},
           "production_write_absent": {"const": true}
         },
-        "required": ["role_id","preactivation_branch","preactivation_path","receipt_blob_sha","receipt_creation_commit_sha","scheduler_task_id_valid","behavioral_config_valid","challenge_timing_valid","worker_commitment_valid","worker_hmac_valid","mm06_verifier_copy_commitment_valid","production_write_absent"]
+        "required": ["role_id","preactivation_branch","preactivation_path","receipt_blob_sha","receipt_creation_commit_sha","scheduler_task_id_valid","behavioral_config_valid","challenge_timing_valid","role_commitment_valid","role_hmac_valid","mm06_verifier_copy_commitment_valid","production_write_absent"]
       }
     },
     "partition_exhaustive_verified": {"const": true},
@@ -53,7 +51,9 @@
     "fresh_evidence_consumed": {"const": false},
     "scientific_state_effect": {"const": "NONE"},
     "runtime_effect": {"const": "NONE"},
-    "required_post_write_ci_context": {"const": "supernova/report-admission"}
+    "required_post_write_ci_context": {"const": "supernova/preactivation-admission"}
+    ,"attestation_key_id": {"const": "PS-MM06-ROOT11-2026-08-23"}
+    ,"attestation_tag": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
   },
-  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_head_sha","scheduler_manifest_git_identity","source_preactivation_admission_branch","source_preactivation_admission_commit_sha","source_preactivation_admission_blob_sha","mm06_scheduler_task_id","mm06_behavioral_config_sha256","task_registry_exact_15_verified","no_replacement_task_verified","normalized_schedule_readback_verified","timezone_binding_verified","retry_slack_formula_verified","production_branches_unchanged_from_generation_head","preactivation_branch_isolation_verified","create_once_prewrite_guards_verified","worker_results","partition_exhaustive_verified","admission_verdict","fresh_evidence_consumed","scientific_state_effect","runtime_effect","required_post_write_ci_context"]
+  "required": ["schema_version","protocol_version","task_network_plan_id","candidate_nonce","cohort_id","generation_root_sha","generation_head_sha","staged_candidate_git_identity","scheduler_manifest_git_identity","scheduler_inventory_branch","scheduler_inventory_path","scheduler_inventory_commit_sha","scheduler_inventory_blob_sha","mm06_scheduler_task_id","mm06_behavioral_config_sha256","mm06_challenge_occurrence_utc","task_registry_exact_15_verified","no_replacement_task_verified","normalized_schedule_readback_verified","timezone_binding_verified","retry_slack_formula_verified","production_branches_unchanged_from_generation_head","preactivation_branch_isolation_verified","create_once_prewrite_guards_verified","preactivation_results","partition_exhaustive_verified","admission_verdict","fresh_evidence_consumed","scientific_state_effect","runtime_effect","required_post_write_ci_context","attestation_key_id","attestation_tag"]
 }

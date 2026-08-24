@@ -49,6 +49,7 @@ task_registry=load(ROOT/'config/task_registry_v25.json') if (ROOT/'config/task_r
 task_semantics=load(ROOT/'config/task_registry_semantics_v25.json') if (ROOT/'config/task_registry_semantics_v25.json').is_file() else None
 delta_policy=load(ROOT/'config/generation_delta_policy_v25.json') if (ROOT/'config/generation_delta_policy_v25.json').is_file() else None
 countable_contract=load(ROOT/'config/countable_control_set_v25.json') if (ROOT/'config/countable_control_set_v25.json').is_file() else None
+scheduler_attestation=load(ROOT/'config/scheduler_attestation_authority_v25.json') if (ROOT/'config/scheduler_attestation_authority_v25.json').is_file() else None
 
 if not all([state,plan,auth,reg,policy,cfg,freeze,pools,lanes]):err('missing canonical v2.5 state/plan/auth/registry/policy/freeze/pools/research gate/branch config')
 if state:
@@ -85,33 +86,44 @@ if parallel:
  if parallel.get('task_network_plan_id')!=PLAN or parallel.get('protocol_version')!='2.5':err('read-only parallelism identity mismatch')
  if parallel.get('currently_enabled') is not False:err('read-only probe parallelism must remain disabled during T0 calibration')
 
-# Root10 scheduler-admission control is prospective. Legacy active Gen12 is validated under its immutable frozen root9 control;
-# no root10 validator may retroactively require scheduler fields in Gen12 control/assignment/liveness.
-if root_epoch and root_epoch.get('epoch')==10:
- if root_epoch.get('schema_version')!='PS-ROOT-TCB-EPOCH-2.5-10':err('root10 schema/version mismatch')
- if root_epoch.get('scheduler_task_cardinality')!=15 or root_epoch.get('scheduler_sixteenth_lane')!='FORBIDDEN':err('root10 exact 15-lane scheduler invariant mismatch')
- if root_epoch.get('scheduler_admission_guard')!='scripts/scheduler_admission_guard.py':err('root10 scheduler admission guard missing')
- for path,title in (('schemas/scheduler_manifest.schema.json','PS-SCHEDULER-MANIFEST-2.5-1'),('schemas/preactivation_receipt.schema.json','PS-PREACTIVATION-RECEIPT-2.5-1'),('schemas/scheduler_admission.schema.json','PS-SCHEDULER-ADMISSION-2.5-1')):
+# Root11 is prospective. Immutable Gen12 remains root9 evidence and does not
+# acquire nonce/scheduler fields retroactively.
+if root_epoch and root_epoch.get('epoch')==11:
+ if root_epoch.get('schema_version')!='PS-ROOT-TCB-EPOCH-2.5-11':err('root11 schema/version mismatch')
+ if root_epoch.get('scheduler_task_cardinality')!=15 or root_epoch.get('scheduler_sixteenth_lane')!='FORBIDDEN':err('root11 exact 15-lane scheduler invariant mismatch')
+ if root_epoch.get('scheduler_admission_guard')!='scripts/scheduler_admission_guard.py':err('root11 scheduler admission guard missing')
+ if root_epoch.get('generation_identity_dag')!='CONTROL_TO_ASSIGNMENT_TO_LIVENESS_TO_SCHEDULER':err('root11 generation DAG mismatch')
+ for path,title in (('schemas/scheduler_manifest.schema.json','PS-SCHEDULER-MANIFEST-2.5-2'),('schemas/preactivation_receipt.schema.json','PS-PREACTIVATION-RECEIPT-2.5-3'),('schemas/scheduler_admission.schema.json','PS-SCHEDULER-ADMISSION-2.5-3'),('schemas/scheduler_admission_copy.schema.json','PS-SCHEDULER-ADMISSION-COPY-2.5-1'),('schemas/scheduler_inventory_attestation.schema.json','PS-SCHEDULER-INVENTORY-ATTESTATION-2.5-1'),('schemas/staged_candidate.schema.json','PS-STAGED-CANDIDATE-2.5-1')):
   s=check_schema(path)
   if s and s.get('title')!=title:err(path+' identity mismatch')
- if not task_registry or task_registry.get('active_task_count')!=15 or task_registry.get('no_sixteenth_lane') is not True or task_registry.get('same_task_session_each_run') is not True:err('root10 task registry does not preserve exact 15 same sessions')
+ if not task_registry or task_registry.get('active_task_count')!=15 or task_registry.get('no_sixteenth_lane') is not True or task_registry.get('same_task_session_each_run') is not True:err('root11 task registry does not preserve exact 15 same sessions')
  else:
   roles=[x.get('role_id') for x in task_registry.get('tasks',[]) if isinstance(x,dict)]
-  if len(roles)!=15 or set(roles)!=ROLES or len(set(roles))!=15:err('root10 task registry role partition mismatch')
- if not task_semantics or task_semantics.get('same_task_session_rule')!='SAME_TASK_SESSION' or task_semantics.get('scheduler_readback_rule')!='NORMALIZED_SCHEDULER_READBACK' or task_semantics.get('active_cohort_repair_rule')!='NO_POST_ACTIVATION_CONSTRUCTIVE_REPAIR':err('root10 task semantics weakened')
- if not delta_policy or (delta_policy.get('countable') or {}).get('exact_cardinality')!=4 or 'scheduler/{cohort}.json' not in set((delta_policy.get('countable') or {}).get('exact_path_templates') or []):err('root10 countable generation delta does not freeze scheduler manifest')
- if not countable_contract or countable_contract.get('scheduler_manifest_required_for_countable_generation') is not True or countable_contract.get('scheduler_admission_required_before_promotion') is not True:err('root10 countable scheduler admission contract missing')
+  if len(roles)!=15 or set(roles)!=ROLES or len(set(roles))!=15:err('root11 task registry role partition mismatch')
+  task_ids=[x.get('scheduler_task_id') for x in task_registry.get('tasks',[]) if isinstance(x,dict)]
+  if len(task_ids)!=15 or len(set(task_ids))!=15 or any(not re.fullmatch(r'[0-9a-f]{32}',str(x)) for x in task_ids):err('root11 frozen scheduler task identities invalid')
+ if not scheduler_attestation or scheduler_attestation.get('trusted_workflow')!='.github/workflows/supernova-preactivation-admission.yml' or scheduler_attestation.get('trusted_script')!='scripts/reconcile_preactivation_admission.py' or scheduler_attestation.get('exact_existing_task_count')!=15 or scheduler_attestation.get('worker_hmac_recomputation_required') is not True or scheduler_attestation.get('max_attempt_duration_seconds')!=600 or scheduler_attestation.get('scheduler_jitter_budget_seconds')!=60 or scheduler_attestation.get('retry_budget_authority')!='ACCEPTED_MAIN_EXACT_VALUES_CANDIDATE_OVERRIDE_FORBIDDEN':err('root11 scheduler attestation authority missing or weakened')
+ for path in ('scripts/reconcile_preactivation_admission.py','.github/workflows/supernova-preactivation-admission.yml'):
+  if not (ROOT/path).is_file():err('root11 trusted preactivation surface missing: '+path)
+ if not task_semantics or task_semantics.get('same_task_session_rule')!='SAME_TASK_SESSION' or task_semantics.get('scheduler_readback_rule')!='NORMALIZED_SCHEDULER_READBACK' or task_semantics.get('active_cohort_repair_rule')!='NO_POST_ACTIVATION_CONSTRUCTIVE_REPAIR':err('root11 task semantics weakened')
+ if not delta_policy or (delta_policy.get('countable') or {}).get('exact_cardinality')!=4 or 'scheduler/{cohort}.json' not in set((delta_policy.get('countable') or {}).get('exact_path_templates') or []):err('root11 countable generation delta does not freeze scheduler manifest')
+ if not countable_contract or countable_contract.get('scheduler_manifest_required_for_countable_generation') is not True or countable_contract.get('scheduler_admission_required_before_promotion') is not True:err('root11 countable scheduler admission contract missing')
  control_schema=check_schema('schemas/control.schema.json')
  if control_schema:
-  required=set(control_schema.get('required') or [])
-  for key in ('scheduler_manifest_path','scheduler_manifest_git_identity','scheduler_admission_required'):
-   if key not in required:err('root10 control schema missing '+key)
- # Validate only root10/prospective controls that declare scheduler admission. Old frozen controls remain historical evidence.
+  properties=set((control_schema.get('properties') or {}).keys())
+  conditional_required=set()
+  for clause in control_schema.get('allOf') or []:
+   if isinstance(clause,dict) and (clause.get('if') or {}).get('required')==['candidate_nonce']:
+    conditional_required.update((clause.get('then') or {}).get('required') or [])
+  for key in ('candidate_nonce','generation_root_sha','scheduler_manifest_path','scheduler_admission_required'):
+   if key not in properties or key not in conditional_required:err('root11 control schema missing conditional '+key)
+  if 'scheduler_manifest_git_identity' in set(control_schema.get('required') or []):err('root11 control schema requires impossible future scheduler blob')
+  # Validate only prospective controls that declare scheduler admission. Old frozen controls remain historical evidence.
  if control_schema:
   for p in (ROOT/'control').glob('*.json'):
    c=load(p)
    if isinstance(c,dict) and c.get('scheduler_admission_required') is True:
-    for e in Draft202012Validator(control_schema).iter_errors(c):err(f'{p.relative_to(ROOT)} root10 control schema: {e.message}')
+     for e in Draft202012Validator(control_schema).iter_errors(c):err(f'{p.relative_to(ROOT)} root11 control schema: {e.message}')
 
 for wf in (ROOT/'.github/workflows').glob('*.yml'):
  for line in wf.read_text(encoding='utf-8').splitlines():
@@ -123,6 +135,22 @@ if state:
  if state.get('calibration_countable_current') and state.get('repo_policy_status')!='VERIFIED_PROTECTED_SOURCE_BOUND':err('countable calibration while source-bound repo policy unverified')
  if state.get('benchmark_registry_git_identity')!=blob(ROOT/'benchmark/registry.json'):err('benchmark registry blob mismatch')
  if state.get('worker_auth_scheme')!='PS-HMAC-SHA256-CANONICAL-REPORT-2':err('state worker auth scheme mismatch')
+ archive=state.get('active_staged_candidate_path')
+ if archive:
+  archive_path=ROOT/archive
+  if archive!=f"staging/{state.get('active_cohort_id')}.json" or not archive_path.is_file():err('active root11 staged pointer archive missing/noncanonical')
+  elif state.get('active_staged_candidate_git_identity')!=blob(archive_path):err('active root11 staged pointer archive blob mismatch')
+  else:
+   pointer=load(archive_path)
+   if pointer.get('candidate_cohort_id')!=state.get('active_cohort_id') or pointer.get('generation_head_sha')!=state.get('generation_head_sha'):err('active root11 staged pointer/state identity mismatch')
+   artifact_bindings=((state.get('active_control_manifest_path'),state.get('active_control_manifest_git_identity'),'control_path','control_git_identity'),(state.get('active_assignment_path'),state.get('active_assignment_git_identity'),'assignment_path','assignment_git_identity'),(pointer.get('liveness_path'),pointer.get('liveness_git_identity'),'liveness_path','liveness_git_identity'),(pointer.get('scheduler_manifest_path'),pointer.get('scheduler_manifest_git_identity'),'scheduler_manifest_path','scheduler_manifest_git_identity'))
+   for path,state_identity,pointer_path_key,pointer_identity_key in artifact_bindings:
+    if not isinstance(path,str) or path!=pointer.get(pointer_path_key):err('active root11 main-copy path differs from archived pointer '+pointer_path_key);continue
+    artifact_path=ROOT/path
+    if not artifact_path.is_file():err('active root11 main-copy artifact missing '+path);continue
+    observed=blob(artifact_path)
+    if observed!=pointer.get(pointer_identity_key):err('active root11 main-copy artifact blob differs from archived pointer '+path)
+    if state_identity is not None and observed!=state_identity:err('active root11 state artifact identity mismatch '+path)
  if state.get('calibration_countable_current'):
   if not substrate:err('countable calibration missing frozen substrate epoch')
   else:

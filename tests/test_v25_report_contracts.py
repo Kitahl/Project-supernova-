@@ -3,11 +3,13 @@ import hashlib
 import hmac
 import json
 import pathlib
+import os
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from jsonschema import Draft202012Validator
-from scripts.validate_branch_bus_v251 import execution_mode_errors, issue_ledger_errors, report_transport_errors
+from scripts.validate_branch_bus_v251 import execution_mode_errors, issue_ledger_errors, report_auth_errors, report_transport_errors
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 HMAC2 = "PS-HMAC-SHA256-CANONICAL-REPORT-2"
@@ -107,6 +109,18 @@ class V25ReportContractTests(unittest.TestCase):
             x=copy.deepcopy(base); mut(x); mutations.append(x)
         for mutated in mutations:self.assertFalse(hmac.compare_digest(proof(secret, mutated), expected))
 
+    def test_trusted_structural_validator_recomputes_report_hmac(self):
+        secret=bytes.fromhex("11"*32);report={"worker_id":"MF01","worker_auth_commitment":hashlib.sha256(secret).hexdigest(),"worker_auth_proof":""}
+        report["worker_auth_proof"]=proof(secret,report)
+        keys={role:"11"*32 for role in ("MF01","MF02","MF03","MF04","MF05","MM01","MM02","MM03","MM04","MM05","MM07","EXT01")}
+        auth={"commitments":{role:hashlib.sha256(secret).hexdigest() for role in keys}}
+        with patch.dict(os.environ,{"SUPERNOVA_WORKER_AUTH_KEYS_JSON":json.dumps(keys)}):
+            self.assertEqual(report_auth_errors(report,"MF01",auth),[])
+            report["worker_id"]="MF02"
+            self.assertIn("report HMAC invalid"," ".join(report_auth_errors(report,"MF01",auth)))
+        with patch.dict(os.environ,{},clear=True):
+            self.assertIn("verifier-key bundle unavailable"," ".join(report_auth_errors(report,"MF01",auth)))
+
     def test_execution_mode_positive(self):
         self.assertEqual(execution_mode_errors({"mode":"SAFE_REPLAY_ONLY","session_header":{"execution_mode":"SAFE_REPLAY_ONLY"}},{"network_mode":"GITHUB_BRANCH_CALIBRATION"}), [])
 
@@ -150,9 +164,9 @@ class V25ReportContractTests(unittest.TestCase):
     def test_deterministic_pretty_transport_is_required(self):
         report=mm03_report()
         with tempfile.TemporaryDirectory() as d:
-            p=pathlib.Path(d)/'r.json';p.write_text(json.dumps(report,sort_keys=True,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+            p=pathlib.Path(d)/'r.json';p.write_bytes((json.dumps(report,sort_keys=True,indent=2,ensure_ascii=False)+'\n').encode('utf-8'))
             self.assertEqual(report_transport_errors(p,report),[])
-            p.write_text(json.dumps(report,sort_keys=True,separators=(',',':'),ensure_ascii=False)+'\n',encoding='utf-8')
+            p.write_bytes((json.dumps(report,sort_keys=True,separators=(',',':'),ensure_ascii=False)+'\n').encode('utf-8'))
             self.assertIn('report transport must be multi-line JSON',report_transport_errors(p,report))
 
     def test_integration_plan_binding_is_single_frozen_constant(self):

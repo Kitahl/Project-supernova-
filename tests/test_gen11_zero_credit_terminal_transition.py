@@ -73,7 +73,7 @@ class Gen11ZeroCreditTerminalTransitionTests(unittest.TestCase):
 
     def test_report_admission_routes_gen11_only_through_closed_escape(self):
         self.assertIn('exact_gen11_zero_credit_terminal_parent', SRC)
-        self.assertIn('for predicate in (exact_invalidated_gen7_repair_parent,exact_noncountable_substrate_staging_parent,exact_gen9_zero_credit_reset_parent,exact_gen10_zero_credit_terminal_parent,exact_gen11_zero_credit_terminal_parent,exact_gen12_zero_credit_scheduler_repair_parent)', SRC)
+        self.assertIn('for predicate in (exact_invalidated_gen7_repair_parent,exact_noncountable_substrate_staging_parent,exact_gen9_zero_credit_reset_parent,exact_gen10_zero_credit_terminal_parent,exact_gen11_zero_credit_terminal_parent,exact_root11_successor_promotion)', SRC)
 
     def test_root10_addition_does_not_replace_gen11_closed_escape(self):
         self.assertIn('def exact_gen12_zero_credit_scheduler_repair_parent', SRC)

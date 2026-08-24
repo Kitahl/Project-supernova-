@@ -22,6 +22,7 @@ OWNER = REPO.split("/", 1)[0]
 PLAN = "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 POLICY_PATH = "config/root_epoch11_stageability_repair_seed_v25.json"
+RECEIPT_CONTEXT = "supernova/root-epoch11-stageability-repair-seed"
 STATE_PATH = "state/CURRENT.json"
 ROOT_TCB_PATH = "config/root_tcb_epoch_v25.json"
 ACTIONS_CREATOR = "github-actions[bot]"
@@ -137,8 +138,7 @@ def post(sha: str, context: str, state: str, description: str):
 
 def fail(sha, reason: str, policy: dict):
     if isinstance(sha, str) and HEX40.fullmatch(sha):
-        for context in policy["required_status_contexts"]:
-            post(sha, context, "failure", "epoch11 stageability seed refused: " + reason)
+        post(sha, RECEIPT_CONTEXT, "failure", "epoch11 stageability seed refused: " + reason)
     print("ROOT EPOCH11 STAGEABILITY-REPAIR SEED REFUSED:", reason)
     return 1
 
@@ -537,8 +537,7 @@ def main():
         run(["git", "worktree", "remove", "--force", str(tmp)])
         shutil.rmtree(tmp, ignore_errors=True)
 
-    for context in policy["required_status_contexts"]:
-        post(sha, context, "success", "trusted root epoch11 stageability seed PASS")
+    post(sha, RECEIPT_CONTEXT, "success", "trusted root epoch11 stageability seed PASS")
     print("ROOT EPOCH11 STAGEABILITY-REPAIR SEED PASS")
     return 0
 

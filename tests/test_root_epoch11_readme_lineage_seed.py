@@ -103,12 +103,23 @@ class RootEpoch11ReadmeLineageSeedTests(unittest.TestCase):
         self.assertEqual(len(self.policy["root_tcb_dynamic_lineage_bindings"]), 5)
         self.assertEqual(len(set(self.policy["root_tcb_dynamic_lineage_bindings"].values())), 5)
 
-    def test_generic_authority_bootstrap_accepts_only_non_root_support_paths(self):
+    def test_generic_authority_bootstrap_is_phase_correct_for_lineage_seed(self):
         bootstrap = load_module("authority_bootstrap_for_lineage_seed_test", ROOT / "scripts/reconcile_authority_bootstrap.py")
-        self.assertEqual(bootstrap.bootstrap_invariant_errors(ROOT, ROOT, SEED_PATHS), [])
         roots = bootstrap.bootstrap_root_paths(ROOT)
-        self.assertTrue(set(SEED_PATHS).isdisjoint(roots))
+        self.assertTrue(set(SEED_PATHS).issubset(roots))
         self.assertTrue(all(path.startswith(("config/", "scripts/", "tests/", ".github/workflows/")) for path in SEED_PATHS))
+
+        post_promotion_root_paths = bootstrap.bootstrap_root_paths
+        bootstrap.bootstrap_root_paths = lambda trusted_root: post_promotion_root_paths(trusted_root) - set(SEED_PATHS)
+        try:
+            self.assertEqual(bootstrap.bootstrap_invariant_errors(ROOT, ROOT, SEED_PATHS), [])
+        finally:
+            bootstrap.bootstrap_root_paths = post_promotion_root_paths
+
+        self.assertEqual(
+            bootstrap.bootstrap_invariant_errors(ROOT, ROOT, SEED_PATHS),
+            ["bootstrap root self-modification requires installed owner root-transition authorization: " + sorted(SEED_PATHS)[0]],
+        )
 
     def test_installation_fails_on_base_advance_seed_change_or_state_drift(self):
         seed = FakeInstallationSeed(self.policy)
