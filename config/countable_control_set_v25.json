@@ -2,6 +2,34 @@
   "schema_version": "PS-COUNTABLE-CONTROL-SET-2.5-26",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "root_transition_authorization": {
+    "schema_version": "PS-ROOT-TRANSITION-KERNEL-1",
+    "helper": "scripts/root_transition_authorization.py",
+    "command": "/supernova-root-authorize v1",
+    "command_prefix": "/supernova-root-authorize v1 ",
+    "repository_id": 1338642578,
+    "owner_user_id": 222771578,
+    "max_lifetime_seconds": 1800,
+    "bound_fields": [
+      "kernel",
+      "repo_id",
+      "owner_id",
+      "pr",
+      "base",
+      "head",
+      "tree",
+      "changed_path_blob_manifest_sha256",
+      "predecessor_epoch",
+      "successor_epoch",
+      "nonce",
+      "expires"
+    ]
+  },
+  "status_writer_partition": {
+    "open_main_pr_heads": "scripts/reconcile_open_prs.py",
+    "non_pr_active_cohort_heads": "scripts/reconcile_v25_admission.py",
+    "legacy_seed_programs": "RECEIPT_CONTEXT_ONLY"
+  },
   "purpose": "Every NEW countable protocol-2.5 calibration generation freezes the complete root-epoch-11 control surface. Root11 preserves the root10 scheduler gate while making it constructable: exact one-commit R-to-G generation, C-to-A-to-L-to-S blob DAG, pointer-only state/STAGED.json transaction, preactivation and MM06 R/G/pointer/manifest binding, distinct create-once admission envelope, and later promotion with admission already in base unchanged.",
   "required_control_paths": [
     "PROTOCOL.md",
@@ -39,6 +67,12 @@
     "config/root_epoch11_stageability_repair_seed_v25.json",
     "config/root_epoch11_stageability_repair_seed_amendment_v25.json",
     "config/root_epoch11_stageability_repair_epoch_v25.json",
+    "config/root_epoch11_readme_lineage_seed_v25.json",
+    "scripts/root_transition_authorization.py",
+    "scripts/reconcile_root_epoch11_readme_lineage_seed.py",
+    "tests/test_normal_status_writer_partition.py",
+    "tests/test_root_epoch11_readme_lineage_seed.py",
+    ".github/workflows/supernova-root-epoch11-readme-lineage-seed.yml",
     "config/structural_status_rotation_seed_v25.json",
     "config/structural_status_rotation_epoch_v25.json",
     "config/gen9_repair_reset_epoch_v25.json",

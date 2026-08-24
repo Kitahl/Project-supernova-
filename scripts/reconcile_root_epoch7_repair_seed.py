@@ -71,8 +71,6 @@ def post(sha: str, context: str, state: str, description: str):
 def fail(sha, reason: str, policy: dict):
     if isinstance(sha, str) and HEX40.fullmatch(sha):
         post(sha, policy["seed_context"], "failure", "epoch7 seed refused: " + reason)
-        for context in policy["required_status_contexts"]:
-            post(sha, context, "failure", "epoch7 seed refused: " + reason)
     print("ROOT EPOCH7 SEED REFUSED:", reason)
     return 1
 
@@ -239,8 +237,6 @@ def main():
         shutil.rmtree(tmp, ignore_errors=True)
 
     post(sha, policy["seed_context"], "success", "one-shot accepted-main root epoch7 repair seed PASS")
-    for context in policy["required_status_contexts"]:
-        post(sha, context, "success", "one-shot root epoch7 seed exact-head PASS/N-A non-state transition")
     print("ROOT EPOCH7 REPAIR SEED PASS", number, sha)
     return 0
 

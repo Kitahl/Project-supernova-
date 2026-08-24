@@ -510,7 +510,7 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         seed.load = lambda root, path: dict(placeholder)
         self.assertFalse(self.module.exact_amended_candidate(pathlib.Path("."), trusted, p, seed, original)[0])
 
-    def test_bound_result_posts_amendment_context_and_existing_three_while_decline_is_no_write(self):
+    def test_bound_result_posts_only_amendment_receipt_context_while_decline_is_no_write(self):
         posts = []
         seed = types.SimpleNamespace(
             HEX40=re.compile(r"^[0-9a-f]{40}$"),
@@ -518,7 +518,7 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         )
         sha = "a" * 40
         self.assertEqual(self.module.fail_bound(seed, sha, "known bound failure", self.policy), 1)
-        self.assertEqual([row[1] for row in posts], [self.policy["seed_context"], *self.policy["required_status_contexts"]])
+        self.assertEqual([row[1] for row in posts], [self.policy["seed_context"]])
         self.assertTrue(all(row[2] == "failure" for row in posts))
         posts.clear()
         self.assertEqual(self.module.decline("stale head"), 1)
@@ -593,7 +593,7 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         self.assertIn("source_run_binding_errors(final_source, final_jobs, final_pr, trusted, policy, source_attempt)", self.script)
         self.assertLess(self.script.index("wait_for_earlier_same_head_runs(seed, sha, amendment_run_id, policy)"), self.script.index('final_source = seed.api(f"/actions/runs/{source_run_id}")'))
         self.assertLess(self.script.index("final_jobs = source_attempt_jobs"), self.script.index("source_run_binding_errors(final_source, final_jobs"))
-        self.assertLess(self.script.index("source_run_binding_errors(final_source, final_jobs"), self.script.index('seed.post(sha, context, "success"'))
+        self.assertLess(self.script.index("source_run_binding_errors(final_source, final_jobs"), self.script.index('seed.post(sha, policy["seed_context"], "success"'))
 
     def test_event_order_waits_for_every_earlier_same_head_run_and_rerun_rechecks(self):
         head = "b" * 40
@@ -762,7 +762,7 @@ class RootEpoch11StageabilityRepairSeedAmendmentTests(unittest.TestCase):
         self.assertIn("candidate does not descend from exact amendment install head", self.script)
         self.assertIn("wait_for_earlier_same_head_runs", self.script)
         self.assertIn("final_main", self.script)
-        self.assertIn('[policy["seed_context"], *policy["required_status_contexts"]]', self.script)
+        self.assertNotIn('[policy["seed_context"], *policy["required_status_contexts"]]', self.script)
         self.assertIn("return decline(source_errors[0])", self.script)
         self.assertIn('return fail_bound(seed, sha, "read-only candidate diagnostics did not succeed", policy)', self.script)
         self.assertLess(

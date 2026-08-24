@@ -40,7 +40,11 @@ ROOT_BOOTSTRAP_PATHS = {
     ".github/workflows/supernova-authority-bootstrap.yml",
 }
 ROOT_BOOTSTRAP_STATIC_PATHS = ROOT_BOOTSTRAP_PATHS | {
+    "config/repo_policy.json",
+    "config/countable_control_set_v25.json",
     "config/admission_authority.json",
+    "scripts/root_transition_authorization.py",
+    "tests/test_normal_status_writer_partition.py",
     "config/root_tcb_epoch_v25.json",
     "config/root_rotation_seed_v25.json",
     "scripts/reconcile_root_rotation_seed.py",
@@ -72,6 +76,10 @@ ROOT_BOOTSTRAP_STATIC_PATHS = ROOT_BOOTSTRAP_PATHS | {
     ".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml",
     "tests/test_root_epoch11_stageability_repair_seed_amendment.py",
     "config/root_epoch11_stageability_repair_epoch_v25.json",
+    "config/root_epoch11_readme_lineage_seed_v25.json",
+    "scripts/reconcile_root_epoch11_readme_lineage_seed.py",
+    ".github/workflows/supernova-root-epoch11-readme-lineage-seed.yml",
+    "tests/test_root_epoch11_readme_lineage_seed.py",
     "scripts/scheduler_admission_guard.py",
     "schemas/scheduler_manifest.schema.json",
     "schemas/preactivation_receipt.schema.json",
@@ -82,7 +90,8 @@ ROOT_BOOTSTRAP_STATIC_PATHS = ROOT_BOOTSTRAP_PATHS | {
     "requirements-validation.lock",
 }
 REQUIRED_INSTALLED_CONTROL_PATHS = {
-    "config/admission_authority.json","config/authority_bootstrap_v25.json","config/root_rotation_seed_v25.json","config/root_tcb_epoch_v25.json",
+    "config/repo_policy.json","config/countable_control_set_v25.json","config/admission_authority.json","config/authority_bootstrap_v25.json","config/root_rotation_seed_v25.json","config/root_tcb_epoch_v25.json",
+    "scripts/root_transition_authorization.py","tests/test_normal_status_writer_partition.py",
     "config/validator_environment_v25.json","config/substrate_epoch_v25.json","config/read_only_probe_parallelism_v25.json",
     "config/root_epoch6_repair_seed_v25.json","config/root_epoch6_repair_epoch_v25.json",
     "config/root_epoch7_repair_seed_v25.json","config/root_epoch7_repair_epoch_v25.json",
@@ -90,6 +99,7 @@ REQUIRED_INSTALLED_CONTROL_PATHS = {
     "config/root_epoch9_integrity_repair_seed_v25.json","config/root_epoch9_integrity_repair_epoch_v25.json",
     "config/root_epoch10_scheduler_admission_seed_v25.json","config/root_epoch10_scheduler_admission_seed_amendment_v25.json","config/root_epoch10_scheduler_admission_epoch_v25.json",
     "config/root_epoch11_stageability_repair_seed_v25.json","config/root_epoch11_stageability_repair_seed_amendment_v25.json","config/root_epoch11_stageability_repair_epoch_v25.json",
+    "config/root_epoch11_readme_lineage_seed_v25.json","scripts/reconcile_root_epoch11_readme_lineage_seed.py","tests/test_root_epoch11_readme_lineage_seed.py",
     "scripts/assert_validator_environment.py","scripts/strict_json.py","scripts/reconcile_open_prs.py","scripts/reconcile_authority_bootstrap.py",
     "scripts/reconcile_root_rotation_seed.py","scripts/reconcile_root_epoch6_repair_seed.py","scripts/reconcile_root_epoch7_repair_seed.py",
     "scripts/reconcile_root_epoch8_status_writer_repair_seed.py","scripts/reconcile_root_epoch9_integrity_repair_seed.py",
@@ -106,6 +116,7 @@ REQUIRED_INSTALLED_CONTROL_PATHS = {
     ".github/workflows/supernova-root-epoch9-integrity-repair-seed.yml",
     ".github/workflows/supernova-root-epoch10-scheduler-admission-seed.yml",".github/workflows/supernova-root-epoch10-scheduler-admission-seed-amendment.yml",
     ".github/workflows/supernova-root-epoch11-stageability-repair-seed.yml",".github/workflows/supernova-root-epoch11-stageability-repair-seed-amendment.yml",
+    ".github/workflows/supernova-root-epoch11-readme-lineage-seed.yml",
 }
 
 
@@ -155,11 +166,11 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
     errors: list[str]=[]
     try:
         root_drift=sorted(bootstrap_root_paths(trusted_root).intersection(changed))
-        if root_drift:errors.append("bootstrap root self-modification requires independent seed: "+root_drift[0])
+        if root_drift:errors.append("bootstrap root self-modification requires installed owner root-transition authorization: "+root_drift[0])
     except Exception as exc:errors.append("bootstrap root TCB derivation failed: "+repr(exc))
     try:
         policy=load_json(candidate_root,"config/repo_policy.json")
-        required_policy={"required_protected":True,"required_pull_request_for_consolidation":True,"forbid_force_push":True,"forbid_branch_deletion":True,"required_main_status_contexts":REQUIRED_CONTEXTS,"required_status_source_creator_logins":[BOOTSTRAP_CREATOR],"operational_source_binding_proof_required":True,"candidate_code_execution_with_status_write_token":"FORBIDDEN","fresh_gate":"BLOCK"}
+        required_policy={"required_protected":True,"required_pull_request_for_consolidation":True,"forbid_force_push":True,"forbid_branch_deletion":True,"required_main_status_contexts":REQUIRED_CONTEXTS,"required_status_source_integration_ids":[4697060],"required_status_source_creator_logins":["project-supernova-status-authority[bot]"],"operational_source_binding_proof_required":True,"candidate_code_execution_with_status_write_token":"FORBIDDEN","fresh_gate":"BLOCK","legacy_seed_normal_context_publication":"FORBIDDEN_RECEIPT_CONTEXT_ONLY"}
         for key,expected in required_policy.items():
             if policy.get(key)!=expected:errors.append(f"repo policy invariant weakened: {key}")
     except Exception as exc:errors.append("repo policy invariant check failed: "+repr(exc))
@@ -171,7 +182,7 @@ def bootstrap_invariant_errors(trusted_root: pathlib.Path, candidate_root: pathl
     except Exception as exc:errors.append("admission authority invariant check failed: "+repr(exc))
     try:
         bootstrap=load_json(candidate_root,"config/authority_bootstrap_v25.json")
-        required_bootstrap={"protocol_version":"2.5","task_network_plan_id":PLAN,"enabled_after_install":True,"bootstrap_context":BOOTSTRAP_CONTEXT,"required_status_creator":BOOTSTRAP_CREATOR,"trusted_executable_source":"EXACT_ACCEPTED_MAIN","candidate_bytes_in_privileged_phase":"DATA_ONLY","candidate_diagnostics":"READ_ONLY_SEPARATE_JOB_REQUIRED","diagnostic_binding":"EXACT_EVENT_HEAD_AND_BASE_REQUIRED","bootstrap_status_target":"DESIGNATED_AUTHORITY_BOOTSTRAP_WORKFLOW_RUN_URL_REQUIRED","bootstrap_success_consumption":DURABLE_BOOTSTRAP_PROVENANCE,"bootstrap_completion_workflow":".github/workflows/supernova-bootstrap-completion-reconcile.yml","completion_run_id_environment":"COMPLETED_BOOTSTRAP_RUN_ID","validator_environment_contract":"config/validator_environment_v25.json","validator_environment_assertion":"scripts/assert_validator_environment.py","strict_json_contract":"scripts/strict_json.py","same_repository_required":True,"owner_authored_required":True,"base_branch_required":"main","exact_current_main_ancestor_required":True,"calibration_streak_required":0,"fresh_allowed_globally_required":False,"protocol_version_required":"2.5","specification_revision_required":4,"root_tcb_epoch_required":11,"worker_auth_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","state_or_scientific_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","root_tcb_change":"REQUIRES_SEPARATELY_TRUSTED_ROOT_ROTATION_SEED","active_cohort_constructive_scheduler_repair":"FORBIDDEN","merge_authority":"EXISTING_GITHUB_RULESET_ONLY","bootstrap_verifier_may_bypass_ruleset":False,"bootstrap_verifier_may_merge":False,"failure_semantics":"FAIL_CLOSED"}
+        required_bootstrap={"protocol_version":"2.5","task_network_plan_id":PLAN,"enabled_after_install":True,"bootstrap_context":BOOTSTRAP_CONTEXT,"required_status_creator":BOOTSTRAP_CREATOR,"trusted_executable_source":"EXACT_ACCEPTED_MAIN","candidate_bytes_in_privileged_phase":"DATA_ONLY","candidate_diagnostics":"READ_ONLY_SEPARATE_JOB_REQUIRED","diagnostic_binding":"EXACT_EVENT_HEAD_AND_BASE_REQUIRED","bootstrap_status_target":"DESIGNATED_AUTHORITY_BOOTSTRAP_WORKFLOW_RUN_URL_REQUIRED","bootstrap_success_consumption":DURABLE_BOOTSTRAP_PROVENANCE,"bootstrap_completion_workflow":".github/workflows/supernova-bootstrap-completion-reconcile.yml","completion_run_id_environment":"COMPLETED_BOOTSTRAP_RUN_ID","validator_environment_contract":"config/validator_environment_v25.json","validator_environment_assertion":"scripts/assert_validator_environment.py","strict_json_contract":"scripts/strict_json.py","same_repository_required":True,"owner_authored_required":True,"base_branch_required":"main","exact_current_main_ancestor_required":True,"calibration_streak_required":0,"fresh_allowed_globally_required":False,"protocol_version_required":"2.5","specification_revision_required":4,"root_tcb_epoch_required":11,"worker_auth_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","state_or_scientific_change":"FORBIDDEN_IN_AUTOMATED_BOOTSTRAP","root_tcb_change":"REQUIRES_EXACT_INSTALLED_OWNER_ROOT_TRANSITION_KERNEL","active_cohort_constructive_scheduler_repair":"FORBIDDEN","merge_authority":"EXISTING_GITHUB_RULESET_ONLY","bootstrap_verifier_may_bypass_ruleset":False,"bootstrap_verifier_may_merge":False,"failure_semantics":"FAIL_CLOSED"}
         for key,expected in required_bootstrap.items():
             if bootstrap.get(key)!=expected:errors.append(f"bootstrap policy invariant weakened: {key}")
     except Exception as exc:errors.append("bootstrap policy invariant check failed: "+repr(exc))

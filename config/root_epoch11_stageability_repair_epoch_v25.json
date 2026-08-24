@@ -2,6 +2,34 @@
   "schema_version": "PS-ROOT-EPOCH11-STAGEABILITY-REPAIR-EPOCH-2.5-1",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "root_transition_authorization": {
+    "schema_version": "PS-ROOT-TRANSITION-KERNEL-1",
+    "helper": "scripts/root_transition_authorization.py",
+    "command": "/supernova-root-authorize v1",
+    "command_prefix": "/supernova-root-authorize v1 ",
+    "repository_id": 1338642578,
+    "owner_user_id": 222771578,
+    "max_lifetime_seconds": 1800,
+    "bound_fields": [
+      "kernel",
+      "repo_id",
+      "owner_id",
+      "pr",
+      "base",
+      "head",
+      "tree",
+      "changed_path_blob_manifest_sha256",
+      "predecessor_epoch",
+      "successor_epoch",
+      "nonce",
+      "expires"
+    ]
+  },
+  "status_writer_partition": {
+    "open_main_pr_heads": "scripts/reconcile_open_prs.py",
+    "non_pr_active_cohort_heads": "scripts/reconcile_v25_admission.py",
+    "legacy_seed_programs": "RECEIPT_CONTEXT_ONLY"
+  },
   "previous_root_epoch": 10,
   "new_root_epoch": 11,
   "issue_ref": "#233",

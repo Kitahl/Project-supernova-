@@ -9,9 +9,11 @@ on:
     branches: [main]
 
 permissions:
+  actions: read
   contents: read
+  issues: read
   pull-requests: read
-  statuses: write
+  statuses: read
 
 concurrency:
   group: supernova-required-context-writers
@@ -19,6 +21,7 @@ concurrency:
 
 jobs:
   reconcile:
+    environment: supernova-protected-writer
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 immutable SHA
@@ -32,8 +35,16 @@ jobs:
         run: "python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r requirements-validation.lock"
       - name: Assert frozen validator environment
         run: python scripts/assert_validator_environment.py
+      - name: Mint repository-scoped protected status token
+        id: status-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0 immutable SHA
+        with:
+          client-id: ${{ vars.SUPERNOVA_STATUS_APP_CLIENT_ID }}
+          private-key: ${{ secrets.SUPERNOVA_STATUS_APP_PRIVATE_KEY }}
+          permission-statuses: write
       - name: Reconcile exact open PR heads
         env:
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          SUPERNOVA_STATUS_TOKEN: ${{ steps.status-token.outputs.token }}
         run: python scripts/reconcile_open_prs.py

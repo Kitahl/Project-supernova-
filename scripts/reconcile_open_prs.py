@@ -9,9 +9,10 @@ SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 import strict_json
+import root_transition_authorization as root_transition
 from scheduler_admission_guard import candidate_fresh_gate_errors, validate_scheduler_admission, validate_scheduler_manifest
 
-REPO=os.environ.get("GITHUB_REPOSITORY","Kitahl/Project-supernova-"); TOKEN=os.environ.get("GITHUB_TOKEN","")
+REPO=os.environ.get("GITHUB_REPOSITORY","Kitahl/Project-supernova-")
 API="https://api.github.com/repos/"+REPO; OWNER=REPO.split("/",1)[0]
 ALLOWED_HEAD_PREFIXES=("hardening/","transition/","ps/consolidate/","ps/stage/","ps/admit/","rev4/","root-rotation/")
 CONTEXTS=("supernova/static-control","supernova/report-admission","supernova/transition-admission")
@@ -22,6 +23,10 @@ REST_RECONCILER_WORKFLOW=".github/workflows/supernova-rest-branch-reconciler.yml
 RUN_URL_RE=re.compile(r"^https://github\.com/"+re.escape(REPO)+r"/actions/runs/([0-9]+)$"); HEX40=re.compile(r"^[0-9a-f]{40}$")
 DURABLE_BOOTSTRAP_PROVENANCE="PERSISTENT_GITHUB_WORKFLOW_RUN_REDERIVATION_AND_EXACT_PR_HEAD_BASE_REQUIRED"
 TRUSTED_ROOT=pathlib.Path(__file__).resolve().parents[1]
+ROOT_TCB_PATH="config/root_tcb_epoch_v25.json"
+ROOT_TRANSITION_FORBIDDEN_PREFIXES=("state/","control/","assignments/","liveness/","scheduler/","scheduler_admission/","preactivation/","reports/","verification/","integration/","history/","transitions/","superseded/","runtime/","benchmark/","research/")
+ROOT_TCB_MUTABLE_SUCCESSOR_FIELDS=("epoch","previous_epoch_blob")
+ROOT_TCB_SUCCESSOR_TRANSFORM_FIELDS=("root_transition_authorization","status_writer_partition","root_tcb_source","root_change_rule")
 
 GEN6_BOOTSTRAP_COHORT="CAL-BR-006-v251-433ad83a"; GEN6_BOOTSTRAP_STATE_BLOB="b08c9ae01be715ad25059d3dfcb72febb4794c38"
 GEN7_INVALIDATED_COHORT="CAL-BR-007-v25-c13b6ee4"; GEN7_INVALIDATED_G="7c182fb7ce3a3941f86f7508bbb4a18152402bb8"; GEN7_INVALIDATED_STATE_BLOB="856481759722e23ff9a652ce140f304efe13b023"
@@ -60,15 +65,48 @@ PRODUCTION_ROLES=PREACTIVATION_ROLES|{"MM06","BIL00"}
 PLAN="0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa"
 ROOT11_CONSOLIDATION_SCHEMA="PS-BRANCH-CONSOLIDATION-2.5-ROOT11-1"
 
-def api(path,method="GET",data=None):
-    payload=None if data is None else strict_json.canonical_dumps(data).encode('utf-8')
-    q=urllib.request.Request(API+path,data=payload,method=method);q.add_header("Accept","application/vnd.github+json");q.add_header("X-GitHub-Api-Version","2022-11-28")
-    if TOKEN:q.add_header("Authorization","Bearer "+TOKEN)
+def read_token():
+    """Return only the ordinary workflow token used for GitHub API reads."""
+    return os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN") or ""
+def required_status_token():
+    """Return the dedicated App token or fail before protected publication."""
+    token=os.environ.get("SUPERNOVA_STATUS_TOKEN","")
+    if not token or token!=token.strip():
+        raise RuntimeError("SUPERNOVA_STATUS_TOKEN is required for protected commit statuses")
+    return token
+def api(path):
+    q=urllib.request.Request(API+path,method="GET");q.add_header("Accept","application/vnd.github+json");q.add_header("X-GitHub-Api-Version","2022-11-28")
+    token=read_token()
+    if token:q.add_header("Authorization","Bearer "+token)
     with urllib.request.urlopen(q,timeout=30) as r:
         raw=r.read();return strict_json.loads(raw.decode('utf-8')) if raw else None
-def post_status(sha,context,state,description):api("/statuses/"+sha,"POST",{"state":state,"context":context,"description":description[:140]})
-def fail_contexts(sha,description):
-    for context in CONTEXTS:post_status(sha,context,"failure",description)
+def api_with_server_date(path):
+    """Return API data plus GitHub's HTTP Date; local runner time is never authority."""
+    q=urllib.request.Request(API+path,method="GET");q.add_header("Accept","application/vnd.github+json");q.add_header("X-GitHub-Api-Version","2022-11-28")
+    token=read_token()
+    if token:q.add_header("Authorization","Bearer "+token)
+    with urllib.request.urlopen(q,timeout=30) as r:
+        raw=r.read();date=r.headers.get('Date')
+        return (strict_json.loads(raw.decode('utf-8')) if raw else None),date
+def status_api(path,data):
+    """POST one protected status using only the dedicated GitHub App token."""
+    if not isinstance(path,str) or not re.fullmatch(r"/statuses/[0-9a-f]{40}",path):
+        raise ValueError("protected status endpoint is invalid")
+    if not isinstance(data,dict) or data.get("context") not in CONTEXTS:
+        raise ValueError("protected status context is not owned by this reconciler")
+    payload=strict_json.canonical_dumps(data).encode('utf-8')
+    q=urllib.request.Request(API+path,data=payload,method="POST");q.add_header("Accept","application/vnd.github+json");q.add_header("X-GitHub-Api-Version","2022-11-28")
+    q.add_header("Authorization","Bearer "+required_status_token())
+    with urllib.request.urlopen(q,timeout=30) as r:
+        raw=r.read();return strict_json.loads(raw.decode('utf-8')) if raw else None
+def post_status(sha,context,state,description,target_url=None):
+    if not isinstance(sha,str) or not HEX40.fullmatch(sha):raise ValueError("protected status SHA is invalid")
+    if context not in CONTEXTS:raise ValueError("protected status context is not owned by this reconciler")
+    body={"state":state,"context":context,"description":description[:140]}
+    if target_url is not None:body["target_url"]=target_url
+    status_api("/statuses/"+sha,body)
+def fail_contexts(sha,description,target_url=None):
+    for context in CONTEXTS:post_status(sha,context,"failure",description,target_url=target_url)
 def run(cmd,cwd,env=None):
     p=subprocess.run(cmd,cwd=str(cwd),env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False);return p.returncode,p.stdout
 def changed_files(repo,base,head):
@@ -129,6 +167,192 @@ def trusted_bootstrap_success(head_sha,base_sha=None,pr_number=None):
         if not _run_binds_exact_pr(r,head_sha,base_sha,pr_number):continue
         valid.append(rid)
     return len(set(valid))==1
+def _git_json_at(repo,path,ref):
+    rc,out=run(["git","show",ref+":"+path],repo)
+    if rc:raise ValueError("cannot read "+path+" at "+ref)
+    return strict_json.loads(out)
+def _git_blob_at(repo,path,ref):
+    rc,out=run(["git","rev-parse",ref+":"+path],repo);blob=out.strip()
+    return blob if not rc and HEX40.fullmatch(blob) else None
+_ROOT_TCB_ABSENT=object()
+def _root_tcb_successor_transform_errors(predecessor,successor):
+    if not isinstance(predecessor,dict) or not isinstance(successor,dict):
+        return "root TCB predecessor/successor is not one JSON object"
+    expected={
+        "root_transition_authorization":(
+            _ROOT_TCB_ABSENT,
+            root_transition.contract(),
+        ),
+        "status_writer_partition":(
+            _ROOT_TCB_ABSENT,
+            {
+                "open_main_pr_heads":"scripts/reconcile_open_prs.py",
+                "non_pr_active_cohort_heads":"scripts/reconcile_v25_admission.py",
+                "legacy_seed_programs":"RECEIPT_CONTEXT_ONLY",
+            },
+        ),
+        "root_tcb_source":(
+            "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS_PLUS_VALIDATOR_ENVIRONMENT_PLUS_EPOCH6_THROUGH_EPOCH11_INDEPENDENT_ONE_SHOT_SEEDS_PLUS_ROOT11_SEED_COMPLETENESS_AMENDMENT",
+            "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS_PLUS_VALIDATOR_ENVIRONMENT_PLUS_EPOCH6_THROUGH_EPOCH11_FROZEN_LINEAGE_SEEDS_PLUS_INSTALLED_OWNER_ROOT_TRANSITION_KERNEL",
+        ),
+        "root_change_rule":(
+            "NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED",
+            "NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_THE_EXACT_INSTALLED_OWNER_ROOT_TRANSITION_KERNEL_AND_SOURCE_BOUND_RECEIPT",
+        ),
+    }
+    for key,(before,after) in expected.items():
+        observed_before=predecessor.get(key,_ROOT_TCB_ABSENT)
+        observed_after=successor.get(key,_ROOT_TCB_ABSENT)
+        if observed_before!=before or observed_after!=after:
+            return "root transition successor has an unexpected root-TCB transform: "+key
+    before_remaining={
+        key:value for key,value in predecessor.items()
+        if key not in ROOT_TCB_MUTABLE_SUCCESSOR_FIELDS+ROOT_TCB_SUCCESSOR_TRANSFORM_FIELDS
+    }
+    after_remaining={
+        key:value for key,value in successor.items()
+        if key not in ROOT_TCB_MUTABLE_SUCCESSOR_FIELDS+ROOT_TCB_SUCCESSOR_TRANSFORM_FIELDS
+    }
+    if before_remaining!=after_remaining:
+        return "root transition successor changes an unallowlisted root-TCB safety field"
+    return None
+def root_transition_candidate_contract(root,trusted,head,changed):
+    """Derive the complete owner-command tuple from accepted Git objects only."""
+    if len(changed)!=len(set(changed)) or ROOT_TCB_PATH not in changed:
+        return None,["root transition must change the root TCB exactly once"]
+    sensitive=sorted(path for path in changed if path.startswith(ROOT_TRANSITION_FORBIDDEN_PREFIXES))
+    if sensitive:return None,["root transition may not change state/evidence path: "+sensitive[0]]
+    trusted_state_blob=_git_blob_at(root,"state/CURRENT.json",trusted);candidate_state_blob=_git_blob_at(root,"state/CURRENT.json",head)
+    if trusted_state_blob is None or candidate_state_blob!=trusted_state_blob:
+        return None,["root transition must preserve the exact accepted state blob"]
+    trusted_tcb_blob=_git_blob_at(root,ROOT_TCB_PATH,trusted);candidate_tcb_blob=_git_blob_at(root,ROOT_TCB_PATH,head)
+    if trusted_tcb_blob is None or candidate_tcb_blob is None or candidate_tcb_blob==trusted_tcb_blob:
+        return None,["root transition TCB blobs are unavailable or unchanged"]
+    try:
+        state=_git_json_at(root,"state/CURRENT.json",trusted)
+        predecessor=_git_json_at(root,ROOT_TCB_PATH,trusted);successor=_git_json_at(root,ROOT_TCB_PATH,head)
+    except Exception as exc:return None,["root transition accepted-main JSON unavailable: "+repr(exc)]
+    if state.get("protocol_version")!="2.5" or state.get("task_network_plan_id")!=PLAN:
+        return None,["root transition accepted state identity mismatch"]
+    if state.get("calibration_streak")!=0 or state.get("fresh_allowed_globally") is not False:
+        return None,["root transition requires streak zero and fresh disabled"]
+    predecessor_epoch=predecessor.get("epoch");successor_epoch=successor.get("epoch")
+    if isinstance(predecessor_epoch,bool) or not isinstance(predecessor_epoch,int) or successor_epoch!=predecessor_epoch+1:
+        return None,["root transition must advance the accepted root epoch exactly once"]
+    for key in ("protocol_version","task_network_plan_id"):
+        if predecessor.get(key)!=successor.get(key) or successor.get(key)!=state.get(key):
+            return None,["root transition successor identity mismatch: "+key]
+    if successor.get("previous_epoch_blob")!=trusted_tcb_blob:
+        return None,["root transition successor does not bind the predecessor TCB blob"]
+    transform_error=_root_tcb_successor_transform_errors(predecessor,successor)
+    if transform_error:return None,[transform_error]
+    rc,tree_text=run(["git","rev-parse",head+"^{tree}"],root);tree=tree_text.strip()
+    if rc or not HEX40.fullmatch(tree):return None,["root transition candidate tree is unavailable"]
+    blobs={}
+    for path in changed:
+        rc,row=run(["git","ls-tree",head,"--",path],root)
+        metadata,separator,observed_path=row.rstrip("\n").partition("\t")
+        fields=metadata.split()
+        if rc or not separator or len(fields)!=3 or fields[0]!="100644" or fields[1]!="blob" or not HEX40.fullmatch(fields[2]) or observed_path!=path:
+            return None,["root transition changed path is not one exact regular blob: "+path]
+        blobs[path]=fields[2]
+    try:manifest=root_transition.canonical_changed_path_blob_manifest_sha256(blobs)
+    except root_transition.AuthorizationError as exc:return None,["root transition manifest invalid: "+str(exc)]
+    return {
+        "tree":tree,
+        "changed_path_blob_manifest_sha256":manifest,
+        "predecessor_epoch":predecessor_epoch,
+        "successor_epoch":successor_epoch,
+    },[]
+def _root_transition_repository_identity():
+    try:repository,date=api_with_server_date("")
+    except Exception as exc:return None,["root transition repository identity unavailable: "+repr(exc)]
+    try:root_transition.github_server_datetime(date)
+    except root_transition.AuthorizationError as exc:return None,["root transition GitHub server Date invalid: "+str(exc)]
+    owner=repository.get("owner") if isinstance(repository,dict) else None
+    if not isinstance(owner,dict) or repository.get("full_name")!=REPO:
+        return None,["root transition repository identity mismatch"]
+    if isinstance(repository.get("id"),bool) or not isinstance(repository.get("id"),int) or repository["id"]<=0:
+        return None,["root transition repository numeric id invalid"]
+    if isinstance(owner.get("id"),bool) or not isinstance(owner.get("id"),int) or owner["id"]<=0:
+        return None,["root transition owner numeric id invalid"]
+    if owner.get("login")!=OWNER or owner.get("type")!="User":
+        return None,["root transition nominated owner identity mismatch"]
+    return {
+        "repository":REPO,"repo_id":repository["id"],"owner_id":owner["id"],
+        "owner_login":owner["login"],"owner_type":owner["type"],
+    },[]
+def _root_transition_issue_comments(pr_number):
+    observed=[];server_dates=[]
+    for page in range(1,101):
+        try:rows,date=api_with_server_date(f"/issues/{pr_number}/comments?per_page=100&page={page}")
+        except Exception as exc:return observed,None,["root transition comment inventory failed: "+repr(exc)]
+        if not isinstance(rows,list):return observed,None,["root transition comment inventory is not a list"]
+        try:server_dates.append(root_transition.github_server_datetime(date))
+        except root_transition.AuthorizationError as exc:return observed,None,["root transition GitHub server Date invalid: "+str(exc)]
+        observed.extend(rows)
+        if len(rows)<100:return observed,max(server_dates).strftime("%a, %d %b %Y %H:%M:%S GMT"),[]
+    return observed,None,["root transition comment inventory exceeds bounded exhaustive scan"]
+def _root_transition_remote_main_sha(expected_trusted):
+    try:
+        reference,date=api_with_server_date("/git/ref/heads/main")
+    except Exception as exc:
+        raise ValueError("accepted main ref reread failed: "+repr(exc)) from exc
+    try:
+        root_transition.github_server_datetime(date)
+    except root_transition.AuthorizationError as exc:
+        raise ValueError("accepted main ref Date is invalid: "+str(exc)) from exc
+    if not isinstance(reference,dict) or reference.get("ref")!="refs/heads/main":
+        raise ValueError("accepted main ref response is not refs/heads/main")
+    target=reference.get("object") if isinstance(reference.get("object"),dict) else {}
+    if target.get("type")!="commit":
+        raise ValueError("accepted main ref object is not a commit")
+    observed=target.get("sha")
+    if not isinstance(observed,str) or not HEX40.fullmatch(observed):
+        raise ValueError("accepted main ref SHA is invalid")
+    if observed!=expected_trusted:
+        raise ValueError("accepted main ref moved away from local trusted/base")
+    return observed
+def trusted_root_transition_authorization(root,pr,trusted,head,changed):
+    """Return exactly one live API-refetched owner authorization or fail closed."""
+    contract,errors=root_transition_candidate_contract(root,trusted,head,changed)
+    if errors:return None,errors
+    if (pr.get("base") or {}).get("sha")!=trusted:
+        return None,["root transition PR base is not the local trusted main"]
+    try:
+        _root_transition_remote_main_sha(trusted)
+    except ValueError as exc:
+        return None,[str(exc)]
+    identity,errors=_root_transition_repository_identity()
+    if errors:return None,errors
+    comments,server_date,errors=_root_transition_issue_comments(pr.get("number"))
+    if errors:return None,errors
+    expected=dict(identity)
+    expected.update(
+        server_date=server_date,pr=pr.get("number"),base=trusted,head=head,
+        tree=contract["tree"],
+        changed_path_blob_manifest_sha256=contract["changed_path_blob_manifest_sha256"],
+        predecessor_epoch=contract["predecessor_epoch"],successor_epoch=contract["successor_epoch"],
+    )
+    valid=[]
+    for comment in comments:
+        body=comment.get("body") if isinstance(comment,dict) else None
+        if not isinstance(body,str) or not body.startswith(root_transition.COMMAND_PREFIX):continue
+        try:valid.append(root_transition.validate_exact_owner_authorization(comment,**expected))
+        except root_transition.AuthorizationError:continue
+    if len(valid)!=1:return None,[f"root transition requires exactly one live exact owner authorization; found {len(valid)}"]
+    authorization=valid[0]
+    try:reread,reread_date=api_with_server_date("/issues/comments/"+str(authorization.comment_id))
+    except Exception as exc:return None,["root transition authorization reread failed: "+repr(exc)]
+    expected["server_date"]=reread_date
+    try:refreshed=root_transition.validate_exact_owner_authorization(reread,**expected)
+    except root_transition.AuthorizationError as exc:return None,["root transition authorization changed or expired: "+str(exc)]
+    if refreshed!=authorization:return None,["root transition authorization reread mismatch"]
+    try:
+        _root_transition_remote_main_sha(trusted)
+    except ValueError as exc:
+        return None,[str(exc)]
+    return authorization,[]
 def pr_metadata_errors(pr):
     h=pr.get("head") or {};b=pr.get("base") or {};e=[];ref=h.get("ref");sha=h.get("sha")
     if b.get("ref")!="main":e.append("PR base is not main")
@@ -156,9 +380,9 @@ def trusted_ruleset_errors():
         path=TRUSTED_ROOT/'scripts/reconcile_ruleset_attestation.py';spec=importlib.util.spec_from_file_location('supernova_trusted_ruleset_attestation',path)
         if spec is None or spec.loader is None:return ['trusted ruleset attestor unavailable']
         mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
-        rules=mod.api(mod.API+'/rules/branches/main',auth=False);actions_app=mod.api('https://api.github.com/apps/github-actions',auth=False)
-        result=mod.evaluate_rules(rules,actions_app)
-        required=('pr_required','deletion_blocked','non_fast_forward_blocked','actions_app','static_bound','report_bound','transition_bound','strict_up_to_date','spoof_resistant')
+        rules=mod.api(mod.API+'/rules/branches/main',auth=False)
+        result=mod.evaluate_rules(rules)
+        required=('pr_required','deletion_blocked','non_fast_forward_blocked','status_app','static_bound','report_bound','transition_bound','strict_up_to_date','spoof_resistant')
         missing=[key for key in required if result.get(key) is not True]
         return [] if not missing else ['live main ruleset lacks required source-bound strict/up-to-date protection: '+','.join(missing)]
     except Exception as exc:return ['live main ruleset attestation failed closed: '+repr(exc)]
@@ -866,7 +1090,7 @@ def validate_pr(root,pr,trusted_errors=None):
     if trusted_errors:fail_contexts(sha,trusted_errors[0]);return
     n=pr["number"];trusted=trusted_main_sha(root);run(["git","fetch","--no-tags","origin",f"pull/{n}/head","+refs/heads/ps/*:refs/remotes/origin/ps/*"],root)
     if not is_ancestor(root,trusted,sha):fail_contexts(sha,"trusted admission refused: PR head does not descend from exact current main");return
-    changed=changed_files(root,trusted,sha);authority=authority_path_changes(changed)
+    changed=changed_files(root,trusted,sha);authority=authority_path_changes(changed);root_authorization=None;authority_provenance="trusted-main"
     if any(path=='state/STAGED.json' or path.startswith('scheduler_admission/') for path in changed) and base!=trusted:fail_contexts(sha,"trusted admission refused: stage/admit base is not exact current main");return
     historical=[path for path in changed if path.startswith('history/') or path.startswith('superseded/')]
     if historical and 'state/CURRENT.json' not in changed:fail_contexts(sha,"trusted admission refused: historical/supersession evidence is immutable outside an exact state transition");return
@@ -887,13 +1111,20 @@ def validate_pr(root,pr,trusted_errors=None):
     archives=[path for path in changed if path.startswith('staging/') and path.endswith('.json')]
     if archives and 'state/CURRENT.json' not in changed:fail_contexts(sha,"trusted admission refused: archived staged evidence is immutable outside exact promotion");return
     if any(run(['git','cat-file','-e',trusted+':'+path],root)[0]==0 for path in archives):fail_contexts(sha,"trusted admission refused: archived staged evidence may only be added once");return
-    if authority and not trusted_bootstrap_success(sha,base,n):fail_contexts(sha,"trusted admission refused: authority bytes changed without source-verified bootstrap: "+authority[0]);return
+    if authority:
+        if trusted_bootstrap_success(sha,base,n):authority_provenance="trusted-bootstrap-run"
+        else:
+            if base!=trusted:fail_contexts(sha,"trusted admission refused: owner-authorized root transition base is not exact current main");return
+            root_authorization,authorization_errors=trusted_root_transition_authorization(root,pr,trusted,sha,changed)
+            if authorization_errors:fail_contexts(sha,"trusted admission refused: "+authorization_errors[0]);return
+            authority_provenance="trusted-owner-root-transition"
+    authorization_url=root_authorization.html_url if root_authorization is not None else None
     modes=changed_file_mode_errors(root,sha,changed)
-    if modes:fail_contexts(sha,"trusted admission refused: "+modes[0]);return
+    if modes:fail_contexts(sha,"trusted admission refused: "+modes[0],target_url=authorization_url);return
     tmp=pathlib.Path(tempfile.mkdtemp(prefix=f"supernova-pr-{n}-"))
     try:
         rc,_=run(["git","worktree","add","--detach",str(tmp),sha],root)
-        if rc:fail_contexts(sha,"trusted admission could not create candidate data worktree");return
+        if rc:fail_contexts(sha,"trusted admission could not create candidate data worktree",target_url=authorization_url);return
         transaction_errors=stage_pointer_admission(root,pr,trusted,sha,changed)+scheduler_admission_transaction(tmp,pr,trusted,sha,changed)
         ruleset_errors=trusted_ruleset_errors()
         results={"supernova/static-control":trusted_static_control(root,tmp)+transaction_errors+ruleset_errors,"supernova/report-admission":report_admission(tmp,trusted,changed)+transaction_errors+ruleset_errors,"supernova/transition-admission":transition_admission(root,tmp,trusted,sha,changed)+transaction_errors+ruleset_errors}
@@ -904,10 +1135,19 @@ def validate_pr(root,pr,trusted_errors=None):
         if current_head!=sha or current_base!=trusted:
             race=['trusted admission refused: PR head/base moved during validation']
             results={context:errors+race for context,errors in results.items()}
+        if root_authorization is not None:
+            refreshed,refresh_errors=trusted_root_transition_authorization(root,pr,trusted,sha,changed)
+            if refresh_errors or refreshed!=root_authorization:
+                race=['trusted admission refused: root transition authorization changed, expired, duplicated, or disappeared']
+                results={context:errors+race for context,errors in results.items()}
+            current=api('/pulls/'+str(n)) or {};current_head=(current.get('head') or {}).get('sha');current_base=(current.get('base') or {}).get('sha')
+            if current_head!=sha or current_base!=trusted:
+                race=['trusted admission refused: PR head/base moved after authorization reread']
+                results={context:errors+race for context,errors in results.items()}
         for context,errors in results.items():
-            if errors:post_status(sha,context,"failure","FAIL "+errors[0])
+            if errors:post_status(sha,context,"failure","FAIL "+errors[0],target_url=authorization_url)
             else:
-                provenance="trusted-bootstrap-run" if authority else "trusted-main";scope="PASS" if "state/CURRENT.json" in changed else "PASS/N-A non-transition";post_status(sha,context,"success",provenance+" exact-head "+scope)
+                scope="PASS" if "state/CURRENT.json" in changed else "PASS/N-A non-transition";post_status(sha,context,"success",authority_provenance+" exact-head "+scope,target_url=authorization_url)
     finally:
         run(["git","worktree","remove","--force",str(tmp)],root);shutil.rmtree(tmp,ignore_errors=True)
 def open_main_prs():
@@ -924,6 +1164,7 @@ def open_main_prs():
     return observed,['open main PR inventory exceeds bounded exhaustive scan']
 
 def main():
+    required_status_token()
     root=pathlib.Path.cwd().resolve();prs,inventory_errors=open_main_prs();trusted_errors=trusted_self_check(root)+inventory_errors
     for pr in prs:
         if pr.get("draft"):continue

@@ -18,11 +18,14 @@ class RulesetAttestationWorkflowTests(unittest.TestCase):
         self.assertIn("github.event.pull_request.head.repo.full_name == github.repository", text)
         self.assertIn("github.event.pull_request.user.login == github.repository_owner", text)
 
-    def test_attestation_queries_effective_rules_rulesets_and_actions_app(self):
+    def test_attestation_queries_effective_rules_and_records_exact_status_app(self):
         text = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("/rules/branches/main", text)
         self.assertIn("/rulesets/", text)
-        self.assertIn("https://api.github.com/apps/github-actions", text)
+        self.assertNotIn("https://api.github.com/apps/github-actions", text)
+        self.assertIn("'integration_id': 4697060", text)
+        self.assertIn("'slug': 'project-supernova-status-authority'", text)
+        self.assertIn("'bot_login': 'project-supernova-status-authority[bot]'", text)
         self.assertIn("SUPERNOVA_RULESET_ATTESTATION_V25_BEGIN", text)
         self.assertIn("PS-RULESET-ATTESTATION-1", text)
 

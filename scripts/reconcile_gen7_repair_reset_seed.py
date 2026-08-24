@@ -3,6 +3,24 @@ from __future__ import annotations
 import hashlib,json,os,pathlib,re,subprocess,tempfile,shutil,urllib.request
 ROOT=pathlib.Path.cwd().resolve();REPO=os.environ.get('GITHUB_REPOSITORY','Kitahl/Project-supernova-');TOKEN=os.environ.get('GITHUB_TOKEN','');API='https://api.github.com/repos/'+REPO;OWNER=REPO.split('/',1)[0]
 HEX40=re.compile(r'^[0-9a-f]{40}$')
+ROOT_TCB_PATH='config/root_tcb_epoch_v25.json';EXPECTED_PREDECESSOR_ROOT_EPOCH=2
+EXPECTED_ROOT_EPOCH2_IDENTITY={
+ 'schema_version':'PS-ROOT-TCB-EPOCH-2.5-2',
+ 'protocol_version':'2.5',
+ 'task_network_plan_id':'0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa',
+ 'epoch':2,
+ 'status':'ACTIVE_AFTER_ROOT_ROTATION',
+ 'root_rotation_seed_merge_commit_sha':'088139cca3fa308058dca72e2c67eb3f758624bc',
+ 'seed_policy_blob':'9698216426dba4121de444d1800936e196e64163',
+ 'seed_reconciler_blob':'7a7b1dc4cd88d98642f2ba933f004b09b36a1933',
+ 'seed_workflow_blob':'10cf188aa27a8d799d48052cef8347238be43385',
+ 'seed_one_shot_disposition':'PERMANENTLY_INERT_AFTER_THIS_MARKER_IS_ACCEPTED',
+ 'root_tcb_source':'ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS',
+ 'bootstrap_provenance':'DESIGNATED_WORKFLOW_RUN_EXACT_PR_BINDING_REQUIRED',
+ 'root_change_rule':'NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED',
+ 'fresh_science_effect':'NONE',
+ 'calibration_credit_effect':'NONE; REPLACEMENT COUNTABLE COHORT STARTS_AT_STREAK_ZERO',
+}
 
 def api(path,method='GET',data=None):
  r=urllib.request.Request(API+path,data=(json.dumps(data).encode() if data is not None else None),method=method);r.add_header('Accept','application/vnd.github+json');r.add_header('X-GitHub-Api-Version','2022-11-28')
@@ -12,6 +30,10 @@ def api(path,method='GET',data=None):
 def run(cmd,cwd=ROOT):
  p=subprocess.run(cmd,cwd=str(cwd),text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False);return p.returncode,p.stdout
 def load(root,path):return json.loads((root/path).read_text(encoding='utf-8'))
+def accepted_predecessor_root_epoch():
+ try:value=load(ROOT,ROOT_TCB_PATH)
+ except (OSError,UnicodeError,json.JSONDecodeError):return None
+ return EXPECTED_PREDECESSOR_ROOT_EPOCH if value==EXPECTED_ROOT_EPOCH2_IDENTITY else None
 def blob(path):
  b=(ROOT/path).read_bytes();return hashlib.sha1(f'blob {len(b)}\0'.encode()+b).hexdigest()
 def post(sha,ctx,state,desc):
@@ -19,7 +41,6 @@ def post(sha,ctx,state,desc):
 def fail(sha,why,p):
  if isinstance(sha,str) and HEX40.fullmatch(sha):
   post(sha,p['seed_context'],'failure','repair-reset seed refused: '+why)
-  for ctx in p['required_normal_contexts']:post(sha,ctx,'failure','repair-reset seed refused: '+why)
  print('REPAIR RESET SEED REFUSED',why);return 1
 
 def main():
@@ -38,6 +59,7 @@ def main():
  if rc or sblob.strip()!=p['exact_invalidated_state_blob']:return fail(sha,'accepted main is not exact invalidated Gen7 state',p)
  if state.get('active_cohort_id')!=p['exact_invalidated_cohort'] or state.get('generation_head_sha')!=p['exact_invalidated_generation_head'] or state.get('calibration_streak')!=0 or state.get('fresh_allowed_globally') is not False:return fail(sha,'Gen7 repair preconditions no longer hold',p)
  if (ROOT/p['one_shot_marker_path']).exists():return fail(sha,'repair-reset marker already accepted; seed inert',p)
+ if accepted_predecessor_root_epoch()!=EXPECTED_PREDECESSOR_ROOT_EPOCH:return fail(sha,'repair-reset seed is inert outside exact predecessor root epoch 2 identity',p)
  run(['git','fetch','--no-tags','origin',f'pull/{n}/head']);rc,_=run(['git','merge-base','--is-ancestor',trusted,sha])
  if rc:return fail(sha,'candidate not descendant of exact main',p)
  rc,out=run(['git','diff','--name-only',trusted+'...'+sha]);changed=set(out.splitlines()) if not rc else set()
@@ -61,6 +83,5 @@ def main():
  finally:
   run(['git','worktree','remove','--force',str(tmp)]);shutil.rmtree(tmp,ignore_errors=True)
  post(sha,p['seed_context'],'success','exact Gen7 one-shot repair-reset seed PASS')
- for ctx in p['required_normal_contexts']:post(sha,ctx,'success','exact Gen7 repair-reset root seed PASS/N-A non-state transition')
  return 0
 if __name__=='__main__':raise SystemExit(main())

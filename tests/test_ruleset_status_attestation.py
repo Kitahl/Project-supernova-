@@ -7,6 +7,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "reconcile_ruleset_attestation.py"
 WORKFLOW = ROOT / ".github" / "workflows" / "supernova-pr-target-admission.yml"
 CONTROL = ROOT / "config" / "countable_control_set_v25.json"
+STATUS_APP_INTEGRATION_ID = 4697060
 
 
 def load_module():
@@ -29,9 +30,9 @@ class RulesetStatusAttestationTests(unittest.TestCase):
                 "parameters": {
                     "strict_required_status_checks_policy": True,
                     "required_status_checks": [
-                        {"context": "supernova/static-control", "integration_id": 15368},
-                        {"context": "supernova/report-admission", "integration_id": 15368},
-                        {"context": "supernova/transition-admission", "integration_id": 15368},
+                        {"context": "supernova/static-control", "integration_id": STATUS_APP_INTEGRATION_ID},
+                        {"context": "supernova/report-admission", "integration_id": STATUS_APP_INTEGRATION_ID},
+                        {"context": "supernova/transition-admission", "integration_id": STATUS_APP_INTEGRATION_ID},
                     ]
                 },
             },
@@ -39,12 +40,12 @@ class RulesetStatusAttestationTests(unittest.TestCase):
 
     def test_positive_effective_rules_close_all_required_obligations(self):
         mod = load_module()
-        result = mod.evaluate_rules(self.good_rules(), {"id": 15368, "slug": "github-actions"})
+        result = mod.evaluate_rules(self.good_rules())
         for key in (
             "pr_required",
             "deletion_blocked",
             "non_fast_forward_blocked",
-            "actions_app",
+            "status_app",
             "static_bound",
             "report_bound",
             "transition_bound",
@@ -58,7 +59,7 @@ class RulesetStatusAttestationTests(unittest.TestCase):
         rules = self.good_rules()
         rows = rules[-1]["parameters"]["required_status_checks"]
         rows[1]["integration_id"] = -1
-        result = mod.evaluate_rules(rules, {"id": 15368, "slug": "github-actions"})
+        result = mod.evaluate_rules(rules)
         self.assertTrue(result["static_bound"])
         self.assertFalse(result["report_bound"])
         self.assertTrue(result["transition_bound"])
@@ -66,19 +67,18 @@ class RulesetStatusAttestationTests(unittest.TestCase):
 
     def test_non_strict_status_policy_fails_cas_gate(self):
         mod=load_module();rules=self.good_rules();rules[-1]["parameters"]["strict_required_status_checks_policy"]=False
-        result=mod.evaluate_rules(rules,{"id":15368,"slug":"github-actions"})
+        result=mod.evaluate_rules(rules)
         self.assertFalse(result["strict_up_to_date"]);self.assertFalse(result["spoof_resistant"])
 
     def test_missing_or_wrong_rules_fail_closed(self):
         mod = load_module()
         result = mod.evaluate_rules(
             [{"type": "required_status_checks", "parameters": {"required_status_checks": []}}],
-            {"id": 999, "slug": "not-github-actions"},
         )
         self.assertFalse(result["pr_required"])
         self.assertFalse(result["deletion_blocked"])
         self.assertFalse(result["non_fast_forward_blocked"])
-        self.assertFalse(result["actions_app"])
+        self.assertFalse(result["status_app"])
         self.assertFalse(result["spoof_resistant"])
 
     def test_existing_trusted_pr_target_workflow_invokes_accepted_main_attestor(self):

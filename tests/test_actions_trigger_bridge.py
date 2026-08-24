@@ -7,10 +7,16 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 COMMENT_WF = ROOT / ".github" / "workflows" / "supernova-comment-admission.yml"
 TARGET_WF = ROOT / ".github" / "workflows" / "supernova-pr-target-admission.yml"
 SETUP_PYTHON = "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065"
+STATUS_APP_ACTION = "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1"
 
 
 def uses_lines(text: str) -> list[str]:
-    return [line.strip() for line in text.splitlines() if re.search(r"^\s*-\s+uses:\s*", line)]
+    result = []
+    for line in text.splitlines():
+        match = re.search(r"^\s*(?:-\s+)?uses:\s*(\S.*)$", line)
+        if match:
+            result.append("- uses: " + match.group(1).strip())
+    return result
 
 
 class ActionsTriggerBridgeTests(unittest.TestCase):
@@ -20,11 +26,20 @@ class ActionsTriggerBridgeTests(unittest.TestCase):
         self.assertIn("repository_dispatch:", text)
         self.assertIn("types: [supernova-comment-admission]", text)
         self.assertIn("/supernova-admit", text)
+        self.assertIn("  structural-comment-heartbeat:", text)
+        self.assertIn("  reconcile:", text)
         self.assertIn("statuses: write", text)
         self.assertIn("scripts/reconcile_open_prs.py", text)
         self.assertIn("supernova/actions-comment-heartbeat", text)
+        self.assertIn("environment: supernova-protected-writer", text)
+        self.assertIn("permission-statuses: write", text)
+        self.assertIn("SUPERNOVA_STATUS_TOKEN: ${{ steps.status-token.outputs.token }}", text)
+        self.assertEqual(text.count("scripts/reconcile_open_prs.py"), 1)
         self.assertIn("python-version: '3.13'", text)
-        self.assertEqual(uses_lines(text), [f"- uses: {SETUP_PYTHON} # immutable SHA"])
+        self.assertEqual(uses_lines(text), [
+            f"- uses: {SETUP_PYTHON} # immutable SHA",
+            f"- uses: {STATUS_APP_ACTION} # v3.2.0 immutable SHA",
+        ])
         self.assertNotIn("actions/checkout@", text)
 
     def test_pr_target_bridge_is_owner_same_repo_only(self):
@@ -32,12 +47,23 @@ class ActionsTriggerBridgeTests(unittest.TestCase):
         self.assertIn("pull_request_target:", text)
         self.assertIn("github.event.pull_request.head.repo.full_name == github.repository", text)
         self.assertIn("github.event.pull_request.user.login == github.repository_owner", text)
+        self.assertIn("  structural-pr-target-heartbeat:", text)
+        self.assertIn("  reconcile:", text)
+        self.assertIn("  structural-ruleset-attestation:", text)
         self.assertIn("statuses: write", text)
         self.assertIn("supernova/actions-pr-target-heartbeat", text)
         self.assertIn("types: [supernova-pr-target-admission]", text)
         self.assertIn("cd trusted && python scripts/reconcile_open_prs.py", text)
+        self.assertIn("environment: supernova-protected-writer", text)
+        self.assertIn("permission-statuses: write", text)
+        self.assertIn("SUPERNOVA_STATUS_TOKEN: ${{ steps.status-token.outputs.token }}", text)
+        self.assertEqual(text.count("scripts/reconcile_open_prs.py"), 1)
         self.assertIn("python-version: '3.13'", text)
-        self.assertEqual(uses_lines(text), [f"- uses: {SETUP_PYTHON} # immutable SHA"])
+        self.assertEqual(uses_lines(text), [
+            f"- uses: {SETUP_PYTHON} # immutable SHA",
+            f"- uses: {STATUS_APP_ACTION} # v3.2.0 immutable SHA",
+            f"- uses: {SETUP_PYTHON} # immutable SHA",
+        ])
         self.assertNotIn("actions/checkout@", text)
 
     def test_bridges_do_not_mutate_canonical_state(self):

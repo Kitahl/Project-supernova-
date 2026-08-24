@@ -10,6 +10,10 @@ OWNER=REPO.split('/',1)[0]
 PLAN='0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa'
 HEX40=re.compile(r'^[0-9a-f]{40}$')
 POLICY_PATH='config/root_rotation_seed_v25.json'
+ROOT_TCB_PATH='config/root_tcb_epoch_v25.json'
+EXPECTED_PREDECESSOR_ROOT_EPOCH=1
+ACTIVATION_AUTHORITY_SCHEMA='PS-ADMISSION-AUTHORITY-2.5-4'
+ACTIVATION_BOOTSTRAP_SCHEMA='PS-AUTHORITY-BOOTSTRAP-2.5-2'
 
 def api(path,method='GET',data=None):
  req=urllib.request.Request(API+path,data=(json.dumps(data).encode() if data is not None else None),method=method)
@@ -22,6 +26,15 @@ def run(cmd,cwd=ROOT):
  p=subprocess.run(cmd,cwd=str(cwd),text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=False);return p.returncode,p.stdout
 
 def load(root,path):return json.loads((root/path).read_text(encoding='utf-8'))
+def accepted_predecessor_root_epoch():
+ if (ROOT/ROOT_TCB_PATH).exists():return None
+ try:
+  authority=load(ROOT,'config/admission_authority.json')
+  bootstrap=load(ROOT,'config/authority_bootstrap_v25.json')
+ except (OSError,UnicodeError,json.JSONDecodeError):return None
+ if not isinstance(authority,dict) or not isinstance(bootstrap,dict):return None
+ if authority.get('schema_version')==ACTIVATION_AUTHORITY_SCHEMA and bootstrap.get('schema_version')==ACTIVATION_BOOTSTRAP_SCHEMA:return EXPECTED_PREDECESSOR_ROOT_EPOCH
+ return None
 def git_blob(path):
  rc,out=run(['git','rev-parse','HEAD:'+path]);return out.strip() if rc==0 else None
 
@@ -32,7 +45,6 @@ def post(sha,ctx,state,desc):
 def fail(sha,reason,policy):
  if isinstance(sha,str) and HEX40.fullmatch(sha):
   post(sha,policy['seed_context'],'failure','root seed refused: '+reason)
-  for ctx in policy['required_status_contexts']:post(sha,ctx,'failure','root seed refused: '+reason)
  print('ROOT SEED REFUSED:',reason);return 1
 
 def main():
@@ -51,6 +63,7 @@ def main():
  state=load(ROOT,'state/CURRENT.json')
  if state.get('calibration_streak')!=0 or state.get('fresh_allowed_globally') is not False:return fail(sha,'streak must be zero and fresh disabled',policy)
  if (ROOT/policy['one_shot_marker_path']).exists():return fail(sha,'root epoch marker already exists; seed is permanently inert',policy)
+ if accepted_predecessor_root_epoch()!=EXPECTED_PREDECESSOR_ROOT_EPOCH:return fail(sha,'root seed is inert outside exact predecessor root epoch 1 activation identity',policy)
  run(['git','fetch','--no-tags','origin',f'pull/{number}/head'])
  rc,_=run(['git','merge-base','--is-ancestor',trusted,sha])
  if rc:return fail(sha,'candidate does not descend from exact accepted main',policy)
@@ -84,7 +97,6 @@ def main():
  finally:
   run(['git','worktree','remove','--force',str(tmp)]);shutil.rmtree(tmp,ignore_errors=True)
  post(sha,policy['seed_context'],'success','one-shot accepted-main root seed PASS; exact head/base')
- for ctx in policy['required_status_contexts']:post(sha,ctx,'success','one-shot root seed exact-head PASS/N-A non-state transition')
  print('ROOT ROTATION SEED PASS',number,sha);return 0
 
 if __name__=='__main__':raise SystemExit(main())

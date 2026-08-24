@@ -63,7 +63,7 @@ class RootEpoch6RepairTests(unittest.TestCase):
   self.assertIn('STRUCTURAL_BRANCH_STATUS_SINGLE_WRITER_RESTORED',eight['repair_scope'])
   self.assertIn('STRICT_FINITE_DUPLICATE_FREE_JSON',nine['repair_scope'])
 
- def test_epoch7_epoch8_epoch9_seeds_are_consumed_once_and_future_root_changes_need_new_seed(self):
+ def test_epoch7_epoch8_epoch9_seeds_are_consumed_once_and_future_root_uses_installed_kernel(self):
   seeds=[load('config/root_epoch7_repair_seed_v25.json'),load('config/root_epoch8_status_writer_repair_seed_v25.json'),load('config/root_epoch9_integrity_repair_seed_v25.json')]
   expected_epochs=[7,8,9]
   for seed,epoch_number in zip(seeds,expected_epochs):
@@ -71,7 +71,7 @@ class RootEpoch6RepairTests(unittest.TestCase):
    self.assertEqual(seed['target_root_epoch'],epoch_number)
    self.assertEqual(set(seed['required_root_candidate_paths']),set(seed['allowed_root_candidate_paths']))
   epoch=load('config/root_tcb_epoch_v25.json')
-  self.assertEqual(epoch['root_change_rule'],'NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED')
+  self.assertEqual(epoch['root_change_rule'],'NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_THE_EXACT_INSTALLED_OWNER_ROOT_TRANSITION_KERNEL_AND_SOURCE_BOUND_RECEIPT')
 
  def test_terminal_nonclean_receipts_are_evidence_not_calibration_pass(self):
   admission=(ROOT/'scripts/reconcile_v25_admission.py').read_text(encoding='utf-8')

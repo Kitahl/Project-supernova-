@@ -2,6 +2,34 @@
   "schema_version": "PS-ROOT-TCB-EPOCH-2.5-11",
   "protocol_version": "2.5",
   "task_network_plan_id": "0aa341106cfc5b104ab9ca9c2ae116d490a258685e28d26d5435860c53bb12aa",
+  "root_transition_authorization": {
+    "schema_version": "PS-ROOT-TRANSITION-KERNEL-1",
+    "helper": "scripts/root_transition_authorization.py",
+    "command": "/supernova-root-authorize v1",
+    "command_prefix": "/supernova-root-authorize v1 ",
+    "repository_id": 1338642578,
+    "owner_user_id": 222771578,
+    "max_lifetime_seconds": 1800,
+    "bound_fields": [
+      "kernel",
+      "repo_id",
+      "owner_id",
+      "pr",
+      "base",
+      "head",
+      "tree",
+      "changed_path_blob_manifest_sha256",
+      "predecessor_epoch",
+      "successor_epoch",
+      "nonce",
+      "expires"
+    ]
+  },
+  "status_writer_partition": {
+    "open_main_pr_heads": "scripts/reconcile_open_prs.py",
+    "non_pr_active_cohort_heads": "scripts/reconcile_v25_admission.py",
+    "legacy_seed_programs": "RECEIPT_CONTEXT_ONLY"
+  },
   "epoch": 11,
   "status": "ACTIVE_AFTER_ROOT11_STAGEABILITY_REPAIR",
   "previous_epoch_blob": "cf74b9c17bf1d763e7d89dc07f9bb74c334f8b59",
@@ -91,8 +119,8 @@
   "gen10_historical_integration_status_issue": "O-T0-GEN10-HISTORICAL-INTEGRATION-STATUS-DRIFT",
   "gen11_integrity_issue_ref": "#221",
   "gen12_scheduler_issue_ref": "#225",
-  "root_tcb_source": "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS_PLUS_VALIDATOR_ENVIRONMENT_PLUS_EPOCH6_THROUGH_EPOCH11_INDEPENDENT_ONE_SHOT_SEEDS_PLUS_ROOT11_SEED_COMPLETENESS_AMENDMENT",
-  "root_change_rule": "NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_A_NEW_INDEPENDENTLY_INSTALLED_SEED",
+  "root_tcb_source": "ACCEPTED_MAIN_ADMISSION_AUTHORITY_PLUS_DEPENDENCY_LOCK_PLUS_STATIC_ROOTS_PLUS_VALIDATOR_ENVIRONMENT_PLUS_EPOCH6_THROUGH_EPOCH11_FROZEN_LINEAGE_SEEDS_PLUS_INSTALLED_OWNER_ROOT_TRANSITION_KERNEL",
+  "root_change_rule": "NO_AUTOMATED_BOOTSTRAP_SELF_AMENDMENT; FUTURE_ROOT_CHANGE_REQUIRES_THE_EXACT_INSTALLED_OWNER_ROOT_TRANSITION_KERNEL_AND_SOURCE_BOUND_RECEIPT",
   "root11_stageability_issue_ref": "#233",
   "fresh_science_effect": "NONE",
   "calibration_credit_effect": "GEN12_ZERO; ROOT_EPOCH10_AND_ROOT_EPOCH11_REPAIRS_ZERO; NEXT_REPLACEMENT_COUNTABLE_COHORT_STARTS_AT_STREAK_ZERO"
