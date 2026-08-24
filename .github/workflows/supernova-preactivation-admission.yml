@@ -11,7 +11,7 @@ permissions:
   statuses: write
 
 concurrency:
-  group: supernova-required-context-writers
+  group: supernova-preactivation-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:

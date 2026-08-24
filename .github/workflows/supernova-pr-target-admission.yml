@@ -9,6 +9,7 @@ on:
 concurrency:
   group: supernova-required-context-writers
   cancel-in-progress: false
+  queue: max
 
 jobs:
   structural-pr-target-heartbeat:

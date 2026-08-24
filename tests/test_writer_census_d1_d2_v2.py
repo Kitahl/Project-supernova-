@@ -564,12 +564,24 @@ assert historical == historical
             text = (ROOT / path).read_text(encoding="utf-8")
             self.assertIn("group: supernova-required-context-writers", text)
             self.assertIn("cancel-in-progress: false", text)
+            self.assertIn("queue: max", text)
         for path in CALLERS["scripts/reconcile_open_prs.py"]:
             text = (ROOT / path).read_text(encoding="utf-8")
             self.assertIn("environment: supernova-protected-writer", text)
             self.assertIn("actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1", text)
             self.assertIn("permission-statuses: write", text)
             self.assertIn("SUPERNOVA_STATUS_TOKEN: ${{ steps.status-token.outputs.token }}", text)
+
+    def test_preactivation_receipts_use_per_pr_concurrency(self):
+        path = ROOT / ".github/workflows/supernova-preactivation-admission.yml"
+        text = path.read_text(encoding="utf-8")
+        self.assertIn(
+            "group: supernova-preactivation-${{ github.event.pull_request.number }}",
+            text,
+        )
+        self.assertIn("cancel-in-progress: false", text)
+        self.assertNotIn("group: supernova-required-context-writers", text)
+        self.assertNotIn("queue: max", text)
 
     def full_state(self, rows):
         final, posts = {}, []
