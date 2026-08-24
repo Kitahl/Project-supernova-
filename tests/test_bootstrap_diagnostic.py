@@ -36,11 +36,22 @@ class BootstrapDiagnosticTests(unittest.TestCase):
 
     def test_trusted_pr_target_invokes_helper_with_least_privilege(self):
         text = WORKFLOW.read_text(encoding="utf-8")
-        self.assertIn("cd trusted && python scripts/diagnose_authority_bootstrap.py", text)
         self.assertIn("pull_request_target:", text)
-        self.assertIn("statuses: write", text)
-        self.assertNotIn("issues: write", text)
-        self.assertIn("git clone --filter=blob:none", text)
+        self.assertIn("  bootstrap-diagnostic:", text)
+        diagnostic = text.split("\n  bootstrap-diagnostic:\n", 1)[1].split(
+            "\n  structural-ruleset-attestation:\n", 1
+        )[0]
+        self.assertIn("cd trusted && python scripts/diagnose_authority_bootstrap.py", diagnostic)
+        self.assertIn("statuses: write", diagnostic)
+        self.assertIn("pull-requests: read", diagnostic)
+        self.assertNotIn("issues: write", diagnostic)
+        self.assertIn("git clone --filter=blob:none", diagnostic)
+
+        protected = text.split("\n  reconcile:\n", 1)[1].split(
+            "\n  bootstrap-diagnostic:\n", 1
+        )[0]
+        self.assertIn("statuses: read", protected)
+        self.assertNotIn("scripts/diagnose_authority_bootstrap.py", protected)
 
 
 if __name__ == "__main__":

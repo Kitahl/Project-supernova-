@@ -35,6 +35,7 @@ WORKFLOW_GENERIC_JOBS = {
     "supernova-open-pr-reconciler.yml": set(),
     "supernova-pr-target-admission.yml": {
         "structural-pr-target-heartbeat",
+        "bootstrap-diagnostic",
         "structural-ruleset-attestation",
     },
 }
