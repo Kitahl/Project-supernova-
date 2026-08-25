@@ -311,6 +311,48 @@ def derive_hourly_occurrences(schedule: object, registry_minute: object, product
     return first, second
 
 
+def _utc_z(instant: datetime) -> str:
+    return instant.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def derive_countable_occurrences(
+    task_by_role: dict,
+    registry_rows: dict,
+    lane_rows: dict,
+    production_not_before: object,
+) -> tuple[dict[str, tuple[datetime, datetime]], dict[str, str]]:
+    """Derive worker starts from activation and fan-in starts from causal closure.
+
+    All native tasks remain hourly. Early MM06/MF06/BIL00 wakes are
+    heartbeat-only; the first countable occurrence is the first native
+    occurrence strictly after its predecessor frontier.
+    """
+    if set(lane_rows) != set(WORKERS):
+        raise ValueError("liveness lane inventory is not exact canonical 12")
+    occurrences: dict[str, tuple[datetime, datetime]] = {}
+    floors: dict[str, str] = {}
+    for role in WORKERS:
+        row = task_by_role[role]
+        expected = registry_rows[role]
+        floors[role] = str(production_not_before)
+        occurrences[role] = derive_hourly_occurrences(
+            row.get("normalized_schedule"), expected.get("minute"), production_not_before
+        )
+
+    predecessor_frontier = max(parse_time(row["deadline_utc"]) for row in lane_rows.values())
+    for role in ("MM06", "MF06", "BIL00"):
+        # Strictness matters when a deadline lands exactly on a role's minute.
+        floor = _utc_z(predecessor_frontier + timedelta(microseconds=1))
+        floors[role] = floor
+        row = task_by_role[role]
+        expected = registry_rows[role]
+        occurrences[role] = derive_hourly_occurrences(
+            row.get("normalized_schedule"), expected.get("minute"), floor
+        )
+        predecessor_frontier = occurrences[role][0]
+    return occurrences, floors
+
+
 def validate_canonical_hourly_timing(
     schedule: object,
     registry_minute: object,
@@ -320,6 +362,7 @@ def validate_canonical_hourly_timing(
     challenges: object,
     production_not_before: object,
     admission_cutoff: object,
+    occurrence_not_before: object | None = None,
 ) -> list[str]:
     """Validate all timing fields as derived consequences of one unambiguous hourly schedule."""
     errors: list[str] = []
@@ -330,7 +373,11 @@ def validate_canonical_hourly_timing(
         cutoff = parse_utc_occurrence(admission_cutoff)
         if cutoff >= not_before:
             return ["scheduler admission cutoff must precede production_not_before"]
-        first, second = derive_hourly_occurrences(schedule, registry_minute, production_not_before)
+        first, second = derive_hourly_occurrences(
+            schedule,
+            registry_minute,
+            production_not_before if occurrence_not_before is None else occurrence_not_before,
+        )
     except Exception as exc:
         return ["canonical scheduler timing invalid: " + str(exc)]
     try:
@@ -391,8 +438,14 @@ def _scan_public(value: Any, errors: list[str], path: str = "$") -> None:
             _scan_public(child, errors, f"{path}[{index}]")
 
 
-def production_allowed(current_state: dict, manifest: dict, now: datetime, staged: dict | None = None) -> bool:
-    """Staged tasks must return PREACTIVATION_WAIT until exact activation and time gate."""
+def production_allowed(
+    current_state: dict,
+    manifest: dict,
+    now: datetime,
+    staged: dict | None = None,
+    role_id: str | None = None,
+) -> bool:
+    """Require exact activation and the role's countable occurrence gate."""
     try:
         expected_g = staged.get("generation_head_sha") if staged else manifest.get("generation_head_sha")
         staged_ok = True if staged is None else (
@@ -400,7 +453,25 @@ def production_allowed(current_state: dict, manifest: dict, now: datetime, stage
             and staged.get("candidate_nonce") == manifest.get("candidate_nonce")
             and staged.get("generation_root_sha") == manifest.get("generation_root_sha")
         )
-        return current_state.get("active_cohort_id") == manifest.get("cohort_id") and current_state.get("generation_head_sha") == expected_g and staged_ok and now.astimezone(timezone.utc) >= parse_time(manifest["production_not_before_utc"])
+        not_before = manifest["production_not_before_utc"]
+        if role_id is not None:
+            task = next(
+                (
+                    row
+                    for row in manifest.get("tasks") or []
+                    if isinstance(row, dict) and row.get("role_id") == role_id
+                ),
+                None,
+            )
+            if task is None:
+                return False
+            not_before = task["normalized_first_production_utc"]
+        return (
+            current_state.get("active_cohort_id") == manifest.get("cohort_id")
+            and current_state.get("generation_head_sha") == expected_g
+            and staged_ok
+            and now.astimezone(timezone.utc) >= parse_time(not_before)
+        )
     except Exception:
         return False
 
@@ -551,6 +622,14 @@ def validate_scheduler_manifest(root: pathlib.Path, control: dict, assignment: d
         errors.append("scheduler production/admission time invalid: " + str(exc))
 
     task_by_role = {row.get("role_id"): row for row in tasks if isinstance(row, dict)}
+    countable_occurrences: dict[str, tuple[datetime, datetime]] = {}
+    occurrence_floors: dict[str, str] = {}
+    try:
+        countable_occurrences, occurrence_floors = derive_countable_occurrences(
+            task_by_role, registry_rows, lane_rows, manifest.get("production_not_before_utc")
+        )
+    except Exception as exc:
+        errors.append("countable scheduler occurrence derivation failed: " + str(exc))
     for role in ROLES:
         row = task_by_role.get(role) or {}
         expected = registry_rows.get(role) or {}
@@ -575,10 +654,18 @@ def validate_scheduler_manifest(root: pathlib.Path, control: dict, assignment: d
             row.get("normalized_first_production_utc"), row.get("normalized_second_production_utc"),
             row.get("challenge_occurrences_utc"), manifest.get("production_not_before_utc"),
             manifest.get("admission_cutoff_utc"),
+            occurrence_floors.get(role, manifest.get("production_not_before_utc")),
         )
         errors.extend(role + " " + message for message in timing_errors)
         try:
-            first, second = derive_hourly_occurrences(row.get("normalized_schedule"), expected.get("minute"), manifest.get("production_not_before_utc"))
+            if role in countable_occurrences:
+                first, second = countable_occurrences[role]
+            else:
+                first, second = derive_hourly_occurrences(
+                    row.get("normalized_schedule"),
+                    expected.get("minute"),
+                    manifest.get("production_not_before_utc"),
+                )
         except Exception as exc:
             errors.append(role + " canonical scheduler timing invalid: " + str(exc))
             continue

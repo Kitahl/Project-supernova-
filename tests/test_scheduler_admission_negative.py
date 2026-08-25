@@ -36,6 +36,35 @@ class SchedulerAdmissionNegativeTests(unittest.TestCase):
         self.assertFalse(self.guard.production_allowed({"active_cohort_id":"CAL-NEXT","generation_head_sha":"1"*40},manifest,datetime(2030,1,1,0,59,tzinfo=timezone.utc)))
         self.assertTrue(self.guard.production_allowed({"active_cohort_id":"CAL-NEXT","generation_head_sha":"1"*40},manifest,now))
 
+    def test_downstream_early_wake_is_heartbeat_only(self):
+        manifest = {
+            "cohort_id": "CAL-NEXT",
+            "generation_head_sha": "1" * 40,
+            "production_not_before_utc": "2030-01-01T01:00:00Z",
+            "tasks": [
+                {
+                    "role_id": "MM06",
+                    "normalized_first_production_utc": "2030-01-01T02:35:00Z",
+                }
+            ],
+        }
+        current = {"active_cohort_id": "CAL-NEXT", "generation_head_sha": "1" * 40}
+        self.assertFalse(
+            self.guard.production_allowed(
+                current, manifest, datetime(2030, 1, 1, 1, 35, tzinfo=timezone.utc), role_id="MM06"
+            )
+        )
+        self.assertTrue(
+            self.guard.production_allowed(
+                current, manifest, datetime(2030, 1, 1, 2, 35, tzinfo=timezone.utc), role_id="MM06"
+            )
+        )
+        self.assertFalse(
+            self.guard.production_allowed(
+                current, manifest, datetime(2030, 1, 1, 2, 35, tzinfo=timezone.utc), role_id="UNKNOWN"
+            )
+        )
+
     def test_naive_local_time_is_rejected(self):
         with self.assertRaises(ValueError):self.guard.parse_time("2030-01-01T01:00:00")
 

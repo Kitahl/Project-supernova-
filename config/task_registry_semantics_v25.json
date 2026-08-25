@@ -29,7 +29,7 @@
   "preactivation_binding_rule": "POINTER_BLOB_PLUS_R_PLUS_G_PLUS_MANIFEST_BLOB",
   "mm06_source_rule": "CLOSED_SOURCE_RECEIPT_WITHOUT_SELF_COMMIT_OR_BLOB_FIELDS",
   "scheduler_admission_copy_rule": "DISTINCT_CREATE_ONCE_MAIN_ENVELOPE_OVER_ALREADY_EXISTING_MM06_H_AND_BLOB",
-  "production_activation_rule": "CURRENT_EXACT_COHORT_G_PLUS_PRODUCTION_NOT_BEFORE",
+  "production_activation_rule": "CURRENT_EXACT_COHORT_G_PLUS_ROLE_NORMALIZED_FIRST_PRODUCTION_NOT_BEFORE; EARLY DOWNSTREAM HOURLY WAKES ARE HEARTBEAT_ONLY",
   "scheduler_readback_rule": "NORMALIZED_SCHEDULER_READBACK",
   "scheduler_identity_authority": "FROZEN_CHATGPT_SCHEDULED_TASK_IDS_PLUS_AUTHENTICATED_EXHAUSTIVE_LIVE_READBACK",
   "scheduler_inventory_attestation": "config/scheduler_attestation_authority_v25.json",
@@ -58,11 +58,11 @@
     "last_error",
     "last_result"
   ],
-  "time_authority": "EXACT_TZID_AMERICA_VANCOUVER_HOURLY_BYMINUTE_GRAMMAR; FROZEN POST_2007_CANADA_PACIFIC OFFSET RULE; UTC OCCURRENCES DERIVED FROM REGISTRY MINUTE; DST TRANSITION OR AMBIGUITY FAILS CLOSED",
+  "time_authority": "EXACT_TZID_AMERICA_VANCOUVER_HOURLY_BYMINUTE_GRAMMAR; FROZEN POST_2007_CANADA_PACIFIC OFFSET RULE; WORKER OCCURRENCES DERIVED FROM COHORT PRODUCTION_NOT_BEFORE; MM06 FIRST COUNTABLE OCCURRENCE IS STRICTLY AFTER MAXIMUM WORKER DEADLINE; MF06 AND BIL00 FIRST COUNTABLE OCCURRENCES FOLLOW THEIR PREDECESSOR FRONTIERS; EARLY WAKES ARE HEARTBEAT_ONLY; DST TRANSITION OR AMBIGUITY FAILS CLOSED",
   "preactivation_observation_authority": "EXACT_RECEIPT_HEAD TRUSTED STATUS SERVER CREATED_AT MUST FALL IN SIGNED_FROZEN_CHALLENGE THROUGH CHALLENGE_PLUS_MAX_ATTEMPT_PLUS_JITTER AND NOT AFTER ADMISSION_CUTOFF",
   "retry_budget_formula": "deadline_minus_first_production >= cadence + max_attempt_duration + jitter AND deadline_minus_second_production >= max_attempt_duration + jitter",
   "api_success_semantics": "NOT_PROOF_OF_POSTCONDITION",
   "unknown_semantics": "BLOCKED",
   "raw_auth_publication": "FORBIDDEN",
-  "fail_closed_rule": "If canonical state/control/assignment disagree, task identity or normalized scheduler readback drifts, preactivation admission is absent, or any required evidence is unknown, validation fails and no calibration credit is allowed."
+  "fail_closed_rule": "If canonical state/control/assignment disagree, task identity or normalized scheduler readback drifts, preactivation admission is absent, or any required evidence is unknown, validation fails and no calibration credit is allowed. A receipt without a trusted at-or-before-deadline witness is late or timing-unknown and cannot reopen a frozen MISSING partition."
 }
