@@ -325,7 +325,9 @@ def derive_countable_occurrences(
 
     All native tasks remain hourly. Early MM06/MF06/BIL00 wakes are
     heartbeat-only; the first countable occurrence is the first native
-    occurrence strictly after its predecessor frontier.
+    occurrence strictly after its predecessor completion frontier.  The
+    accepted-main attempt and jitter constants are authority; candidate
+    manifest values never control this derivation.
     """
     if set(lane_rows) != set(WORKERS):
         raise ValueError("liveness lane inventory is not exact canonical 12")
@@ -349,7 +351,12 @@ def derive_countable_occurrences(
         occurrences[role] = derive_hourly_occurrences(
             row.get("normalized_schedule"), expected.get("minute"), floor
         )
-        predecessor_frontier = occurrences[role][0]
+        predecessor_frontier = occurrences[role][0] + timedelta(
+            seconds=(
+                APPROVED_MAX_ATTEMPT_DURATION_SECONDS
+                + APPROVED_SCHEDULER_JITTER_BUDGET_SECONDS
+            )
+        )
     return occurrences, floors
 
 
@@ -702,8 +709,21 @@ def validate_scheduler_manifest(root: pathlib.Path, control: dict, assignment: d
         mm06 = parse_time(task_by_role["MM06"]["normalized_first_production_utc"])
         mf06 = parse_time(task_by_role["MF06"]["normalized_first_production_utc"])
         bil00 = parse_time(task_by_role["BIL00"]["normalized_first_production_utc"])
-        if not (max_deadline < mm06 < mf06 < bil00):
-            errors.append("fan-in order must be workers -> postdeadline MM06 -> MF06 -> BIL00")
+        completion_budget = timedelta(
+            seconds=(
+                APPROVED_MAX_ATTEMPT_DURATION_SECONDS
+                + APPROVED_SCHEDULER_JITTER_BUDGET_SECONDS
+            )
+        )
+        if not (
+            max_deadline < mm06
+            and mm06 + completion_budget < mf06
+            and mf06 + completion_budget < bil00
+        ):
+            errors.append(
+                "fan-in order must be workers -> postdeadline MM06 -> "
+                "post-completion MF06 -> post-completion BIL00"
+            )
     except Exception as exc:
         errors.append("fan-in order could not be verified: " + str(exc))
     return errors
