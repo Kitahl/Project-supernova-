@@ -47,7 +47,7 @@ class SchedulerTimingContractTests(unittest.TestCase):
             SCHEDULE, 5, 3600, "2026-01-15T08:05:00Z", "2026-01-15T09:05:00Z",
             ["2026-01-15T07:05:00Z"], "2026-01-15T08:04:30Z", "2026-01-15T08:04:00Z"), [])
 
-    def test_fan_in_countable_occurrences_follow_worker_deadline_without_rescheduling(self):
+    def test_fan_in_countable_occurrences_follow_predecessor_completion_frontiers(self):
         minutes = {
             "MF01": 5, "MF02": 6, "MF03": 7, "MF04": 8, "MF05": 9,
             "MM01": 10, "MM02": 11, "MM03": 12, "MM04": 13, "MM05": 14,
@@ -67,9 +67,11 @@ class SchedulerTimingContractTests(unittest.TestCase):
         )
         self.assertEqual(occurrences["EXT01"][0].isoformat(), "2026-01-15T08:16:00+00:00")
         self.assertEqual(occurrences["MM06"][0].isoformat(), "2026-01-15T09:35:00+00:00")
-        self.assertEqual(occurrences["MF06"][0].isoformat(), "2026-01-15T09:45:00+00:00")
-        self.assertEqual(occurrences["BIL00"][0].isoformat(), "2026-01-15T09:58:00+00:00")
+        self.assertEqual(occurrences["MF06"][0].isoformat(), "2026-01-15T10:45:00+00:00")
+        self.assertEqual(occurrences["BIL00"][0].isoformat(), "2026-01-15T10:58:00+00:00")
         self.assertEqual(floors["MM06"], "2026-01-15T09:27:00.000001Z")
+        self.assertEqual(floors["MF06"], "2026-01-15T09:46:00.000001Z")
+        self.assertEqual(floors["BIL00"], "2026-01-15T10:56:00.000001Z")
 
     def test_phase_aware_timing_validation_rejects_the_early_mm06_wake(self):
         schedule = "TZID=America/Vancouver;FREQ=HOURLY;BYMINUTE=35"
@@ -104,6 +106,8 @@ class SchedulerTimingContractTests(unittest.TestCase):
             tasks, registry, lanes, "2026-01-15T08:04:30Z"
         )
         self.assertEqual(occurrences["MM06"][0].isoformat(), "2026-01-15T10:35:00+00:00")
+        self.assertEqual(occurrences["MF06"][0].isoformat(), "2026-01-15T11:35:00+00:00")
+        self.assertEqual(occurrences["BIL00"][0].isoformat(), "2026-01-15T12:35:00+00:00")
 
     def test_phase_derivation_requires_exact_worker_lane_inventory(self):
         tasks = {
@@ -120,6 +124,25 @@ class SchedulerTimingContractTests(unittest.TestCase):
             GUARD.derive_countable_occurrences(
                 tasks, registry, lanes, "2026-01-15T08:04:30Z"
             )
+
+    def test_downstream_occurrence_at_exact_completion_frontier_is_not_admissible(self):
+        minutes = {role: 5 for role in GUARD.WORKERS}
+        minutes.update({"MM06": 35, "MF06": 46, "BIL00": 57})
+        tasks = {
+            role: {"normalized_schedule": f"TZID=America/Vancouver;FREQ=HOURLY;BYMINUTE={minute:02d}"}
+            for role, minute in minutes.items()
+        }
+        registry = {role: {"minute": minute} for role, minute in minutes.items()}
+        lanes = {role: {"deadline_utc": "2026-01-15T09:27:00Z"} for role in GUARD.WORKERS}
+        occurrences, floors = GUARD.derive_countable_occurrences(
+            tasks, registry, lanes, "2026-01-15T08:04:30Z"
+        )
+        self.assertEqual(occurrences["MM06"][0].isoformat(), "2026-01-15T09:35:00+00:00")
+        self.assertEqual(floors["MF06"], "2026-01-15T09:46:00.000001Z")
+        self.assertEqual(occurrences["MF06"][0].isoformat(), "2026-01-15T10:46:00+00:00")
+        self.assertEqual(floors["BIL00"], "2026-01-15T10:57:00.000001Z")
+        self.assertEqual(occurrences["BIL00"][0].isoformat(), "2026-01-15T11:57:00+00:00")
+
 
     def test_cadence_first_before_not_before_and_challenge_cutoff_fail_closed(self):
         errors = GUARD.validate_canonical_hourly_timing(
