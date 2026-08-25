@@ -33,6 +33,8 @@ GEN12_STATE_BLOB = "826fcdd01701eda04a177f86748878b3755badc0"
 BRANCH_RECONCILER_WORKFLOW = ".github/workflows/supernova-branch-reconciler.yml"
 RUN_URL_RE = re.compile(r"https://github\.com/[^/]+/[^/]+/actions/runs/(\d+)")
 PREACTIVATION_WORKERS = set(SCHEDULER_WORKERS)
+STATUS_INTEGRATION_ID = 15368
+STATUS_EVENTS = {"schedule", "push", "repository_dispatch"}
 
 
 def git(repo: pathlib.Path, *args: str) -> tuple[int, str, str]:
@@ -103,10 +105,54 @@ def one_commit_child(repo: pathlib.Path, head: str, parent: str) -> bool:
     return rc == 0 and out.split() == [head, parent]
 
 
-def post(sha: str, context: str, state: str, description: str):
+def _trusted_main_head() -> str:
+    rc, out, err = git(TRUSTED_ROOT, "rev-parse", "HEAD")
+    if rc or len(out) != 40:
+        raise ValueError("cannot resolve trusted main head: " + err)
+    return out
+
+
+def _status_integration_id(row: dict) -> int | None:
+    parsed = urllib.parse.urlparse(str(row.get("avatar_url") or ""))
+    parts = parsed.path.strip("/").split("/")
+    return int(parts[1]) if len(parts) == 2 and parts[0] == "in" and parts[1].isdigit() else None
+
+
+def _matching_current_status(sha: str, context: str, state: str, description: str) -> bool:
+    combined = api(f"/commits/{sha}/status?per_page=100")
+    statuses = combined.get("statuses") if isinstance(combined, dict) else None
+    if not isinstance(statuses, list):
+        raise ValueError("combined commit status response lacks statuses array")
+    row = next((item for item in statuses if isinstance(item, dict) and item.get("context") == context), None)
+    if row is None or row.get("state") != state or row.get("description") != description:
+        return False
+    if _status_integration_id(row) != STATUS_INTEGRATION_ID:
+        return False
+    match = RUN_URL_RE.fullmatch(str(row.get("target_url") or ""))
+    if not match:
+        return False
+    workflow_run = api("/actions/runs/" + match.group(1)) or {}
+    return (
+        workflow_run.get("path") == BRANCH_RECONCILER_WORKFLOW
+        and workflow_run.get("event") in STATUS_EVENTS
+        and workflow_run.get("status") == "completed"
+        and workflow_run.get("conclusion") == "success"
+        and workflow_run.get("head_sha") == _trusted_main_head()
+        and (workflow_run.get("repository") or {}).get("full_name") == REPO
+        and (workflow_run.get("actor") or {}).get("login") == OWNER
+    )
+
+
+def post(sha: str, context: str, state: str, description: str) -> bool:
     if not TOKEN:
         raise RuntimeError("GITHUB_TOKEN missing")
-    body = {"state": state, "context": context, "description": description[:140]}
+    description = description[:140]
+    try:
+        if _matching_current_status(sha, context, state, description):
+            return False
+    except Exception as exc:
+        print(f"Status dedup read unavailable for {sha} {context}; publishing replacement: {exc!r}")
+    body = {"state": state, "context": context, "description": description}
     run_id = os.environ.get("GITHUB_RUN_ID", "")
     if run_id.isdigit():
         body["target_url"] = f"https://github.com/{REPO}/actions/runs/{run_id}"
@@ -116,6 +162,7 @@ def post(sha: str, context: str, state: str, description: str):
     req.add_header("Accept", "application/vnd.github+json")
     req.add_header("X-GitHub-Api-Version", "2022-11-28")
     urllib.request.urlopen(req, timeout=30).read()
+    return True
 
 
 def _schema_errors(path: str, value) -> list[str]:
@@ -325,15 +372,24 @@ def main() -> int:
     else:
         ok, message = validate_branch(repo, generation_branch, generation_head)
         post(generation_head, "supernova/branch-generation", "success" if ok else "failure", message)
-    for worker, branch in state["worker_branches"].items():
+    worker_branches = state["worker_branches"]
+    awaiting_workers = []
+    for worker, branch in worker_branches.items():
         head = remote_head(repo, branch)
         if head is None:
             continue
         if head == generation_head:
-            post(head, "supernova/branch-worker", "pending", f"{worker}: awaiting immutable report")
+            awaiting_workers.append(worker)
             continue
         ok, message = validate_branch(repo, branch, generation_head)
         post(head, "supernova/branch-worker", "success" if ok else "failure", f"{worker}: {message}")
+    if awaiting_workers:
+        post(
+            generation_head,
+            "supernova/branch-worker",
+            "pending",
+            f"awaiting immutable report: {len(awaiting_workers)}/{len(worker_branches)} lanes",
+        )
     for kind, key, context in (("verify","verifier_branch","supernova/branch-verify"),("integrate","integrator_branch","supernova/branch-integrate")):
         branch = state[key]
         head = remote_head(repo, branch)
