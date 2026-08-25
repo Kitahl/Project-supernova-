@@ -354,6 +354,38 @@ def validate_branch(repo: pathlib.Path, branch: str, generation_head: str) -> tu
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+
+def _exact_gen12_terminal_receipts(repo: pathlib.Path, state: dict) -> bool:
+    if (
+        state.get("active_cohort_id") != GEN12_COHORT
+        or state.get("generation_seq") != 12
+        or state.get("generation_head_sha") != GEN12_G
+        or blob_at(repo, "HEAD", "state/CURRENT.json") != GEN12_STATE_BLOB
+    ):
+        return False
+    worker_ids = set((state.get("worker_branches") or {}).keys())
+    verifier_branch = state.get("verifier_branch")
+    integrator_branch = state.get("integrator_branch")
+    verifier_head = remote_head(repo, str(verifier_branch))
+    integrator_head = remote_head(repo, str(integrator_branch))
+    if not worker_ids or verifier_head in (None, GEN12_G) or integrator_head in (None, GEN12_G):
+        return False
+    try:
+        verification = load_ref(repo, verifier_head, f"verification/{GEN12_COHORT}.json")
+        integration = load_ref(repo, integrator_head, f"integration/{GEN12_COHORT}.json")
+    except Exception:
+        return False
+    return (
+        verification.get("generation_head_sha") == GEN12_G
+        and verification.get("calibration_pass") is False
+        and verification.get("verdict") == "INCOMPLETE"
+        and set(verification.get("missing_workers") or []) == worker_ids
+        and integration.get("generation_head_sha") == GEN12_G
+        and integration.get("calibration_pass") is False
+        and integration.get("verification_head_sha") == verifier_head
+        and set(integration.get("missing_workers") or []) == worker_ids
+    )
+
 def main() -> int:
     repo = TRUSTED_ROOT
     if os.environ.get("GITHUB_EVENT_NAME") == "pull_request_target" or os.environ.get("SUPERNOVA_STAGE_PR_NUMBER"):
@@ -383,7 +415,13 @@ def main() -> int:
             continue
         ok, message = validate_branch(repo, branch, generation_head)
         post(head, "supernova/branch-worker", "success" if ok else "failure", f"{worker}: {message}")
-    if awaiting_workers:
+    terminal_gen12 = (
+        len(awaiting_workers) == len(worker_branches)
+        and _exact_gen12_terminal_receipts(repo, state)
+    )
+    if terminal_gen12:
+        print("Gen12 terminal: preserving immutable 12-MISSING receipt; worker pending status write suppressed")
+    elif awaiting_workers:
         post(
             generation_head,
             "supernova/branch-worker",
