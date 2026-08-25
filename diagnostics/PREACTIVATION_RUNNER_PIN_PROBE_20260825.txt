@@ -1,0 +1,10 @@
+NON-ADMISSIBLE PROBE ONLY
+
+Purpose: trigger the accepted-main Supernova Preactivation Admission workflow from a branch created directly from corrected Gen13 G, without using any canonical role receipt path or modifying active/staged state.
+
+Expected discrimination:
+1. Branch creation from exact G succeeds.
+2. The workflow reaches the frozen validator-environment assertion.
+3. If the hosted runner image build differs from the frozen mutable build identifier, the job fails at that assertion before semantic receipt admission.
+
+No calibration, fresh, scientific, runtime, scheduler-admission, or promotion authority.
