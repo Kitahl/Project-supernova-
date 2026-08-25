@@ -237,5 +237,69 @@ class BranchStatusIdempotenceTests(unittest.TestCase):
         )
 
 
+    def test_exact_terminal_gen12_suppresses_saturated_worker_pending_write(self):
+        workers = {f"W{i:02d}": f"ps/work/{branch_statuses.GEN12_COHORT}/W{i:02d}" for i in range(1, 13)}
+        verifier_head = "d" * 40
+        integrator_head = "7" * 40
+        state = {
+            "transport_mode": "BRANCH_GITOPS",
+            "generation_seq": 12,
+            "active_cohort_id": branch_statuses.GEN12_COHORT,
+            "generation_head_sha": branch_statuses.GEN12_G,
+            "generation_branch": f"ps/gen/{branch_statuses.GEN12_COHORT}",
+            "worker_branches": workers,
+            "verifier_branch": f"ps/verify/{branch_statuses.GEN12_COHORT}",
+            "integrator_branch": f"ps/integrate/{branch_statuses.GEN12_COHORT}",
+            "consolidation_branch": f"ps/consolidate/{branch_statuses.GEN12_COHORT}",
+        }
+
+        def remote_head(_repo, branch):
+            if branch == state["generation_branch"] or branch in workers.values() or branch == state["consolidation_branch"]:
+                return branch_statuses.GEN12_G
+            if branch == state["verifier_branch"]:
+                return verifier_head
+            if branch == state["integrator_branch"]:
+                return integrator_head
+            return None
+
+        def load_ref(_repo, ref, path):
+            if ref == verifier_head and path == f"verification/{branch_statuses.GEN12_COHORT}.json":
+                return {
+                    "generation_head_sha": branch_statuses.GEN12_G,
+                    "calibration_pass": False,
+                    "verdict": "INCOMPLETE",
+                    "missing_workers": list(workers),
+                }
+            if ref == integrator_head and path == f"integration/{branch_statuses.GEN12_COHORT}.json":
+                return {
+                    "generation_head_sha": branch_statuses.GEN12_G,
+                    "calibration_pass": False,
+                    "verification_head_sha": verifier_head,
+                    "missing_workers": list(workers),
+                }
+            self.fail(f"unexpected load_ref: {ref} {path}")
+
+        def blob_at(_repo, ref, path):
+            if ref == "HEAD" and path == "state/CURRENT.json":
+                return branch_statuses.GEN12_STATE_BLOB
+            return None
+
+        with mock.patch.object(branch_statuses, "load", return_value=state), mock.patch.object(
+            branch_statuses, "git", return_value=(0, "", "")
+        ), mock.patch.object(branch_statuses, "remote_head", side_effect=remote_head), mock.patch.object(
+            branch_statuses, "load_ref", side_effect=load_ref
+        ), mock.patch.object(branch_statuses, "blob_at", side_effect=blob_at), mock.patch.object(
+            branch_statuses, "validate_branch", return_value=(True, "BRANCH VALIDATION PASS")
+        ), mock.patch.object(branch_statuses, "post") as post, mock.patch("builtins.print") as output:
+            self.assertEqual(branch_statuses.main(), 0)
+
+        self.assertFalse(any(call.args[1] == "supernova/branch-worker" for call in post.call_args_list))
+        self.assertIn(mock.call(verifier_head, "supernova/branch-verify", "success", "BRANCH VALIDATION PASS"), post.call_args_list)
+        self.assertIn(mock.call(integrator_head, "supernova/branch-integrate", "success", "BRANCH VALIDATION PASS"), post.call_args_list)
+        output.assert_any_call(
+            "Gen12 terminal: preserving immutable 12-MISSING receipt; worker pending status write suppressed"
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
