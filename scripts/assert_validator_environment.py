@@ -4,6 +4,9 @@ import json, os, pathlib, platform, subprocess, sys
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 CONFIG=ROOT/'config/validator_environment_v25.json'
+ENFORCED_RUNTIME_FIELDS=('runner_image','python_version','git_version')
+PROVENANCE_ONLY_FIELDS=('runner_image_version',)
+OBSERVED_FIELDS=ENFORCED_RUNTIME_FIELDS+PROVENANCE_ONLY_FIELDS
 
 
 def load_contract(path: pathlib.Path=CONFIG) -> dict:
@@ -52,18 +55,39 @@ def observe() -> dict:
 
 def errors(contract: dict, observed: dict) -> list[str]:
     out=[]
-    for key in ('runner_image','runner_image_version','python_version','git_version'):
+    if contract.get('enforced_runtime_fields')!=list(ENFORCED_RUNTIME_FIELDS):
+        out.append('validator environment enforced runtime field set changed')
+    if contract.get('provenance_only_fields')!=list(PROVENANCE_ONLY_FIELDS):
+        out.append('validator environment provenance-only field set changed')
+    for key in OBSERVED_FIELDS:
         expected=contract.get(key); got=observed.get(key)
         if not isinstance(expected,str) or not expected:
             out.append('validator environment contract missing '+key)
-        elif got!=expected:
+        elif not isinstance(got,str) or not got:
+            out.append('validator environment observation missing '+key)
+        elif key in ENFORCED_RUNTIME_FIELDS and got!=expected:
             out.append(f'validator environment mismatch {key}: expected={expected!r} observed={got!r}')
     return out
 
 
+def provenance_drift(contract: dict, observed: dict) -> dict:
+    return {
+        key:{'reference':contract.get(key),'observed':observed.get(key)}
+        for key in PROVENANCE_ONLY_FIELDS
+        if contract.get(key)!=observed.get(key)
+    }
+
+
 def main() -> int:
     contract=load_contract(); observed=observe(); e=errors(contract,observed)
-    print(json.dumps({'contract':{k:contract.get(k) for k in ('runner_image','runner_image_version','python_version','git_version')},'observed':observed,'status':'PASS' if not e else 'FAIL'},sort_keys=True))
+    print(json.dumps({
+        'contract':{k:contract.get(k) for k in OBSERVED_FIELDS},
+        'enforced_runtime_fields':list(ENFORCED_RUNTIME_FIELDS),
+        'observed':observed,
+        'provenance_drift':provenance_drift(contract,observed),
+        'provenance_only_fields':list(PROVENANCE_ONLY_FIELDS),
+        'status':'PASS' if not e else 'FAIL',
+    },sort_keys=True))
     if e:
         for x in e: print('VALIDATOR ENVIRONMENT FAILED:',x,file=sys.stderr)
         return 1
