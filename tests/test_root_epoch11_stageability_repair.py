@@ -1,6 +1,7 @@
 import json
 import pathlib
 import unittest
+from jsonschema import Draft202012Validator
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -52,13 +53,21 @@ class RootEpoch11StageabilityRepairTests(unittest.TestCase):
         self.assertIn("assignment_git_identity", self.manifest["required"])
         self.assertIn("liveness_git_identity", self.manifest["required"])
 
-    def test_current_gen12_remains_schema_valid_and_unstaged(self):
+    def test_current_gen12_remains_schema_valid_with_gen13_staged(self):
         state = json.loads((ROOT / "state/CURRENT.json").read_text())
         state_schema = json.loads((ROOT / "schemas/state.schema.json").read_text())
         self.assertTrue(set(state_schema["required"]).issubset(state))
         self.assertEqual(state["active_cohort_id"], self.epoch["active_source_cohort"])
         self.assertEqual(state["generation_head_sha"], self.epoch["active_source_generation_head"])
-        self.assertFalse((ROOT / "state/STAGED.json").exists())
+        staged = json.loads((ROOT / "state/STAGED.json").read_text())
+        staged_schema = json.loads((ROOT / "schemas/staged_candidate.schema.json").read_text())
+        self.assertEqual(list(Draft202012Validator(staged_schema).iter_errors(staged)), [])
+        self.assertEqual(staged["status"], "STAGED")
+        self.assertEqual(staged["active_cohort_id"], state["active_cohort_id"])
+        self.assertEqual(staged["active_generation_seq"], state["generation_seq"])
+        self.assertEqual(staged["candidate_generation_seq"], state["generation_seq"] + 1)
+        self.assertNotEqual(staged["candidate_cohort_id"], state["active_cohort_id"])
+        self.assertNotEqual(staged["generation_head_sha"], state["generation_head_sha"])
 
     def test_branch_reconciler_only_runs_stage_prs_as_trusted_main_logic(self):
         text = (ROOT / ".github/workflows/supernova-branch-reconciler.yml").read_text()

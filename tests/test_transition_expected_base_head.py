@@ -79,6 +79,11 @@ class ExpectedBaseHeadContractTests(unittest.TestCase):
 
     def _run_guard(self, state, control_path, control, assignment_path, assignment, base):
         guard = load_guard()
+        # This unit test supplies a synthetic pre-Root11 transition fixture. Do
+        # not let the accepted repository's real Gen13 STAGED pointer leak into
+        # that fixture and change which transition path the guard exercises.
+        guard.ROOT = ROOT / "tests" / "fixtures" / "__no_staged_pointer__"
+        self.assertFalse((guard.ROOT / "state" / "STAGED.json").is_file())
         docs = {
             "state/CURRENT.json": state,
             control_path: control,
