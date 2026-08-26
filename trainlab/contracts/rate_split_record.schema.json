@@ -1,0 +1,293 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Supernova dormant zero-authority TRAIN rate-split records v1",
+  "oneOf": [
+    {"$ref": "#/$defs/pilot"},
+    {"$ref": "#/$defs/proposal"},
+    {"$ref": "#/$defs/candidate"},
+    {"$ref": "#/$defs/evaluation"},
+    {"$ref": "#/$defs/integrity"},
+    {"$ref": "#/$defs/selection"},
+    {"$ref": "#/$defs/archive_snapshot"}
+  ],
+  "$defs": {
+    "hex40": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "hex64": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "credit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calibration", "fresh", "scientific", "authority"],
+      "properties": {
+        "calibration": {"const": 0},
+        "fresh": {"const": false},
+        "scientific": {"const": false},
+        "authority": {"const": "NONE"}
+      }
+    },
+    "instance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instance_id", "statement_sha256"],
+      "properties": {
+        "instance_id": {"type": "string", "minLength": 1},
+        "statement_sha256": {"$ref": "#/$defs/hex64"}
+      }
+    },
+    "pilot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "pilot_id", "programme_stage", "evidence_class", "activation_gate", "transition_contract", "benchmark", "mutation", "budget_contract_sha256", "partitions", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "PILOT_MANIFEST"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "pilot_id": {"$ref": "#/$defs/hex64"},
+        "programme_stage": {"const": "STAGE_0_LOOP"},
+        "evidence_class": {"const": "TRAIN_TUNING"},
+        "activation_gate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["requires_t0_qualified", "requires_sealed_train_pool", "execution_authorized_by_this_tranche"],
+          "properties": {
+            "requires_t0_qualified": {"const": true},
+            "requires_sealed_train_pool": {"const": true},
+            "execution_authorized_by_this_tranche": {"const": false}
+          }
+        },
+        "transition_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max_selected_parent_transitions", "predeclared_stop_required"],
+          "properties": {
+            "max_selected_parent_transitions": {"const": 4},
+            "predeclared_stop_required": {"const": true}
+          }
+        },
+        "benchmark": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repository", "source_commit", "snapshot_sha256", "toolchain_manifest_sha256"],
+          "properties": {
+            "repository": {"type": "string", "minLength": 1},
+            "source_commit": {"$ref": "#/$defs/hex40"},
+            "snapshot_sha256": {"$ref": "#/$defs/hex64"},
+            "toolchain_manifest_sha256": {"$ref": "#/$defs/hex64"}
+          }
+        },
+        "mutation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operator_id", "operator_config_sha256", "proposer_count"],
+          "properties": {
+            "operator_id": {"const": "HOMOGENEOUS_PATCH_MUTATION_V1"},
+            "operator_config_sha256": {"$ref": "#/$defs/hex64"},
+            "proposer_count": {"const": 3}
+          }
+        },
+        "budget_contract_sha256": {"$ref": "#/$defs/hex64"},
+        "partitions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["DIAG", "SELECT"],
+          "properties": {
+            "DIAG": {"type": "array", "minItems": 32, "maxItems": 32, "items": {"$ref": "#/$defs/instance"}},
+            "SELECT": {"type": "array", "minItems": 32, "maxItems": 32, "items": {"$ref": "#/$defs/instance"}}
+          }
+        },
+        "supernova_credit": {"$ref": "#/$defs/credit"}
+      }
+    },
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "proposal_id", "candidate_id", "parent_candidate_id", "selected_parent_transition_index", "proposer_session_id", "proposer_role_label", "proposal_artifact_sha256", "mutation_operator_id", "mutation_operator_config_sha256", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "PROPOSAL"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "proposal_id": {"$ref": "#/$defs/hex64"},
+        "candidate_id": {"$ref": "#/$defs/hex64"},
+        "parent_candidate_id": {"$ref": "#/$defs/hex64"},
+        "selected_parent_transition_index": {"type": "integer", "minimum": 1, "maximum": 4},
+        "proposer_session_id": {"type": "string", "minLength": 1},
+        "proposer_role_label": {"type": "string", "minLength": 1},
+        "proposal_artifact_sha256": {"$ref": "#/$defs/hex64"},
+        "mutation_operator_id": {"const": "HOMOGENEOUS_PATCH_MUTATION_V1"},
+        "mutation_operator_config_sha256": {"$ref": "#/$defs/hex64"},
+        "supernova_credit": {"$ref": "#/$defs/credit"}
+      }
+    },
+    "runtime_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_status", "network", "credential_access", "github_token", "environment_allowlist"],
+      "properties": {
+        "execution_status": {"const": "NOT_AUTHORIZED_UNTIL_SANDBOX_QUALIFIED"},
+        "network": {"const": "DENY"},
+        "credential_access": {"const": "NONE"},
+        "github_token": {"const": "NONE"},
+        "environment_allowlist": {"type": "array", "maxItems": 0}
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "candidate_id", "descriptor", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "CANDIDATE"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "candidate_id": {"$ref": "#/$defs/hex64"},
+        "descriptor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["parent_candidate_ids", "source_tree_sha256", "source_patch_sha256", "mutation_operator_id", "mutation_operator_config_sha256", "runtime_contract"],
+          "properties": {
+            "parent_candidate_ids": {"type": "array", "minItems": 0, "maxItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/hex64"}},
+            "source_tree_sha256": {"$ref": "#/$defs/hex64"},
+            "source_patch_sha256": {"$ref": "#/$defs/hex64"},
+            "mutation_operator_id": {"const": "HOMOGENEOUS_PATCH_MUTATION_V1"},
+            "mutation_operator_config_sha256": {"$ref": "#/$defs/hex64"},
+            "runtime_contract": {"$ref": "#/$defs/runtime_contract"}
+          }
+        },
+        "supernova_credit": {"$ref": "#/$defs/credit"}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instance_id", "statement_sha256", "outcome", "checker_output_sha256", "result_artifact_sha256"],
+      "properties": {
+        "instance_id": {"type": "string", "minLength": 1},
+        "statement_sha256": {"$ref": "#/$defs/hex64"},
+        "outcome": {"enum": ["PASS", "FAIL", "ERROR", "TIMEOUT", "INFRASTRUCTURE_FAILURE"]},
+        "checker_output_sha256": {"$ref": "#/$defs/hex64"},
+        "result_artifact_sha256": {"$ref": "#/$defs/hex64"}
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instrumentation", "data", "training_amortized", "inference", "probe", "execution", "verification", "fidelity", "revalidation", "failure_recovery", "metalevel_selection", "total"],
+      "properties": {
+        "instrumentation": {"type": "integer", "minimum": 0},
+        "data": {"type": "integer", "minimum": 0},
+        "training_amortized": {"type": "integer", "minimum": 0},
+        "inference": {"type": "integer", "minimum": 0},
+        "probe": {"type": "integer", "minimum": 0},
+        "execution": {"type": "integer", "minimum": 0},
+        "verification": {"type": "integer", "minimum": 0},
+        "fidelity": {"type": "integer", "minimum": 0},
+        "revalidation": {"type": "integer", "minimum": 0},
+        "failure_recovery": {"type": "integer", "minimum": 0},
+        "metalevel_selection": {"type": "integer", "minimum": 0},
+        "total": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "evaluation_id", "pilot_id", "candidate_id", "partition", "source_tree_sha256", "benchmark_snapshot_sha256", "environment_sha256", "results", "complete_cost_microunits", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "EVALUATION"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "evaluation_id": {"$ref": "#/$defs/hex64"},
+        "pilot_id": {"$ref": "#/$defs/hex64"},
+        "candidate_id": {"$ref": "#/$defs/hex64"},
+        "partition": {"enum": ["DIAG", "SELECT"]},
+        "source_tree_sha256": {"$ref": "#/$defs/hex64"},
+        "benchmark_snapshot_sha256": {"$ref": "#/$defs/hex64"},
+        "environment_sha256": {"$ref": "#/$defs/hex64"},
+        "results": {"type": "array", "minItems": 32, "maxItems": 32, "items": {"$ref": "#/$defs/result"}},
+        "complete_cost_microunits": {"$ref": "#/$defs/cost"},
+        "supernova_credit": {"$ref": "#/$defs/credit"}
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "integrity_id", "pilot_id", "candidate_id", "evaluation_id", "partition", "status", "errors", "exact_coverage", "hashes_verified", "score_fields_emitted", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "INTEGRITY"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "integrity_id": {"$ref": "#/$defs/hex64"},
+        "pilot_id": {"$ref": "#/$defs/hex64"},
+        "candidate_id": {"$ref": "#/$defs/hex64"},
+        "evaluation_id": {"oneOf": [{"$ref": "#/$defs/hex64"}, {"type": "null"}]},
+        "partition": {"enum": ["DIAG", "SELECT", null]},
+        "status": {"enum": ["ADMISSIBLE", "QUARANTINED", "MISSING"]},
+        "errors": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "exact_coverage": {"type": "boolean"},
+        "hashes_verified": {"type": "boolean"},
+        "score_fields_emitted": {"const": false},
+        "supernova_credit": {"$ref": "#/$defs/credit"}
+      }
+    },
+    "ranking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "evaluation_id", "integrity_id", "pass_count", "total_complete_cost_microunits", "seeded_tie_break_sha256", "selection_probability"],
+      "properties": {
+        "candidate_id": {"$ref": "#/$defs/hex64"},
+        "evaluation_id": {"$ref": "#/$defs/hex64"},
+        "integrity_id": {"$ref": "#/$defs/hex64"},
+        "pass_count": {"type": "integer", "minimum": 0, "maximum": 32},
+        "total_complete_cost_microunits": {"type": "integer", "minimum": 0},
+        "seeded_tie_break_sha256": {"$ref": "#/$defs/hex64"},
+        "selection_probability": {"enum": [0.0, 1.0]}
+      }
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "selection_id", "pilot_id", "policy_id", "seed_sha256", "outcome", "selected_candidate_id", "ranking", "scientific_claim", "assurance_transition_requested", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "SELECTION"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "selection_id": {"$ref": "#/$defs/hex64"},
+        "pilot_id": {"$ref": "#/$defs/hex64"},
+        "policy_id": {"const": "BEST_OBSERVED_THEN_SEEDED_TIEBREAK_V1"},
+        "seed_sha256": {"$ref": "#/$defs/hex64"},
+        "outcome": {"enum": ["SELECTED_FOR_TRAIN_PARENT", "NO_ADMISSIBLE_EVIDENCE"]},
+        "selected_candidate_id": {"oneOf": [{"$ref": "#/$defs/hex64"}, {"type": "null"}]},
+        "ranking": {"type": "array", "items": {"$ref": "#/$defs/ranking"}},
+        "scientific_claim": {"const": false},
+        "assurance_transition_requested": {"const": false},
+        "supernova_credit": {"$ref": "#/$defs/credit"}
+      }
+    },
+    "archive_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "snapshot_id", "pilot_id", "previous_snapshot_id", "object_ids", "object_set_root_sha256", "scientific_state_effect", "promotion_eligible", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "ARCHIVE_SNAPSHOT"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "snapshot_id": {"$ref": "#/$defs/hex64"},
+        "pilot_id": {"$ref": "#/$defs/hex64"},
+        "previous_snapshot_id": {"oneOf": [{"$ref": "#/$defs/hex64"}, {"type": "null"}]},
+        "object_ids": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["candidate_ids", "proposal_ids", "evaluation_ids", "integrity_ids", "selection_ids"],
+          "properties": {
+            "candidate_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/hex64"}},
+            "proposal_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/hex64"}},
+            "evaluation_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/hex64"}},
+            "integrity_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/hex64"}},
+            "selection_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/hex64"}}
+          }
+        },
+        "object_set_root_sha256": {"$ref": "#/$defs/hex64"},
+        "scientific_state_effect": {"const": "NONE"},
+        "promotion_eligible": {"const": false},
+        "supernova_credit": {"$ref": "#/$defs/credit"}
+      }
+    }
+  }
+}
