@@ -216,7 +216,9 @@ class BranchStatusIdempotenceTests(unittest.TestCase):
             branch_statuses, "git", return_value=(0, "", "")
         ), mock.patch.object(branch_statuses, "remote_head", side_effect=remote_head), mock.patch.object(
             branch_statuses, "validate_branch", return_value=(True, "BRANCH VALIDATION PASS")
-        ), mock.patch.object(branch_statuses, "post") as post:
+        ), mock.patch.object(branch_statuses, "post") as post, mock.patch.dict(
+            os.environ, {}, clear=True
+        ):
             self.assertEqual(branch_statuses.main(), 0)
 
         worker_calls = [
@@ -290,7 +292,9 @@ class BranchStatusIdempotenceTests(unittest.TestCase):
             branch_statuses, "load_ref", side_effect=load_ref
         ), mock.patch.object(branch_statuses, "blob_at", side_effect=blob_at), mock.patch.object(
             branch_statuses, "validate_branch", return_value=(True, "BRANCH VALIDATION PASS")
-        ), mock.patch.object(branch_statuses, "post") as post, mock.patch("builtins.print") as output:
+        ), mock.patch.object(branch_statuses, "post") as post, mock.patch("builtins.print") as output, mock.patch.dict(
+            os.environ, {}, clear=True
+        ):
             self.assertEqual(branch_statuses.main(), 0)
 
         self.assertFalse(any(call.args[1] == "supernova/branch-worker" for call in post.call_args_list))
