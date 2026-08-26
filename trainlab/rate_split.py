@@ -19,6 +19,7 @@ from jsonschema import Draft202012Validator
 
 SCHEMA_PATH = pathlib.Path(__file__).resolve().parent / "contracts/rate_split_record.schema.json"
 ID_FIELDS = {
+    "COST_SMOKE_MANIFEST": "cost_smoke_id",
     "PILOT_MANIFEST": "pilot_id",
     "PROPOSAL": "proposal_id",
     "CANDIDATE": "candidate_id",
@@ -93,6 +94,11 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def artifact_id(source_tree_sha256: str) -> str:
+    """Identify executable content independently of lineage, role, or cohort."""
+    return sha256_bytes(b"PS-TRAINLAB-ARTIFACT-1\0" + source_tree_sha256.encode("ascii"))
+
+
 def content_id(value: dict[str, Any], id_field: str) -> str:
     """Return a record-type-separated identity over canonical record bytes."""
     descriptor = dict(value)
@@ -131,6 +137,22 @@ def _credit_errors(record: dict[str, Any]) -> list[str]:
     return [] if record.get("supernova_credit") == ZERO_CREDIT else ["nonzero_or_invalid_supernova_credit"]
 
 
+def validate_cost_smoke(record: dict[str, Any]) -> list[str]:
+    errors = schema_errors(record)
+    if errors or record.get("record_type") != "COST_SMOKE_MANIFEST":
+        return errors or ["record_type_not_cost_smoke_manifest"]
+    errors.extend(_identity_errors(record))
+    errors.extend(_credit_errors(record))
+    rows = record["instances"]
+    ids = [row["instance_id"] for row in rows]
+    hashes = [row["statement_sha256"] for row in rows]
+    if len(ids) != len(set(ids)):
+        errors.append("cost_smoke_instance_ids_not_unique")
+    if len(hashes) != len(set(hashes)):
+        errors.append("cost_smoke_statement_hashes_not_unique")
+    return errors
+
+
 def validate_pilot(record: dict[str, Any]) -> list[str]:
     errors = schema_errors(record)
     if errors or record.get("record_type") != "PILOT_MANIFEST":
@@ -161,6 +183,8 @@ def validate_candidate(record: dict[str, Any], patch_bytes: bytes | None = None)
     errors.extend(_identity_errors(record))
     errors.extend(_credit_errors(record))
     descriptor = record["descriptor"]
+    if record["artifact_id"] != artifact_id(descriptor["source_tree_sha256"]):
+        errors.append("artifact_id_mismatch")
     parents = descriptor["parent_candidate_ids"]
     if parents != sorted(set(parents)):
         errors.append("parent_candidate_ids_not_sorted_unique")
@@ -214,6 +238,8 @@ def validate_evaluation(
         errors.append("evaluation_pilot_id_mismatch")
     if record["candidate_id"] != candidate.get("candidate_id"):
         errors.append("evaluation_candidate_id_mismatch")
+    if record["artifact_id"] != candidate.get("artifact_id"):
+        errors.append("evaluation_artifact_id_mismatch")
     descriptor = candidate.get("descriptor") or {}
     if record["source_tree_sha256"] != descriptor.get("source_tree_sha256"):
         errors.append("evaluation_source_tree_sha256_mismatch")
@@ -416,6 +442,8 @@ def validate_archive_snapshot(record: dict[str, Any]) -> list[str]:
 
 def validate_record(record: dict[str, Any]) -> list[str]:
     record_type = record.get("record_type")
+    if record_type == "COST_SMOKE_MANIFEST":
+        return validate_cost_smoke(record)
     if record_type == "PILOT_MANIFEST":
         return validate_pilot(record)
     if record_type == "CANDIDATE":

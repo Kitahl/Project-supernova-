@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Supernova dormant zero-authority TRAIN rate-split records v1",
   "oneOf": [
+    {"$ref": "#/$defs/cost_smoke"},
     {"$ref": "#/$defs/pilot"},
     {"$ref": "#/$defs/proposal"},
     {"$ref": "#/$defs/candidate"},
@@ -31,6 +32,31 @@
       "properties": {
         "instance_id": {"type": "string", "minLength": 1},
         "statement_sha256": {"$ref": "#/$defs/hex64"}
+      }
+    },
+    "cost_smoke": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "record_type", "authority", "cost_smoke_id", "evidence_class", "parent_count", "child_count", "instances", "measurements", "selection_authorized", "scientific_claim", "supernova_credit"],
+      "properties": {
+        "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
+        "record_type": {"const": "COST_SMOKE_MANIFEST"},
+        "authority": {"const": "NONE_ENGINEERING_ONLY"},
+        "cost_smoke_id": {"$ref": "#/$defs/hex64"},
+        "evidence_class": {"const": "ENGINEERING_COST_SMOKE"},
+        "parent_count": {"const": 1},
+        "child_count": {"const": 3},
+        "instances": {"type": "array", "minItems": 20, "maxItems": 20, "items": {"$ref": "#/$defs/instance"}},
+        "measurements": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {"enum": ["actions_minutes", "model_cost", "wall_time", "compile_rate", "container_failure_rate"]}
+        },
+        "selection_authorized": {"const": false},
+        "scientific_claim": {"const": false},
+        "supernova_credit": {"$ref": "#/$defs/credit"}
       }
     },
     "pilot": {
@@ -120,24 +146,29 @@
     "runtime_contract": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["execution_status", "network", "credential_access", "github_token", "environment_allowlist"],
+      "required": ["execution_status", "network", "credential_access", "github_token", "environment_allowlist", "inference_broker", "candidate_worktree", "select_material_access", "container_socket"],
       "properties": {
         "execution_status": {"const": "NOT_AUTHORIZED_UNTIL_SANDBOX_QUALIFIED"},
         "network": {"const": "DENY"},
         "credential_access": {"const": "NONE"},
         "github_token": {"const": "NONE"},
-        "environment_allowlist": {"type": "array", "maxItems": 0}
+        "environment_allowlist": {"type": "array", "maxItems": 0},
+        "inference_broker": {"const": "BOUNDED_HOST_BROKER_NO_RAW_CREDENTIALS"},
+        "candidate_worktree": {"const": "SANITIZED_NO_GIT"},
+        "select_material_access": {"const": "TRUSTED_GRADER_ONLY"},
+        "container_socket": {"const": "NONE"}
       }
     },
     "candidate": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "record_type", "authority", "candidate_id", "descriptor", "supernova_credit"],
+      "required": ["schema_version", "record_type", "authority", "candidate_id", "artifact_id", "descriptor", "supernova_credit"],
       "properties": {
         "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
         "record_type": {"const": "CANDIDATE"},
         "authority": {"const": "NONE_ENGINEERING_ONLY"},
         "candidate_id": {"$ref": "#/$defs/hex64"},
+        "artifact_id": {"$ref": "#/$defs/hex64"},
         "descriptor": {
           "type": "object",
           "additionalProperties": false,
@@ -185,10 +216,21 @@
         "total": {"type": "integer", "minimum": 0}
       }
     },
+    "receipt_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_authority", "github_actions_role", "collector", "collector_imports_candidate_code"],
+      "properties": {
+        "execution_authority": {"const": "MATH_FOUNDRY_PINNED_VERIFIER"},
+        "github_actions_role": {"const": "EXECUTION_HOST_AND_TRANSPORT_ONLY"},
+        "collector": {"const": "FRESH_TRUSTED_BOUNDED_OUTPUT_PARSER"},
+        "collector_imports_candidate_code": {"const": false}
+      }
+    },
     "evaluation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "record_type", "authority", "evaluation_id", "pilot_id", "candidate_id", "partition", "source_tree_sha256", "benchmark_snapshot_sha256", "environment_sha256", "results", "complete_cost_microunits", "supernova_credit"],
+      "required": ["schema_version", "record_type", "authority", "evaluation_id", "pilot_id", "candidate_id", "artifact_id", "partition", "source_tree_sha256", "benchmark_snapshot_sha256", "environment_sha256", "receipt_boundary", "results", "complete_cost_microunits", "supernova_credit"],
       "properties": {
         "schema_version": {"const": "PS-FORMAL-TRAIN-ARCHIVE-1"},
         "record_type": {"const": "EVALUATION"},
@@ -196,10 +238,12 @@
         "evaluation_id": {"$ref": "#/$defs/hex64"},
         "pilot_id": {"$ref": "#/$defs/hex64"},
         "candidate_id": {"$ref": "#/$defs/hex64"},
+        "artifact_id": {"$ref": "#/$defs/hex64"},
         "partition": {"enum": ["DIAG", "SELECT"]},
         "source_tree_sha256": {"$ref": "#/$defs/hex64"},
         "benchmark_snapshot_sha256": {"$ref": "#/$defs/hex64"},
         "environment_sha256": {"$ref": "#/$defs/hex64"},
+        "receipt_boundary": {"$ref": "#/$defs/receipt_boundary"},
         "results": {"type": "array", "minItems": 32, "maxItems": 32, "items": {"$ref": "#/$defs/result"}},
         "complete_cost_microunits": {"$ref": "#/$defs/cost"},
         "supernova_credit": {"$ref": "#/$defs/credit"}

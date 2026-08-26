@@ -62,11 +62,37 @@ class FormalTrainArchiveTests(unittest.TestCase):
         }
         return archive.bind_content_id(base, "pilot_id")
 
+    def cost_smoke(self):
+        base = {
+            "schema_version": "PS-FORMAL-TRAIN-ARCHIVE-1",
+            "record_type": "COST_SMOKE_MANIFEST",
+            "authority": "NONE_ENGINEERING_ONLY",
+            "evidence_class": "ENGINEERING_COST_SMOKE",
+            "parent_count": 1,
+            "child_count": 3,
+            "instances": [
+                {"instance_id": f"smoke-{i:02d}", "statement_sha256": h(600 + i)}
+                for i in range(20)
+            ],
+            "measurements": [
+                "actions_minutes",
+                "model_cost",
+                "wall_time",
+                "compile_rate",
+                "container_failure_rate",
+            ],
+            "selection_authorized": False,
+            "scientific_claim": False,
+            "supernova_credit": dict(archive.ZERO_CREDIT),
+        }
+        return archive.bind_content_id(base, "cost_smoke_id")
+
     def candidate(self, parent_id=None, patch=b"patch-a", tree=10):
         base = {
             "schema_version": "PS-FORMAL-TRAIN-ARCHIVE-1",
             "record_type": "CANDIDATE",
             "authority": "NONE_ENGINEERING_ONLY",
+            "artifact_id": archive.artifact_id(h(tree)),
             "descriptor": {
                 "parent_candidate_ids": [] if parent_id is None else [parent_id],
                 "source_tree_sha256": h(tree),
@@ -79,6 +105,10 @@ class FormalTrainArchiveTests(unittest.TestCase):
                     "credential_access": "NONE",
                     "github_token": "NONE",
                     "environment_allowlist": [],
+                    "inference_broker": "BOUNDED_HOST_BROKER_NO_RAW_CREDENTIALS",
+                    "candidate_worktree": "SANITIZED_NO_GIT",
+                    "select_material_access": "TRUSTED_GRADER_ONLY",
+                    "container_socket": "NONE",
                 },
             },
             "supernova_credit": dict(archive.ZERO_CREDIT),
@@ -124,15 +154,42 @@ class FormalTrainArchiveTests(unittest.TestCase):
             "authority": "NONE_ENGINEERING_ONLY",
             "pilot_id": pilot["pilot_id"],
             "candidate_id": candidate["candidate_id"],
+            "artifact_id": candidate["artifact_id"],
             "partition": partition,
             "source_tree_sha256": candidate["descriptor"]["source_tree_sha256"],
             "benchmark_snapshot_sha256": pilot["benchmark"]["snapshot_sha256"],
             "environment_sha256": h(500),
+            "receipt_boundary": {
+                "execution_authority": "MATH_FOUNDRY_PINNED_VERIFIER",
+                "github_actions_role": "EXECUTION_HOST_AND_TRANSPORT_ONLY",
+                "collector": "FRESH_TRUSTED_BOUNDED_OUTPUT_PARSER",
+                "collector_imports_candidate_code": False,
+            },
             "results": results,
             "complete_cost_microunits": costs,
             "supernova_credit": dict(archive.ZERO_CREDIT),
         }
         return archive.bind_content_id(base, "evaluation_id")
+
+    def test_cost_smoke_is_exactly_20_one_parent_three_children_and_nonselecting(self):
+        smoke = self.cost_smoke()
+        self.assertEqual(archive.validate_cost_smoke(smoke), [])
+        self.assertEqual(len(smoke["instances"]), 20)
+        self.assertEqual((smoke["parent_count"], smoke["child_count"]), (1, 3))
+        self.assertFalse(smoke["selection_authorized"])
+        self.assertFalse(smoke["scientific_claim"])
+
+    def test_cost_smoke_rejects_duplicates_or_selection(self):
+        smoke = self.cost_smoke()
+        smoke["instances"][1] = copy.deepcopy(smoke["instances"][0])
+        smoke = archive.bind_content_id(smoke, "cost_smoke_id")
+        errors = archive.validate_cost_smoke(smoke)
+        self.assertIn("cost_smoke_instance_ids_not_unique", errors)
+        self.assertIn("cost_smoke_statement_hashes_not_unique", errors)
+        smoke = self.cost_smoke()
+        smoke["selection_authorized"] = True
+        smoke = archive.bind_content_id(smoke, "cost_smoke_id")
+        self.assertTrue(archive.validate_cost_smoke(smoke))
 
     def test_pilot_is_exactly_32_diag_plus_32_select_and_zero_credit(self):
         pilot = self.pilot()
@@ -189,6 +246,18 @@ class FormalTrainArchiveTests(unittest.TestCase):
         c = self.candidate(h(999), patch=b"a", tree=2)
         d = self.candidate(root["candidate_id"], patch=b"a", tree=3)
         self.assertEqual(len({a["candidate_id"], b["candidate_id"], c["candidate_id"], d["candidate_id"]}), 4)
+        self.assertEqual({a["artifact_id"], b["artifact_id"], c["artifact_id"]}, {a["artifact_id"]})
+        self.assertNotEqual(a["artifact_id"], d["artifact_id"])
+
+    def test_candidate_rejects_artifact_or_sandbox_boundary_mismatch(self):
+        candidate = self.candidate()
+        candidate["artifact_id"] = h(999)
+        candidate = archive.bind_content_id(candidate, "candidate_id")
+        self.assertIn("artifact_id_mismatch", archive.validate_candidate(candidate))
+        candidate = self.candidate()
+        candidate["descriptor"]["runtime_contract"]["select_material_access"] = "CANDIDATE_VISIBLE"
+        candidate = archive.bind_content_id(candidate, "candidate_id")
+        self.assertTrue(archive.validate_candidate(candidate))
 
     def test_candidate_rejects_role_cohort_scheduler_and_credentials(self):
         for field in ("role_id", "cohort_id", "scheduler_task_id", "github_token"):
@@ -214,6 +283,18 @@ class FormalTrainArchiveTests(unittest.TestCase):
         self.assertEqual(p1["candidate_id"], p2["candidate_id"])
         self.assertEqual(archive.validate_proposal(p1, candidate), [])
         self.assertEqual(archive.validate_proposal(p2, candidate), [])
+
+    def test_evaluation_rejects_artifact_or_authority_substitution(self):
+        pilot = self.pilot()
+        candidate = self.candidate()
+        evaluation = self.evaluation(pilot, candidate)
+        evaluation["artifact_id"] = h(999)
+        evaluation = archive.bind_content_id(evaluation, "evaluation_id")
+        self.assertIn("evaluation_artifact_id_mismatch", archive.validate_evaluation(evaluation, pilot, candidate))
+        evaluation = self.evaluation(pilot, candidate)
+        evaluation["receipt_boundary"]["github_actions_role"] = "SCIENTIFIC_AUTHORITY"
+        evaluation = archive.bind_content_id(evaluation, "evaluation_id")
+        self.assertTrue(archive.validate_evaluation(evaluation, pilot, candidate))
 
     def test_evaluation_must_cover_exact_partition_once(self):
         pilot = self.pilot()
@@ -397,6 +478,7 @@ class FormalTrainArchiveTests(unittest.TestCase):
         )
 
     def test_every_record_type_is_zero_authority(self):
+        cost_smoke = self.cost_smoke()
         pilot = self.pilot()
         root = self.candidate(tree=1)
         child = self.candidate(root["candidate_id"], tree=2)
@@ -415,7 +497,7 @@ class FormalTrainArchiveTests(unittest.TestCase):
                 "selection_ids": [selection["selection_id"]],
             },
         )
-        for record in (pilot, root, child, proposal, evaluation, integrity, selection, snapshot):
+        for record in (cost_smoke, pilot, root, child, proposal, evaluation, integrity, selection, snapshot):
             with self.subTest(record_type=record["record_type"]):
                 self.assertEqual(record["authority"], "NONE_ENGINEERING_ONLY")
                 self.assertEqual(record["supernova_credit"], archive.ZERO_CREDIT)

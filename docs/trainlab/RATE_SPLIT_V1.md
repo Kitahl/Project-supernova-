@@ -40,15 +40,20 @@ The v1 store has single-writer semantics. Multi-writer publication is not author
 
 ## Identities
 
-A single identifier cannot both ignore proposer identity and bind proposer provenance. V1 therefore uses three identities:
+A single identifier cannot both deduplicate executable content and bind lineage/proposer provenance. V1 therefore uses four identities:
 
-1. `candidate_id` identifies the canonical candidate record. It contains the materialized source-tree digest and excludes scheduler task, assurance role, cohort, and BIL00/MM06 identity.
-2. `proposal_id` separately binds parent, mutation operator/configuration, proposer session/label, and proposal artifact. Two proposers may therefore produce one deduplicated candidate while retaining two proposal events.
-3. `snapshot_id` binds the prior snapshot plus the complete sorted sets of candidate, proposal, evaluation, integrity, and selection object IDs. Its `object_set_root_sha256` detects provenance/evidence-set changes independently of candidate deduplication.
+1. `artifact_id` identifies only the normalized materialized source tree. Identical executable trees share this identity regardless of parent, patch path, role, task, or cohort.
+2. `candidate_id` identifies the canonical candidate record and binds `artifact_id`, parent, patch, mutation operator/configuration, and runtime contract.
+3. `proposal_id` separately binds proposer session/label and proposal artifact. Two proposers may nominate one candidate while retaining two proposal events.
+4. `snapshot_id` binds the prior snapshot plus the complete sorted evidence-object sets.
 
-Every identifier uses a record-type-separated SHA-256 domain. A digest for one record class cannot substitute for another.
+Every identifier is SHA-256 domain-separated. The executor must compute the normalized tree digest and `artifact_id`; model-supplied digests are never trusted.
 
-A candidate record binds both its parent set and its materialized tree digest. Therefore the same patch against two different parents does not silently alias. The future executor must compute the materialized tree digest from a normalized tree; accepting a model-supplied digest is forbidden.
+## Cost qualification smoke
+
+Before the 64-instance selector pilot, a separate `COST_SMOKE_MANIFEST` fixes exactly 20 engineering instances, one parent, and three children. It measures Actions minutes, model cost, wall time, compile rate, and container-failure rate only. It cannot select a parent, claim improvement, request assurance, or receive scientific/calibration/fresh credit.
+
+The smoke is sizing evidence, not a smaller scientific pilot. Its observed rates are reported with denominators and uncertainty; three children cannot establish reliable compile or improvement rates.
 
 ## Pilot contract
 
@@ -69,7 +74,8 @@ The contract separates data responsibilities; it does not claim that separate Py
 
 - Proposal records preserve mutation provenance and cost.
 - Candidate records bind candidate content without role identity.
-- Evaluation records cover exactly one frozen partition and carry complete-cost accounting.
+- Evaluation records cover exactly one frozen partition, bind both candidate-record and executable-artifact identity, and carry complete-cost accounting.
+- A pinned Math Foundry verifier owns benchmark execution semantics. GitHub Actions may host the job and transport its receipt, but has no scientific or selection authority. A fresh trusted collector parses bounded output without importing candidate code.
 - Integrity records emit only `ADMISSIBLE`, `QUARANTINED`, or `MISSING` plus structural/hash facts. They do not rank or select.
 - The deterministic selector consumes only admissible SELECT evaluations. It does not consume DIAG outcomes and cannot promote.
 - Archive snapshots bind candidates, provenance, evaluations, integrity, and selections.
@@ -95,8 +101,10 @@ Candidate code is untrusted. Omitting a token argument is insufficient. Before a
 
 - no repository or model credentials;
 - no GitHub token, OIDC handle, credential helper, or `.git` directory;
-- no network egress;
-- no host/container socket;
+- no general network egress; bounded inference is available only through a policy-enforcing host broker that holds raw provider credentials outside the container;
+- no Docker/container socket or other host-control interface (a narrowly mounted inference-broker socket is a distinct bounded capability);
+- a sanitized candidate worktree with no `.git`, hidden SELECT material, reference solution, or grader implementation;
+- SELECT material available only inside a separate trusted grader and never copied into the candidate image;
 - no writable trusted source, control, or output files;
 - a fresh trusted collector that parses bounded output as data and never imports candidate code.
 
@@ -108,14 +116,18 @@ The current candidate schema says execution is not authorized until that boundar
 
 `trainlab/tests/test_rate_split.py` checks, among other cases:
 
+- exact 20-instance, one-parent/three-child non-selecting cost smoke;
 - exact 32/32 unique DIAG/SELECT membership;
 - no extra split at pilot size;
 - homogeneous mutation only;
 - role/cohort/task/credential fields rejected from candidates;
-- parent, patch, or tree changes alter candidate identity;
+- artifact identity depends only on the normalized tree while candidate-record identity binds parent, patch, operator, and runtime contract;
+- parent, patch, or tree changes alter candidate-record identity;
 - proposer changes preserve candidate identity but alter proposal identity;
 - record-type digest substitution fails;
-- complete partition coverage and exact statement/source/snapshot binding;
+- complete partition coverage and exact statement/source/snapshot/artifact binding;
+- GitHub Actions cannot substitute for Math Foundry execution authority and the collector cannot import candidate code;
+- SELECT material and raw provider credentials are forbidden from the candidate boundary;
 - complete-cost arithmetic;
 - score-blind integrity classification;
 - DIAG and quarantined evidence excluded from selection;
