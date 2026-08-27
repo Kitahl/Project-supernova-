@@ -43,6 +43,16 @@
   "constructive_scheduler_repair_after_activation": "FORBIDDEN",
   "scheduler_readback_rule": "API_SUCCESS_IS_NOT_PROOF; NORMALIZED_RETURNED_TASK_CONFIGURATION_MUST_MATCH_FROZEN_SCHEDULER_MANIFEST; UTC OCCURRENCES ARE DERIVED FROM EXACT VANCOUVER HOURLY GRAMMAR AND FROZEN REGISTRY MINUTE",
   "preactivation_status_time_rule": "TRUSTED GITHUB STATUS CREATED_AT MUST FALL WITHIN THE SIGNED SCHEDULED CHALLENGE PLUS MAX_ATTEMPT_AND_JITTER WINDOW AND NO LATER THAN ADMISSION_CUTOFF",
+  "preactivation_publication_rule": "FOR_EACH_EXACT_CANONICAL_ROLE_PREACTIVATION_COMPLETES_ONLY_AFTER_EXACTLY_ONE_RECEIPT_COMMIT_H_SOLE_CHILD_OF_G_ADDING_ONLY_THE_ASSIGNED_RECEIPT_PATH_THEN_EXACTLY_ONE_NON_DRAFT_PR_FROM_PS_PREACTIVATE_COHORT_ROLE_AT_H_TO_PS_GEN_COHORT_AT_G_THEN_AN_EXACT_HEAD_TRUSTED_SUPERNOVA_PREACTIVATION_ADMISSION_TERMINAL_STATUS; RECEIPT_COMMIT_ALONE_IS_NOT_SUCCESS",
+  "preactivation_retry_rule": "RESUME_FROM_FIRST_MISSING_TRANSITION_WITHOUT_REWRITING_OR_ADVANCING_AN_ALREADY_EXACT_RECEIPT_BRANCH; IF_RECEIPT_EXISTS_AND_PR_IS_MISSING_OPEN_OR_REUSE_THE_EXACT_PR; IF_PR_EXISTS_AND_STATUS_IS_PENDING_REREAD_THE_EXACT_HEAD_STATUS; NEVER_CREATE_A_SECOND_RECEIPT_COMMIT",
+  "preactivation_outcomes": [
+    "WAITING_FOR_CHALLENGE",
+    "RECEIPT_COMMITTED_PR_MISSING",
+    "PR_OPEN_STATUS_PENDING",
+    "ADMITTED",
+    "REJECTED",
+    "BLOCKED"
+  ],
   "project_binding": {
     "preferred_project_name": "Project Supernova",
     "persistent_associated_chat_required": true,
@@ -69,11 +79,11 @@
     {"role_id":"MF06","scheduler_task_id":"6a841697574481918e67222cacb7fcfb","title":"PS-JOINT-I01 | Evidence Integrator","minute":45,"target_program":"JOINT"},
     {"role_id":"BIL00","scheduler_task_id":"6a8413a9d7648191b06b1e8303dbcf77","title":"PS-JOINT-D01 | Director + 12h Research","minute":58,"target_program":"JOINT","research_hours_local":[0,12]}
   ],
-  "worker_write_rule": "When candidate is inactive, read main:state/STAGED.json and bind its exact blob, R, G, nonce, and scheduler-manifest blob; write only preactivation/<candidate>/<role>.json on dedicated ps/preactivate branch. When active, read CURRENT then exact frozen G and write exactly reports/<cohort>/<role>.json on assigned production branch. Whole-report HMAC-2. No main writes.",
-  "verifier_write_rule": "MM06 writes a closed source receipt without self commit/blob fields on ps/preactivate/<cohort>/MM06, bound to pointer blob plus R/G/manifest. A later create-once main admission envelope records the already-existing H/blob and source-bound supernova/preactivation-admission success. Production verification remains verification/<cohort>.json on ps/verify/<cohort> only and uses the non-merge supernova/branch-report-admission context.",
+  "worker_write_rule": "When candidate is inactive, read main:state/STAGED.json and bind its exact blob, R, G, nonce, and scheduler-manifest blob; create exactly one receipt commit on the dedicated ps/preactivate branch, open or reuse exactly one non-draft PR to the exact ps/gen base, and stop only after exact-head supernova/preactivation-admission is terminal. When active, read CURRENT then exact frozen G and write exactly reports/<cohort>/<role>.json on assigned production branch. Whole-report HMAC-2. No main writes.",
+  "verifier_write_rule": "MM06 writes a closed source receipt without self commit/blob fields on ps/preactivate/<cohort>/MM06, bound to pointer blob plus R/G/manifest, opens or reuses the exact preactivation PR, and observes its exact-head trusted terminal status. A later create-once main admission envelope records the already-existing H/blob and source-bound supernova/preactivation-admission success. Production verification remains verification/<cohort>.json on ps/verify/<cohort> only and uses the non-merge supernova/branch-report-admission context.",
   "integrator_write_rule": "Require MM06 safe refs and source-bound supernova/branch-report-admission=success on the exact verifier head; construct candidate in memory, validate live/schema/semantic bindings, then create once on ps/integrate/<cohort>.",
-  "integrator_preactivation_write_rule": "The existing MF06 task signs exactly one role-authenticated preactivation receipt on ps/preactivate/<cohort>/MF06 using its separately committed MF06 preactivation key; this is one of the canonical 15 tasks and creates no lane.",
-  "director_write_rule": "Create exact four-path one-commit generation G from R, then open a pointer-only ps/stage/<cohort> PR and stop. Admission is a later create-once ps/admit/<cohort> PR. Promotion is later still, requires admission already in base unchanged, and uses state.expected_base_head as the later promotion CAS distinct from R. No force/rebase/bypass.",
+  "integrator_preactivation_write_rule": "The existing MF06 task signs exactly one role-authenticated preactivation receipt on ps/preactivate/<cohort>/MF06 using its separately committed MF06 preactivation key, opens or reuses the exact preactivation PR, and observes its exact-head trusted terminal status; this is one of the canonical 15 tasks and creates no lane.",
+  "director_write_rule": "For BIL00 preactivation, create exactly one role-authenticated receipt commit, open or reuse the exact preactivation PR, and observe its exact-head trusted terminal status. For staging, create exact four-path one-commit generation G from R, then open a pointer-only ps/stage/<cohort> PR and stop. Admission is a later create-once ps/admit/<cohort> PR. Promotion is later still, requires admission already in base unchanged, and uses state.expected_base_head as the later promotion CAS distinct from R. No force/rebase/bypass.",
   "research_rule": "BIL00 only at 00:58 and 12:58, and only when an accepted open research lane exists. While T0 is unqualified, T0 transport/repository/admission closure is the only admissible research lane; all other hourly BIL00 runs are director, liveness, issue-consolidation and guarded-repair runs.",
   "admission_contexts": ["supernova/static-control","supernova/report-admission","supernova/transition-admission"],
   "activation_status": {

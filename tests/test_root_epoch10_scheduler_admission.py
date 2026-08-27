@@ -71,6 +71,9 @@ class RootEpoch10SchedulerAdmissionTests(unittest.TestCase):
         self.assertEqual(semantics["same_task_session_rule"], "SAME_TASK_SESSION")
         self.assertEqual(semantics["active_cohort_repair_rule"], "NO_POST_ACTIVATION_CONSTRUCTIVE_REPAIR")
         self.assertEqual(semantics["scheduler_readback_rule"], "NORMALIZED_SCHEDULER_READBACK")
+        self.assertEqual(semantics["preactivation_completion_rule"], "RECEIPT_COMMIT_ALONE_IS_NOT_SUCCESS")
+        self.assertEqual(semantics["preactivation_retry_rule"], "RESUME_FROM_FIRST_MISSING_TRANSITION_AND_NEVER_CREATE_A_SECOND_RECEIPT_COMMIT")
+        self.assertEqual(semantics["preactivation_state_classifier"], "scripts/preactivation_publication_state.py")
 
     def test_transition_guard_invokes_scheduler_admission(self):
         text = (ROOT / "scripts/transition_guard.py").read_text(encoding="utf-8")
