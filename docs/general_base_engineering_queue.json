@@ -11,7 +11,9 @@
       "docs/formal/",
       "schemas/formal_",
       "scripts/formal_",
-      "tests/formal/"
+      "tests/formal/",
+      "docs/trainlab/",
+      "trainlab/"
     ],
     "allowed_exact_paths": [
       "docs/general_base_engineering_queue.json"
@@ -138,6 +140,26 @@
       "phase": "PHASE0_TRUST_FLOOR",
       "status": "BLOCKED_BY_EGB_009",
       "dependencies": ["EGB-009"]
+    },
+    {
+      "id": "EGB-011",
+      "name": "Dormant fast-TRAIN/slow-assurance rate-split contracts",
+      "phase": "STAGE0_LOOP_CONTRACT",
+      "status": "DONE_CONTRACT_ONLY_EXECUTION_BLOCKED",
+      "dependencies": ["EGB-000"],
+      "evidence": [
+        "docs/trainlab/RATE_SPLIT_V1.md",
+        "trainlab/contracts/rate_split_record.schema.json",
+        "trainlab/rate_split.py",
+        "trainlab/tests/test_rate_split.py"
+      ],
+      "blocking_conditions": [
+        "T0 is not qualified",
+        "TRAIN pool is not sealed",
+        "formal runtime qualification EGB-010 is incomplete",
+        "adversarial candidate sandbox qualification EGB-009 is incomplete",
+        "execution and authority separation is not implemented"
+      ]
     },
     {
       "id": "EGB-020",
