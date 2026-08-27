@@ -25,6 +25,18 @@
   "sixteenth_lane": "FORBIDDEN",
   "preactivation_rule": "PREACTIVATION_USING_SAME_CANONICAL_TASK_BEFORE_ACTIVE_PRODUCTION",
   "preactivation_write_scope": "DEDICATED_PREACTIVATION_BRANCH_AND_PATH_ONLY",
+  "preactivation_publication_rule": "ONE_EXACT_RECEIPT_COMMIT_THEN_ONE_EXACT_NON_DRAFT_PR_THEN_EXACT_HEAD_TRUSTED_TERMINAL_STATUS_FOR_EACH_OF_THE_EXISTING_15_CANONICAL_TASKS",
+  "preactivation_completion_rule": "RECEIPT_COMMIT_ALONE_IS_NOT_SUCCESS",
+  "preactivation_retry_rule": "RESUME_FROM_FIRST_MISSING_TRANSITION_AND_NEVER_CREATE_A_SECOND_RECEIPT_COMMIT",
+  "preactivation_state_classifier": "scripts/preactivation_publication_state.py",
+  "preactivation_outcomes": [
+    "WAITING_FOR_CHALLENGE",
+    "RECEIPT_COMMITTED_PR_MISSING",
+    "PR_OPEN_STATUS_PENDING",
+    "ADMITTED",
+    "REJECTED",
+    "BLOCKED"
+  ],
   "staging_pointer_rule": "EXACT_MAIN_STATE_STAGED_JSON_BLOB_BINDS_INACTIVE_CANDIDATE_R_G_NONCE_AND_FOUR_ARTIFACT_BLOBS",
   "preactivation_binding_rule": "POINTER_BLOB_PLUS_R_PLUS_G_PLUS_MANIFEST_BLOB",
   "mm06_source_rule": "CLOSED_SOURCE_RECEIPT_WITHOUT_SELF_COMMIT_OR_BLOB_FIELDS",
